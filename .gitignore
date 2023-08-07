@@ -12,3 +12,10 @@
 /captures
 .externalNativeBuild
 .cxx
+
+#Ignore folers
+AroundMe/.vs
+AroundMe/Binaries
+AroundMe/DerivedDataCache
+AroundMe/Intermediate
+AroundMe/Saved

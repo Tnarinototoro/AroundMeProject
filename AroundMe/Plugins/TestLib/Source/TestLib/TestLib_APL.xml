@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<init>
+		<log text="[SJL] Plugin_APL INIT"/>
+	</init>
+
+	<proguardAdditions>
+		<insert>
+		</insert>
+	</proguardAdditions>
+
+	<resourceCopies>
+		<copyFile  src = "$S(PluginDir)/../../Libs/TestLib.jar"  dst = "$S(BuildDir)/libs/TestLib.jar" />
+	</resourceCopies>
+
+	<gameActivityImportAdditions>
+		<insert>
+			import com.MeToo.testlib.*;
+			import android.widget.Toast;
+		</insert>
+	</gameActivityImportAdditions>
+	<gameActivityClassAdditions>
+		<insert>
+			public void TestFunc() {
+			TestClass.TestFunc();
+			nativeTestFunc(999);
+
+			TestClass.showToast(GameActivity.this);
+			//runOnUiThread(new Runnable() {
+			//@Override
+			//public void run() {
+			//Toast.makeText(GameActivity.this, "Bluetooth permissions granted", Toast.LENGTH_SHORT).show();
+			//}
+			//});
+			}
+			public native void nativeTestFunc(int value);
+		</insert>
+	</gameActivityClassAdditions>
+</root>

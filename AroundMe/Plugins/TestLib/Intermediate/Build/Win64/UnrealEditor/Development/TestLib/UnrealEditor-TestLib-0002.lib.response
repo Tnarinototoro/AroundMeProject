@@ -1,0 +1,12 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-TestLib-0002.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\UEPROJECTS\AroundMe\Intermediate\Build\Win64\AroundMeEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.InclOrderUnreal5_0.h.obj"
+"D:\UEPROJECTS\AroundMe\Plugins\TestLib\Intermediate\Build\Win64\UnrealEditor\Development\TestLib\Module.TestLib.cpp.obj"
+"D:\UEPROJECTS\AroundMe\Plugins\TestLib\Intermediate\Build\Win64\UnrealEditor\Development\TestLib\Default.rc2.res"
+/OUT:"D:\UEPROJECTS\AroundMe\Plugins\TestLib\Intermediate\Build\Win64\UnrealEditor\Development\TestLib\UnrealEditor-TestLib-0002.lib"

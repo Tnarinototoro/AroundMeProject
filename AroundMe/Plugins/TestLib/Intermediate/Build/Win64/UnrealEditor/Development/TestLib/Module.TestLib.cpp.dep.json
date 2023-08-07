@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\ueprojects\\aroundme\\plugins\\testlib\\intermediate\\build\\win64\\unrealeditor\\development\\testlib\\module.testlib.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\ueprojects\\aroundme\\intermediate\\build\\win64\\aroundmeeditor\\development\\engine\\sharedpch.engine.shadowerrors.inclorderunreal5_0.h.pch",
+        "Includes": [
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\intermediate\\build\\win64\\unrealeditor\\development\\testlib\\definitions.testlib.h",
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\intermediate\\build\\win64\\unrealeditor\\inc\\testlib\\uht\\testlib.init.gen.cpp",
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\intermediate\\build\\win64\\unrealeditor\\inc\\testlib\\uht\\testlibbplibrary.gen.cpp",
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\source\\testlib\\public\\testlibbplibrary.h",
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\intermediate\\build\\win64\\unrealeditor\\inc\\testlib\\uht\\testlibbplibrary.generated.h",
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\source\\testlib\\private\\testlib.cpp",
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\source\\testlib\\public\\testlib.h",
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\source\\testlib\\private\\testlibbplibrary.cpp",
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\source\\testlib\\public\\testlibjni.h",
+            "d:\\ueprojects\\aroundme\\plugins\\testlib\\source\\testlib\\private\\testlibjni.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

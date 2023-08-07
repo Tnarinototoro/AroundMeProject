@@ -1,0 +1,12 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.TestLib.cpp.obj": [
+			"TestLib.init.gen.cpp.obj",
+			"TestLibBPLibrary.gen.cpp.obj",
+			"TestLib.cpp.obj",
+			"TestLibBPLibrary.cpp.obj",
+			"TestLibJNI.cpp.obj"
+		]
+	}
+}
