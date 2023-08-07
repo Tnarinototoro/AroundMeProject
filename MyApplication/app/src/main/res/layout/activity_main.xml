@@ -14,22 +14,22 @@
         tools:layout_editor_absoluteY="1dp">
 
         <Button
-            android:id="@+id/button_scan"
+            android:id="@+id/button_start_scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="Start_Scan" />
 
         <Button
             android:id="@+id/button_stop_scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="Stop_Scan" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/Text_State_info"
             android:layout_width="wrap_content"
             android:layout_height="54dp"
-            android:text="TextView" />
+            android:text="State_Scan" />
 
         <ListView
             android:id="@+id/device_list"

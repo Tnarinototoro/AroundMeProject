@@ -24,6 +24,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -39,11 +41,26 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BLUETOOTH = 2;
     private BluetoothAdapter mBluetoothAdapter;
-    private TextView text2;
-    private Button botton;
+    private TextView mText_State_info;
+    private Button mButton_StartScan;
+    private Button mButton_CancelScan;
     private ListView listView;
     private ArrayAdapter<String> deviceArrayAdapter;
     private ArrayList<String> deviceArrayList;
+
+
+
+    private final ActivityResultLauncher<Intent> enableBluetoothLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK)
+                        {
+                            mButton_StartScan.callOnClick();
+                            Log.i("BluetoothStatus", "User enabled Bluetooth.");
+                        } else {
+                            Log.i("BluetoothStatus", "User declined to enable Bluetooth.");
+                        }
+                    });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,38 +72,65 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(deviceArrayAdapter);
 
 
-        text2= (TextView) this.findViewById(R.id.textView2); //状态信息
-        botton=(Button) this.findViewById(R.id.button_scan);
+        mText_State_info = (TextView) this.findViewById(R.id.Text_State_info); //状态信息
+        mButton_StartScan = (Button) this.findViewById(R.id.button_start_scan);
+
+        mButton_CancelScan=(Button) this.findViewById(R.id.button_stop_scan);
 
         checkBluetoothPermissions();
         checkLocationPermission();
 
-        mBluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        IntentFilter filter=new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver(mReceiver,filter);
-        IntentFilter filter2=new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        registerReceiver(mReceiver,filter2);
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(mReceiver, filter);
+        IntentFilter filter2 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        registerReceiver(mReceiver, filter2);
 
-        botton.setOnClickListener(new View.OnClickListener(){
+        mButton_StartScan.setOnClickListener(new View.OnClickListener()
+        {
 
             @Override
             public void onClick(View arg0) {
 
-                if(!mBluetoothAdapter.isEnabled())
+                if (!mBluetoothAdapter.isEnabled())
                 {
-                    mBluetoothAdapter.enable();
+
+
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    enableBluetoothLauncher.launch(enableBtIntent);
+
 
                 }
+                else
+                {
 
-                mBluetoothAdapter.startDiscovery();
-                text2.setText("正在搜索...");
+                    mBluetoothAdapter.startDiscovery();
+                    mText_State_info.setText("正在搜索...");
+                }
 
             }
 
 
         });
 
+        mButton_CancelScan.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View arg0)
+            {
+
+                if (mBluetoothAdapter.isEnabled()&&mBluetoothAdapter.isDiscovering())
+                {
+                    mBluetoothAdapter.cancelDiscovery();
+
+                }
+
+            }
+
+
+        });
 
     }
     private void checkLocationPermission()
@@ -169,10 +213,12 @@ public class MainActivity extends AppCompatActivity {
 
 
                 String deviceAddress =name+device.getAddress();
-                if (!deviceArrayList.contains(deviceAddress)) {
+                if (!deviceArrayList.contains(deviceAddress))
+                {
                     deviceArrayList.add(deviceAddress);
                     deviceArrayAdapter.notifyDataSetChanged();
                 }
+
 
                 if(device.getBondState()==BluetoothDevice.BOND_BONDED)
                 {    //显示已配对设备
@@ -182,9 +228,11 @@ public class MainActivity extends AppCompatActivity {
                     //text3.append("\n"+device.getName()+"==>"+device.getAddress()+"\n");
                 }
 
-            }else if(action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)){
+            }else if(action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED))
+            {
+                mText_State_info.setText("搜索结束...");
 
-                text2.setText("搜索完成...");
+
 
 
             }
