@@ -7,21 +7,21 @@ AroundMe/Saved
 
 
 #android ignores
-
+AroundMeLib/app/testLib/build/
 *.iml
-AroundMeLib/.gradle
-AroundMeLib/local.properties
-AroundMeLib/.idea/caches
-AroundMeLib/.idea/libraries
+AroundMeLib/.gradle/
+AroundMeLib/local.properties/
+AroundMeLib/.idea/caches/
+AroundMeLib/.idea/libraries/
 AroundMeLib/.idea/modules.xml
 AroundMeLib/.idea/workspace.xml
 AroundMeLib/.idea/navEditor.xml
 AroundMeLib/.idea/assetWizardSettings.xml
-AroundMeLib/.DS_Store
-AroundMeLib/build
-AroundMeLib/captures
-AroundMeLib/.externalNativeBuild
-.cxx
+AroundMeLib/.DS_Store/
+AroundMeLib/build/
+AroundMeLib/captures/
+AroundMeLib/.externalNativeBuild/
+AroundMeLib/.cxx/
 # Built application files
 *.apk
 *.aar
@@ -64,34 +64,34 @@ AroundMeLib/.idea/workspace.xml
 AroundMeLib/.idea/tasks.xml
 AroundMeLib/.idea/gradle.xml
 AroundMeLib/.idea/assetWizardSettings.xml
-AroundMeLib/.idea/dictionaries
-AroundMeLib/.idea/libraries
+AroundMeLib/.idea/dictionaries/
+AroundMeLib/.idea/libraries/
 
 # Keystore files
 *.jks
 
 # External native build folder generated in Android Studio 2.2 and later
-.externalNativeBuild
+AroundMeLib/.externalNativeBuild/
 .cxx/
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
 # Freeline
-freeline.py
-freeline/
-freeline_project_description.json
+AroundMeLib/freeline.py
+AroundMeLib/freeline/
+AroundMeLib/freeline_project_description.json
 
 # Fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-fastlane/test_output
-fastlane/readme.md
+AroundMeLib/fastlane/report.xml
+AroundMeLib/fastlane/Preview.html
+AroundMeLib/fastlane/screenshots/
+AroundMeLib/fastlane/test_output
+AroundMeLib/fastlane/readme.md
 
 # Miscellaneous
-.DS_Store
-build/
+AroundMeLib/.DS_Store/
+AroundMeLib/build/
 # Compiled source #
 ###################
 *.com
@@ -120,14 +120,14 @@ build/
 
 # OS generated files #
 ######################
-AroundMeLib/.DS_Store
-AroundMeLib/.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+AroundMeLib/.DS_Store/
+AroundMeLib/.DS_Store?/
+AroundMeLib/._*/
+AroundMeLib/.Spotlight-V100/
+AroundMeLib/.Trashes/
+AroundMeLib/ehthumbs.db
+AroundMeLib/Thumbs.db
 
 # IntelliJ #
 ############
-/out/
+AroundMeLib/out/
