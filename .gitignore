@@ -9,18 +9,18 @@ AroundMe/Saved
 #android ignores
 
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
+AroundMeLib/.gradle
+AroundMeLib/local.properties
+AroundMeLib/.idea/caches
+AroundMeLib/.idea/libraries
+AroundMeLib/.idea/modules.xml
+AroundMeLib/.idea/workspace.xml
+AroundMeLib/.idea/navEditor.xml
+AroundMeLib/.idea/assetWizardSettings.xml
+AroundMeLib/.DS_Store
+AroundMeLib/build
+AroundMeLib/captures
+AroundMeLib/.externalNativeBuild
 .cxx
 # Built application files
 *.apk
@@ -35,13 +35,13 @@ AroundMe/Saved
 *.class
 
 # Generated files
-bin/
-gen/
-out/
+AroundMeLib/bin/
+AroundMeLib/gen/
+AroundMeLib/out/
 
 # Gradle files
-.gradle/
-build/
+AroundMeLib/.gradle/
+AroundMeLib/build/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -60,12 +60,12 @@ captures/
 
 # IntelliJ
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/assetWizardSettings.xml
-.idea/dictionaries
-.idea/libraries
+AroundMeLib/.idea/workspace.xml
+AroundMeLib/.idea/tasks.xml
+AroundMeLib/.idea/gradle.xml
+AroundMeLib/.idea/assetWizardSettings.xml
+AroundMeLib/.idea/dictionaries
+AroundMeLib/.idea/libraries
 
 # Keystore files
 *.jks
@@ -120,8 +120,8 @@ build/
 
 # OS generated files #
 ######################
-.DS_Store
-.DS_Store?
+AroundMeLib/.DS_Store
+AroundMeLib/.DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
