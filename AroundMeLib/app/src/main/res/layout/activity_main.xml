@@ -22,28 +22,22 @@
         tools:layout_editor_absoluteY="1dp">
 
         <Button
-            android:id="@+id/button_start_scan"
+            android:id="@+id/button_start_aroundme_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start_Scan" />
+            android:text="Start" />
 
         <Button
-            android:id="@+id/button_stop_scan"
+            android:id="@+id/button_stop_aroundme_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stop_Scan" />
+            android:text="Stop" />
 
         <TextView
             android:id="@+id/Text_State_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="State_Scan" />
-
-        <Switch
-            android:id="@+id/receive_or_Advertise"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="find_or_broadcast" />
 
         <ListView
             android:id="@+id/device_list"
