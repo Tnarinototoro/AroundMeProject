@@ -25,10 +25,8 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
@@ -39,9 +37,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.Switch;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +65,19 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity
 {
 
+    public class PlayerDeviceInfo
+    {
+        public BluetoothGatt mDeviceGatt=null;
+        public String mDeviceName=null;
+        public String mRegisteredPlayerDeviceMacAddr=null;
+
+
+        public int mIndex=0;
+        public String VersionToString()
+        {
+            return mDeviceName+"@"+mRegisteredPlayerDeviceMacAddr;
+        }
+    };
     WifiP2pManager manager;
     WifiP2pManager.Channel channel;
     //定义
@@ -87,27 +97,47 @@ public class MainActivity extends AppCompatActivity
     private BluetoothGattServer mBluetoothGattServer;
     private Handler mHandler = new Handler();
 
+    private double mTimeSinceCreation=0.0f;
 
-    private TextView mText_State_info;
+
     private Button mButton_StartScan;
     private Button mButton_CancelScan;
-    private ListView listView;
-    private ArrayAdapter<String> deviceArrayAdapter;
-    private ArrayList<String> deviceArrayList;
+
+    private ListView mSp_Device_listView;
+    private ArrayAdapter<String> mSp_deviceArrayAdapter;
+    private ArrayList<String> mSp_deviceArrayList;
+
+    private ListView mRandom_Device_listView;
+    private ArrayAdapter<String> mRandom_deviceArrayAdapter;
+    private ArrayList<String> mRandom_deviceArrayList;
 
 
-    private Map<String, BluetoothGatt> mDeviceConnections=new HashMap<>();
+    private TextView mLogTextView;
+    private ScrollView mLogScrollView;
+    private Map<String, PlayerDeviceInfo> mDeviceConnections=new HashMap<>();
 
 
+    private void ToggleButtons()
+    {
+        if(mButton_CancelScan!=null&&mButton_StartScan!=null)
+        {
+
+            mButton_StartScan.setEnabled(!mButton_StartScan.isEnabled());
+            mButton_CancelScan.setEnabled(!mButton_CancelScan.isEnabled());
+        }
+    }
     private final ActivityResultLauncher<Intent> enableBluetoothLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                     result -> {
                         if (result.getResultCode() == RESULT_OK)
                         {
                             mButton_StartScan.callOnClick();
-                            Log.i("BluetoothStatus", "User enabled Bluetooth.");
-                        } else {
-                            Log.i("BluetoothStatus", "User declined to enable Bluetooth.");
+                            appendToLog("BluetoothStatus"+"User enabled Bluetooth.");
+
+                        } else
+                        {
+                            appendToLog("BluetoothStatus"+"User declined to enable Bluetooth.");
+
                         }
                     });
 
@@ -115,10 +145,8 @@ public class MainActivity extends AppCompatActivity
 
     protected void NotifyLeScanStopped()
     {
-        mText_State_info.setText("搜索结束...");
-        mButton_StartScan.setClickable(true);
-
-        mButton_CancelScan.setClickable(false);
+        appendToLog("搜索结束...");
+        ToggleButtons();
     }
 
 
@@ -134,6 +162,15 @@ public class MainActivity extends AppCompatActivity
         super.onPause();
         mHandler.removeCallbacks(communicationRunnable);  // Stop sending messages
     }
+
+    public void appendToLog(String text)
+    {
+        runOnUiThread(() -> {
+            mLogTextView.append(text + "\n");
+            // 自动滚动到底部
+            mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -144,22 +181,41 @@ public class MainActivity extends AppCompatActivity
             //layout setting
             setContentView(R.layout.activity_main);
 
-            //device array list\adaptor init
-            deviceArrayList = new ArrayList<>();
-            deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, deviceArrayList);
 
-            //list view set the adaptor and view
-            listView = findViewById(R.id.device_list);
-            listView.setAdapter(deviceArrayAdapter);
+            //sp device list view init
+            {
+                //device array list\adaptor init
+                mSp_deviceArrayList = new ArrayList<>();
+                mSp_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mSp_deviceArrayList);
+
+                //list view set the adaptor and view
+                mSp_Device_listView = findViewById(R.id.sp_device_list);
+                mSp_Device_listView.setAdapter(mSp_deviceArrayAdapter);
+            }
+
+
+            //random device list view init
+            {
+                //device array list\adaptor init
+                mRandom_deviceArrayList = new ArrayList<>();
+                mRandom_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mRandom_deviceArrayList);
+
+                //list view set the adaptor and view
+                mRandom_Device_listView = findViewById(R.id.random_device_list);
+                mRandom_Device_listView.setAdapter(mRandom_deviceArrayAdapter);
+            }
+
+
 
             //text and button binding
-            mText_State_info = (TextView) this.findViewById(R.id.Text_State_info); //状态信息
-            mButton_StartScan = (Button) this.findViewById(R.id.button_start_aroundme_service);
-            mButton_CancelScan = (Button) this.findViewById(R.id.button_stop_aroundme_service);
-            mButton_StartScan.setText("Start Service");
-            mButton_CancelScan.setText("Stop Service");
-            mButton_CancelScan.setClickable(false);
+            mButton_StartScan = this.findViewById(R.id.button_start);
+            mButton_CancelScan = this.findViewById(R.id.button_stop);
 
+            mButton_StartScan.setEnabled(true);
+            mButton_CancelScan.setEnabled(false);
+
+            mLogTextView = findViewById(R.id.log_text_view);
+            mLogScrollView = findViewById(R.id.log_scroll_view);
 
 
 
@@ -191,8 +247,7 @@ public class MainActivity extends AppCompatActivity
                         StartAdvertising();
 
 
-                        mButton_StartScan.setClickable(false);
-                        mButton_CancelScan.setClickable(true);
+                       ToggleButtons();
                     }
 
                 }
@@ -222,7 +277,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             mBluetoothLeAdvertiser.stopAdvertising(mAdvertiseCallback);
 
-                            mText_State_info.setText("Stop BroadCasting!");
+                            appendToLog("Stop BroadCasting!");
                         }
 
 
@@ -234,12 +289,13 @@ public class MainActivity extends AppCompatActivity
                         NotifyLeScanStopped();
 
                         mBluetoothGattServer.close();
-                        deviceArrayList.clear();
+                        mSp_deviceArrayList.clear();
+                        mRandom_deviceArrayList.clear();
                         if(mDeviceConnections!=null)
                         {
                             for(String mac_addr:mDeviceConnections.keySet())
                             {
-                                BluetoothGatt gatt_got_now = mDeviceConnections.get(mac_addr);
+                                BluetoothGatt gatt_got_now = mDeviceConnections.get(mac_addr).mDeviceGatt;
 
                                 if (null != gatt_got_now) {
                                     gatt_got_now.close();
@@ -281,12 +337,12 @@ public class MainActivity extends AppCompatActivity
 
             if (mBluetoothLeAdvertiser == null)
             {
-                Toast.makeText(this, "硬件不支持 BLE 广播", Toast.LENGTH_SHORT).show();
+                appendToLog("硬件不支持 BLE 广播");
 
             }
             if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
             {
-                Toast.makeText(this, "硬件不支持 BLE机能", Toast.LENGTH_SHORT).show();
+                appendToLog("硬件不支持 BLE机能");
 
             }
         }
@@ -308,7 +364,12 @@ public class MainActivity extends AppCompatActivity
 
         if(mBluetoothGattServer==null)
         {
-            Toast.makeText(getApplicationContext(), "mBluetoothGattServer not started well", Toast.LENGTH_SHORT).show();
+            appendToLog("mBluetoothGattServer not started well");
+
+        }
+        else
+        {
+            appendToLog("mBluetoothGattServer started well");
         }
 
         BluetoothGattService service = new BluetoothGattService(mAroundMeIdentify_UUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
@@ -342,8 +403,8 @@ public class MainActivity extends AppCompatActivity
                 .build();
 
 
-        mBluetoothLeScanner.startScan(Arrays.asList(scanFilter), scanSettings, mScanCallback);
-        mText_State_info.setText("Now Receiving/Scanning...");
+        mBluetoothLeScanner.startScan(Arrays.asList(scanFilter), scanSettings,mScanCallback);
+        appendToLog("Now Receiving/Scanning...");
     }
 
 
@@ -361,7 +422,7 @@ public class MainActivity extends AppCompatActivity
                 .addServiceUuid(new ParcelUuid(mAroundMeIdentify_UUID))
                 .build();
         mBluetoothLeAdvertiser.startAdvertising(settings, advdata, mAdvertiseCallback);
-        mText_State_info.setText("Advertising");
+        appendToLog("Advertising");
 
     }
     private boolean checkLocationPermission()
@@ -421,22 +482,27 @@ public class MainActivity extends AppCompatActivity
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED
                     &&grantResults[2]==PackageManager.PERMISSION_GRANTED)
             {
-                Toast.makeText(this, "Bluetooth permissions granted", Toast.LENGTH_SHORT).show();
+                appendToLog("Bluetooth permissions granted");
+
             }
             else
             {
-                Toast.makeText(this, "Bluetooth permissions denied", Toast.LENGTH_SHORT).show();
+                appendToLog("Bluetooth permissions denied");
+
                 finish();
             }
         }
         else if (requestCode == PERMISSION_REQUEST_FINE_LOCATION)
         {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show();
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                appendToLog("Location permission granted");
+
             }
             else
             {
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+                appendToLog("Location permission denied");
+
                 finish();
             }
         }
@@ -460,41 +526,53 @@ public class MainActivity extends AppCompatActivity
         {
             super.onScanResult(callbackType, result);
 
-            BluetoothDevice device_got=result.getDevice();
+            BluetoothDevice result_device=result.getDevice();
 
-            String device_mac_addr=device_got.getAddress();
+            String result_device_mac_addr=result_device.getAddress();
 
-            String device_display_info =device_got.getName()+" @ "+ device_mac_addr;
-
-            if(mDeviceConnections.containsKey(device_mac_addr))
+            // 处理带有特定服务UUID的设备
+            if(mDeviceConnections.containsKey(result_device_mac_addr))
             {
                 //do nothing
             }
             else
             {
-                BluetoothGatt got_gatt= device_got.connectGatt(getApplicationContext(), false, mConnection_GattCallback);
+                BluetoothGatt got_gatt= result_device.connectGatt(getApplicationContext(), false, mConnection_GattCallback);
 
 
                 if(got_gatt!=null)
                 {
-                    Toast.makeText(getApplicationContext(), "connected successfully", Toast.LENGTH_SHORT).show();
+                    appendToLog("connected successfully");
+
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(), "connected failed!", Toast.LENGTH_SHORT).show();
+                    appendToLog("connected failed!");
+
                 }
-                mDeviceConnections.put(device_mac_addr,got_gatt);
-                if (!deviceArrayList.contains(device_display_info))
-                {
-                    deviceArrayList.add(device_display_info);
-                    deviceArrayAdapter.notifyDataSetChanged();
-                }
+
+                PlayerDeviceInfo player_info= new PlayerDeviceInfo();
+                player_info.mDeviceGatt=got_gatt;
+                player_info.mDeviceName=result_device.getName();
+
+                player_info.mRegisteredPlayerDeviceMacAddr=result_device_mac_addr;
+                player_info.mIndex= mSp_deviceArrayList.size();
+                mDeviceConnections.put(result_device_mac_addr,player_info);
+                String device_display_info =player_info.VersionToString();
+
+
+                mSp_deviceArrayList.add(device_display_info);
+                mSp_deviceArrayAdapter.notifyDataSetChanged();
+
             }
 
 
-            //Toast.makeText(getApplicationContext(), "greate we got something!!", Toast.LENGTH_SHORT).show();
-            // 在此处理扫描结果，例如获取设备信息
-            // result.getDevice().getAddress() 获取设备地址
+
+
+
+
+
+
 
 
         }
@@ -503,7 +581,8 @@ public class MainActivity extends AppCompatActivity
         public void onScanFailed(int errorCode)
         {
             super.onScanFailed(errorCode);
-            Toast.makeText(getApplicationContext(), "BLE Scan Started Failed! with error code: "+errorCode, Toast.LENGTH_SHORT).show();
+            appendToLog("BLE Scan Started Failed! with error code: "+errorCode);
+
             // Scanning failed. Handle error.
         }
 
@@ -516,8 +595,8 @@ public class MainActivity extends AppCompatActivity
         {
             super.onStartSuccess(settingsInEffect);
 
-            Toast.makeText(getApplicationContext(), "BLE BroadCast Started successfully", Toast.LENGTH_SHORT).show();
-            // Broadcast started successfully
+            appendToLog("BLE BroadCast Started successfully");
+
         }
 
         @Override
@@ -525,7 +604,8 @@ public class MainActivity extends AppCompatActivity
         {
             super.onStartFailure(errorCode);
 
-            Toast.makeText(getApplicationContext(), "BLE BroadCast Started Failed! with error code "+errorCode, Toast.LENGTH_SHORT).show();
+            appendToLog("BLE BroadCast Started Failed! with error code "+errorCode);
+
             // Failed to start broadcasting
         }
     };
@@ -535,11 +615,13 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState)
         {
+            //connect to p device
             if (newState == BluetoothProfile.STATE_CONNECTED)
             {
 
-                Log.i("BluetoothStatus", "XXXXXXXXXXXXXX first connected with p-device:"+gatt.getDevice().getName()+"@"+gatt.getDevice().getAddress() );
-                //Toast.makeText(getApplicationContext(), "first connected!!!!", Toast.LENGTH_SHORT).show();
+
+                appendToLog("XXXXXXXXXXXXXX first connected with p-device:"+gatt.getDevice().getName()+"@"+gatt.getDevice().getAddress());
+
                 gatt.discoverServices();
             }
         }
@@ -571,18 +653,20 @@ public class MainActivity extends AppCompatActivity
             {
                 // 输出或显示接收到的消息
                 String receivedMessage = new String(characteristic.getValue(), Charset.forName("UTF-8"));
-                Log.d("ReceivedMessage", receivedMessage);
+                appendToLog("ReceivedMessage"+receivedMessage);
+
             }
         }
 
-        //接受外围设备的消息变更
+        //接受外围设备的消息变更 这个地方能收到外围设备的mac的
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic)
         {
 
             byte[] data = characteristic.getValue();
             String receivedString = new String(data, Charset.forName("UTF-8"));
-            Log.d("ReceivedMessage from @"+gatt.getDevice().getName(), "Received: " + receivedString);
+            appendToLog("ReceivedMessage from @"+gatt.getDevice().getName()+"@"+gatt.getDevice().getAddress()+"Received: " + receivedString);
+
         }
     };
 
@@ -604,7 +688,9 @@ public class MainActivity extends AppCompatActivity
                 mBluetoothGattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, 0, null);
 
                 String receivedData = new String(value, StandardCharsets.UTF_8);
-                Log.d("ReceivedFromCentral", "Received data from central device: "+device.getName()+"@"+device.getAddress() +"And data is "+ receivedData);
+
+                appendToLog("ReceivedFromCentral"+"Received data from central device: "+device.getName()+"@"+device.getAddress() +"And data is "+ receivedData);
+
             }
         }
 
@@ -618,10 +704,22 @@ public class MainActivity extends AppCompatActivity
             super.onConnectionStateChange(device, status, newState);
             if (newState == BluetoothProfile.STATE_CONNECTED)
             {
-                Log.d(TAG, "YYYYYYYYYY Device connected with c-device: " +device.getName()+"@"+ device.getAddress());
+                //connect to c device, me as p device
+                appendToLog("YYYYYYYYYY Device connected with c-device: " +device.getName()+"@"+ device.getAddress());
+
+                if(mDeviceConnections.containsKey(device.getAddress()))
+                {
+                    appendToLog("MMMMMMMMMMM my Device already connected with  p-device:  " +device.getName()+"@"+ device.getAddress());
+
+                }
+
+
+
                 // Do something, e.g., allocate resources, save the device reference, etc.
-            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                Log.d(TAG, "YYYYYYYYYY  Device disconnected with c-device: " + device.getName()+"@"+device.getAddress());
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED)
+            {
+                appendToLog("YYYYYYYYYY  Device disconnected with c-device: " + device.getName()+"@"+device.getAddress());
+
                 // Cleanup or reset as needed.
             }
         }
@@ -636,7 +734,7 @@ public class MainActivity extends AppCompatActivity
         {
             for(String device_mac:mDeviceConnections.keySet())
             {
-                BluetoothGatt cur_gatt=mDeviceConnections.get(device_mac);
+                BluetoothGatt cur_gatt=mDeviceConnections.get(device_mac).mDeviceGatt;
                 if (cur_gatt != null)
                 {
                     BluetoothGattService cur_service=cur_gatt.getService(mAroundMeIdentify_UUID);
@@ -648,10 +746,11 @@ public class MainActivity extends AppCompatActivity
 
                         if(characteristic!=null)
                         {
-                            String messageToSend = "from central!"+mBluetoothAdapter.getName();
+                            String messageToSend = device_mac;
                             characteristic.setValue(messageToSend.getBytes(StandardCharsets.UTF_8));
                             cur_gatt.writeCharacteristic(characteristic);
-                            Log.d(TAG, "msg sent to p device :"+cur_gatt.getDevice().getName());
+                            appendToLog("msg sent to p device :"+cur_gatt.getDevice().getName());
+
 
                         }
                     }
@@ -662,22 +761,29 @@ public class MainActivity extends AppCompatActivity
             }
 
 
+
             if (mBluetoothGattServer != null)
             {
                 // Here, we simulate sending data as peripheral every 2 seconds.
                 List<BluetoothDevice> connectedDevices = mBluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
                 for (BluetoothDevice device : connectedDevices)
                 {
+
+
+
+
+
+                    String messageToSend = "hxhxhx";
                     BluetoothGattCharacteristic characteristic = mBluetoothGattServer.getService(mAroundMeIdentify_UUID).getCharacteristic(mAroundMe_CONNECT_CHARACTERISTIC_UUID);
-                    String messageToSend = "Hello from peripheral!";
                     characteristic.setValue(messageToSend.getBytes(StandardCharsets.UTF_8));
                     mBluetoothGattServer.notifyCharacteristicChanged(device, characteristic, false);
+                    appendToLog("msg sent to c device :"+device.getName()+"@"+device.getAddress());
 
-                    Log.d(TAG, "msg sent to c device :"+device.getName());
+
                 }
             }
 
-            Log.d(TAG, "running message process ");
+
             mHandler.postDelayed(communicationRunnable, 2000);  // Schedule the next message in 2 seconds
         }
     };
