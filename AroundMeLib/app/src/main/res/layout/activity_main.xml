@@ -47,6 +47,12 @@
                     android:layout_height="wrap_content"
                     android:text="Stop" />
 
+                <EditText
+                    android:id="@+id/input_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your message here"/>
+
             </LinearLayout>
 
             <LinearLayout
