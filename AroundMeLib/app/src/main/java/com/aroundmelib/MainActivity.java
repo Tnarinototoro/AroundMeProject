@@ -35,6 +35,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.util.EventLog;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -143,10 +144,8 @@ public class MainActivity extends AppCompatActivity
 
     private void startClassicBluetoothDiscovery()
     {
-        if (!mBluetoothAdapter.isDiscovering())
-        {
-            mBluetoothAdapter.startDiscovery();
-        }
+        if(!mBluetoothAdapter.isDiscovering())
+        mBluetoothAdapter.startDiscovery();
 
     }
     private final ActivityResultLauncher<Intent> enableBluetoothLauncher =
@@ -201,6 +200,97 @@ public class MainActivity extends AppCompatActivity
     {
         mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
     }
+
+    private void StopAroundMeService()
+    {
+        if(!mBluetoothAdapter.isEnabled())
+        {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            enableBluetoothLauncher.launch(enableBtIntent);
+        }
+        else
+        {
+
+            //BLE process
+            {
+                if (mBluetoothLeAdvertiser != null && mAdvertiseCallback != null)
+                {
+                    mBluetoothLeAdvertiser.stopAdvertising(mAdvertiseCallback);
+
+                    appendToLog("Stop BroadCasting!");
+                }
+
+
+                if (mBluetoothLeScanner != null && mScanCallback != null)
+                {
+                    mBluetoothLeScanner.stopScan(mScanCallback);
+                }
+
+                NotifyLeScanStopped();
+
+                mBluetoothGattServer.close();
+                mSp_deviceDisplayArrayList.clear();
+                mRandom_deviceDisplayArrayList.clear();
+                mRandom_deviceArrayAdapter.notifyDataSetChanged();
+                mSp_deviceArrayAdapter.notifyDataSetChanged();
+                if(mDeviceConnections!=null)
+                {
+                    for(String mac_addr:mDeviceConnections.keySet())
+                    {
+                        BluetoothGatt gatt_got_now = mDeviceConnections.get(mac_addr).mDeviceGatt;
+
+                        if (null != gatt_got_now) {
+                            gatt_got_now.close();
+                        }
+                    }
+                    mDeviceConnections.clear();
+                }
+            }
+
+
+            //classic bluetooth process
+            {
+
+                stopClassicBluetoothDiscovery();
+
+                mRandom_deviceDisplayArrayList.clear();
+                mRandom_deviceMacAddressArrayList.clear();
+            }
+        }
+    }
+
+    private void StartAroundMeService()
+    {
+        if (!mBluetoothAdapter.isEnabled())
+        {
+
+
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            enableBluetoothLauncher.launch(enableBtIntent);
+
+
+        }
+        else
+        {
+
+
+            startClassicBluetoothDiscovery();
+
+            setupServer();
+
+
+            StartScanning();
+
+            StartAdvertising();
+
+
+            ToggleButtons();
+
+
+
+
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -254,8 +344,13 @@ public class MainActivity extends AppCompatActivity
             mInputMessage=findViewById(R.id.input_message);
 
 
+
             IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
             registerReceiver(mClassicBluetoothReceiver, filter);
+
+
+            IntentFilter filter2=new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            registerReceiver(mClassicBluetoothReceiver,filter2);
             mLogScrollView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -274,44 +369,20 @@ public class MainActivity extends AppCompatActivity
                     return false; // 这里返回 false 以允许 ScrollView 的默认滚动行为
                 }
             });
-            mButton_StartScan.setOnClickListener(new View.OnClickListener() {
+            mButton_StartScan.setOnClickListener
+                    (new View.OnClickListener()
+                     {
 
 
-                @Override
-                public void onClick(View arg0) {
+                        @Override
+                        public void onClick(View arg0)
+                        {
+                            StartAroundMeService();
+                        }
 
-                    if (!mBluetoothAdapter.isEnabled())
-                    {
-
-
-                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        enableBluetoothLauncher.launch(enableBtIntent);
-
-
-                    } else
-                    {
-
-
-
-                        setupServer();
-
-
-                        StartScanning();
-
-                        StartAdvertising();
-
-
-                       ToggleButtons();
-
-
-                       startClassicBluetoothDiscovery();
 
                     }
-
-                }
-
-
-            });
+                    );
 
             mButton_CancelScan.setOnClickListener(new View.OnClickListener()
             {
@@ -320,62 +391,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View arg0)
                 {
-
-
-
-                    if(!mBluetoothAdapter.isEnabled())
-                    {
-                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        enableBluetoothLauncher.launch(enableBtIntent);
-                    }
-                    else
-                    {
-
-                        //BLE process
-                        {
-                            if (mBluetoothLeAdvertiser != null && mAdvertiseCallback != null)
-                            {
-                                mBluetoothLeAdvertiser.stopAdvertising(mAdvertiseCallback);
-
-                                appendToLog("Stop BroadCasting!");
-                            }
-
-
-                            if (mBluetoothLeScanner != null && mScanCallback != null)
-                            {
-                                mBluetoothLeScanner.stopScan(mScanCallback);
-                            }
-
-                            NotifyLeScanStopped();
-
-                            mBluetoothGattServer.close();
-                            mSp_deviceDisplayArrayList.clear();
-                            mRandom_deviceDisplayArrayList.clear();
-                            if(mDeviceConnections!=null)
-                            {
-                                for(String mac_addr:mDeviceConnections.keySet())
-                                {
-                                    BluetoothGatt gatt_got_now = mDeviceConnections.get(mac_addr).mDeviceGatt;
-
-                                    if (null != gatt_got_now) {
-                                        gatt_got_now.close();
-                                    }
-                                }
-                                mDeviceConnections.clear();
-                            }
-                        }
-
-
-                        //classic bluetooth process
-                        {
-
-                            stopClassicBluetoothDiscovery();
-
-                            mRandom_deviceDisplayArrayList.clear();
-                            mRandom_deviceMacAddressArrayList.clear();
-                        }
-                    }
-
+                    StopAroundMeService();
                 }
 
 
@@ -472,7 +488,7 @@ public class MainActivity extends AppCompatActivity
 
 
         mBluetoothLeScanner.startScan(Arrays.asList(scanFilter), scanSettings,mScanCallback);
-        appendToLog("Now Receiving/Scanning...");
+        appendToLog("BLE Scanning started!");
     }
 
 
@@ -490,7 +506,6 @@ public class MainActivity extends AppCompatActivity
                 .addServiceUuid(new ParcelUuid(mAroundMeIdentify_UUID))
                 .build();
         mBluetoothLeAdvertiser.startAdvertising(settings, advdata, mAdvertiseCallback);
-        appendToLog("Advertising");
 
     }
     private boolean checkLocationPermission()
@@ -876,14 +891,22 @@ public class MainActivity extends AppCompatActivity
                 String deviceName = device.getName();
                 String deviceAddress = device.getAddress();
 
+
                 if(!mRandom_deviceMacAddressArrayList.contains(deviceAddress))
                 {
                     mRandom_deviceMacAddressArrayList.add(deviceAddress);
                     mRandom_deviceDisplayArrayList.add(deviceName + "@" + deviceAddress);
+                    mRandom_deviceArrayAdapter.notifyDataSetChanged();
                 }
 
 
             }
+            else if(action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED))
+            {
+                appendToLog("discovery finished!");
+            }
+
+
         }
     };
 }
