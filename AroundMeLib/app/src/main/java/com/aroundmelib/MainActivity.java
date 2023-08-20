@@ -102,9 +102,6 @@ public class MainActivity extends AppCompatActivity
     private BluetoothGattServer mBluetoothGattServer;
     private Handler mHandler = new Handler();
 
-    private double mTimeSinceCreation=0.0f;
-
-
     private EditText mInputMessage;
     private Button mButton_StartScan;
     private Button mButton_CancelScan;
@@ -150,7 +147,8 @@ public class MainActivity extends AppCompatActivity
     }
     private final ActivityResultLauncher<Intent> enableBluetoothLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
+                    result ->
+                    {
                         if (result.getResultCode() == RESULT_OK)
                         {
                             mButton_StartScan.callOnClick();
@@ -175,7 +173,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        mHandler.post(communicationRunnable);  // Start sending messages
+        //mHandler.post(communicationRunnable);  // Start sending messages
     }
 
     @Override
@@ -256,6 +254,8 @@ public class MainActivity extends AppCompatActivity
                 mRandom_deviceDisplayArrayList.clear();
                 mRandom_deviceMacAddressArrayList.clear();
             }
+
+            mHandler.removeCallbacks(communicationRunnable);
         }
     }
 
@@ -286,6 +286,7 @@ public class MainActivity extends AppCompatActivity
 
             ToggleButtons();
 
+            mHandler.post(communicationRunnable);
 
 
 
@@ -351,15 +352,19 @@ public class MainActivity extends AppCompatActivity
 
             IntentFilter filter2=new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
             registerReceiver(mClassicBluetoothReceiver,filter2);
-            mLogScrollView.setOnTouchListener(new View.OnTouchListener() {
+            mLogScrollView.setOnTouchListener(new View.OnTouchListener()
+            {
                 @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
+                public boolean onTouch(View v, MotionEvent event)
+                {
+                    switch (event.getAction())
+                    {
                         case MotionEvent.ACTION_DOWN:
                             // 用户开始触摸，暂停自动滚动
                             mLogViewautoScroll = false;
                             break;
                         case MotionEvent.ACTION_UP:
+                            break;
                         case MotionEvent.ACTION_CANCEL:
                             // 用户停止触摸，开始自动滚动
                             mLogViewautoScroll = true;
@@ -397,8 +402,6 @@ public class MainActivity extends AppCompatActivity
 
             });
         }
-
-
 
         //permission check
         {
@@ -875,6 +878,7 @@ public class MainActivity extends AppCompatActivity
             }
 
 
+            startClassicBluetoothDiscovery();
             mHandler.postDelayed(communicationRunnable, 2000);  // Schedule the next message in 2 seconds
         }
     };
