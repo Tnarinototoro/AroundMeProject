@@ -66,7 +66,10 @@ AroundMeLib/.idea/gradle.xml
 AroundMeLib/.idea/assetWizardSettings.xml
 AroundMeLib/.idea/dictionaries/
 AroundMeLib/.idea/libraries/
-
+AroundMe/Plugins/TestLib/Intermediate/
+AroundMe/Plugins/TestLib/Binaries/
+AroundMe/Plugins/TestLib/Binaries/Win64/
+AroundMe/Plugins/TestLib/ntermediate/
 # Keystore files
 *.jks
 

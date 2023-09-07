@@ -69,7 +69,24 @@ import java.util.UUID;
 @SuppressLint("MissingPermission")
 public class MainActivity extends AppCompatActivity
 {
-
+    private double calculateDistance(double rssi)
+    {
+        double RSSI_BASE = -69.0;
+        double ENVIRONMENT_FACTOR = 2.0;
+        return Math.pow(10, (RSSI_BASE - rssi) / (10 * ENVIRONMENT_FACTOR));
+    }
+    private double calculateDistance(int rssi, int txPower) {
+        if (rssi == 0) {
+            return -1.0; // if we cannot determine accuracy, return -1.
+        }
+        double ratio = rssi * 1.0 / txPower;
+        if (ratio < 1.0) {
+            return Math.pow(ratio, 10);
+        } else {
+            double distance = 0.89976 * Math.pow(ratio, 7.7095) + 0.111;
+            return distance;
+        }
+    }
     public class PlayerDeviceInfo
     {
         public BluetoothGatt mDeviceGatt=null;
@@ -245,18 +262,19 @@ public class MainActivity extends AppCompatActivity
                 }
             }
 
-
-            //classic bluetooth process
+//classic bluetooth process
             {
 
                 stopClassicBluetoothDiscovery();
 
-                mRandom_deviceDisplayArrayList.clear();
-                mRandom_deviceMacAddressArrayList.clear();
+
             }
 
-            mHandler.removeCallbacks(communicationRunnable);
+
         }
+        mRandom_deviceDisplayArrayList.clear();
+        mRandom_deviceMacAddressArrayList.clear();
+        mHandler.removeCallbacks(communicationRunnable);
     }
 
     private void StartAroundMeService()
@@ -267,7 +285,6 @@ public class MainActivity extends AppCompatActivity
 
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             enableBluetoothLauncher.launch(enableBtIntent);
-
 
         }
         else
@@ -644,9 +661,17 @@ public class MainActivity extends AppCompatActivity
                 player_info.mIndex= mSp_deviceDisplayArrayList.size();
                 mDeviceConnections.put(result_device_mac_addr,player_info);
                 String device_display_info =player_info.VersionToString();
+                int rssi = result.getRssi();
+                // TODO: Replace with the actual TX Power value for your beacon or BLE device
+                int txPower = -59; // This is just an example value, you need the actual TX Power for accurate results
+
+                double estimatedDistance = calculateDistance(rssi, txPower);
+
+                // Format distance to two decimal places
+                String formattedDistance = String.format("%.2f", estimatedDistance);
 
 
-                mSp_deviceDisplayArrayList.add(device_display_info);
+                mSp_deviceDisplayArrayList.add(device_display_info+"@dist:"+formattedDistance);
                 mSp_deviceArrayAdapter.notifyDataSetChanged();
 
             }
@@ -878,7 +903,11 @@ public class MainActivity extends AppCompatActivity
             }
 
 
-            startClassicBluetoothDiscovery();
+            if(!mBluetoothAdapter.isEnabled())
+            {
+                startClassicBluetoothDiscovery();
+            }
+
             mHandler.postDelayed(communicationRunnable, 2000);  // Schedule the next message in 2 seconds
         }
     };
@@ -899,8 +928,18 @@ public class MainActivity extends AppCompatActivity
                 if(!mRandom_deviceMacAddressArrayList.contains(deviceAddress))
                 {
                     mRandom_deviceMacAddressArrayList.add(deviceAddress);
-                    mRandom_deviceDisplayArrayList.add(deviceName + "@" + deviceAddress);
+
+
+                    short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                    double estimatedDistance = calculateDistance(rssi);
+                    String message=String.format("%s+@+%s+@dist:%.2f",deviceName,deviceAddress,estimatedDistance);
+
+                    mRandom_deviceDisplayArrayList.add(message);
                     mRandom_deviceArrayAdapter.notifyDataSetChanged();
+                }
+                else
+                {
+                    //mRandom_deviceMacAddressArrayList
                 }
 
 
