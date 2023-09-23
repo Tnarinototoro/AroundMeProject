@@ -69,6 +69,20 @@ import java.util.UUID;
 @SuppressLint("MissingPermission")
 public class MainActivity extends AppCompatActivity
 {
+    public class PlayerDeviceInfo
+    {
+        public BluetoothGatt mDeviceGatt=null;
+        public String mDeviceName=null;
+        public String mRegisteredPlayerDeviceMacAddr=null;
+
+        public boolean misRandomDeivce=true;
+        public double mDistance=-1.0f;
+        public int mIndex=0;
+        public String GenerateDisplayString()
+        {
+            return mDeviceName+"@Mac:"+mRegisteredPlayerDeviceMacAddr+"@Dist:"+String.format("%.2f", mDistance);
+        }
+    };
     private double calculateDistance(double rssi)
     {
         double RSSI_BASE = -69.0;
@@ -87,20 +101,15 @@ public class MainActivity extends AppCompatActivity
             return distance;
         }
     }
-    public class PlayerDeviceInfo
+    private String GetCurrentNumStatus()
     {
-        public BluetoothGatt mDeviceGatt=null;
-        public String mDeviceName=null;
-        public String mRegisteredPlayerDeviceMacAddr=null;
+        return String.format("Mac passed %d", mDeviceCountEncountered);
+    }
 
-        public boolean misRandomDeivce=true;
-        public double mDistance=-1.0f;
-        public int mIndex=0;
-        public String GenerateDisplayString()
-        {
-            return mDeviceName+"@Mac:"+mRegisteredPlayerDeviceMacAddr+"@Dist:"+String.format("%.2f", mDistance);
-        }
-    };
+    private void OnNewMacAddressEncountered()
+    {
+
+    }
     WifiP2pManager manager;
     WifiP2pManager.Channel channel;
 
@@ -136,9 +145,12 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<String> mRandom_deviceDisplayArrayList;
 
     private TextView mLogTextView;
+
+    private TextView mMacAddrCountView;
     private ScrollView mLogScrollView;
     private Map<String, PlayerDeviceInfo> mDeviceInfoAll=new HashMap<>();
 
+    private int mDeviceCountEncountered=0;
 
     private void ToggleButtons()
     {
@@ -150,12 +162,14 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
     private void stopClassicBluetoothDiscovery()
     {
         if (mBluetoothAdapter.isDiscovering())
         {
             mBluetoothAdapter.cancelDiscovery();
         }
+
     }
 
     private void startClassicBluetoothDiscovery()
@@ -377,6 +391,8 @@ public class MainActivity extends AppCompatActivity
                 mLogTextView = findViewById(R.id.log_text_view);
                 mLogScrollView = findViewById(R.id.log_scroll_view);
                 mInputMessage=findViewById(R.id.input_message);
+                mMacAddrCountView=findViewById(R.id.Mac_Addr_Count);
+
 
             }
 
@@ -429,6 +445,7 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View arg0)
                     {
                         StartAroundMeService();
+
                     }
                 });
 
@@ -440,6 +457,7 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View arg0)
                     {
                         StopAroundMeService();
+                        mDeviceCountEncountered=0;
                     }
 
 
@@ -725,10 +743,12 @@ public class MainActivity extends AppCompatActivity
                 mDeviceInfoAll.put(result_device_mac_addr,player_info);
 
                 mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
-
+                mDeviceCountEncountered++;
+                OnNewMacAddressEncountered();
                 if(mDebug_With_UI)
                 {
                     mSp_deviceArrayAdapter.notifyDataSetChanged();
+                    mMacAddrCountView.setText(GetCurrentNumStatus());
                 }
 
             }
@@ -996,9 +1016,14 @@ public class MainActivity extends AppCompatActivity
                     player_info.mDistance=estimatedDistance;
                     mDeviceInfoAll.put(deviceAddress,player_info);
                     mRandom_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
+                    mDeviceCountEncountered++;
+
+                    OnNewMacAddressEncountered();
                     if(mDebug_With_UI)
                     {
                         mRandom_deviceArrayAdapter.notifyDataSetChanged();
+
+                        mMacAddrCountView.setText(GetCurrentNumStatus());
                     }
 
                 }

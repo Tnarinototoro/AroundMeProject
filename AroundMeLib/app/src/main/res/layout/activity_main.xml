@@ -47,6 +47,12 @@
                     android:layout_height="wrap_content"
                     android:text="Stop" />
 
+                <TextView
+                    android:id="@+id/Mac_Addr_Count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
                 <EditText
                     android:id="@+id/input_message"
                     android:layout_width="match_parent"
