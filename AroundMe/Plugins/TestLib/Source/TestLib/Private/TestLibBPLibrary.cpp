@@ -15,6 +15,7 @@ float UTestLibBPLibrary::TestLibSampleFunction(float Param)
 	UE_LOG(LogTemp, Warning, TEXT("[SJL][TestLibJNI]CallTest Start"));
 	TestLibJNI::CallTest();
 	UE_LOG(LogTemp, Warning, TEXT("[SJL][TestLibJNI]CallTest End"));
+
 #endif
 
 	return -1;

@@ -60,7 +60,7 @@ public: \
 
 #define FID_AroundMe_Plugins_TestLib_Source_TestLib_Public_TestLibBPLibrary_h_28_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
-	NO_API UTestLibBPLibrary(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) : Super(ObjectInitializer) { }; \
+	NO_API UTestLibBPLibrary(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	NO_API UTestLibBPLibrary(UTestLibBPLibrary&&); \

@@ -21,6 +21,10 @@
 			"Enabled": false
 		},
 		{
+			"Name": "TestLib",
+			"Enabled": true
+		},
+		{
 			"Name": "MeshPainting",
 			"Enabled": false
 		},
@@ -42,6 +46,14 @@
 		},
 		{
 			"Name": "GeometryScripting",
+			"Enabled": true
+		},
+		{
+			"Name": "CommonUI",
+			"Enabled": true
+		},
+		{
+			"Name": "AudioModulation",
 			"Enabled": true
 		}
 	]

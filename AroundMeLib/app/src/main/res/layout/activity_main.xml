@@ -60,7 +60,11 @@
                     android:hint="Enter your message here"/>
 
             </LinearLayout>
-
+            <View
+                android:id="@+id/divider"
+                android:layout_width="12dp"
+                android:layout_height="match_parent"
+                android:background="#cccccc"/>
             <LinearLayout
                 android:id="@+id/log_panel"
                 android:layout_width="match_parent"

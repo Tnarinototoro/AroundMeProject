@@ -42,6 +42,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -103,8 +104,13 @@ public class MainActivity extends AppCompatActivity
     }
     private String GetCurrentNumStatus()
     {
-        return String.format("Mac passed %d", mDeviceCountEncountered);
+        return String.format("%d", mDeviceCountEncountered);
     }
+
+    private  View mLog_button_divider;
+    private LinearLayout mbuttonPanel;
+    private LinearLayout mlogPanel;
+
 
     private void OnNewMacAddressEncountered()
     {
@@ -392,8 +398,37 @@ public class MainActivity extends AppCompatActivity
                 mLogScrollView = findViewById(R.id.log_scroll_view);
                 mInputMessage=findViewById(R.id.input_message);
                 mMacAddrCountView=findViewById(R.id.Mac_Addr_Count);
+                mLog_button_divider = findViewById(R.id.divider);
+                mbuttonPanel = findViewById(R.id.button_panel);
+                mlogPanel = findViewById(R.id.log_panel);
 
+                mLog_button_divider.setOnTouchListener(new View.OnTouchListener() {
+                    private float initialX;
+                    private int initialButtonPanelWidth;
 
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                initialX = event.getX();
+                                initialButtonPanelWidth = mbuttonPanel.getWidth();
+                                return true;
+                            case MotionEvent.ACTION_MOVE:
+                                float deltaX = event.getX() - initialX;
+                                int newButtonPanelWidth = initialButtonPanelWidth + (int) deltaX;
+
+                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mbuttonPanel.getLayoutParams();
+                                params.width = newButtonPanelWidth;
+                                mbuttonPanel.setLayoutParams(params);
+
+                                params = (LinearLayout.LayoutParams) mlogPanel.getLayoutParams();
+                                params.width = mlogPanel.getWidth() - (int) deltaX;
+                                mlogPanel.setLayoutParams(params);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
             }
 
 
