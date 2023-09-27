@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity
     }
     private String GetCurrentNumStatus()
     {
-        return String.format("%d", mDeviceCountEncountered);
+        return String.format("Lv1:%d, Lv0:%d", mDeviceCountEncountered_WithName,mDeviceCountEncountered_WithGarbageName);
     }
 
     private  View mLog_button_divider;
@@ -156,7 +156,9 @@ public class MainActivity extends AppCompatActivity
     private ScrollView mLogScrollView;
     private Map<String, PlayerDeviceInfo> mDeviceInfoAll=new HashMap<>();
 
-    private int mDeviceCountEncountered=0;
+    private int mDeviceCountEncountered_WithName=0;
+
+    private int mDeviceCountEncountered_WithGarbageName=0;
 
     private void ToggleButtons()
     {
@@ -181,7 +183,10 @@ public class MainActivity extends AppCompatActivity
     private void startClassicBluetoothDiscovery()
     {
         if(!mBluetoothAdapter.isDiscovering())
-        mBluetoothAdapter.startDiscovery();
+        {
+            mBluetoothAdapter.startDiscovery();
+            appendToLog("经典蓝牙 搜索 开始~");
+        }
 
     }
     private final ActivityResultLauncher<Intent> enableBluetoothLauncher =
@@ -204,7 +209,7 @@ public class MainActivity extends AppCompatActivity
 
     protected void NotifyLeScanStopped()
     {
-        appendToLog("搜索结束...");
+        appendToLog("BLE搜索结束...");
         ToggleButtons();
     }
 
@@ -480,7 +485,8 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View arg0)
                     {
                         StartAroundMeService();
-
+                        mDeviceCountEncountered_WithName=0;
+                        mDeviceCountEncountered_WithGarbageName=0;
                     }
                 });
 
@@ -492,7 +498,8 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View arg0)
                     {
                         StopAroundMeService();
-                        mDeviceCountEncountered=0;
+                        mDeviceCountEncountered_WithName=0;
+                        mDeviceCountEncountered_WithGarbageName=0;
                     }
 
 
@@ -717,75 +724,83 @@ public class MainActivity extends AppCompatActivity
 
             String result_device_mac_addr=result_device.getAddress();
 
-            // 处理带有特定服务UUID的设备
-            if(mDeviceInfoAll.containsKey(result_device_mac_addr))
+
+            if(result_device.getName()!=null&&!result_device.getName().equals("null"))
             {
-
-                PlayerDeviceInfo cur_player_info=mDeviceInfoAll.get(result_device_mac_addr);
-
-                if(null!=cur_player_info&&!cur_player_info.misRandomDeivce)
+                // 处理带有特定服务UUID的设备
+                if(mDeviceInfoAll.containsKey(result_device_mac_addr))
                 {
-                    int rssi = result.getRssi();
-                    // TODO: Replace with the actual TX Power value for your beacon or BLE device
-                    int txPower = -59; // This is just an example value, you need the actual TX Power for accurate results
 
-                    double estimatedDistance_new = calculateDistance(rssi, txPower);
+                    PlayerDeviceInfo cur_player_info=mDeviceInfoAll.get(result_device_mac_addr);
 
-
-                    cur_player_info.mDistance=estimatedDistance_new;
-
-                    mSp_deviceDisplayArrayList.set(cur_player_info.mIndex,cur_player_info.GenerateDisplayString());
-
-
-                    if(mDebug_With_UI)
+                    if(null!=cur_player_info&&!cur_player_info.misRandomDeivce)
                     {
-                        mSp_deviceArrayAdapter.notifyDataSetChanged();
+                        int rssi = result.getRssi();
+                        // TODO: Replace with the actual TX Power value for your beacon or BLE device
+                        int txPower = -59; // This is just an example value, you need the actual TX Power for accurate results
+
+                        double estimatedDistance_new = calculateDistance(rssi, txPower);
+
+
+                        cur_player_info.mDistance=estimatedDistance_new;
+
+                        mSp_deviceDisplayArrayList.set(cur_player_info.mIndex,cur_player_info.GenerateDisplayString());
+
+
+                        if(mDebug_With_UI)
+                        {
+                            mSp_deviceArrayAdapter.notifyDataSetChanged();
+                        }
+
                     }
-
-                }
-
-            }
-            else
-            {
-                BluetoothGatt got_gatt= result_device.connectGatt(getApplicationContext(), false, mConnection_GattCallback);
-
-
-                if(got_gatt!=null)
-                {
-                    appendToLog("connected successfully");
 
                 }
                 else
                 {
-                    appendToLog("connected failed!");
+                    BluetoothGatt got_gatt= result_device.connectGatt(getApplicationContext(), false, mConnection_GattCallback);
+
+
+                    if(got_gatt!=null)
+                    {
+                        appendToLog("connected successfully");
+
+                    }
+                    else
+                    {
+                        appendToLog("connected failed!");
+
+                    }
+
+                    int rssi = result.getRssi();
+                    // TODO: Replace with the actual TX Power value for your beacon or BLE device
+                    int txPower = -59; // This is just an example value, you need the actual TX Power for accurate results
+
+                    double estimatedDistance = calculateDistance(rssi, txPower);
+
+
+                    PlayerDeviceInfo player_info= new PlayerDeviceInfo();
+                    player_info.mDeviceGatt=got_gatt;
+                    player_info.mDeviceName=result_device.getName();
+                    player_info.misRandomDeivce=false;
+                    player_info.mDistance=estimatedDistance;
+                    player_info.mRegisteredPlayerDeviceMacAddr=result_device_mac_addr;
+                    player_info.mIndex= mSp_deviceDisplayArrayList.size();
+                    mDeviceInfoAll.put(result_device_mac_addr,player_info);
+
+                    mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
+                    mDeviceCountEncountered_WithName++;
+                    OnNewMacAddressEncountered();
+                    if(mDebug_With_UI)
+                    {
+                        mSp_deviceArrayAdapter.notifyDataSetChanged();
+
+                    }
 
                 }
-
-                int rssi = result.getRssi();
-                // TODO: Replace with the actual TX Power value for your beacon or BLE device
-                int txPower = -59; // This is just an example value, you need the actual TX Power for accurate results
-
-                double estimatedDistance = calculateDistance(rssi, txPower);
-
-
-                PlayerDeviceInfo player_info= new PlayerDeviceInfo();
-                player_info.mDeviceGatt=got_gatt;
-                player_info.mDeviceName=result_device.getName();
-                player_info.misRandomDeivce=false;
-                player_info.mDistance=estimatedDistance;
-                player_info.mRegisteredPlayerDeviceMacAddr=result_device_mac_addr;
-                player_info.mIndex= mSp_deviceDisplayArrayList.size();
-                mDeviceInfoAll.put(result_device_mac_addr,player_info);
-
-                mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
-                mDeviceCountEncountered++;
-                OnNewMacAddressEncountered();
-                if(mDebug_With_UI)
-                {
-                    mSp_deviceArrayAdapter.notifyDataSetChanged();
-                    mMacAddrCountView.setText(GetCurrentNumStatus());
-                }
-
+            }
+            else
+            {
+                mDeviceCountEncountered_WithGarbageName++;
             }
 
 
@@ -1018,9 +1033,16 @@ public class MainActivity extends AppCompatActivity
             if(mBluetoothAdapter.isEnabled())
             {
                 startClassicBluetoothDiscovery();
+
+
+                if(mBluetoothAdapter.isDiscovering())
+                {
+                    appendToLog("经典蓝牙搜索设备ing");
+                }
             }
 
             mHandler.postDelayed(communicationRunnable, 2000);  // Schedule the next message in 2 seconds
+            mMacAddrCountView.setText(GetCurrentNumStatus());
         }
     };
 
@@ -1037,57 +1059,66 @@ public class MainActivity extends AppCompatActivity
                 String deviceAddress = device.getAddress();
 
 
-                if(!mDeviceInfoAll.containsKey(deviceAddress))
+                if(deviceName!=null&&!deviceName.equals("null"))
                 {
-
-                    short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                    double estimatedDistance = calculateDistance(rssi);
-                    PlayerDeviceInfo player_info= new PlayerDeviceInfo();
-                    player_info.mDeviceGatt=null;
-                    player_info.mDeviceName=deviceName;
-                    player_info.mRegisteredPlayerDeviceMacAddr=deviceAddress;
-                    player_info.misRandomDeivce=true;
-                    player_info.mIndex=mRandom_deviceDisplayArrayList.size();
-                    player_info.mDistance=estimatedDistance;
-                    mDeviceInfoAll.put(deviceAddress,player_info);
-                    mRandom_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
-                    mDeviceCountEncountered++;
-
-                    OnNewMacAddressEncountered();
-                    if(mDebug_With_UI)
+                    if(!mDeviceInfoAll.containsKey(deviceAddress))
                     {
-                        mRandom_deviceArrayAdapter.notifyDataSetChanged();
 
-                        mMacAddrCountView.setText(GetCurrentNumStatus());
-                    }
-
-                }
-                else
-                {
-                    PlayerDeviceInfo cur_player_info=mDeviceInfoAll.get(deviceAddress);
-
-
-
-                    if(null!=cur_player_info&&cur_player_info.misRandomDeivce)
-                    {
                         short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                        double estimatedDistance_new = calculateDistance(rssi);
-                        cur_player_info.mDistance=estimatedDistance_new;
-                        mRandom_deviceDisplayArrayList.set(cur_player_info.mIndex,cur_player_info.GenerateDisplayString());
+                        double estimatedDistance = calculateDistance(rssi);
+                        PlayerDeviceInfo player_info= new PlayerDeviceInfo();
+                        player_info.mDeviceGatt=null;
+                        player_info.mDeviceName=deviceName;
+                        player_info.mRegisteredPlayerDeviceMacAddr=deviceAddress;
+                        player_info.misRandomDeivce=true;
+                        player_info.mIndex=mRandom_deviceDisplayArrayList.size();
+                        player_info.mDistance=estimatedDistance;
+                        mDeviceInfoAll.put(deviceAddress,player_info);
+                        mRandom_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
+                        mDeviceCountEncountered_WithName++;
 
+                        OnNewMacAddressEncountered();
                         if(mDebug_With_UI)
                         {
                             mRandom_deviceArrayAdapter.notifyDataSetChanged();
+
+
                         }
 
                     }
+                    else
+                    {
+                        PlayerDeviceInfo cur_player_info=mDeviceInfoAll.get(deviceAddress);
+
+
+
+                        if(null!=cur_player_info&&cur_player_info.misRandomDeivce)
+                        {
+                            short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                            double estimatedDistance_new = calculateDistance(rssi);
+                            cur_player_info.mDistance=estimatedDistance_new;
+                            mRandom_deviceDisplayArrayList.set(cur_player_info.mIndex,cur_player_info.GenerateDisplayString());
+
+                            if(mDebug_With_UI)
+                            {
+                                mRandom_deviceArrayAdapter.notifyDataSetChanged();
+                            }
+
+                        }
+                    }
                 }
+                else
+                {
+                    mDeviceCountEncountered_WithGarbageName++;
+                }
+
+
 
 
             }
             else if(action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED))
             {
-                appendToLog("discovery finished!");
+                appendToLog("经典蓝牙 搜索结束");
             }
 
 
