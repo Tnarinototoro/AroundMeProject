@@ -138,3 +138,6 @@ AroundMeLib/.idea/
 AroundMe/Plugins/TestLib/Intermediate/
 AroundMe/Plugins/TestLib/Binaries/
 AroundMe/Build/
+AroundMe/Plugins/TestLib/Binaries/
+AroundMe/Plugins/TestLib/Binaries/Win64/UnrealEditor-TestLib.dll
+AroundMe/Plugins/TestLib/Binaries/Win64/UnrealEditor-TestLib.pdb

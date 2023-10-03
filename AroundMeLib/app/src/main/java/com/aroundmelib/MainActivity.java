@@ -1,8 +1,5 @@
 package com.aroundmelib;
 
-
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -35,8 +32,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
-import android.util.EventLog;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -46,17 +41,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-
-import com.example.com.aroundmelib.R;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -65,7 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
+import com.example.com.aroundmelib.R;
 
 @SuppressLint("MissingPermission")
 public class MainActivity extends AppCompatActivity
@@ -112,10 +101,9 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout mlogPanel;
 
 
-    private void OnNewMacAddressEncountered()
-    {
+    private native void OnNewLogGenerated(String in_string);
 
-    }
+
     WifiP2pManager manager;
     WifiP2pManager.Channel channel;
 
@@ -239,6 +227,8 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
+
+        OnNewLogGenerated(text);
 
     }
 
@@ -789,7 +779,7 @@ public class MainActivity extends AppCompatActivity
 
                     mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
                     mDeviceCountEncountered_WithName++;
-                    OnNewMacAddressEncountered();
+                    //OnNewMacAddressEncountered();
                     if(mDebug_With_UI)
                     {
                         mSp_deviceArrayAdapter.notifyDataSetChanged();
@@ -1077,7 +1067,7 @@ public class MainActivity extends AppCompatActivity
                         mRandom_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
                         mDeviceCountEncountered_WithName++;
 
-                        OnNewMacAddressEncountered();
+                        //OnNewMacAddressEncountered();
                         if(mDebug_With_UI)
                         {
                             mRandom_deviceArrayAdapter.notifyDataSetChanged();

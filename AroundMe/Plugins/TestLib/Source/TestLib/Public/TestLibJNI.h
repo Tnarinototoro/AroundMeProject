@@ -10,7 +10,7 @@
 
 
 /**
- * 
+ * TestLibJNI provides basic info
  */
 class TESTLIB_API TestLibJNI
 {

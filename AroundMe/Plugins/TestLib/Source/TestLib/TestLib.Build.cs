@@ -54,7 +54,8 @@ public class TestLib : ModuleRules
         {
 			PrivateDependencyModuleNames.AddRange(new string[] { "Launch" });
 			PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" }); //添加AndroidPermission模块
-
+                                                                                         // 定义你想要添加的Gradle依赖项
+           
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
             AdditionalPropertiesForReceipt.Add("AndroidPlugin", System.IO.Path.Combine(PluginPath, "TestLib_APL.xml"));
             //AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(ProjectPath, "/TestLib_APL.xml")));
