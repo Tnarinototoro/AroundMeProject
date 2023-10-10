@@ -10,6 +10,13 @@ public class DIYAndroidServiceLib : ModuleRules
 		
 		PublicIncludePaths.AddRange(
 			new string[] {
+                 "Runtime/Core/Public/Misc",
+                "Runtime/Core/Public/Math",
+                "Runtime/Engine/Public",
+                "Runtime/Engine/Classes/Engine",
+                "Runtime/Engine/Classes/GameFramework",
+                "Runtime/Launch",
+                "Runtime/Launch/Public"
 				// ... add public include paths required here ...
 			}
 			);
@@ -59,7 +66,6 @@ public class DIYAndroidServiceLib : ModuleRules
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
             AdditionalPropertiesForReceipt.Add("AndroidPlugin", System.IO.Path.Combine(PluginPath, "DIYAndroidServiceLib_APL.xml"));
             //AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(ProjectPath, "/DIYAndroidServiceLib_APL.xml")));
-            ////��������Android������������
             //AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", ModuleDirectory + "/DIYAndroidServiceLib_APL.xml"));
             //AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidArchitectures", "armv7, arm64, x86, x64"));
             //AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidExtraLibraries", "../../../Source/ThirdParty/DIYAndroidServiceLibLibrary/libs/${ANDROID_ABI}/libDIYAndroidServiceLib.so"));

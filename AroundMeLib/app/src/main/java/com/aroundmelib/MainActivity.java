@@ -79,14 +79,19 @@ public class MainActivity extends AppCompatActivity
         double ENVIRONMENT_FACTOR = 2.0;
         return Math.pow(10, (RSSI_BASE - rssi) / (10 * ENVIRONMENT_FACTOR));
     }
-    private double calculateDistance(int rssi, int txPower) {
-        if (rssi == 0) {
+    private double calculateDistance(int rssi, int txPower)
+    {
+        if (rssi == 0)
+        {
             return -1.0; // if we cannot determine accuracy, return -1.
         }
         double ratio = rssi * 1.0 / txPower;
-        if (ratio < 1.0) {
+        if (ratio < 1.0)
+        {
             return Math.pow(ratio, 10);
-        } else {
+        }
+        else
+        {
             double distance = 0.89976 * Math.pow(ratio, 7.7095) + 0.111;
             return distance;
         }
@@ -101,7 +106,11 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout mlogPanel;
 
 
-    private native void OnNewLogGenerated(String in_string);
+
+    public static void OnNewLogGenerated(String in_string)
+    {
+        ;
+    }
 
 
     WifiP2pManager manager;
@@ -111,6 +120,8 @@ public class MainActivity extends AppCompatActivity
     //定义
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BLUETOOTH = 2;
+
+    private static final int REQUEST_ENABLE_BT = 999;
     BluetoothManager mBluetoothManager;
     private final UUID mAroundMeIdentify_UUID=UUID.fromString("fd4e1f57-110a-4d52-9a5b-fe97e0dcf7bb");
     private static final UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
@@ -177,7 +188,7 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-    private final ActivityResultLauncher<Intent> enableBluetoothLauncher =
+   /* private final ActivityResultLauncher<Intent> enableBluetoothLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                     result ->
                     {
@@ -194,7 +205,7 @@ public class MainActivity extends AppCompatActivity
                     });
 
 
-
+*/
     protected void NotifyLeScanStopped()
     {
         appendToLog("BLE搜索结束...");
@@ -202,18 +213,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    protected void onResume()
-    {
-        super.onResume();
-        //mHandler.post(communicationRunnable);  // Start sending messages
-    }
 
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        mHandler.removeCallbacks(communicationRunnable);  // Stop sending messages
-    }
 
     public void appendToLog(String text)
     {
@@ -241,8 +241,9 @@ public class MainActivity extends AppCompatActivity
     {
         if(!mBluetoothAdapter.isEnabled())
         {
+
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            enableBluetoothLauncher.launch(enableBtIntent);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
         else
         {
@@ -304,7 +305,7 @@ public class MainActivity extends AppCompatActivity
 
 
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            enableBluetoothLauncher.launch(enableBtIntent);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 
         }
         else
@@ -328,218 +329,6 @@ public class MainActivity extends AppCompatActivity
 
 
         }
-    }
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        //UI gadgets fixing
-        {
-
-            if(mDebug_With_UI)
-            {
-                //layout setting
-                setContentView(R.layout.activity_main);
-            }
-
-
-
-            //sp device list view init
-            {
-                //device array list\adaptor init
-                mSp_deviceDisplayArrayList = new ArrayList<>();
-
-
-                if(mDebug_With_UI)
-                {
-                    mSp_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mSp_deviceDisplayArrayList);
-
-                    //list view set the adaptor and view
-                    mSp_Device_listView = findViewById(R.id.sp_device_list);
-                    mSp_Device_listView.setAdapter(mSp_deviceArrayAdapter);
-                }
-
-            }
-
-
-            //random device list view init
-            {
-                //device array list\adaptor init
-                mRandom_deviceDisplayArrayList = new ArrayList<>();
-
-                if(mDebug_With_UI)
-                {
-                    mRandom_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mRandom_deviceDisplayArrayList);
-                    //list view set the adaptor and view
-                    mRandom_Device_listView = findViewById(R.id.random_device_list);
-                    mRandom_Device_listView.setAdapter(mRandom_deviceArrayAdapter);
-                }
-
-            }
-
-
-
-            if(mDebug_With_UI)
-            {
-                //text and button binding
-                mButton_StartScan = this.findViewById(R.id.button_start);
-                mButton_CancelScan = this.findViewById(R.id.button_stop);
-
-                mButton_StartScan.setEnabled(true);
-                mButton_CancelScan.setEnabled(false);
-
-                mLogTextView = findViewById(R.id.log_text_view);
-                mLogScrollView = findViewById(R.id.log_scroll_view);
-                mInputMessage=findViewById(R.id.input_message);
-                mMacAddrCountView=findViewById(R.id.Mac_Addr_Count);
-                mLog_button_divider = findViewById(R.id.divider);
-                mbuttonPanel = findViewById(R.id.button_panel);
-                mlogPanel = findViewById(R.id.log_panel);
-
-                mLog_button_divider.setOnTouchListener(new View.OnTouchListener() {
-                    private float initialX;
-                    private int initialButtonPanelWidth;
-
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                initialX = event.getX();
-                                initialButtonPanelWidth = mbuttonPanel.getWidth();
-                                return true;
-                            case MotionEvent.ACTION_MOVE:
-                                float deltaX = event.getX() - initialX;
-                                int newButtonPanelWidth = initialButtonPanelWidth + (int) deltaX;
-
-                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mbuttonPanel.getLayoutParams();
-                                params.width = newButtonPanelWidth;
-                                mbuttonPanel.setLayoutParams(params);
-
-                                params = (LinearLayout.LayoutParams) mlogPanel.getLayoutParams();
-                                params.width = mlogPanel.getWidth() - (int) deltaX;
-                                mlogPanel.setLayoutParams(params);
-                                return true;
-                        }
-                        return false;
-                    }
-                });
-            }
-
-
-
-
-
-            //classic bluetooth device finder intent setting
-            {
-                IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-                registerReceiver(mClassicBluetoothReceiver, filter);
-
-
-                IntentFilter filter2=new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-                registerReceiver(mClassicBluetoothReceiver,filter2);
-            }
-
-
-
-            if(mDebug_With_UI)
-            {
-                mLogScrollView.setOnTouchListener(new View.OnTouchListener()
-                {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event)
-                    {
-                        switch (event.getAction())
-                        {
-                            case MotionEvent.ACTION_DOWN:
-                                // 用户开始触摸，暂停自动滚动
-                                mLogViewautoScroll = false;
-                                break;
-                            case MotionEvent.ACTION_UP:
-                                break;
-                            case MotionEvent.ACTION_CANCEL:
-                                // 用户停止触摸，开始自动滚动
-                                mLogViewautoScroll = true;
-                                scrollToBottom(); // 立即滚动到底部
-                                break;
-                        }
-                        return false; // 这里返回 false 以允许 ScrollView 的默认滚动行为
-                    }
-                });
-
-                mButton_StartScan.setOnClickListener(new View.OnClickListener()
-                {
-
-
-                    @Override
-                    public void onClick(View arg0)
-                    {
-                        StartAroundMeService();
-                        mDeviceCountEncountered_WithName=0;
-                        mDeviceCountEncountered_WithGarbageName=0;
-                    }
-                });
-
-                mButton_CancelScan.setOnClickListener(new View.OnClickListener()
-                {
-
-
-                    @Override
-                    public void onClick(View arg0)
-                    {
-                        StopAroundMeService();
-                        mDeviceCountEncountered_WithName=0;
-                        mDeviceCountEncountered_WithGarbageName=0;
-                    }
-
-
-                });
-            }
-
-
-
-        }
-
-
-
-        //permission check
-        {
-            checkBluetoothPermissions();
-            checkLocationPermission();
-        }
-
-
-
-        //bluetooth utility init
-        {
-            mBluetoothManager =
-                    (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-            mBluetoothAdapter = mBluetoothManager.getAdapter();
-
-
-            mBluetoothLeScanner=mBluetoothAdapter.getBluetoothLeScanner();
-            mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
-
-
-            if (mBluetoothLeAdvertiser == null)
-            {
-                appendToLog("硬件不支持 BLE 广播");
-
-            }
-            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
-            {
-                appendToLog("硬件不支持 BLE机能");
-
-            }
-        }
-
-        //wifi direct is not in use now, we are still discussing the usability of it
-        {
-
-        }
-
-
-
     }
 
 
@@ -614,7 +403,7 @@ public class MainActivity extends AppCompatActivity
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -642,8 +431,8 @@ public class MainActivity extends AppCompatActivity
             {
                 ActivityCompat.requestPermissions(this, new String[]
                                 {
-                                Manifest.permission.BLUETOOTH_SCAN,
-                                Manifest.permission.BLUETOOTH_CONNECT,
+                                        Manifest.permission.BLUETOOTH_SCAN,
+                                        Manifest.permission.BLUETOOTH_CONNECT,
 
                                         Manifest.permission.BLUETOOTH_ADVERTISE
                                 },
@@ -657,48 +446,6 @@ public class MainActivity extends AppCompatActivity
 
         return true;
     }
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_BLUETOOTH)
-        {
-            if (grantResults.length > 1
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                    &&grantResults[2]==PackageManager.PERMISSION_GRANTED)
-            {
-                appendToLog("Bluetooth permissions granted");
-
-            }
-            else
-            {
-                appendToLog("Bluetooth permissions denied");
-
-                finish();
-            }
-        }
-        else if (requestCode == PERMISSION_REQUEST_FINE_LOCATION)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                appendToLog("Location permission granted");
-
-            }
-            else
-            {
-                appendToLog("Location permission denied");
-
-                finish();
-            }
-        }
-    }
-    public void onDestroy()
-    {
-
-        super.onDestroy();
-        unregisterReceiver(mClassicBluetoothReceiver);
-    }
-
 
 
     //定义广播接
@@ -1114,4 +861,292 @@ public class MainActivity extends AppCompatActivity
 
         }
     };
+
+
+
+    //activity events start
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        //UI gadgets fixing
+        {
+
+            if(mDebug_With_UI)
+            {
+                //layout setting
+                setContentView(R.layout.activity_main);
+            }
+
+
+
+            //sp device list view init
+            {
+                //device array list\adaptor init
+                mSp_deviceDisplayArrayList = new ArrayList<>();
+
+
+                if(mDebug_With_UI)
+                {
+                    mSp_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mSp_deviceDisplayArrayList);
+
+                    //list view set the adaptor and view
+                    mSp_Device_listView = findViewById(R.id.sp_device_list);
+                    mSp_Device_listView.setAdapter(mSp_deviceArrayAdapter);
+                }
+
+            }
+
+
+            //random device list view init
+            {
+                //device array list\adaptor init
+                mRandom_deviceDisplayArrayList = new ArrayList<>();
+
+                if(mDebug_With_UI)
+                {
+                    mRandom_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mRandom_deviceDisplayArrayList);
+                    //list view set the adaptor and view
+                    mRandom_Device_listView = findViewById(R.id.random_device_list);
+                    mRandom_Device_listView.setAdapter(mRandom_deviceArrayAdapter);
+                }
+
+            }
+
+
+
+            if(mDebug_With_UI)
+            {
+                //text and button binding
+                mButton_StartScan = this.findViewById(R.id.button_start);
+                mButton_CancelScan = this.findViewById(R.id.button_stop);
+
+                mButton_StartScan.setEnabled(true);
+                mButton_CancelScan.setEnabled(false);
+
+                mLogTextView = findViewById(R.id.log_text_view);
+                mLogScrollView = findViewById(R.id.log_scroll_view);
+                mInputMessage=findViewById(R.id.input_message);
+                mMacAddrCountView=findViewById(R.id.Mac_Addr_Count);
+                mLog_button_divider = findViewById(R.id.divider);
+                mbuttonPanel = findViewById(R.id.button_panel);
+                mlogPanel = findViewById(R.id.log_panel);
+
+                mLog_button_divider.setOnTouchListener(new View.OnTouchListener() {
+                    private float initialX;
+                    private int initialButtonPanelWidth;
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                initialX = event.getX();
+                                initialButtonPanelWidth = mbuttonPanel.getWidth();
+                                return true;
+                            case MotionEvent.ACTION_MOVE:
+                                float deltaX = event.getX() - initialX;
+                                int newButtonPanelWidth = initialButtonPanelWidth + (int) deltaX;
+
+                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mbuttonPanel.getLayoutParams();
+                                params.width = newButtonPanelWidth;
+                                mbuttonPanel.setLayoutParams(params);
+
+                                params = (LinearLayout.LayoutParams) mlogPanel.getLayoutParams();
+                                params.width = mlogPanel.getWidth() - (int) deltaX;
+                                mlogPanel.setLayoutParams(params);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+
+
+
+
+
+            //classic bluetooth device finder intent setting
+            {
+                IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+                registerReceiver(mClassicBluetoothReceiver, filter);
+
+
+                IntentFilter filter2=new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+                registerReceiver(mClassicBluetoothReceiver,filter2);
+            }
+
+
+
+            if(mDebug_With_UI)
+            {
+                mLogScrollView.setOnTouchListener(new View.OnTouchListener()
+                {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event)
+                    {
+                        switch (event.getAction())
+                        {
+                            case MotionEvent.ACTION_DOWN:
+                                // 用户开始触摸，暂停自动滚动
+                                mLogViewautoScroll = false;
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                break;
+                            case MotionEvent.ACTION_CANCEL:
+                                // 用户停止触摸，开始自动滚动
+                                mLogViewautoScroll = true;
+                                scrollToBottom(); // 立即滚动到底部
+                                break;
+                        }
+                        return false; // 这里返回 false 以允许 ScrollView 的默认滚动行为
+                    }
+                });
+
+                mButton_StartScan.setOnClickListener(new View.OnClickListener()
+                {
+
+
+                    @Override
+                    public void onClick(View arg0)
+                    {
+                        StartAroundMeService();
+                        mDeviceCountEncountered_WithName=0;
+                        mDeviceCountEncountered_WithGarbageName=0;
+                    }
+                });
+
+                mButton_CancelScan.setOnClickListener(new View.OnClickListener()
+                {
+
+
+                    @Override
+                    public void onClick(View arg0)
+                    {
+                        StopAroundMeService();
+                        mDeviceCountEncountered_WithName=0;
+                        mDeviceCountEncountered_WithGarbageName=0;
+                    }
+
+
+                });
+            }
+
+
+
+        }
+
+
+
+        //permission check
+        {
+            checkBluetoothPermissions();
+            checkLocationPermission();
+        }
+
+
+
+        //bluetooth utility init
+        {
+            mBluetoothManager =
+                    (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+            mBluetoothAdapter = mBluetoothManager.getAdapter();
+
+
+            mBluetoothLeScanner=mBluetoothAdapter.getBluetoothLeScanner();
+            mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
+
+
+            if (mBluetoothLeAdvertiser == null)
+            {
+                appendToLog("硬件不支持 BLE 广播");
+
+            }
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
+            {
+                appendToLog("硬件不支持 BLE机能");
+
+            }
+        }
+
+        //wifi direct is not in use now, we are still discussing the usability of it
+        {
+
+        }
+
+
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ENABLE_BT)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                // Bluetooth is now enabled, you can proceed with your functionality
+            } else if (resultCode == RESULT_CANCELED)
+            {
+                // User denied enabling Bluetooth, you might want to handle accordingly
+            }
+        }
+    }
+    public void onDestroy()
+    {
+
+        super.onDestroy();
+        unregisterReceiver(mClassicBluetoothReceiver);
+    }
+
+    protected void onResume()
+    {
+        super.onResume();
+        //mHandler.post(communicationRunnable);  // Start sending messages
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        mHandler.removeCallbacks(communicationRunnable);  // Stop sending messages
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_BLUETOOTH)
+        {
+            if (grantResults.length > 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                    &&grantResults[2]==PackageManager.PERMISSION_GRANTED)
+            {
+                appendToLog("Bluetooth permissions granted");
+
+            }
+            else
+            {
+                appendToLog("Bluetooth permissions denied");
+
+                finish();
+            }
+        }
+        else if (requestCode == PERMISSION_REQUEST_FINE_LOCATION)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                appendToLog("Location permission granted");
+
+            }
+            else
+            {
+                appendToLog("Location permission denied");
+
+                finish();
+            }
+        }
+    }
+    //activity events end
 }

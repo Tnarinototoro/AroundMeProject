@@ -1,10 +1,10 @@
 package com.epicgames.unreal;
 
-import com.YourCompany.AroundMe.OBBDownloaderService;
-import com.YourCompany.AroundMe.DownloaderActivity;
+import com.ShadowCandle.DIY.OBBDownloaderService;
+import com.ShadowCandle.DIY.DownloaderActivity;
 import android.app.Activity;
 import com.google.android.vending.expansion.downloader.Helpers;
-import com.YourCompany.AroundMe.OBBData;
+import com.ShadowCandle.DIY.OBBData;
 
 
 public class DownloadShim

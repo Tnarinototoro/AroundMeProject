@@ -57,30 +57,31 @@
 			"Enabled": true
 		},
 		{
-			"Name": "AndroidBackgroundService",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Android"
-			]
-		},
-		{
-			"Name": "LocationServicesAndroidImpl",
-			"Enabled": true
-		},
-		{
 			"Name": "OptionalMobileFeaturesBPLibrary",
 			"Enabled": true
 		},
 		{
-			"Name": "AndroidFetchBackgroundDownload",
-			"Enabled": true,
+			"Name": "AndroidCamera",
+			"Enabled": true
+		},
+		{
+			"Name": "AndroidMedia",
+			"Enabled": false
+		},
+		{
+			"Name": "AndroidMoviePlayer",
+			"Enabled": false
+		},
+		{
+			"Name": "OnlineSubsystemGooglePlay",
+			"Enabled": false,
 			"SupportedTargetPlatforms": [
 				"Android"
 			]
 		},
 		{
-			"Name": "AndroidCamera",
-			"Enabled": true
+			"Name": "AndroidPermission",
+			"Enabled": false
 		}
 	]
 }
