@@ -526,6 +526,7 @@ public class MainActivity extends AppCompatActivity
 
                     mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
                     mDeviceCountEncountered_WithName++;
+
                     //OnNewMacAddressEncountered();
                     if(mDebug_With_UI)
                     {

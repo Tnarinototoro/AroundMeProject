@@ -1,0 +1,31 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "DIYPlatformService",
+	"Description": "DIYPlatformService basically handles interaction between client device features and Game itself",
+	"Category": "Other",
+	"CreatedBy": "JunlinSun",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Dependencies": [
+		{
+			"Name": "AndroidPermission",
+			"Type": "Required",
+			"Version": "Any"
+		}
+	],
+	"Modules": [
+		{
+			"Name": "DIYPlatformService",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen"
+		}
+	]
+}

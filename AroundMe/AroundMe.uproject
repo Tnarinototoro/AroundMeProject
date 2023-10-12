@@ -21,10 +21,6 @@
 			"Enabled": false
 		},
 		{
-			"Name": "DIYAndroidServiceLib",
-			"Enabled": true
-		},
-		{
 			"Name": "MeshPainting",
 			"Enabled": false
 		},
