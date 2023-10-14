@@ -221,7 +221,7 @@
     public static native void OnNewLogGenerated(String in_string);
 	
 	public static native void OnNewRandomDeviceEncountered_WithName(String in_string);
-	public static native void Test(String in_string);
+	public static native void Test123(String in_string);
 	public static native void OnNewRandomDeviceEncountered_GarbageName(String in_string);
     WifiP2pManager manager;
     WifiP2pManager.Channel channel;
