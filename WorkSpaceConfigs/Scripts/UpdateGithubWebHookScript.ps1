@@ -2,11 +2,12 @@
 Start-Sleep -Seconds 5
 
 # 获取 ngrok 公开 URL
-$ngrok_url = (Invoke-RestMethod -Uri "http://localhost:4040/api/tunnels").tunnels[0].public_url
+$ngrok_url_raw = (Invoke-RestMethod -Uri "http://localhost:4040/api/tunnels").tunnels[0].public_url
+$ngrok_url = $ngrok_url_raw.TrimEnd('/') + '/github-webhook/'  # 确保URL以 '/github-webhook/' 结尾
 Write-Host "Ngrok URL: $ngrok_url"
 
 # 你的 GitHub 令牌、仓库信息和 Webhook ID
-$github_token = "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"
+$github_token = "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"
 $repo = "Tnarinototoro/AroundMeProject"
 $webhook_id = "438253780"
 
@@ -17,7 +18,7 @@ $headers = @{
 }
 $body = @{
     config = @{
-        url = "$ngrok_url/webhook"
+        url = $ngrok_url  # 修改为$ngrok_url变量
     }
 } | ConvertTo-Json
 Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/hooks/$webhook_id" -Method Patch -Headers $headers -Body $body
