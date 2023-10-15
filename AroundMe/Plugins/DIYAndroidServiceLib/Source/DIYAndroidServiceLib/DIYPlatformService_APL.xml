@@ -219,7 +219,7 @@
     }
 
 
-//test
+//test  2
     public static native void OnNewLogGenerated(String in_string);
 	public static native void OnNewRandomDeviceEncountered_WithName(String in_string);
 	public static native void OnNewRandomDeviceEncountered_GarbageName(String in_string);
