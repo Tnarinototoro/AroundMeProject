@@ -218,6 +218,8 @@
         return String.format("Lv1:%d, Lv0:%d", mDeviceCountEncountered_WithName,mDeviceCountEncountered_WithGarbageName);
     }
 
+
+//test
     public static native void OnNewLogGenerated(String in_string);
 	public static native void OnNewRandomDeviceEncountered_WithName(String in_string);
 	public static native void OnNewRandomDeviceEncountered_GarbageName(String in_string);
