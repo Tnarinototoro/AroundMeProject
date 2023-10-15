@@ -19,9 +19,13 @@ $headers = @{
 $body = @{
     config = @{
         url = $ngrok_url  # 修改为$ngrok_url变量
+        content_type = "json"  # 指定内容类型为 json
     }
 } | ConvertTo-Json
 Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/hooks/$webhook_id" -Method Patch -Headers $headers -Body $body
+
+#output log
+Write-Host "Github 通知到discord配置已经完成~~~~"
 
 # 保持 PowerShell 窗口打开，直到用户按下一个键
 pause
