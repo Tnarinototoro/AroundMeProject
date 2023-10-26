@@ -252,9 +252,8 @@
     private int mDeviceCountEncountered_WithName=0;
 
     private int mDeviceCountEncountered_WithGarbageName=0;
-
-
-
+	
+    private boolean mIsAroundMeServiceRunning=false;
 
     private void stopClassicBluetoothDiscovery()
     {
@@ -373,6 +372,7 @@ runOnUiThread(new Runnable()
         }
         mRandom_deviceDisplayArrayList.clear();
         mHandler.removeCallbacks(communicationRunnable);
+		mIsAroundMeServiceRunning=false;
     }
 
     private void StartAroundMeService()
@@ -399,7 +399,7 @@ runOnUiThread(new Runnable()
             StartAdvertising();
 			
             mHandler.post(communicationRunnable);
-
+			mIsAroundMeServiceRunning=true;
 
 
         }
@@ -1000,7 +1000,15 @@ runOnUiThread(new Runnable()
 
 
 	<gameActivityOnResumeAdditions>
-		
+		<insert>
+			<![CDATA[
+			if(mIsAroundMeServiceRunning)
+			{
+			mHandler.post(communicationRunnable);  // Start sending messages
+			}
+			
+			]]>
+		</insert>
 	</gameActivityOnResumeAdditions>
 
 
@@ -1008,7 +1016,11 @@ runOnUiThread(new Runnable()
 	<gameActivityOnPauseAdditions>
 		<insert>
 			<![CDATA[
+			if(mIsAroundMeServiceRunning)
+			{
 			mHandler.removeCallbacks(communicationRunnable);  // Stop sending messages
+			}
+			
 			]]>
 		</insert>
 	</gameActivityOnPauseAdditions>

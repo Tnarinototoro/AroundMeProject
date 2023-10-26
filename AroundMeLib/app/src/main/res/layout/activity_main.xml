@@ -26,7 +26,7 @@
             android:id="@+id/utility_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -96,11 +96,17 @@
 
         </LinearLayout>
 
+
+        <View
+            android:id="@+id/divider_y"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#000000"/>
         <LinearLayout
             android:id="@+id/Device_list_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.7"
+            android:layout_weight="0.6"
             android:orientation="horizontal">
 
             <LinearLayout

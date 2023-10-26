@@ -102,11 +102,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private  View mLog_button_divider;
+
+    private View mUtility_DeviceList_divider;
     private LinearLayout mbuttonPanel;
     private LinearLayout mlogPanel;
 
 
-
+    private LinearLayout mUtilityPanel;
+    private LinearLayout mDeviceListPanel;
     public static void OnNewLogGenerated(String in_string)
     {
         ;
@@ -158,6 +161,8 @@ public class MainActivity extends AppCompatActivity
     private int mDeviceCountEncountered_WithName=0;
 
     private int mDeviceCountEncountered_WithGarbageName=0;
+
+    private boolean mIsAroundMeServiceRunning=false;
 
     private void ToggleButtons()
     {
@@ -296,6 +301,8 @@ public class MainActivity extends AppCompatActivity
         }
         mRandom_deviceDisplayArrayList.clear();
         mHandler.removeCallbacks(communicationRunnable);
+
+        mIsAroundMeServiceRunning=false;
     }
 
     private void StartAroundMeService()
@@ -326,7 +333,7 @@ public class MainActivity extends AppCompatActivity
 
             mHandler.post(communicationRunnable);
 
-
+            mIsAroundMeServiceRunning=true;
 
         }
     }
@@ -931,9 +938,12 @@ public class MainActivity extends AppCompatActivity
                 mInputMessage=findViewById(R.id.input_message);
                 mMacAddrCountView=findViewById(R.id.Mac_Addr_Count);
                 mLog_button_divider = findViewById(R.id.divider);
+                mUtility_DeviceList_divider=findViewById(R.id.divider_y);
                 mbuttonPanel = findViewById(R.id.button_panel);
                 mlogPanel = findViewById(R.id.log_panel);
 
+                mUtilityPanel=findViewById(R.id.utility_panel);
+                mDeviceListPanel=findViewById(R.id.Device_list_panel);
                 mLog_button_divider.setOnTouchListener(new View.OnTouchListener() {
                     private float initialX;
                     private int initialButtonPanelWidth;
@@ -961,6 +971,42 @@ public class MainActivity extends AppCompatActivity
                         return false;
                     }
                 });
+
+
+
+                mUtility_DeviceList_divider.setOnTouchListener(new View.OnTouchListener()
+                {
+                    private float initialY;
+                    private int initialTopPanelHeight, initialBottomPanelHeight;
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event)
+                    {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                initialY = event.getY();
+                                initialTopPanelHeight = mUtilityPanel.getHeight();
+                                initialBottomPanelHeight = mDeviceListPanel.getHeight();
+                                return true;
+                            case MotionEvent.ACTION_MOVE:
+                                float deltaY = event.getY() - initialY;
+                                int newTopPanelHeight = initialTopPanelHeight + (int) deltaY;
+                                int newBottomPanelHeight = initialBottomPanelHeight - (int) deltaY;
+
+                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mUtilityPanel.getLayoutParams();
+                                params.height = newTopPanelHeight;
+                                mUtilityPanel.setLayoutParams(params);
+
+                                params = (LinearLayout.LayoutParams) mDeviceListPanel.getLayoutParams();
+                                params.height = newBottomPanelHeight;
+                                mDeviceListPanel.setLayoutParams(params);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+
+
             }
 
 
@@ -1103,14 +1149,23 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        //mHandler.post(communicationRunnable);  // Start sending messages
+        if(mIsAroundMeServiceRunning)
+        {
+            mHandler.post(communicationRunnable);  // Start sending messages
+        }
+
     }
 
     @Override
     protected void onPause()
     {
         super.onPause();
-        mHandler.removeCallbacks(communicationRunnable);  // Stop sending messages
+
+        if(mIsAroundMeServiceRunning)
+        {
+            mHandler.removeCallbacks(communicationRunnable);  // Stop sending messages
+        }
+
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
