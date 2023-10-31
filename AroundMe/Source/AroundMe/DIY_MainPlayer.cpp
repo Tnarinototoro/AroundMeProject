@@ -121,7 +121,6 @@ void ADIY_MainPlayer::HandleXYMove(const FInputActionValue& Value)
 	float AxisX = Axis2DValue.X;
 	float AxisY = Axis2DValue.Y;
 
-	
 	AddControllerYawInput(AxisX);
 	AddControllerPitchInput(-AxisY);
 	
