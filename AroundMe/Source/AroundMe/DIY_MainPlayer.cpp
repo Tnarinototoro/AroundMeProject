@@ -106,17 +106,8 @@ void ADIY_MainPlayer::HandleXYMove(const FInputActionValue& Value)
 {
 	FVector2D Axis2DValue = FVector2D::ZeroVector;
 
-	// 尝试从FInputActionValue中获取FVector2D
-	try
-	{
-		Axis2DValue = Value.Get<FVector2D>();
-	}
-	catch (...)
-	{
-		// 获取失败
-		UE_LOG(MainPlayerLog, Warning, TEXT("Failed to get FVector2D from FInputActionValue!"));
-		return;
-	}
+	
+	Axis2DValue = Value.Get<FVector2D>();
 
 	float AxisX = Axis2DValue.X;
 	float AxisY = Axis2DValue.Y;
