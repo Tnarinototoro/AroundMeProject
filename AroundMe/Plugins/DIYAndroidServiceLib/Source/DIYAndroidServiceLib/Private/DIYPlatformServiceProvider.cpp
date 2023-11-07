@@ -1,5 +1,5 @@
 #include "DIYPlatformServiceProvider.h"
-
+#include "DIYPlatformService.h"
 
 //ADIYPlatformServiceProvider::FOnDeviceDetectedDelegate_GarbageName ADIYPlatformServiceProvider::Garbage_Test;
 //ADIYPlatformServiceProvider::FOnDeviceDetectedDelegate_WithName ADIYPlatformServiceProvider::With_Test;
@@ -42,7 +42,7 @@ extern "C"
            
             AsyncTask(ENamedThreads::GameThread, [=]()
                 {
-                    FDIYPlatformServiceModule::Get().GetPlatformProvider()->DeviceDetectedDelegate_GarbageName.Broadcast();
+                    FDIYPlatformServiceModule::Get().GetPlatformProvider(nullptr)->DeviceDetectedDelegate_GarbageName.Broadcast();
                     //ADIYPlatformServiceProvider::Garbage_Test.Broadcast();
                 });
         }
@@ -64,7 +64,7 @@ extern "C"
         {
             AsyncTask(ENamedThreads::GameThread, [=]()
                 {
-                    FDIYPlatformServiceModule::Get().GetPlatformProvider()->DeviceDetectedDelegate_WithName.Broadcast(ConvertedStr);
+                    FDIYPlatformServiceModule::Get().GetPlatformProvider(nullptr)->DeviceDetectedDelegate_WithName.Broadcast(ConvertedStr);
                    // ADIYPlatformServiceProvider::With_Test.Broadcast(ConvertedStr);
                 });
         }

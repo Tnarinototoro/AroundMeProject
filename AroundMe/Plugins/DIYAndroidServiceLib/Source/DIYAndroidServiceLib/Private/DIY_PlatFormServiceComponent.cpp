@@ -2,7 +2,7 @@
 
 
 #include "DIY_PlatFormServiceComponent.h"
-
+#include "DIYPlatformService.h"
 
 // Sets default values
 UDIY_PlatFormServiceComponent::UDIY_PlatFormServiceComponent()

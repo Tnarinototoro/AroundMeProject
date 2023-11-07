@@ -55,6 +55,7 @@ ADIYPlatformServiceProvider* FDIYPlatformServiceModule::GetPlatformProvider(UWor
 void FDIYPlatformServiceModule::ShutdownPlatformProvider()
 {
 	// Remove the provider from the root set so that Unreal can delete the instance during shutdown
+	if(nullptr!= this->DIYPlatformServiceProvider)
 	this->DIYPlatformServiceProvider->RemoveFromRoot();
 	this->PlatformServiceProviderReady = false;
 }
