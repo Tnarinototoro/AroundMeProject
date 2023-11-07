@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "DIYPlatformServiceProvider.h"
 #include "DIYBFL_PlatformService.generated.h"
 
 /**
@@ -18,6 +19,4 @@ public:
 		static void StartPlatformService();
 	UFUNCTION(BlueprintCallable, Category = "PlatFormService")
 		static void StopPlatformService();
-	UFUNCTION(BlueprintCallable, Category = "PlatFormService")
-		static void TestPlatformService();
 };

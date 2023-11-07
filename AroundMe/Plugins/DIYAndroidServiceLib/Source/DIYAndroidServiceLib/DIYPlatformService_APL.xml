@@ -222,7 +222,7 @@
 //test  2
     public static native void OnNewLogGenerated(String in_string);
 	public static native void OnNewRandomDeviceEncountered_WithName(String in_string);
-	public static native void OnNewRandomDeviceEncountered_GarbageName(String in_string);
+	public static native void OnNewRandomDeviceEncountered_GarbageName();
     WifiP2pManager manager;
     WifiP2pManager.Channel channel;
     //定义
@@ -606,6 +606,7 @@ runOnUiThread(new Runnable()
             else
             {
                 mDeviceCountEncountered_WithGarbageName++;
+				OnNewRandomDeviceEncountered_GarbageName();
             }
 
 
@@ -907,6 +908,7 @@ runOnUiThread(new Runnable()
                 else
                 {
                     mDeviceCountEncountered_WithGarbageName++;
+					OnNewRandomDeviceEncountered_GarbageName();
                 }
 
 

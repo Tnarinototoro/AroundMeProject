@@ -1,14 +1,15 @@
 #include "DIYPlatformServiceProvider.h"
 
 
-
-DIYPlatformServiceProvider::DIYPlatformServiceProvider()
+//ADIYPlatformServiceProvider::FOnDeviceDetectedDelegate_GarbageName ADIYPlatformServiceProvider::Garbage_Test;
+//ADIYPlatformServiceProvider::FOnDeviceDetectedDelegate_WithName ADIYPlatformServiceProvider::With_Test;
+ADIYPlatformServiceProvider::ADIYPlatformServiceProvider()
 {
 
 }
 
 
-DIYPlatformServiceProvider::~DIYPlatformServiceProvider()
+ADIYPlatformServiceProvider::~ADIYPlatformServiceProvider()
 {
 
 }
@@ -32,7 +33,21 @@ extern "C"
             GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, ConvertedStr);
         }
     }
-
+    
+    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewRandomDeviceEncountered_1GarbageName(JNIEnv* jenv, jclass clazz)
+    {
+        // 举例：在屏幕上显示一个调试消息
+        if (GEngine)
+        {
+           
+            AsyncTask(ENamedThreads::GameThread, [=]()
+                {
+                    FDIYPlatformServiceModule::Get().GetPlatformProvider()->DeviceDetectedDelegate_GarbageName.Broadcast();
+                    //ADIYPlatformServiceProvider::Garbage_Test.Broadcast();
+                });
+        }
+        
+    }
     JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewRandomDeviceEncountered_1WithName(JNIEnv* jenv, jclass clazz, jstring MyString)
     {
         // 将 jstring 转换为 UTF-8 编码的 const char*
@@ -47,14 +62,18 @@ extern "C"
         // 将字符串打印到屏幕上
         if (GEngine)
         {
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, ConvertedStr);
+            AsyncTask(ENamedThreads::GameThread, [=]()
+                {
+                    FDIYPlatformServiceModule::Get().GetPlatformProvider()->DeviceDetectedDelegate_WithName.Broadcast(ConvertedStr);
+                   // ADIYPlatformServiceProvider::With_Test.Broadcast(ConvertedStr);
+                });
         }
     }
 }
 
 #endif
 
-void DIYPlatformServiceProvider::StartProvidingService()
+void ADIYPlatformServiceProvider::StartProvidingService()
 {
 #if PLATFORM_ANDROID
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
@@ -66,7 +85,7 @@ void DIYPlatformServiceProvider::StartProvidingService()
     
 }
 
-void DIYPlatformServiceProvider::StopProvidingService()
+void ADIYPlatformServiceProvider::StopProvidingService()
 {
 
 #if PLATFORM_ANDROID
@@ -79,5 +98,14 @@ void DIYPlatformServiceProvider::StopProvidingService()
 #endif
 
 }
+
+void ADIYPlatformServiceProvider::Setup(UWorld* validWorld)
+{
+    this->world = validWorld;
+}
+
+
+
+
 
 
