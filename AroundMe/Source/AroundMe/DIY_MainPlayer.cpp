@@ -11,6 +11,7 @@
 #include "Components/ArrowComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/StreamableManager.h"
+#include "DIY_Item.h"
 #include "Engine/AssetManager.h"
 
 DEFINE_LOG_CATEGORY(MainPlayerLog);
@@ -139,9 +140,9 @@ void ADIY_MainPlayer::UpdateTPSCamera(float deltaTime)
 
 void ADIY_MainPlayer::UpdatePlayerMove(float deltaTime)
 {
-	
-	if (inPutVector2D.Length() > 0.1f&& IsInputingMove)
+	if (inPutVector2D.Length() > 0.1f && IsInputingMove)
 	{
+
 		AddMovementInput(DesiredDir_ByPlayerInput_FollowCamView);
 	}
 }
@@ -185,7 +186,7 @@ void ADIY_MainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 					if (next_index_to_bind == (int)EInputActionType::Look_Action)
 					{
 						UE_LOG(MainPlayerLog, Warning, TEXT("Mouse Action binded"));
-						EnhancedInput->BindAction(cur_action, ETriggerEvent::Triggered, this, &ADIY_MainPlayer::HandleXYMove);
+						EnhancedInput->BindAction(cur_action, ETriggerEvent::Triggered, this, &ADIY_MainPlayer::HandleXYMouseMove);
 					}
 					else if (next_index_to_bind == (int)EInputActionType::Move_Action)
 					{
@@ -219,17 +220,18 @@ void ADIY_MainPlayer::UpdateDesiredDir_ByPlayerInput_FollowCamView(float DeltaTi
 	ForwardActorVector.Z = 0;
 	RightActorVector.Z = 0;
 
-	
+
 	DesiredDir_ByPlayerInput_FollowCamView = (ForwardActorVector * inPutVector2D.Y + RightActorVector * inPutVector2D.X);
-	
+
 	if (!DesiredDir_ByPlayerInput_FollowCamView.IsNormalized())
 	{
 		DesiredDir_ByPlayerInput_FollowCamView.Normalize();
 	}
+	
 }
 
 
-void ADIY_MainPlayer::HandleXYMove(const FInputActionValue& Value)
+void ADIY_MainPlayer::HandleXYMouseMove(const FInputActionValue& Value)
 {
 	FVector2D Axis2DValue = Value.Get<FVector2D>();
 
@@ -251,15 +253,16 @@ void ADIY_MainPlayer::HandleXYPlayerMove(const FInputActionValue& Value)
 {
 	//UE_LOG(MainPlayerLog, Warning, TEXT("MHandling Move input XXXXXXX"));
 	inPutVector2D = Value.Get<FVector2D>();
-	
+
 
 	FVector ActorLocation = GetActorLocation();
 	FVector EndLocation = ActorLocation + DesiredDir_ByPlayerInput_FollowCamView * 600.f;
 	DrawDebugLine(GetWorld(), ActorLocation, EndLocation, FColor::Red, false, -1, 0, 10);
 	//UE_LOG(MainPlayerLog, Warning, TEXT("MHandling Move input x %f, y %f"), inPutVector2D.X, inPutVector2D.Y);
 	// 移动Actor
-	
+
 	IsInputingMove = true;
+	
 
 	
 }
@@ -269,6 +272,7 @@ void ADIY_MainPlayer::HandlePlayerJump(const FInputActionValue& Value)
 	// 按下跳跃键，开始跳跃
 	Jump();
 	UE_LOG(MainPlayerLog, Warning, TEXT("Jump started"));
+	
 }
 
 void ADIY_MainPlayer::HandleXYPlayerMoveInputFinished(const FInputActionValue& Value)
@@ -289,6 +293,40 @@ void ADIY_MainPlayer::ChangeHat(EHatType NewHatType)
 {
 	FSoftObjectPath HatMeshToLoad = GetHatMeshReferenceFromType(NewHatType);
 	LoadAndSetSkeletalMesh(HatComponent, HatMeshToLoad);
+}
+void ADIY_MainPlayer::PicUpDetectedItem(AActor* inActor,FName SocketName)
+{
+	if (!PickUpedActor)
+	{
+		if (inActor)
+		{
+			// 这里可以执行你想要的处理，比如播放拾取动画、添加到背包等
+			// 传递拾取者的指针和被关联的 socket 名称给 OnPickUp 函数
+			ADIY_ItemBase* ItemBase = Cast<ADIY_ItemBase>(inActor);
+			if (ItemBase)
+			{
+				ItemBase->OnPickUp(this, SocketName);
+				PickUpedActor = inActor;
+			}
+
+			// 在这个例子中，简单地隐藏被拾取的物体
+			//InItem->SetActorHiddenInGame(true);
+		}
+	}
+	
+}
+void ADIY_MainPlayer::PlacePickedUpItem()
+{
+	if (PickUpedActor)
+	{
+		ADIY_ItemBase* ItemBase = Cast<ADIY_ItemBase>(PickUpedActor);
+		if (ItemBase)
+		{
+			ItemBase->OnPlaced();
+			PickUpedActor = nullptr;
+		}
+		
+	}
 }
 void ADIY_MainPlayer::LoadAndSetSkeletalMesh(USkeletalMeshComponent* Component, const FSoftObjectPath& AssetToLoad)
 {

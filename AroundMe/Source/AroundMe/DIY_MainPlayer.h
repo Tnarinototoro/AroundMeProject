@@ -21,6 +21,20 @@ enum class EInputActionType : uint8
 	Action_Count
 };
 
+UENUM(BlueprintType)
+enum class EMainPlayerActingStateType : uint8
+{
+	State_Base_Motion,
+	State_Building,
+	State_Carrying,
+	State_Farming,
+	State_Gathering,
+	State_Mining,
+	State_PickingUp,
+	State_WoodChopping,
+	ActingState_Count
+};
+
 UCLASS()
 class AROUNDME_API ADIY_MainPlayer : public ACharacter
 {
@@ -45,7 +59,7 @@ protected:
 	FSoftObjectPath GetHatMeshReferenceFromType(EHatType HatType);
 
 	UFUNCTION()
-		void HandleXYMove(const FInputActionValue& Value);
+		void HandleXYMouseMove(const FInputActionValue& Value);
 
 	UFUNCTION()
 		void HandleXYPlayerMove(const FInputActionValue& Value);	
@@ -59,7 +73,10 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "DIY")
 		void ChangeHat(EHatType NewHatType);
-
+	UFUNCTION(BlueprintCallable, Category = "DIY")
+		void PicUpDetectedItem(AActor* inActor,FName SocketName= FName("hand_rSocket"));
+	UFUNCTION(BlueprintCallable, Category = "DIY")
+		void PlacePickedUpItem();
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY")
 		class USpringArmComponent* CameraBoom;
 
@@ -88,6 +105,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY")
 		TMap<EHatType, FSoftObjectPath> HatMeshesMap;
 
+	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
+		Category = "DIY")
+	EMainPlayerActingStateType CurrentActingState{ EMainPlayerActingStateType::State_Base_Motion};
+	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
+		Category = "DIY")
+		AActor* PickUpedActor {nullptr};
+	UPROPERTY(BlueprintReadOnly, //EditAnywhere,
+		Category = "DIY")
+	bool IsInputingMove{ false };
+
 	void UpdateTPSCamera(float deltaTime);
 	void UpdatePlayerMove(float deltaTime);
 	
@@ -102,7 +129,7 @@ private:
 	FVector2D CurrentLookSpeed{};
 	FVector2D TargetLookSpeed{};
 	FVector DesiredDir_ByPlayerInput_FollowCamView{};
-	bool IsInputingMove{ false };
+	
 
 	void UpdateDesiredDir_ByPlayerInput_FollowCamView(float DeltaTime);
 	
