@@ -39,15 +39,6 @@ void UDIY_ChangeStaticMeshComponent::TickComponent(float DeltaTime, ELevelTick T
 	// Your custom tick logic here
 }
 
-inline int UDIY_ChangeStaticMeshComponent::GetPossibleStateNum() const
-{
-	return PossibleMeshes.Num();
-}
-
-inline int UDIY_ChangeStaticMeshComponent::GetCurrentStateIndex() const
-{
-	return CurrentStateIndex;
-}
 
 void UDIY_ChangeStaticMeshComponent::ChangeState(int TargetIndex, bool ForceExecuting=false)
 {

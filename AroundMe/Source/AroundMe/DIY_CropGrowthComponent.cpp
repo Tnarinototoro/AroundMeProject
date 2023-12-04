@@ -23,7 +23,7 @@ void UDIY_CropGrowthComponent::BeginPlay()
 	
 }
 
-void UDIY_CropGrowthComponent::GrowWithSteps(int DeltaSteps)
+bool UDIY_CropGrowthComponent::GrowWithSteps(int DeltaSteps)
 {
 	if (nullptr == CropChangeStaticMeshCompo)
 	{
@@ -31,10 +31,10 @@ void UDIY_CropGrowthComponent::GrowWithSteps(int DeltaSteps)
 	}
 	int target_index = CropChangeStaticMeshCompo->GetCurrentStateIndex()+ DeltaSteps;
 	if (target_index < 0 || target_index >= CropChangeStaticMeshCompo->GetPossibleStateNum())
-		return;
+		return false;
 
 	CropChangeStaticMeshCompo->ChangeState(target_index,false);
-
+	return true;
 }
 
 

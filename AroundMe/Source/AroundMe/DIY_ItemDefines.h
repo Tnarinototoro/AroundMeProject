@@ -37,11 +37,14 @@ enum class EItemID : uint8
 	EItemID_Building_TownHall,
 	EItemID_Plant_Stone_Tree_01,
 	EItemID_Plant_Stone_Tree_02,
-	EitemID_Trick_Cutter,
-	EitemID_DIY_Crafting_ITemPlatform,
+	EItemID_Trick_Cutter,
+	EItemID_DIY_Crafting_ITemPlatform,
+	EItemID_Consume_Garbage,
+	EItemID_Consume_WithName,
 	EItemID_Count
 	// ¶¨ÒåÄãµÄitems
 };
+
 
 
 USTRUCT(BlueprintType)
@@ -51,7 +54,14 @@ struct FDIY_ItemDataTableRow : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EItemID ItemID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int RequiredGarbageDeviceResource{ 999 };
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int RequiredWithNameDeviceResource{ 999 };
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FSoftObjectPath ItemPath;
+	
+	
 };
+

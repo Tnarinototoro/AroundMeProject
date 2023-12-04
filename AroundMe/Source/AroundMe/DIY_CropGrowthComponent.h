@@ -21,7 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable, Category = "Growth")
-		void GrowWithSteps(int DeltaSteps); // async load  mesh and set it
+		bool GrowWithSteps(int DeltaSteps); // async load  mesh and set it
 
 	
 

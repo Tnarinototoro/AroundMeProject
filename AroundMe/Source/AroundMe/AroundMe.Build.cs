@@ -8,7 +8,7 @@ public class AroundMe : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "DIYPlatformService" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core","UMG", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "DIYPlatformService" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

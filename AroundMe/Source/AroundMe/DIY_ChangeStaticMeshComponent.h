@@ -38,8 +38,14 @@ private:
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	inline int GetPossibleStateNum() const;
-	inline int GetCurrentStateIndex() const;
+	inline int GetPossibleStateNum()const
+	{
+		return PossibleMeshes.Num();
+	}
+	inline int GetCurrentStateIndex()const
+	{
+		return CurrentStateIndex;
+	}
 	UFUNCTION(BlueprintCallable, Category = "Mesh")
 		void ChangeState(int TargetIndex, bool ForceExecuting); // async load  mesh and set it 
 };

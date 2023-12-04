@@ -5,6 +5,26 @@
 #include "Components/BoxComponent.h" 
 
 
+void ADIY_ItemBase::UpdateHighLight()
+{
+	if (BasicStaticMeshComponent)
+	{
+		if (isEnabledHighLighting)
+		{
+			BasicStaticMeshComponent->SetRenderCustomDepth(false);
+			isEnabledHighLighting = false;
+		}
+		else
+		{
+			BasicStaticMeshComponent->SetRenderCustomDepth(true);
+			BasicStaticMeshComponent->SetCustomDepthStencilValue(HighLightColor);
+			isEnabledHighLighting = true;
+		}
+		
+		
+	}
+}
+
 ADIY_ItemBase::ADIY_ItemBase()
 {
 	// Set this actor to call Tick() every frame
@@ -36,7 +56,18 @@ ADIY_ItemBase::~ADIY_ItemBase()
 void ADIY_ItemBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	InitWorldPosition = this->GetActorLocation();
+	InitRotator = this->GetActorRotation();
+
+
+	GetWorld()->GetTimerManager().
+		SetTimer(
+			TimerHandle_HighLight, 
+			this, 
+			&ADIY_ItemBase::UpdateHighLight, 
+			HighLightColorTranklingInterval,
+			true);
+	PauseTrinkling();
 }
 
 // Called every frame
@@ -63,4 +94,30 @@ void ADIY_ItemBase::OnPlaced()
 {
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	this->SetActorRotation(InitRotator);
+	FVector CurLocation=this->GetActorLocation();
+	CurLocation.Z = InitWorldPosition.Z;
+	this->SetActorLocation(CurLocation);
+}
+
+void ADIY_ItemBase::ResumeTrinkling()
+{
+	if (GetWorld()->GetTimerManager().IsTimerPaused(TimerHandle_HighLight))
+	{
+		GetWorld()->GetTimerManager().UnPauseTimer(TimerHandle_HighLight);
+	}
+	BasicStaticMeshComponent->SetRenderCustomDepth(true);
+	BasicStaticMeshComponent->SetCustomDepthStencilValue(HighLightColor);
+	isEnabledHighLighting = true;
+	
+}
+
+void ADIY_ItemBase::PauseTrinkling()
+{
+	if (!GetWorld()->GetTimerManager().IsTimerPaused(TimerHandle_HighLight))
+	{
+		GetWorld()->GetTimerManager().PauseTimer(TimerHandle_HighLight);
+	}
+	BasicStaticMeshComponent->SetRenderCustomDepth(false);
+	isEnabledHighLighting = false;
 }

@@ -271,13 +271,13 @@ void ADIY_MainPlayer::HandlePlayerJump(const FInputActionValue& Value)
 {
 	// 按下跳跃键，开始跳跃
 	Jump();
-	UE_LOG(MainPlayerLog, Warning, TEXT("Jump started"));
+	//\UE_LOG(MainPlayerLog, Warning, TEXT("Jump started"));
 	
 }
 
 void ADIY_MainPlayer::HandleXYPlayerMoveInputFinished(const FInputActionValue& Value)
 {
-	UE_LOG(MainPlayerLog, Warning, TEXT("MHandling Move input finished YYYYYYYY"));
+	//UE_LOG(MainPlayerLog, Warning, TEXT("MHandling Move input finished YYYYYYYY"));
 
 	inPutVector2D.Zero();
 	IsInputingMove = false;
@@ -315,6 +315,7 @@ void ADIY_MainPlayer::PicUpDetectedItem(AActor* inActor,FName SocketName)
 	}
 	
 }
+//this will null the pickedUpActor Pointer
 void ADIY_MainPlayer::PlacePickedUpItem()
 {
 	if (PickUpedActor)

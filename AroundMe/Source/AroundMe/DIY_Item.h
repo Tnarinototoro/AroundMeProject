@@ -14,8 +14,9 @@ class AROUNDME_API ADIY_ItemBase: public AActor
 	GENERATED_BODY()
 
 
-
-
+private:
+	FTimerHandle TimerHandle_HighLight;
+	bool isEnabledHighLighting{false};
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -24,6 +25,8 @@ protected:
 		class UStaticMeshComponent* BasicStaticMeshComponent; // 请替换成你实际的组件类
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY")
 		class UBoxComponent* BoxCollision; // 请替换成你实际的组件类
+
+	void UpdateHighLight();
 public:
 	ADIY_ItemBase();
 	~ADIY_ItemBase();
@@ -34,4 +37,21 @@ public:
 		void OnPickUp(APawn* Picker, FName SocketName);
 	UFUNCTION(BlueprintCallable, Category = "Item")
 		void OnPlaced();
+
+	UFUNCTION(BlueprintCallable, Category = "Item")
+		void ResumeTrinkling();
+	UFUNCTION(BlueprintCallable, Category = "Item")
+		void PauseTrinkling();
+
+	UPROPERTY(BlueprintReadOnly)
+		FRotator InitRotator;
+
+	UPROPERTY(BlueprintReadOnly)
+		FVector InitWorldPosition;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY")
+		int32 HighLightColor {3};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY")
+		float HighLightColorTranklingInterval{ 1.0f };
 };
