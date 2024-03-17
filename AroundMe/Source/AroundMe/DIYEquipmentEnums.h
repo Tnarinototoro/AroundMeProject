@@ -14,7 +14,7 @@ enum class EHairType : uint8
     Hair_4 UMETA(DisplayName = "Hair_4"),
     Hair_5 UMETA(DisplayName = "Hair_5"),
     Hair_6 UMETA(DisplayName = "Hair_6"),
-    // ... 其他 Hair 类型
+
 
     Hair_Count
 };
@@ -28,6 +28,6 @@ enum class EHatType : uint8
     Hat_WoodCutter UMETA(DisplayName = "Hat_WoodCutter"),
     Hat_Builder UMETA(DisplayName = "Hat_Builder"),
     Hat_Count
-    // ... 其他 Hat 类型
+   
 
 };

@@ -30,7 +30,7 @@ ADIY_ItemBase::ADIY_ItemBase()
 	// Set this actor to call Tick() every frame
 	PrimaryActorTick.bCanEverTick = true;
 	
-	BasicStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BasicStaticMeshComponent")); // ÇëÌæ»»³ÉÄãÊµ¼ÊµÄ×é¼þÀà
+	BasicStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BasicStaticMeshComponent")); // ï¿½ï¿½ï¿½æ»»ï¿½ï¿½ï¿½ï¿½Êµï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	BasicStaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
 	RootComponent = BasicStaticMeshComponent;
 	
@@ -78,7 +78,7 @@ void ADIY_ItemBase::Tick(float DeltaTime)
 
 void ADIY_ItemBase::OnPickUp(APawn* Picker, FName SocketName)
 {
-	// ÀýÈç£¬½«ÎïÌå¸½¼Óµ½ Picker µÄ socket ÉÏ
+	
 	if (Picker)
 	{
 		USkeletalMeshComponent* PickerMesh = Picker->FindComponentByClass<USkeletalMeshComponent>();

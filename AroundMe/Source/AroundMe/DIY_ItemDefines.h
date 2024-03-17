@@ -42,7 +42,7 @@ enum class EItemID : uint8
 	EItemID_Consume_Garbage,
 	EItemID_Consume_WithName,
 	EItemID_Count
-	// ¶¨ÒåÄãµÄitems
+	
 };
 
 

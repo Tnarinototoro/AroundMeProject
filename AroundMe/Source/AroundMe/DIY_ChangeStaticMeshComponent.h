@@ -23,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
-		TArray<TSoftObjectPtr<UStaticMesh>> PossibleMeshes; // 存储可能使用的 mesh 的 SoftObjectPath
+		TArray<TSoftObjectPtr<UStaticMesh>> PossibleMeshes; 
 
 	
 

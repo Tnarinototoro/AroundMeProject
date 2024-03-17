@@ -25,13 +25,13 @@ ADIY_MainPlayer::ADIY_MainPlayer()
 
 	CurrentLookSpeed = FVector2D::ZeroVector;
 	TargetLookSpeed = FVector2D::ZeroVector;
-	LookAcceleration = FVector2D(2000.f, 2000.f); // 这个值代表摄像机旋转加速度
-	LookSpeedInterpRate = 15.f; // 控制插值速度，值越大，粘滞感越小
+	LookAcceleration = FVector2D(2000.f, 2000.f); 
+	LookSpeedInterpRate = 15.f;
 	
 	// Create CameraBoom (Spring Arm component)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 1300.f;  // 设置摄像机距离玩家的距离，可以根据需要调整
+	CameraBoom->TargetArmLength = 1300.f; 
 	CameraBoom->bUsePawnControlRotation = true; // Rotate arm based on controller
 
 
@@ -50,11 +50,11 @@ ADIY_MainPlayer::ADIY_MainPlayer()
 	}
 
 
-	// 初始化 Hair Component
+	
 	HairComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HairComponent"));
 	HairComponent->SetupAttachment(GetMesh());
 
-	// 初始化 Hat Component
+	
 	HatComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HatComponent"));
 	
 
@@ -73,8 +73,8 @@ void ADIY_MainPlayer::BeginPlay()
 	APlayerController* PC = Cast<APlayerController>(GetController());
 	if (PC)
 	{
-		PC->PlayerCameraManager->ViewPitchMin = -45.0f;  // 最小仰角，例如：-45度
-		PC->PlayerCameraManager->ViewPitchMax = 45.0f;   // 最大仰角，例如：45度
+		PC->PlayerCameraManager->ViewPitchMin = -45.0f; 
+		PC->PlayerCameraManager->ViewPitchMax = 45.0f;   
 		
 	}
 	
@@ -110,30 +110,30 @@ void ADIY_MainPlayer::UpdateTPSCamera(float deltaTime)
 	
 
 	
-	// 绘制Actor的Forward方向的Debug线
+	
 	FVector ActorLocation = GetActorLocation();
-	FVector EndLocation = ActorLocation + (GetActorForwardVector() * 100); // 在Actor前方100单位长度绘制一条线
+	FVector EndLocation = ActorLocation + (GetActorForwardVector() * 100);
 	DrawDebugLine(GetWorld(), ActorLocation, EndLocation, FColor::Green, false, -1, 0, 5);
 
 	//if there is any input from player
 	if (inPutVector2D.Length() > 0.1f && IsInputingMove)
 	{
-		// 取得摄像机的旋转
+		
 		FRotator CameraRot = FollowCamera->GetComponentRotation();
 
 
 
-		// 获取当前角色的旋转
+		
 		FRotator CurrentRotation = GetActorRotation();
 
-		// 设定插值速度
-		float InterpSpeed = 5.0f; // 这个值可以调整，以设置旋转速度
+		
+		float InterpSpeed = 5.0f; 
 		FRotator Target_Rotator = DesiredDir_ByPlayerInput_FollowCamView.Rotation();
 		Target_Rotator.Pitch = 0.f;
 		Target_Rotator.Roll = 0.f;
-		// 插值计算新的旋转
+		
 		FRotator NewRotation = FMath::RInterpTo(CurrentRotation, Target_Rotator, deltaTime, InterpSpeed);
-		// 设置人物的新朝向
+	
 		SetActorRotation(NewRotation);
 	}
 }
@@ -167,7 +167,7 @@ void ADIY_MainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	UE_LOG(MainPlayerLog, Warning, TEXT("PlayerInputComponent binded"));
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
-	// 获取Enhanced Player Input引用
+	// Enhanced Player Input
 	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	
 	if (EnhancedInput)
@@ -235,14 +235,14 @@ void ADIY_MainPlayer::HandleXYMouseMove(const FInputActionValue& Value)
 {
 	FVector2D Axis2DValue = Value.Get<FVector2D>();
 
-	// 设置目标速度，这里可以直接设置为轴值或者乘以一个速度值以调整感觉
+
 	TargetLookSpeed = Axis2DValue * LookAcceleration;
 
-	// 插值当前速度到目标速度，增加粘滞感
+
 	CurrentLookSpeed.X = FMath::FInterpTo(CurrentLookSpeed.X, TargetLookSpeed.X, GetWorld()->GetDeltaSeconds(), LookSpeedInterpRate);
 	CurrentLookSpeed.Y = FMath::FInterpTo(CurrentLookSpeed.Y, TargetLookSpeed.Y, GetWorld()->GetDeltaSeconds(), LookSpeedInterpRate);
 
-	// 应用当前速度到控制器旋转上
+
 	AddControllerYawInput(CurrentLookSpeed.X * GetWorld()->GetDeltaSeconds());
 	AddControllerPitchInput(-CurrentLookSpeed.Y * GetWorld()->GetDeltaSeconds());
 	
@@ -259,7 +259,7 @@ void ADIY_MainPlayer::HandleXYPlayerMove(const FInputActionValue& Value)
 	FVector EndLocation = ActorLocation + DesiredDir_ByPlayerInput_FollowCamView * 600.f;
 	DrawDebugLine(GetWorld(), ActorLocation, EndLocation, FColor::Red, false, -1, 0, 10);
 	//UE_LOG(MainPlayerLog, Warning, TEXT("MHandling Move input x %f, y %f"), inPutVector2D.X, inPutVector2D.Y);
-	// 移动Actor
+	
 
 	IsInputingMove = true;
 	
@@ -269,7 +269,7 @@ void ADIY_MainPlayer::HandleXYPlayerMove(const FInputActionValue& Value)
 
 void ADIY_MainPlayer::HandlePlayerJump(const FInputActionValue& Value)
 {
-	// 按下跳跃键，开始跳跃
+
 	Jump();
 	//\UE_LOG(MainPlayerLog, Warning, TEXT("Jump started"));
 	
@@ -300,8 +300,7 @@ void ADIY_MainPlayer::PicUpDetectedItem(AActor* inActor,FName SocketName)
 	{
 		if (inActor)
 		{
-			// 这里可以执行你想要的处理，比如播放拾取动画、添加到背包等
-			// 传递拾取者的指针和被关联的 socket 名称给 OnPickUp 函数
+			
 			ADIY_ItemBase* ItemBase = Cast<ADIY_ItemBase>(inActor);
 			if (ItemBase)
 			{
@@ -309,8 +308,7 @@ void ADIY_MainPlayer::PicUpDetectedItem(AActor* inActor,FName SocketName)
 				PickUpedActor = inActor;
 			}
 
-			// 在这个例子中，简单地隐藏被拾取的物体
-			//InItem->SetActorHiddenInGame(true);
+
 		}
 	}
 	

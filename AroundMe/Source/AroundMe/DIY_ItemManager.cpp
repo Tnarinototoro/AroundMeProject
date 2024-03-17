@@ -59,7 +59,7 @@ ADIY_ItemManager* ADIY_ItemManager::GetManager()
 void ADIY_ItemManager::InitializeItemReferences()
 {
 }
-// 实现
+
 void ADIY_ItemManager::SpawnItemByID(EItemID ItemID, const FVector& Location, const FRotator& Rotation)
 {
 
@@ -73,7 +73,7 @@ void ADIY_ItemManager::SpawnItemByID(EItemID ItemID, const FVector& Location, co
     else
     {
         int32 item_id = static_cast<int32>(ItemID);
-        // 如果没有缓存，开始异步加载流程
+      
         FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
         const FDIY_ItemDataTableRow* Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
 
@@ -102,7 +102,7 @@ void ADIY_ItemManager::SpawnItemByID(EItemID ItemID, const FVector& Location, co
         if (LoadedClass)
         {
 
-            // 使用缓存的类
+           
             SpawnActorFromClass(LoadedClass, Location, Rotation);
             UE_LOG(LogTemp, Warning, TEXT("Spawned From Editor Cache"));
             return;
@@ -141,7 +141,7 @@ void ADIY_ItemManager::SpawnActorFromClass(UClass* ActorClass, const FVector& Lo
         AActor* SpawnedActor = World->SpawnActor<AActor>(ActorClass, Location, Rotation);
         if (SpawnedActor)
         {
-            // 成功生成的Actor处理逻辑
+            
         }
         else
         {

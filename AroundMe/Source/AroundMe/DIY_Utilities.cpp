@@ -9,7 +9,7 @@
 bool UDIY_Utilities::bShouldLogToGameScreen = true;
 ADIY_ItemManager* UDIY_Utilities::DIY_GetItemManagerInstance()
 {
-	// ·µ»ØItemManagerµÄÊµÀý
+
 	return ADIY_ItemManager::GetManager();
 }
 
