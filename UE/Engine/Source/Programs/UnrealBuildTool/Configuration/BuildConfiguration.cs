@@ -53,7 +53,7 @@ namespace UnrealBuildTool
 		/// </summary>
 		[XmlConfigFile]
 		[CommandLine("-NoXGE", Value = "false")]
-		public bool bAllowXGE = true;
+		public bool bAllowXGE = false;
 
 		/// <summary>
 		/// Whether FASTBuild may be used.
