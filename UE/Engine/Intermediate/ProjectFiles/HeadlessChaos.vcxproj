@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Invalid|x64">
+      <Configuration>Invalid</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_Program|x64">
+      <Configuration>Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugGame_Program|x64">
+      <Configuration>DebugGame_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development_Program|x64">
+      <Configuration>Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Test_Program|x64">
+      <Configuration>Test_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping_Program|x64">
+      <Configuration>Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9D620973-DBB9-30E2-A975-C3AF0E55670A}</ProjectGuid>
+    <RootNamespace>HeadlessChaos</RootNamespace>
+  </PropertyGroup>
+  <Import Project="UECommon.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) HeadlessChaos Win64 Debug -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) HeadlessChaos Win64 Debug -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) HeadlessChaos Win64 Debug -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\HeadlessChaos\HeadlessChaos-Win64-Debug.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) HeadlessChaos Win64 Debug -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGame_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) HeadlessChaos Win64 DebugGame -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) HeadlessChaos Win64 DebugGame -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) HeadlessChaos Win64 DebugGame -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\HeadlessChaos\HeadlessChaos-Win64-DebugGame.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGame_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) HeadlessChaos Win64 DebugGame -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) HeadlessChaos Win64 Development -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) HeadlessChaos Win64 Development -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) HeadlessChaos Win64 Development -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\HeadlessChaos\HeadlessChaos.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) HeadlessChaos Win64 Development -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) HeadlessChaos Win64 Test -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) HeadlessChaos Win64 Test -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) HeadlessChaos Win64 Test -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\HeadlessChaos\HeadlessChaos-Win64-Test.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Test_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) HeadlessChaos Win64 Test -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) HeadlessChaos Win64 Shipping -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) HeadlessChaos Win64 Shipping -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) HeadlessChaos Win64 Shipping -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\HeadlessChaos\HeadlessChaos-Win64-Shipping.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) HeadlessChaos Win64 Shipping -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <IncludePath>$(IncludePath);..\Build\Win64\HeadlessChaos\Inc\AnalyticsET\UHT;..\Build\Win64\HeadlessChaos\Inc\AnalyticsET\VNI;..\Build\Win64\HeadlessChaos\Inc\Analytics\UHT;..\Build\Win64\HeadlessChaos\Inc\Analytics\VNI;..\Build\Win64\HeadlessChaos\Inc\AnimationCore\UHT;..\Build\Win64\HeadlessChaos\Inc\AnimationCore\VNI;..\Build\Win64\HeadlessChaos\Inc\ApplicationCore\UHT;..\Build\Win64\HeadlessChaos\Inc\ApplicationCore\VNI;..\Build\Win64\HeadlessChaos\Inc\AssetRegistry\UHT;..\Build\Win64\HeadlessChaos\Inc\AssetRegistry\VNI;..\Build\Win64\HeadlessChaos\Inc\AudioExtensions\UHT;..\Build\Win64\HeadlessChaos\Inc\AudioExtensions\VNI;..\Build\Win64\HeadlessChaos\Inc\AudioLinkCore\UHT;..\Build\Win64\HeadlessChaos\Inc\AudioLinkCore\VNI;..\Build\Win64\HeadlessChaos\Inc\AudioLinkEngine\UHT;..\Build\Win64\HeadlessChaos\Inc\AudioLinkEngine\VNI;..\Build\Win64\HeadlessChaos\Inc\AudioMixerCore\UHT;..\Build\Win64\HeadlessChaos\Inc\AudioMixerCore\VNI;..\Build\Win64\HeadlessChaos\Inc\AudioMixer\UHT;..\Build\Win64\HeadlessChaos\Inc\AudioMixer\VNI;..\Build\Win64\HeadlessChaos\Inc\AudioPlatformConfiguration\UHT;..\Build\Win64\HeadlessChaos\Inc\AudioPlatformConfiguration\VNI;..\Build\Win64\HeadlessChaos\Inc\ChaosCore\UHT;..\Build\Win64\HeadlessChaos\Inc\ChaosCore\VNI;..\Build\Win64\HeadlessChaos\Inc\ChaosVehiclesCore\UHT;..\Build\Win64\HeadlessChaos\Inc\ChaosVehiclesCore\VNI;..\Build\Win64\HeadlessChaos\Inc\Chaos\UHT;..\Build\Win64\HeadlessChaos\Inc\Chaos\VNI;..\Build\Win64\HeadlessChaos\Inc\ClothSysRuntimeIntrfc\UHT;..\Build\Win64\HeadlessChaos\Inc\ClothSysRuntimeIntrfc\VNI;..\Build\Win64\HeadlessChaos\Inc\CookOnTheFly\UHT;..\Build\Win64\HeadlessChaos\Inc\CookOnTheFly\VNI;..\Build\Win64\HeadlessChaos\Inc\CoreOnline\UHT;..\Build\Win64\HeadlessChaos\Inc\CoreOnline\VNI;..\Build\Win64\HeadlessChaos\Inc\CoreUObject\UHT;..\Build\Win64\HeadlessChaos\Inc\CoreUObject\VNI;..\Build\Win64\HeadlessChaos\Inc\Core\UHT;..\Build\Win64\HeadlessChaos\Inc\Core\VNI;..\Build\Win64\HeadlessChaos\Inc\DesktopPlatform\UHT;..\Build\Win64\HeadlessChaos\Inc\DesktopPlatform\VNI;..\Build\Win64\HeadlessChaos\Inc\DeveloperSettings\UHT;..\Build\Win64\HeadlessChaos\Inc\DeveloperSettings\VNI;..\Build\Win64\HeadlessChaos\Inc\EngineMessages\UHT;..\Build\Win64\HeadlessChaos\Inc\EngineMessages\VNI;..\Build\Win64\HeadlessChaos\Inc\EngineSettings\UHT;..\Build\Win64\HeadlessChaos\Inc\EngineSettings\VNI;..\Build\Win64\HeadlessChaos\Inc\Engine\UHT;..\Build\Win64\HeadlessChaos\Inc\Engine\VNI;..\Build\Win64\HeadlessChaos\Inc\FieldNotification\UHT;..\Build\Win64\HeadlessChaos\Inc\FieldNotification\VNI;..\Build\Win64\HeadlessChaos\Inc\GameplayTags\UHT;..\Build\Win64\HeadlessChaos\Inc\GameplayTags\VNI;..\Build\Win64\HeadlessChaos\Inc\GeometryCore\UHT;..\Build\Win64\HeadlessChaos\Inc\GeometryCore\VNI;..\Build\Win64\HeadlessChaos\Inc\HeadlessChaos\UHT;..\Build\Win64\HeadlessChaos\Inc\HeadlessChaos\VNI;..\Build\Win64\HeadlessChaos\Inc\ImageCore\UHT;..\Build\Win64\HeadlessChaos\Inc\ImageCore\VNI;..\Build\Win64\HeadlessChaos\Inc\ImageWrapper\UHT;..\Build\Win64\HeadlessChaos\Inc\ImageWrapper\VNI;..\Build\Win64\HeadlessChaos\Inc\InputCore\UHT;..\Build\Win64\HeadlessChaos\Inc\InputCore\VNI;..\Build\Win64\HeadlessChaos\Inc\IoStoreOnDemand\UHT;..\Build\Win64\HeadlessChaos\Inc\IoStoreOnDemand\VNI;..\Build\Win64\HeadlessChaos\Inc\IrisCore\UHT;..\Build\Win64\HeadlessChaos\Inc\IrisCore\VNI;..\Build\Win64\HeadlessChaos\Inc\JsonUtilities\UHT;..\Build\Win64\HeadlessChaos\Inc\JsonUtilities\VNI;..\Build\Win64\HeadlessChaos\Inc\Json\UHT;..\Build\Win64\HeadlessChaos\Inc\Json\VNI;..\Build\Win64\HeadlessChaos\Inc\Launch\UHT;..\Build\Win64\HeadlessChaos\Inc\Launch\VNI;..\Build\Win64\HeadlessChaos\Inc\MeshDescription\UHT;..\Build\Win64\HeadlessChaos\Inc\MeshDescription\VNI;..\Build\Win64\HeadlessChaos\Inc\MessagingCommon\UHT;..\Build\Win64\HeadlessChaos\Inc\MessagingCommon\VNI;..\Build\Win64\HeadlessChaos\Inc\Messaging\UHT;..\Build\Win64\HeadlessChaos\Inc\Messaging\VNI;..\Build\Win64\HeadlessChaos\Inc\MovieSceneCapture\UHT;..\Build\Win64\HeadlessChaos\Inc\MovieSceneCapture\VNI;..\Build\Win64\HeadlessChaos\Inc\NetCommon\UHT;..\Build\Win64\HeadlessChaos\Inc\NetCommon\VNI;..\Build\Win64\HeadlessChaos\Inc\NetCore\UHT;..\Build\Win64\HeadlessChaos\Inc\NetCore\VNI;..\Build\Win64\HeadlessChaos\Inc\Networking\UHT;..\Build\Win64\HeadlessChaos\Inc\Networking\VNI;..\Build\Win64\HeadlessChaos\Inc\NetworkReplayStreaming\UHT;..\Build\Win64\HeadlessChaos\Inc\NetworkReplayStreaming\VNI;..\Build\Win64\HeadlessChaos\Inc\PacketHandler\UHT;..\Build\Win64\HeadlessChaos\Inc\PacketHandler\VNI;..\Build\Win64\HeadlessChaos\Inc\PakFile\UHT;..\Build\Win64\HeadlessChaos\Inc\PakFile\VNI;..\Build\Win64\HeadlessChaos\Inc\PhysicsCore\UHT;..\Build\Win64\HeadlessChaos\Inc\PhysicsCore\VNI;..\Build\Win64\HeadlessChaos\Inc\ProfilerService\UHT;..\Build\Win64\HeadlessChaos\Inc\ProfilerService\VNI;..\Build\Win64\HeadlessChaos\Inc\Projects\UHT;..\Build\Win64\HeadlessChaos\Inc\Projects\VNI;..\Build\Win64\HeadlessChaos\Inc\ReliableHComp\UHT;..\Build\Win64\HeadlessChaos\Inc\ReliableHComp\VNI;..\Build\Win64\HeadlessChaos\Inc\RenderCore\UHT;..\Build\Win64\HeadlessChaos\Inc\RenderCore\VNI;..\Build\Win64\HeadlessChaos\Inc\Renderer\UHT;..\Build\Win64\HeadlessChaos\Inc\Renderer\VNI;..\Build\Win64\HeadlessChaos\Inc\RHI\UHT;..\Build\Win64\HeadlessChaos\Inc\RHI\VNI;..\Build\Win64\HeadlessChaos\Inc\RSA\UHT;..\Build\Win64\HeadlessChaos\Inc\RSA\VNI;..\Build\Win64\HeadlessChaos\Inc\SignalProcessing\UHT;..\Build\Win64\HeadlessChaos\Inc\SignalProcessing\VNI;..\Build\Win64\HeadlessChaos\Inc\SkeletalMeshDescription\UHT;..\Build\Win64\HeadlessChaos\Inc\SkeletalMeshDescription\VNI;..\Build\Win64\HeadlessChaos\Inc\SlateCore\UHT;..\Build\Win64\HeadlessChaos\Inc\SlateCore\VNI;..\Build\Win64\HeadlessChaos\Inc\Slate\UHT;..\Build\Win64\HeadlessChaos\Inc\Slate\VNI;..\Build\Win64\HeadlessChaos\Inc\Sockets\UHT;..\Build\Win64\HeadlessChaos\Inc\Sockets\VNI;..\Build\Win64\HeadlessChaos\Inc\StaticMeshDescription\UHT;..\Build\Win64\HeadlessChaos\Inc\StaticMeshDescription\VNI;..\Build\Win64\HeadlessChaos\Inc\SynthBenchmark\UHT;..\Build\Win64\HeadlessChaos\Inc\SynthBenchmark\VNI;..\Build\Win64\HeadlessChaos\Inc\TargetPlatform\UHT;..\Build\Win64\HeadlessChaos\Inc\TargetPlatform\VNI;..\Build\Win64\HeadlessChaos\Inc\TextureFormat\UHT;..\Build\Win64\HeadlessChaos\Inc\TextureFormat\VNI;..\Build\Win64\HeadlessChaos\Inc\TraceLog\UHT;..\Build\Win64\HeadlessChaos\Inc\TraceLog\VNI;..\Build\Win64\HeadlessChaos\Inc\TypedElementFramework\UHT;..\Build\Win64\HeadlessChaos\Inc\TypedElementFramework\VNI;..\Build\Win64\HeadlessChaos\Inc\TypedElementRuntime\UHT;..\Build\Win64\HeadlessChaos\Inc\TypedElementRuntime\VNI;..\Build\Win64\HeadlessChaos\Inc\Voronoi\UHT;..\Build\Win64\HeadlessChaos\Inc\Voronoi\VNI;..\..\Shaders\Shared;..\..\Source;..\..\Source\Developer\DesktopPlatform\Internal;..\..\Source\Developer\DesktopPlatform\Public;..\..\Source\Developer\ProfilerService\Public;..\..\Source\Developer\TargetPlatform\Public;..\..\Source\Developer\TextureFormat\Public;..\..\Source\Programs\HeadlessChaos\Private;..\..\Source\Programs\HeadlessChaos\Public;..\..\Source\Runtime\Analytics\AnalyticsET\Public;..\..\Source\Runtime\Analytics\Analytics\Public;..\..\Source\Runtime\AnimationCore\Public;..\..\Source\Runtime\ApplicationCore\Public;..\..\Source\Runtime\AssetRegistry\Internal;..\..\Source\Runtime\AssetRegistry\Public;..\..\Source\Runtime\AudioExtensions\Public;..\..\Source\Runtime\AudioLink\AudioLinkCore\Public;..\..\Source\Runtime\AudioLink\AudioLinkEngine\Public;..\..\Source\Runtime\AudioMixerCore\Public;..\..\Source\Runtime\AudioMixer\Classes;..\..\Source\Runtime\AudioMixer\Public;..\..\Source\Runtime\AudioPlatformConfiguration\Public;..\..\Source\Runtime\ClothingSystemRuntimeInterface\Public;..\..\Source\Runtime\CookOnTheFly\Internal;..\..\Source\Runtime\CoreOnline\Public;..\..\Source\Runtime\CoreUObject\Internal;..\..\Source\Runtime\CoreUObject\Public;..\..\Source\Runtime\Core\Internal;..\..\Source\Runtime\Core\Public;..\..\Source\Runtime\DeveloperSettings\Public;..\..\Source\Runtime\EngineMessages\Public;..\..\Source\Runtime\EngineSettings\Classes;..\..\Source\Runtime\EngineSettings\Public;..\..\Source\Runtime\Engine\Classes;..\..\Source\Runtime\Engine\Internal;..\..\Source\Runtime\Engine\Public;..\..\Source\Runtime\Experimental\ChaosCore\Public;..\..\Source\Runtime\Experimental\ChaosVehicles\ChaosVehiclesCore\Public;..\..\Source\Runtime\Experimental\Chaos\Private;..\..\Source\Runtime\Experimental\Chaos\Public;..\..\Source\Runtime\Experimental\IoStoreOnDemand\Public;..\..\Source\Runtime\Experimental\Iris\Core\Public;..\..\Source\Runtime\Experimental\Voronoi\Public;..\..\Source\Runtime\FieldNotification\Public;..\..\Source\Runtime\GameplayTags\Classes;..\..\Source\Runtime\GameplayTags\Public;..\..\Source\Runtime\GeometryCore\Public;..\..\Source\Runtime\ImageCore\Public;..\..\Source\Runtime\ImageWrapper\Public;..\..\Source\Runtime\InputCore\Classes;..\..\Source\Runtime\InputCore\Public;..\..\Source\Runtime\JsonUtilities\Public;..\..\Source\Runtime\Json\Public;..\..\Source\Runtime\Launch\Public;..\..\Source\Runtime\MeshDescription\Public;..\..\Source\Runtime\MessagingCommon\Public;..\..\Source\Runtime\Messaging\Public;..\..\Source\Runtime\MovieSceneCapture\Public;..\..\Source\Runtime\Networking\Public;..\..\Source\Runtime\NetworkReplayStreaming\NetworkReplayStreaming\Public;..\..\Source\Runtime\Net\Common\Public;..\..\Source\Runtime\Net\Core\Classes;..\..\Source\Runtime\Net\Core\Public;..\..\Source\Runtime\PacketHandlers\PacketHandler\Classes;..\..\Source\Runtime\PacketHandlers\PacketHandler\Public;..\..\Source\Runtime\PacketHandlers\ReliabilityHandlerComponent\Public;..\..\Source\Runtime\PakFile\Internal;..\..\Source\Runtime\PakFile\Public;..\..\Source\Runtime\PhysicsCore\Public;..\..\Source\Runtime\Projects\Public;..\..\Source\Runtime\RenderCore\Public;..\..\Source\Runtime\Renderer\Public;..\..\Source\Runtime\RHI\Public;..\..\Source\Runtime\RSA\Public;..\..\Source\Runtime\SignalProcessing\Public;..\..\Source\Runtime\SkeletalMeshDescription\Public;..\..\Source\Runtime\SlateCore\Public;..\..\Source\Runtime\Slate\Public;..\..\Source\Runtime\Sockets\Public;..\..\Source\Runtime\StaticMeshDescription\Public;..\..\Source\Runtime\SynthBenchmark\Public;..\..\Source\Runtime\TraceLog\Public;..\..\Source\Runtime\TypedElementFramework\Public;..\..\Source\Runtime\TypedElementRuntime\Public;$(DefaultSystemIncludePaths);</IncludePath>
+    <NMakeForcedIncludes>$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath>$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ClCompile_AdditionalIncludeDirectories>$(NMakeIncludeSearchPath);..\..\Source\ThirdParty\mimalloc\include;..\..\Source\ThirdParty\GoogleTest\include;..\..\Source\ThirdParty\LibTiff\Source\Win64;..\..\Source\ThirdParty\LibTiff\Source</ClCompile_AdditionalIncludeDirectories>
+    <ClCompile_ForcedIncludeFiles>$(SolutionDir)Engine\Intermediate\Build\Win64\x64\HeadlessChaos\Development\CoreUObject\SharedPCH.CoreUObject.Cpp20.h;$(SolutionDir)Engine\Intermediate\Build\Win64\x64\HeadlessChaos\Development\HeadlessChaos\Definitions.HeadlessChaos.h</ClCompile_ForcedIncludeFiles>
+    <ClCompile_AdditionalOptions>$(AdditionalOptions) /Yu"$(SolutionDir)Engine\Intermediate\Build\Win64\x64\HeadlessChaos\Development\CoreUObject\SharedPCH.CoreUObject.Cpp20.h"</ClCompile_AdditionalOptions>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\Programs\HeadlessChaos\HeadlessChaos.Target.cs"/>
+    <None Include="..\..\Source\Programs\HeadlessChaos\HeadlessChaos.Build.cs"/>
+    <None Include="..\..\Source\Programs\HeadlessChaos\Merge\merge.py"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosApp.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosCollisionConstraints.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestAABB.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestBarycentric.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestBP.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestBroadphase.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestCapsuleTriangleCollision.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestCCD.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestCloth.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestClustering.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestCollisions.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestConstraintHandle.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestConstraints.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestConstraintSolverCore.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestContactModification.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestConvex.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestDataMarshalling.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestDenseMatrix.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestDetectCollision.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestDirtyParticle.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestEPA.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestForces.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestGJK.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestGJKDistance.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestGraphEvolution.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestHandles.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestHeightfield.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestIgnoreManager.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestImplicitMassProperties.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestImplicits.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestJoint.h"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestJointBreak.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestJointForces.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestJointPlasticity.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestJointRestitution.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestJoints.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestJointSolver.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestJointUtilities.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestJointWake.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestLargeScale.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestMassProperties.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestMath.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestMinEvolution.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestMostOpposing.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestMove.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestMultiply.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestObbTree.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestObjectPool.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestOneShotManifolds.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestOverlap.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestParticleHandle.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestPerf.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestPhysicsScene.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestProbes.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestRaycast.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestRewind.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestRotation.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestSAT.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestSerialization.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestShapePadding.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestSim.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestSimSweep.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestSolverBody.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestSolverProxies.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestSpatialHashing.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestSweep.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestTriangleMesh.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestUtility.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\HeadlessChaosTestVehicles.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\Character\TestCharacterGroundConstraint.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\Character\TestCharacterGroundConstraintContainer.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\Character\TestCharacterGroundConstraintProxy.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\Character\TestCharacterGroundConstraintSolver.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestBoneHierarchy.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestClean.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestClustering.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestCollisionResolution.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestCreation.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestDecimation.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestEvents.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestFields.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestFramework.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestImplicitCapsule.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestImplicitCylinder.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestImplicitSphere.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestInitilization.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestMassProperties.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestMatrices.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestPlugin.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestProximity.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestResponse.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestSerialization.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestSimulation.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestSimulationField.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestSimulationSolver.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestSimulationStreaming.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestSpatialHash.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestUtility.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Private\GeometryCollection\GeometryCollectionTestVisibility.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaos.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosApp.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosCollisionConstraints.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestBP.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestBroadphase.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestCloth.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestClustering.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestCollisions.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestConstraints.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestEPA.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestEvolution.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestForces.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestGJK.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestHandles.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestImplicits.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestMostOpposing.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestOverlap.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestParticleHandle.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestRaycast.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestSerialization.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestSolverCommandList.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestSolverProxies.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestSpatialHashing.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestSweep.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestTriangleMesh.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\HeadlessChaosTestUtility.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTest.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestBoneHierarchy.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestClean.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestClustering.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestCollisionResolution.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestCreation.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestDecimation.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestEvents.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestFields.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestFramework.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestImplicitCapsule.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestImplicitCylinder.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestImplicitSphere.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestInitilization.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestMassProperties.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestMatrices.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestPlugin.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestProximity.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestResponse.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestSerialization.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestSimulation.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestSimulationField.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestSimulationSolver.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestSimulationStreaming.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestSpatialHash.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestUtility.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Public\GeometryCollection\GeometryCollectionTestVisibility.h"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Resource\BoxGeometry.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\BoxGeometry.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\CubeGeometry.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\Cylinder.h"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Resource\CylinderGeometry.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\CylinderGeometry.h"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Resource\EllipsoidGeometry.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\EllipsoidGeometry.h"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Resource\EllipsoidGeometry2.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\EllipsoidGeometry2.h"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Resource\EllipsoidGeometry3.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\EllipsoidGeometry3.h"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Resource\FracturedGeometry.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\FracturedGeometry.h"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Resource\SphereGeometry.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\SphereGeometry.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\TestGeometry1.h"/>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\TestGeometry2.h"/>
+    <ClCompile Include="..\..\Source\Programs\HeadlessChaos\Resource\TorusGeometry.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\HeadlessChaos\Resource\TorusGeometry.h"/>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <PropertyGroup>
+    <CleanDependsOn> $(CleanDependsOn); </CleanDependsOn>
+    <CppCleanDependsOn></CppCleanDependsOn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunSettingsFilePath>$(ProjectDir)..\..\Source\Programs\LowLevelTests\vstest.runsettings</RunSettingsFilePath>
+  </PropertyGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

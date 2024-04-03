@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Invalid|x64">
+      <Configuration>Invalid</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_Program|x64">
+      <Configuration>Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugGame_Program|x64">
+      <Configuration>DebugGame_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development_Program|x64">
+      <Configuration>Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Test_Program|x64">
+      <Configuration>Test_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping_Program|x64">
+      <Configuration>Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EE417E86-7097-34E9-AE4B-6434942206A1}</ProjectGuid>
+    <RootNamespace>DatasmithCADWorker</RootNamespace>
+  </PropertyGroup>
+  <Import Project="UECommon.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 Debug -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) DatasmithCADWorker Win64 Debug -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) DatasmithCADWorker Win64 Debug -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Plugins\Enterprise\DatasmithCADImporter\Binaries\Win64\DatasmithCADWorker-Win64-Debug.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 Debug -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGame_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 DebugGame -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) DatasmithCADWorker Win64 DebugGame -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) DatasmithCADWorker Win64 DebugGame -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Plugins\Enterprise\DatasmithCADImporter\Binaries\Win64\DatasmithCADWorker-Win64-DebugGame.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGame_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 DebugGame -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 Development -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) DatasmithCADWorker Win64 Development -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) DatasmithCADWorker Win64 Development -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Plugins\Enterprise\DatasmithCADImporter\Binaries\Win64\DatasmithCADWorker.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 Development -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 Test -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) DatasmithCADWorker Win64 Test -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) DatasmithCADWorker Win64 Test -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Plugins\Enterprise\DatasmithCADImporter\Binaries\Win64\DatasmithCADWorker-Win64-Test.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Test_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 Test -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 Shipping -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) DatasmithCADWorker Win64 Shipping -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) DatasmithCADWorker Win64 Shipping -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Plugins\Enterprise\DatasmithCADImporter\Binaries\Win64\DatasmithCADWorker-Win64-Shipping.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) DatasmithCADWorker Win64 Shipping -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <IncludePath>$(IncludePath);..\Build\Win64\DatasmithCADWorker\Inc\AnalyticsET\UHT;..\Build\Win64\DatasmithCADWorker\Inc\AnalyticsET\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Analytics\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Analytics\VNI;..\Build\Win64\DatasmithCADWorker\Inc\AnimationCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\AnimationCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\ApplicationCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\ApplicationCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\AssetRegistry\UHT;..\Build\Win64\DatasmithCADWorker\Inc\AssetRegistry\VNI;..\Build\Win64\DatasmithCADWorker\Inc\AudioExtensions\UHT;..\Build\Win64\DatasmithCADWorker\Inc\AudioExtensions\VNI;..\Build\Win64\DatasmithCADWorker\Inc\AudioLinkCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\AudioLinkCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\AudioLinkEngine\UHT;..\Build\Win64\DatasmithCADWorker\Inc\AudioLinkEngine\VNI;..\Build\Win64\DatasmithCADWorker\Inc\AudioMixerCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\AudioMixerCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\AudioMixer\UHT;..\Build\Win64\DatasmithCADWorker\Inc\AudioMixer\VNI;..\Build\Win64\DatasmithCADWorker\Inc\AudioPlatformConfiguration\UHT;..\Build\Win64\DatasmithCADWorker\Inc\AudioPlatformConfiguration\VNI;..\Build\Win64\DatasmithCADWorker\Inc\CADInterfaces\UHT;..\Build\Win64\DatasmithCADWorker\Inc\CADInterfaces\VNI;..\Build\Win64\DatasmithCADWorker\Inc\CADKernel\UHT;..\Build\Win64\DatasmithCADWorker\Inc\CADKernel\VNI;..\Build\Win64\DatasmithCADWorker\Inc\CADLibrary\UHT;..\Build\Win64\DatasmithCADWorker\Inc\CADLibrary\VNI;..\Build\Win64\DatasmithCADWorker\Inc\CADTools\UHT;..\Build\Win64\DatasmithCADWorker\Inc\CADTools\VNI;..\Build\Win64\DatasmithCADWorker\Inc\ChaosCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\ChaosCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Chaos\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Chaos\VNI;..\Build\Win64\DatasmithCADWorker\Inc\ClothSysRuntimeIntrfc\UHT;..\Build\Win64\DatasmithCADWorker\Inc\ClothSysRuntimeIntrfc\VNI;..\Build\Win64\DatasmithCADWorker\Inc\CookOnTheFly\UHT;..\Build\Win64\DatasmithCADWorker\Inc\CookOnTheFly\VNI;..\Build\Win64\DatasmithCADWorker\Inc\CoreOnline\UHT;..\Build\Win64\DatasmithCADWorker\Inc\CoreOnline\VNI;..\Build\Win64\DatasmithCADWorker\Inc\CoreUObject\UHT;..\Build\Win64\DatasmithCADWorker\Inc\CoreUObject\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Core\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Core\VNI;..\Build\Win64\DatasmithCADWorker\Inc\DatasmithCADWorker\UHT;..\Build\Win64\DatasmithCADWorker\Inc\DatasmithCADWorker\VNI;..\Build\Win64\DatasmithCADWorker\Inc\DatasmithCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\DatasmithCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\DatasmithDispatcher\UHT;..\Build\Win64\DatasmithCADWorker\Inc\DatasmithDispatcher\VNI;..\Build\Win64\DatasmithCADWorker\Inc\DesktopPlatform\UHT;..\Build\Win64\DatasmithCADWorker\Inc\DesktopPlatform\VNI;..\Build\Win64\DatasmithCADWorker\Inc\DeveloperSettings\UHT;..\Build\Win64\DatasmithCADWorker\Inc\DeveloperSettings\VNI;..\Build\Win64\DatasmithCADWorker\Inc\DirectLink\UHT;..\Build\Win64\DatasmithCADWorker\Inc\DirectLink\VNI;..\Build\Win64\DatasmithCADWorker\Inc\DynamicMesh\UHT;..\Build\Win64\DatasmithCADWorker\Inc\DynamicMesh\VNI;..\Build\Win64\DatasmithCADWorker\Inc\EngineMessages\UHT;..\Build\Win64\DatasmithCADWorker\Inc\EngineMessages\VNI;..\Build\Win64\DatasmithCADWorker\Inc\EngineSettings\UHT;..\Build\Win64\DatasmithCADWorker\Inc\EngineSettings\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Engine\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Engine\VNI;..\Build\Win64\DatasmithCADWorker\Inc\FieldNotification\UHT;..\Build\Win64\DatasmithCADWorker\Inc\FieldNotification\VNI;..\Build\Win64\DatasmithCADWorker\Inc\GameplayTags\UHT;..\Build\Win64\DatasmithCADWorker\Inc\GameplayTags\VNI;..\Build\Win64\DatasmithCADWorker\Inc\GeometryAlgorithms\UHT;..\Build\Win64\DatasmithCADWorker\Inc\GeometryAlgorithms\VNI;..\Build\Win64\DatasmithCADWorker\Inc\GeometryCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\GeometryCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\ImageCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\ImageCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\ImageWrapper\UHT;..\Build\Win64\DatasmithCADWorker\Inc\ImageWrapper\VNI;..\Build\Win64\DatasmithCADWorker\Inc\InputCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\InputCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\IoStoreOnDemand\UHT;..\Build\Win64\DatasmithCADWorker\Inc\IoStoreOnDemand\VNI;..\Build\Win64\DatasmithCADWorker\Inc\IrisCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\IrisCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\JsonUtilities\UHT;..\Build\Win64\DatasmithCADWorker\Inc\JsonUtilities\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Json\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Json\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Launch\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Launch\VNI;..\Build\Win64\DatasmithCADWorker\Inc\MeshConversion\UHT;..\Build\Win64\DatasmithCADWorker\Inc\MeshConversion\VNI;..\Build\Win64\DatasmithCADWorker\Inc\MeshDescription\UHT;..\Build\Win64\DatasmithCADWorker\Inc\MeshDescription\VNI;..\Build\Win64\DatasmithCADWorker\Inc\MessagingCommon\UHT;..\Build\Win64\DatasmithCADWorker\Inc\MessagingCommon\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Messaging\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Messaging\VNI;..\Build\Win64\DatasmithCADWorker\Inc\MovieSceneCapture\UHT;..\Build\Win64\DatasmithCADWorker\Inc\MovieSceneCapture\VNI;..\Build\Win64\DatasmithCADWorker\Inc\NetCommon\UHT;..\Build\Win64\DatasmithCADWorker\Inc\NetCommon\VNI;..\Build\Win64\DatasmithCADWorker\Inc\NetCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\NetCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Networking\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Networking\VNI;..\Build\Win64\DatasmithCADWorker\Inc\NetworkReplayStreaming\UHT;..\Build\Win64\DatasmithCADWorker\Inc\NetworkReplayStreaming\VNI;..\Build\Win64\DatasmithCADWorker\Inc\PacketHandler\UHT;..\Build\Win64\DatasmithCADWorker\Inc\PacketHandler\VNI;..\Build\Win64\DatasmithCADWorker\Inc\PakFile\UHT;..\Build\Win64\DatasmithCADWorker\Inc\PakFile\VNI;..\Build\Win64\DatasmithCADWorker\Inc\PhysicsCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\PhysicsCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\ProfilerService\UHT;..\Build\Win64\DatasmithCADWorker\Inc\ProfilerService\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Projects\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Projects\VNI;..\Build\Win64\DatasmithCADWorker\Inc\RawMesh\UHT;..\Build\Win64\DatasmithCADWorker\Inc\RawMesh\VNI;..\Build\Win64\DatasmithCADWorker\Inc\ReliableHComp\UHT;..\Build\Win64\DatasmithCADWorker\Inc\ReliableHComp\VNI;..\Build\Win64\DatasmithCADWorker\Inc\RenderCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\RenderCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Renderer\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Renderer\VNI;..\Build\Win64\DatasmithCADWorker\Inc\RHI\UHT;..\Build\Win64\DatasmithCADWorker\Inc\RHI\VNI;..\Build\Win64\DatasmithCADWorker\Inc\RSA\UHT;..\Build\Win64\DatasmithCADWorker\Inc\RSA\VNI;..\Build\Win64\DatasmithCADWorker\Inc\SignalProcessing\UHT;..\Build\Win64\DatasmithCADWorker\Inc\SignalProcessing\VNI;..\Build\Win64\DatasmithCADWorker\Inc\SkeletalMeshDescription\UHT;..\Build\Win64\DatasmithCADWorker\Inc\SkeletalMeshDescription\VNI;..\Build\Win64\DatasmithCADWorker\Inc\SlateCore\UHT;..\Build\Win64\DatasmithCADWorker\Inc\SlateCore\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Slate\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Slate\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Sockets\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Sockets\VNI;..\Build\Win64\DatasmithCADWorker\Inc\StaticMeshDescription\UHT;..\Build\Win64\DatasmithCADWorker\Inc\StaticMeshDescription\VNI;..\Build\Win64\DatasmithCADWorker\Inc\SynthBenchmark\UHT;..\Build\Win64\DatasmithCADWorker\Inc\SynthBenchmark\VNI;..\Build\Win64\DatasmithCADWorker\Inc\TargetPlatform\UHT;..\Build\Win64\DatasmithCADWorker\Inc\TargetPlatform\VNI;..\Build\Win64\DatasmithCADWorker\Inc\TextureFormat\UHT;..\Build\Win64\DatasmithCADWorker\Inc\TextureFormat\VNI;..\Build\Win64\DatasmithCADWorker\Inc\TraceLog\UHT;..\Build\Win64\DatasmithCADWorker\Inc\TraceLog\VNI;..\Build\Win64\DatasmithCADWorker\Inc\TypedElementFramework\UHT;..\Build\Win64\DatasmithCADWorker\Inc\TypedElementFramework\VNI;..\Build\Win64\DatasmithCADWorker\Inc\TypedElementRuntime\UHT;..\Build\Win64\DatasmithCADWorker\Inc\TypedElementRuntime\VNI;..\Build\Win64\DatasmithCADWorker\Inc\Voronoi\UHT;..\Build\Win64\DatasmithCADWorker\Inc\Voronoi\VNI;..\..\Plugins\Enterprise\DatasmithCADImporter\Source\CADInterfaces\Public;..\..\Plugins\Enterprise\DatasmithCADImporter\Source\CADLibrary\Public;..\..\Plugins\Enterprise\DatasmithCADImporter\Source\CADTools\Public;..\..\Plugins\Enterprise\DatasmithCADImporter\Source\DatasmithDispatcher\Public;..\..\Plugins\Runtime\GeometryProcessing\Source\DynamicMesh\Public;..\..\Plugins\Runtime\GeometryProcessing\Source\GeometryAlgorithms\Public;..\..\Shaders\Shared;..\..\Source;..\..\Source\Developer\DesktopPlatform\Internal;..\..\Source\Developer\DesktopPlatform\Public;..\..\Source\Developer\ProfilerService\Public;..\..\Source\Developer\TargetPlatform\Public;..\..\Source\Developer\TextureFormat\Public;..\..\Source\Programs\Enterprise\Datasmith\DatasmithCADWorker\Private;..\..\Source\Runtime\Analytics\AnalyticsET\Public;..\..\Source\Runtime\Analytics\Analytics\Public;..\..\Source\Runtime\AnimationCore\Public;..\..\Source\Runtime\ApplicationCore\Public;..\..\Source\Runtime\AssetRegistry\Internal;..\..\Source\Runtime\AssetRegistry\Public;..\..\Source\Runtime\AudioExtensions\Public;..\..\Source\Runtime\AudioLink\AudioLinkCore\Public;..\..\Source\Runtime\AudioLink\AudioLinkEngine\Public;..\..\Source\Runtime\AudioMixerCore\Public;..\..\Source\Runtime\AudioMixer\Classes;..\..\Source\Runtime\AudioMixer\Public;..\..\Source\Runtime\AudioPlatformConfiguration\Public;..\..\Source\Runtime\ClothingSystemRuntimeInterface\Public;..\..\Source\Runtime\CookOnTheFly\Internal;..\..\Source\Runtime\CoreOnline\Public;..\..\Source\Runtime\CoreUObject\Internal;..\..\Source\Runtime\CoreUObject\Public;..\..\Source\Runtime\Core\Internal;..\..\Source\Runtime\Core\Public;..\..\Source\Runtime\Datasmith\CADKernel\Public;..\..\Source\Runtime\Datasmith\DatasmithCore\Public;..\..\Source\Runtime\Datasmith\DirectLink\Public;..\..\Source\Runtime\DeveloperSettings\Public;..\..\Source\Runtime\EngineMessages\Public;..\..\Source\Runtime\EngineSettings\Classes;..\..\Source\Runtime\EngineSettings\Public;..\..\Source\Runtime\Engine\Classes;..\..\Source\Runtime\Engine\Internal;..\..\Source\Runtime\Engine\Public;..\..\Source\Runtime\Experimental\ChaosCore\Public;..\..\Source\Runtime\Experimental\Chaos\Public;..\..\Source\Runtime\Experimental\IoStoreOnDemand\Public;..\..\Source\Runtime\Experimental\Iris\Core\Public;..\..\Source\Runtime\Experimental\Voronoi\Public;..\..\Source\Runtime\FieldNotification\Public;..\..\Source\Runtime\GameplayTags\Classes;..\..\Source\Runtime\GameplayTags\Public;..\..\Source\Runtime\GeometryCore\Public;..\..\Source\Runtime\ImageCore\Public;..\..\Source\Runtime\ImageWrapper\Public;..\..\Source\Runtime\InputCore\Classes;..\..\Source\Runtime\InputCore\Public;..\..\Source\Runtime\JsonUtilities\Public;..\..\Source\Runtime\Json\Public;..\..\Source\Runtime\Launch\Public;..\..\Source\Runtime\MeshConversion\Public;..\..\Source\Runtime\MeshDescription\Public;..\..\Source\Runtime\MessagingCommon\Public;..\..\Source\Runtime\Messaging\Public;..\..\Source\Runtime\MovieSceneCapture\Public;..\..\Source\Runtime\Networking\Public;..\..\Source\Runtime\NetworkReplayStreaming\NetworkReplayStreaming\Public;..\..\Source\Runtime\Net\Common\Public;..\..\Source\Runtime\Net\Core\Classes;..\..\Source\Runtime\Net\Core\Public;..\..\Source\Runtime\PacketHandlers\PacketHandler\Classes;..\..\Source\Runtime\PacketHandlers\PacketHandler\Public;..\..\Source\Runtime\PacketHandlers\ReliabilityHandlerComponent\Public;..\..\Source\Runtime\PakFile\Internal;..\..\Source\Runtime\PakFile\Public;..\..\Source\Runtime\PhysicsCore\Public;..\..\Source\Runtime\Projects\Public;..\..\Source\Runtime\RawMesh\Public;..\..\Source\Runtime\RenderCore\Public;..\..\Source\Runtime\Renderer\Public;..\..\Source\Runtime\RHI\Public;..\..\Source\Runtime\RSA\Public;..\..\Source\Runtime\SignalProcessing\Public;..\..\Source\Runtime\SkeletalMeshDescription\Public;..\..\Source\Runtime\SlateCore\Public;..\..\Source\Runtime\Slate\Public;..\..\Source\Runtime\Sockets\Public;..\..\Source\Runtime\StaticMeshDescription\Public;..\..\Source\Runtime\SynthBenchmark\Public;..\..\Source\Runtime\TraceLog\Public;..\..\Source\Runtime\TypedElementFramework\Public;..\..\Source\Runtime\TypedElementRuntime\Public;$(DefaultSystemIncludePaths);</IncludePath>
+    <NMakeForcedIncludes>$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath>$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ClCompile_AdditionalIncludeDirectories>$(NMakeIncludeSearchPath);..\..\Source\ThirdParty\mimalloc\include;..\..\Source\ThirdParty\LibTiff\Source\Win64;..\..\Source\ThirdParty\LibTiff\Source</ClCompile_AdditionalIncludeDirectories>
+    <ClCompile_ForcedIncludeFiles>$(SolutionDir)Engine\Intermediate\Build\Win64\x64\DatasmithCADWorker\Development\CoreUObject\SharedPCH.CoreUObject.Cpp20.h;$(SolutionDir)Engine\Intermediate\Build\Win64\x64\DatasmithCADWorker\Development\DatasmithCADWorker\Definitions.DatasmithCADWorker.h</ClCompile_ForcedIncludeFiles>
+    <ClCompile_AdditionalOptions>$(AdditionalOptions) /Yu"$(SolutionDir)Engine\Intermediate\Build\Win64\x64\DatasmithCADWorker\Development\CoreUObject\SharedPCH.CoreUObject.Cpp20.h"</ClCompile_AdditionalOptions>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\Programs\Enterprise\Datasmith\DatasmithCADWorker\DatasmithCADWorker.Target.cs"/>
+    <None Include="..\..\Source\Programs\Enterprise\Datasmith\DatasmithCADWorker\DatasmithCADWorker.Build.cs"/>
+    <ClCompile Include="..\..\Source\Programs\Enterprise\Datasmith\DatasmithCADWorker\Private\DatasmithCADWorker.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\Enterprise\Datasmith\DatasmithCADWorker\Private\DatasmithCADWorker.h"/>
+    <ClCompile Include="..\..\Source\Programs\Enterprise\Datasmith\DatasmithCADWorker\Private\DatasmithCADWorkerImpl.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\Enterprise\Datasmith\DatasmithCADWorker\Private\DatasmithCADWorkerImpl.h"/>
+    <None Include="..\..\Source\Programs\Enterprise\Datasmith\DatasmithCADWorker\Resources\Windows\BlankProgram.ico"/>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <PropertyGroup>
+    <CleanDependsOn> $(CleanDependsOn); </CleanDependsOn>
+    <CppCleanDependsOn></CppCleanDependsOn>
+  </PropertyGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

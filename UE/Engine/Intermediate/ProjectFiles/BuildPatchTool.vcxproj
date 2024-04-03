@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Invalid|x64">
+      <Configuration>Invalid</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Invalid|Win64">
+      <Configuration>Invalid</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_Program|x64">
+      <Configuration>Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_Program|Win64">
+      <Configuration>Debug_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Debug_Program|x64">
+      <Configuration>Mac_Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Debug_Program|Win64">
+      <Configuration>Mac_Debug_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development_Program|x64">
+      <Configuration>Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development_Program|Win64">
+      <Configuration>Development_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Development_Program|x64">
+      <Configuration>Mac_Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Development_Program|Win64">
+      <Configuration>Mac_Development_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping_Program|x64">
+      <Configuration>Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping_Program|Win64">
+      <Configuration>Shipping_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Shipping_Program|x64">
+      <Configuration>Mac_Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Shipping_Program|Win64">
+      <Configuration>Mac_Shipping_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0DCABE9C-2D6A-367B-88C4-A4EFE11B022F}</ProjectGuid>
+    <RootNamespace>BuildPatchTool</RootNamespace>
+  </PropertyGroup>
+  <Import Project="UECommon.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) BuildPatchTool Win64 Debug -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) BuildPatchTool Win64 Debug -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) BuildPatchTool Win64 Debug -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\BuildPatchTool-Win64-Debug.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) BuildPatchTool Win64 Debug -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Debug_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) BuildPatchTool Mac Debug -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) BuildPatchTool Mac Debug -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) BuildPatchTool Mac Debug -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\BuildPatchTool-Mac-Debug</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Debug_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) BuildPatchTool Mac Debug -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) BuildPatchTool Win64 Development -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) BuildPatchTool Win64 Development -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) BuildPatchTool Win64 Development -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\BuildPatchTool-Win64-Development.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) BuildPatchTool Win64 Development -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Development_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) BuildPatchTool Mac Development -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) BuildPatchTool Mac Development -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) BuildPatchTool Mac Development -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\BuildPatchTool-Mac-Development</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Development_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) BuildPatchTool Mac Development -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) BuildPatchTool Win64 Shipping -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) BuildPatchTool Win64 Shipping -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) BuildPatchTool Win64 Shipping -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\BuildPatchTool.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) BuildPatchTool Win64 Shipping -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Shipping_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) BuildPatchTool Mac Shipping -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) BuildPatchTool Mac Shipping -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) BuildPatchTool Mac Shipping -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\BuildPatchTool</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Shipping_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) BuildPatchTool Mac Shipping -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <IncludePath>$(IncludePath);..\Build\Win64\BuildPatchTool\Inc\ApplicationCore\UHT;..\Build\Win64\BuildPatchTool\Inc\ApplicationCore\VNI;..\Build\Win64\BuildPatchTool\Inc\AutomationController\UHT;..\Build\Win64\BuildPatchTool\Inc\AutomationController\VNI;..\Build\Win64\BuildPatchTool\Inc\AutomationTest\UHT;..\Build\Win64\BuildPatchTool\Inc\AutomationTest\VNI;..\Build\Win64\BuildPatchTool\Inc\AutomationWorker\UHT;..\Build\Win64\BuildPatchTool\Inc\AutomationWorker\VNI;..\Build\Win64\BuildPatchTool\Inc\BuildPatchServices\UHT;..\Build\Win64\BuildPatchTool\Inc\BuildPatchServices\VNI;..\Build\Win64\BuildPatchTool\Inc\BuildPatchTool\UHT;..\Build\Win64\BuildPatchTool\Inc\BuildPatchTool\VNI;..\Build\Win64\BuildPatchTool\Inc\CoreUObject\UHT;..\Build\Win64\BuildPatchTool\Inc\CoreUObject\VNI;..\Build\Win64\BuildPatchTool\Inc\Core\UHT;..\Build\Win64\BuildPatchTool\Inc\Core\VNI;..\Build\Win64\BuildPatchTool\Inc\HTTP\UHT;..\Build\Win64\BuildPatchTool\Inc\HTTP\VNI;..\Build\Win64\BuildPatchTool\Inc\Json\UHT;..\Build\Win64\BuildPatchTool\Inc\Json\VNI;..\Build\Win64\BuildPatchTool\Inc\Launch\UHT;..\Build\Win64\BuildPatchTool\Inc\Launch\VNI;..\Build\Win64\BuildPatchTool\Inc\Messaging\UHT;..\Build\Win64\BuildPatchTool\Inc\Messaging\VNI;..\Build\Win64\BuildPatchTool\Inc\NetCommon\UHT;..\Build\Win64\BuildPatchTool\Inc\NetCommon\VNI;..\Build\Win64\BuildPatchTool\Inc\NetworkFile\UHT;..\Build\Win64\BuildPatchTool\Inc\NetworkFile\VNI;..\Build\Win64\BuildPatchTool\Inc\PakFile\UHT;..\Build\Win64\BuildPatchTool\Inc\PakFile\VNI;..\Build\Win64\BuildPatchTool\Inc\ProfilerService\UHT;..\Build\Win64\BuildPatchTool\Inc\ProfilerService\VNI;..\Build\Win64\BuildPatchTool\Inc\Projects\UHT;..\Build\Win64\BuildPatchTool\Inc\Projects\VNI;..\Build\Win64\BuildPatchTool\Inc\RHI\UHT;..\Build\Win64\BuildPatchTool\Inc\RHI\VNI;..\Build\Win64\BuildPatchTool\Inc\RSA\UHT;..\Build\Win64\BuildPatchTool\Inc\RSA\VNI;..\Build\Win64\BuildPatchTool\Inc\SandboxFile\UHT;..\Build\Win64\BuildPatchTool\Inc\SandboxFile\VNI;..\Build\Win64\BuildPatchTool\Inc\Sockets\UHT;..\Build\Win64\BuildPatchTool\Inc\Sockets\VNI;..\Build\Win64\BuildPatchTool\Inc\StreamingFile\UHT;..\Build\Win64\BuildPatchTool\Inc\StreamingFile\VNI;..\Build\Win64\BuildPatchTool\Inc\TraceLog\UHT;..\Build\Win64\BuildPatchTool\Inc\TraceLog\VNI;..\..\Source;..\..\Source\Developer\AutomationController\Public;..\..\Source\Developer\ProfilerService\Public;..\..\Source\Programs\BuildPatchTool\Private;..\..\Source\Programs\BuildPatchTool\Public;..\..\Source\Runtime\ApplicationCore\Public;..\..\Source\Runtime\AutomationTest\Public;..\..\Source\Runtime\AutomationWorker\Public;..\..\Source\Runtime\CoreUObject\Internal;..\..\Source\Runtime\CoreUObject\Public;..\..\Source\Runtime\Core\Internal;..\..\Source\Runtime\Core\Public;..\..\Source\Runtime\Json\Public;..\..\Source\Runtime\Launch\Public;..\..\Source\Runtime\Messaging\Public;..\..\Source\Runtime\NetworkFile\Public;..\..\Source\Runtime\Net\Common\Public;..\..\Source\Runtime\Online\BuildPatchServices\Public;..\..\Source\Runtime\Online\HTTP\Internal;..\..\Source\Runtime\Online\HTTP\Public;..\..\Source\Runtime\PakFile\Internal;..\..\Source\Runtime\PakFile\Public;..\..\Source\Runtime\Projects\Public;..\..\Source\Runtime\RHI\Public;..\..\Source\Runtime\RSA\Public;..\..\Source\Runtime\SandboxFile\Public;..\..\Source\Runtime\Sockets\Public;..\..\Source\Runtime\StreamingFile\Public;..\..\Source\Runtime\TraceLog\Public;$(DefaultSystemIncludePaths);</IncludePath>
+    <NMakeForcedIncludes>$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath>$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ClCompile_AdditionalIncludeDirectories>$(NMakeIncludeSearchPath);..\..\Source\ThirdParty\mimalloc\include</ClCompile_AdditionalIncludeDirectories>
+    <ClCompile_ForcedIncludeFiles>$(SolutionDir)Engine\Intermediate\Build\Win64\x64\BuildPatchTool\Development\CoreUObject\SharedPCH.CoreUObject.Cpp20.h;$(SolutionDir)Engine\Intermediate\Build\Win64\x64\BuildPatchTool\Development\BuildPatchTool\Definitions.BuildPatchTool.h</ClCompile_ForcedIncludeFiles>
+    <ClCompile_AdditionalOptions>$(AdditionalOptions) /Yu"$(SolutionDir)Engine\Intermediate\Build\Win64\x64\BuildPatchTool\Development\CoreUObject\SharedPCH.CoreUObject.Cpp20.h"</ClCompile_AdditionalOptions>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\Programs\BuildPatchTool\BuildPatchTool.Target.cs"/>
+    <None Include="..\..\Programs\BuildPatchTool\Config\DefaultEngine.ini"/>
+    <None Include="..\..\Source\Programs\BuildPatchTool\BuildPatchTool.Automation.cs"/>
+    <None Include="..\..\Source\Programs\BuildPatchTool\BuildPatchTool.Build.cs"/>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\BuildPatchTool.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolModes\AutomationMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolModes\ChunkDeltaOptimiseMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolModes\CompactifyMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolModes\DiffManifestMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolModes\EnumerationMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolModes\MergeManifestMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolModes\PackageChunksMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolModes\PatchGenerationMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\BuildPatchTool\Private\ToolModes\VerifyChunksMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\BuildPatchTool.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\Interfaces\ToolMode.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\ToolModes\AutomationMode.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\ToolModes\ChunkDeltaOptimiseMode.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\ToolModes\CompactifyMode.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\ToolModes\DiffManifestMode.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\ToolModes\EnumerationMode.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\ToolModes\MergeManifestMode.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\ToolModes\PackageChunksMode.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\ToolModes\PatchGenerationMode.h"/>
+    <ClInclude Include="..\..\Source\Programs\BuildPatchTool\Public\ToolModes\VerifyChunksMode.h"/>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <PropertyGroup>
+    <CleanDependsOn> $(CleanDependsOn); </CleanDependsOn>
+    <CppCleanDependsOn></CppCleanDependsOn>
+  </PropertyGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

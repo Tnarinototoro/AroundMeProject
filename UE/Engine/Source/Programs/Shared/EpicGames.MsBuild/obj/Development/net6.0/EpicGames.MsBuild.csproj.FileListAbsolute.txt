@@ -1,0 +1,13 @@
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\EpicGames.MsBuild.deps.json
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\EpicGames.MsBuild.dll
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\ref\EpicGames.MsBuild.dll
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\EpicGames.MsBuild.pdb
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\EpicGames.Core.dll
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\bin\Development\net6.0\EpicGames.Core.pdb
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\obj\Development\net6.0\EpicGames.MsBuild.csproj.AssemblyReference.cache
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\obj\Development\net6.0\EpicGames.MsBuild.GeneratedMSBuildEditorConfig.editorconfig
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\obj\Development\net6.0\EpicGames.MsBuild.csproj.CoreCompileInputs.cache
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\obj\Development\net6.0\EpicGames.MsBuild.csproj.CopyComplete
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\obj\Development\net6.0\EpicGames.MsBuild.dll
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\obj\Development\net6.0\refint\EpicGames.MsBuild.dll
+E:\AroundMeProject\UE\Engine\Source\Programs\Shared\EpicGames.MsBuild\obj\Development\net6.0\EpicGames.MsBuild.pdb

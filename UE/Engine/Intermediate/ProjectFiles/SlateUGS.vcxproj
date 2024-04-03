@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Invalid|x64">
+      <Configuration>Invalid</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Invalid|Win64">
+      <Configuration>Invalid</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_Program|x64">
+      <Configuration>Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_Program|Win64">
+      <Configuration>Debug_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Debug_Program|x64">
+      <Configuration>Mac_Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Debug_Program|Win64">
+      <Configuration>Mac_Debug_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugGame_Program|x64">
+      <Configuration>DebugGame_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugGame_Program|Win64">
+      <Configuration>DebugGame_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_DebugGame_Program|x64">
+      <Configuration>Mac_DebugGame_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_DebugGame_Program|Win64">
+      <Configuration>Mac_DebugGame_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development_Program|x64">
+      <Configuration>Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development_Program|Win64">
+      <Configuration>Development_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Development_Program|x64">
+      <Configuration>Mac_Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Development_Program|Win64">
+      <Configuration>Mac_Development_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Test_Program|x64">
+      <Configuration>Test_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Test_Program|Win64">
+      <Configuration>Test_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Test_Program|x64">
+      <Configuration>Mac_Test_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Test_Program|Win64">
+      <Configuration>Mac_Test_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping_Program|x64">
+      <Configuration>Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping_Program|Win64">
+      <Configuration>Shipping_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Shipping_Program|x64">
+      <Configuration>Mac_Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Shipping_Program|Win64">
+      <Configuration>Mac_Shipping_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{04DD4A21-991A-3D63-B68D-04B07894EE37}</ProjectGuid>
+    <RootNamespace>SlateUGS</RootNamespace>
+  </PropertyGroup>
+  <Import Project="UECommon.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Win64 Debug -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Win64 Debug -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Win64 Debug -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\SlateUGS-Win64-Debug.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Win64 Debug -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Debug_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Mac Debug -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Mac Debug -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Mac Debug -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\SlateUGS-Mac-Debug</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Debug_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Mac Debug -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGame_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Win64 DebugGame -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Win64 DebugGame -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Win64 DebugGame -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\SlateUGS-Win64-DebugGame.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGame_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Win64 DebugGame -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_DebugGame_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Mac DebugGame -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Mac DebugGame -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Mac DebugGame -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\SlateUGS-Mac-DebugGame</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_DebugGame_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Mac DebugGame -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Win64 Development -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Win64 Development -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Win64 Development -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\SlateUGS.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Win64 Development -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Development_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Mac Development -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Mac Development -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Mac Development -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\SlateUGS</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Development_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Mac Development -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Win64 Test -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Win64 Test -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Win64 Test -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\SlateUGS-Win64-Test.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Test_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Win64 Test -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Test_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Mac Test -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Mac Test -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Mac Test -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\SlateUGS-Mac-Test</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Test_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Mac Test -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Win64 Shipping -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Win64 Shipping -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Win64 Shipping -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\SlateUGS-Win64-Shipping.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Win64 Shipping -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Shipping_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) SlateUGS Mac Shipping -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) SlateUGS Mac Shipping -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) SlateUGS Mac Shipping -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\SlateUGS-Mac-Shipping</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Shipping_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) SlateUGS Mac Shipping -Project="$(SolutionDir)Engine\Programs\SlateUGS\SlateUGS.uproject" -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <IncludePath>$(IncludePath);..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\AppFramework\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\AppFramework\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ApplicationCore\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ApplicationCore\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\CoreUObject\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\CoreUObject\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Core\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Core\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\DesktopPlatform\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\DesktopPlatform\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ImageCore\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ImageCore\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ImageWrapper\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ImageWrapper\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\InputCore\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\InputCore\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Json\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Json\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Launch\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Launch\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\PakFile\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\PakFile\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ProfilerService\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ProfilerService\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Projects\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Projects\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\RHI\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\RHI\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\RSA\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\RSA\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\SlateCore\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\SlateCore\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\SlateUGS\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\SlateUGS\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Slate\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\Slate\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\StandaloneRenderer\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\StandaloneRenderer\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ToolMenus\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ToolMenus\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ToolWidgets\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\ToolWidgets\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\TraceLog\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\TraceLog\VNI;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\UGSCore\UHT;..\..\Programs\SlateUGS\Intermediate\Build\Win64\SlateUGS\Inc\UGSCore\VNI;..\..\Source;..\..\Source\Developer\DesktopPlatform\Internal;..\..\Source\Developer\DesktopPlatform\Public;..\..\Source\Developer\ProfilerService\Public;..\..\Source\Developer\StandaloneRenderer\Public;..\..\Source\Developer\ToolMenus\Public;..\..\Source\Developer\ToolWidgets\Public;..\..\Source\Programs\SlateUGS\Private;..\..\Source\Programs\SlateUGS\Public;..\..\Source\Programs\UGSCore;..\..\Source\Runtime\AppFramework\Public;..\..\Source\Runtime\ApplicationCore\Public;..\..\Source\Runtime\CoreUObject\Internal;..\..\Source\Runtime\CoreUObject\Public;..\..\Source\Runtime\Core\Internal;..\..\Source\Runtime\Core\Public;..\..\Source\Runtime\ImageCore\Public;..\..\Source\Runtime\ImageWrapper\Public;..\..\Source\Runtime\InputCore\Classes;..\..\Source\Runtime\InputCore\Public;..\..\Source\Runtime\Json\Public;..\..\Source\Runtime\Launch\Public;..\..\Source\Runtime\PakFile\Internal;..\..\Source\Runtime\PakFile\Public;..\..\Source\Runtime\Projects\Public;..\..\Source\Runtime\RHI\Public;..\..\Source\Runtime\RSA\Public;..\..\Source\Runtime\SlateCore\Public;..\..\Source\Runtime\Slate\Public;..\..\Source\Runtime\TraceLog\Public;$(DefaultSystemIncludePaths);</IncludePath>
+    <NMakeForcedIncludes>$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath>$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ClCompile_AdditionalIncludeDirectories>$(NMakeIncludeSearchPath);..\..\Source\ThirdParty\mimalloc\include;..\..\Source\ThirdParty\LibTiff\Source\Win64;..\..\Source\ThirdParty\LibTiff\Source</ClCompile_AdditionalIncludeDirectories>
+    <ClCompile_ForcedIncludeFiles>$(SolutionDir)Engine\Programs\SlateUGS\Intermediate\Build\Win64\x64\SlateUGS\Development\Slate\SharedPCH.Slate.Cpp20.InclOrderUnreal5_0.h;$(SolutionDir)Engine\Programs\SlateUGS\Intermediate\Build\Win64\x64\SlateUGS\Development\SlateUGS\Definitions.SlateUGS.h</ClCompile_ForcedIncludeFiles>
+    <ClCompile_AdditionalOptions>$(AdditionalOptions) /Yu"$(SolutionDir)Engine\Programs\SlateUGS\Intermediate\Build\Win64\x64\SlateUGS\Development\Slate\SharedPCH.Slate.Cpp20.InclOrderUnreal5_0.h"</ClCompile_AdditionalOptions>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\Programs\SlateUGS\SlateUGS.Target.cs"/>
+    <None Include="..\..\Source\Programs\SlateUGS\SlateUGS.Build.cs"/>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\ChangeInfo.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\ScheduledSyncTimer.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\ScheduledSyncTimer.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\SlateUGSApp.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\SlateUGSStyle.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\SlateUGSStyle.h"/>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\UGSLog.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\UGSTab.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\UGSTab.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\UGSTabManager.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\UGSTabManager.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Platforms\Linux\SlateUGSMainLinux.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Platforms\Mac\SlateUGSMainMac.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Platforms\Windows\SlateUGSMainWindows.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SEmptyTab.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SEmptyTab.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SGameSyncTab.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SGameSyncTab.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SHordeBadge.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SHordeBadge.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SLogWidget.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SLogWidget.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SModalTaskWindow.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SModalTaskWindow.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SNewWorkspaceWindow.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SNewWorkspaceWindow.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SPopupTextWindow.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SPopupTextWindow.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SScheduledSyncWindow.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SScheduledSyncWindow.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SSelectStreamWindow.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SSelectStreamWindow.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SSettingsWindow.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SSettingsWindow.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SSyncFilterWindow.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SSyncFilterWindow.h"/>
+    <ClCompile Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SWorkspaceWindow.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Private\Widgets\SWorkspaceWindow.h"/>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Public\SlateUGS.h"/>
+    <ClInclude Include="..\..\Source\Programs\SlateUGS\Public\SlateUGSApp.h"/>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <PropertyGroup>
+    <CleanDependsOn> $(CleanDependsOn); </CleanDependsOn>
+    <CppCleanDependsOn></CppCleanDependsOn>
+  </PropertyGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

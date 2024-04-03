@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Invalid|x64">
+      <Configuration>Invalid</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Invalid|Win64">
+      <Configuration>Invalid</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_Program|x64">
+      <Configuration>Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_Program|Win64">
+      <Configuration>Debug_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Debug_Program|x64">
+      <Configuration>Mac_Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Debug_Program|Win64">
+      <Configuration>Mac_Debug_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Debug_Program|x64">
+      <Configuration>IOS_Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Debug_Program|Win64">
+      <Configuration>IOS_Debug_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_Debug_Program|x64">
+      <Configuration>Android_Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_Debug_Program|Win64">
+      <Configuration>Android_Debug_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Debug_Program|x64">
+      <Configuration>TVOS_Debug_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Debug_Program|Win64">
+      <Configuration>TVOS_Debug_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugGame_Program|x64">
+      <Configuration>DebugGame_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugGame_Program|Win64">
+      <Configuration>DebugGame_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_DebugGame_Program|x64">
+      <Configuration>Mac_DebugGame_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_DebugGame_Program|Win64">
+      <Configuration>Mac_DebugGame_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_DebugGame_Program|x64">
+      <Configuration>IOS_DebugGame_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_DebugGame_Program|Win64">
+      <Configuration>IOS_DebugGame_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_DebugGame_Program|x64">
+      <Configuration>Android_DebugGame_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_DebugGame_Program|Win64">
+      <Configuration>Android_DebugGame_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_DebugGame_Program|x64">
+      <Configuration>TVOS_DebugGame_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_DebugGame_Program|Win64">
+      <Configuration>TVOS_DebugGame_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development_Program|x64">
+      <Configuration>Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development_Program|Win64">
+      <Configuration>Development_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Development_Program|x64">
+      <Configuration>Mac_Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Development_Program|Win64">
+      <Configuration>Mac_Development_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Development_Program|x64">
+      <Configuration>IOS_Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Development_Program|Win64">
+      <Configuration>IOS_Development_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_Development_Program|x64">
+      <Configuration>Android_Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_Development_Program|Win64">
+      <Configuration>Android_Development_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Development_Program|x64">
+      <Configuration>TVOS_Development_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Development_Program|Win64">
+      <Configuration>TVOS_Development_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Test_Program|x64">
+      <Configuration>Test_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Test_Program|Win64">
+      <Configuration>Test_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Test_Program|x64">
+      <Configuration>Mac_Test_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Test_Program|Win64">
+      <Configuration>Mac_Test_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Test_Program|x64">
+      <Configuration>IOS_Test_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Test_Program|Win64">
+      <Configuration>IOS_Test_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_Test_Program|x64">
+      <Configuration>Android_Test_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_Test_Program|Win64">
+      <Configuration>Android_Test_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Test_Program|x64">
+      <Configuration>TVOS_Test_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Test_Program|Win64">
+      <Configuration>TVOS_Test_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping_Program|x64">
+      <Configuration>Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping_Program|Win64">
+      <Configuration>Shipping_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Shipping_Program|x64">
+      <Configuration>Mac_Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mac_Shipping_Program|Win64">
+      <Configuration>Mac_Shipping_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Shipping_Program|x64">
+      <Configuration>IOS_Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="IOS_Shipping_Program|Win64">
+      <Configuration>IOS_Shipping_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_Shipping_Program|x64">
+      <Configuration>Android_Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Android_Shipping_Program|Win64">
+      <Configuration>Android_Shipping_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Shipping_Program|x64">
+      <Configuration>TVOS_Shipping_Program</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TVOS_Shipping_Program|Win64">
+      <Configuration>TVOS_Shipping_Program</Configuration>
+      <Platform>Win64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FE6009F0-BF00-31E5-8260-87C14E9B8B86}</ProjectGuid>
+    <RootNamespace>ChaosUserDataPTTests</RootNamespace>
+  </PropertyGroup>
+  <Import Project="UECommon.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 Debug -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Win64 Debug -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Win64 Debug -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\ChaosUserDataPTTests\ChaosUserDataPTTests-Win64-Debug.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 Debug -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Debug_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac Debug -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Mac Debug -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Mac Debug -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\ChaosUserDataPTTests\ChaosUserDataPTTests-Mac-Debug</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Debug_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac Debug -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Debug_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS Debug -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests IOS Debug -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests IOS Debug -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\IOS\ChaosUserDataPTTests\ChaosUserDataPTTests-IOS-Debug</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Debug_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS Debug -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Android_Debug_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android Debug -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Android Debug -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Android Debug -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Android\ChaosUserDataPTTests\ChaosUserDataPTTests-Android-Debug.so</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Android_Debug_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android Debug -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Debug_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS Debug -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests TVOS Debug -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests TVOS Debug -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\TVOS\ChaosUserDataPTTests\ChaosUserDataPTTests-TVOS-Debug</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Debug_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS Debug -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGame_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 DebugGame -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Win64 DebugGame -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Win64 DebugGame -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\ChaosUserDataPTTests\ChaosUserDataPTTests-Win64-DebugGame.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGame_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 DebugGame -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_DebugGame_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac DebugGame -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Mac DebugGame -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Mac DebugGame -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\ChaosUserDataPTTests\ChaosUserDataPTTests-Mac-DebugGame</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_DebugGame_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac DebugGame -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IOS_DebugGame_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS DebugGame -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests IOS DebugGame -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests IOS DebugGame -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\IOS\ChaosUserDataPTTests\ChaosUserDataPTTests-IOS-DebugGame</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IOS_DebugGame_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS DebugGame -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Android_DebugGame_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android DebugGame -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Android DebugGame -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Android DebugGame -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Android\ChaosUserDataPTTests\ChaosUserDataPTTests-Android-DebugGame.so</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Android_DebugGame_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android DebugGame -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_DebugGame_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS DebugGame -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests TVOS DebugGame -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests TVOS DebugGame -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\TVOS\ChaosUserDataPTTests\ChaosUserDataPTTests-TVOS-DebugGame</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_DebugGame_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS DebugGame -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 Development -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Win64 Development -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Win64 Development -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\ChaosUserDataPTTests\ChaosUserDataPTTests.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Development_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 Development -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Development_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac Development -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Mac Development -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Mac Development -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\ChaosUserDataPTTests\ChaosUserDataPTTests</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Development_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac Development -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Development_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS Development -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests IOS Development -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests IOS Development -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\IOS\ChaosUserDataPTTests\ChaosUserDataPTTests</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Development_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS Development -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Android_Development_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android Development -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Android Development -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Android Development -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Android\ChaosUserDataPTTests\ChaosUserDataPTTests.so</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Android_Development_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android Development -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Development_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS Development -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests TVOS Development -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests TVOS Development -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\TVOS\ChaosUserDataPTTests\ChaosUserDataPTTests</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Development_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS Development -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 Test -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Win64 Test -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Win64 Test -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\ChaosUserDataPTTests\ChaosUserDataPTTests-Win64-Test.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Test_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 Test -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Test_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac Test -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Mac Test -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Mac Test -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\ChaosUserDataPTTests\ChaosUserDataPTTests-Mac-Test</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Test_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac Test -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Test_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS Test -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests IOS Test -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests IOS Test -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\IOS\ChaosUserDataPTTests\ChaosUserDataPTTests-IOS-Test</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Test_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS Test -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Android_Test_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android Test -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Android Test -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Android Test -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Android\ChaosUserDataPTTests\ChaosUserDataPTTests-Android-Test.so</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Android_Test_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android Test -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Test_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS Test -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests TVOS Test -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests TVOS Test -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\TVOS\ChaosUserDataPTTests\ChaosUserDataPTTests-TVOS-Test</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Test_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS Test -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 Shipping -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Win64 Shipping -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Win64 Shipping -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Win64\ChaosUserDataPTTests\ChaosUserDataPTTests-Win64-Shipping.exe</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Shipping_Program|x64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Win64 Shipping -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Shipping_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac Shipping -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Mac Shipping -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Mac Shipping -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Mac\ChaosUserDataPTTests\ChaosUserDataPTTests-Mac-Shipping</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mac_Shipping_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Mac Shipping -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Shipping_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS Shipping -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests IOS Shipping -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests IOS Shipping -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\IOS\ChaosUserDataPTTests\ChaosUserDataPTTests-IOS-Shipping</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='IOS_Shipping_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests IOS Shipping -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Android_Shipping_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android Shipping -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests Android Shipping -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests Android Shipping -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\Android\ChaosUserDataPTTests\ChaosUserDataPTTests-Android-Shipping.so</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Android_Shipping_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests Android Shipping -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Shipping_Program|Win64'">
+    <NMakeBuildCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS Shipping -WaitMutex -FromMsBuild</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(RebuildBatchScript) ChaosUserDataPTTests TVOS Shipping -WaitMutex -FromMsBuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(CleanBatchScript) ChaosUserDataPTTests TVOS Shipping -WaitMutex -FromMsBuild</NMakeCleanCommandLine>
+    <NMakeOutput>..\..\Binaries\TVOS\ChaosUserDataPTTests\ChaosUserDataPTTests-TVOS-Shipping</NMakeOutput>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TVOS_Shipping_Program|Win64'">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>$(BuildBatchScript) ChaosUserDataPTTests TVOS Shipping -WaitMutex -FromMsBuild -WorkingDir=$(MSBuildProjectDirectory) -Files=$(SelectedFiles)</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <IncludePath>$(IncludePath);..\Build\Win64\ChaosUserDataPTTests\Inc\AnalyticsET\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\AnalyticsET\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Analytics\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Analytics\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\AnimationCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\AnimationCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\ApplicationCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\ApplicationCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\AssetRegistry\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\AssetRegistry\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioExtensions\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioExtensions\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioLinkCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioLinkCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioLinkEngine\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioLinkEngine\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioMixerCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioMixerCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioMixer\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioMixer\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioPlatformConfiguration\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\AudioPlatformConfiguration\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\ChaosCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\ChaosCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\ChaosUserDataPTTests\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\ChaosUserDataPTTests\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\ChaosUserDataPT\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\ChaosUserDataPT\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Chaos\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Chaos\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\ClothSysRuntimeIntrfc\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\ClothSysRuntimeIntrfc\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\CookOnTheFly\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\CookOnTheFly\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\CoreOnline\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\CoreOnline\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\CoreUObject\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\CoreUObject\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Core\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Core\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\DesktopPlatform\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\DesktopPlatform\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\DeveloperSettings\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\DeveloperSettings\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\EngineMessages\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\EngineMessages\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\EngineSettings\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\EngineSettings\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Engine\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Engine\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\FieldNotification\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\FieldNotification\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\GameplayTags\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\GameplayTags\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\GeometryCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\GeometryCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\ImageCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\ImageCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\ImageWrapper\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\ImageWrapper\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\InputCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\InputCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\IoStoreOnDemand\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\IoStoreOnDemand\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\IrisCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\IrisCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\JsonUtilities\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\JsonUtilities\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Json\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Json\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\LowLevelTestsRunner\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\LowLevelTestsRunner\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\MeshDescription\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\MeshDescription\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\MessagingCommon\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\MessagingCommon\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Messaging\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Messaging\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\MovieSceneCapture\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\MovieSceneCapture\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\NetCommon\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\NetCommon\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\NetCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\NetCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Networking\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Networking\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\NetworkReplayStreaming\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\NetworkReplayStreaming\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\PacketHandler\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\PacketHandler\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\PakFile\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\PakFile\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\PhysicsCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\PhysicsCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\ReliableHComp\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\ReliableHComp\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\RenderCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\RenderCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Renderer\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Renderer\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\RHI\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\RHI\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\RSA\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\RSA\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\SignalProcessing\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\SignalProcessing\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\SkeletalMeshDescription\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\SkeletalMeshDescription\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\SlateCore\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\SlateCore\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Slate\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Slate\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Sockets\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Sockets\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\StaticMeshDescription\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\StaticMeshDescription\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\SynthBenchmark\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\SynthBenchmark\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\TargetPlatform\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\TargetPlatform\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\TextureFormat\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\TextureFormat\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\TraceLog\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\TraceLog\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\TypedElementFramework\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\TypedElementFramework\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\TypedElementRuntime\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\TypedElementRuntime\VNI;..\Build\Win64\ChaosUserDataPTTests\Inc\Voronoi\UHT;..\Build\Win64\ChaosUserDataPTTests\Inc\Voronoi\VNI;..\..\Plugins\Experimental\ChaosUserDataPT\Source\ChaosUserDataPT\Public;..\..\Shaders\Shared;..\..\Source;..\..\Source\Developer\DesktopPlatform\Internal;..\..\Source\Developer\DesktopPlatform\Public;..\..\Source\Developer\LowLevelTestsRunner\Public;..\..\Source\Developer\TargetPlatform\Public;..\..\Source\Developer\TextureFormat\Public;..\..\Source\Programs\ChaosUserDataPTTests\Private;..\..\Source\Runtime\Analytics\AnalyticsET\Public;..\..\Source\Runtime\Analytics\Analytics\Public;..\..\Source\Runtime\AnimationCore\Public;..\..\Source\Runtime\ApplicationCore\Public;..\..\Source\Runtime\AssetRegistry\Internal;..\..\Source\Runtime\AssetRegistry\Public;..\..\Source\Runtime\AudioExtensions\Public;..\..\Source\Runtime\AudioLink\AudioLinkCore\Public;..\..\Source\Runtime\AudioLink\AudioLinkEngine\Public;..\..\Source\Runtime\AudioMixerCore\Public;..\..\Source\Runtime\AudioMixer\Classes;..\..\Source\Runtime\AudioMixer\Public;..\..\Source\Runtime\AudioPlatformConfiguration\Public;..\..\Source\Runtime\ClothingSystemRuntimeInterface\Public;..\..\Source\Runtime\CookOnTheFly\Internal;..\..\Source\Runtime\CoreOnline\Public;..\..\Source\Runtime\CoreUObject\Internal;..\..\Source\Runtime\CoreUObject\Public;..\..\Source\Runtime\Core\Internal;..\..\Source\Runtime\Core\Public;..\..\Source\Runtime\DeveloperSettings\Public;..\..\Source\Runtime\EngineMessages\Public;..\..\Source\Runtime\EngineSettings\Classes;..\..\Source\Runtime\EngineSettings\Public;..\..\Source\Runtime\Engine\Classes;..\..\Source\Runtime\Engine\Internal;..\..\Source\Runtime\Engine\Public;..\..\Source\Runtime\Experimental\ChaosCore\Public;..\..\Source\Runtime\Experimental\Chaos\Public;..\..\Source\Runtime\Experimental\IoStoreOnDemand\Public;..\..\Source\Runtime\Experimental\Iris\Core\Public;..\..\Source\Runtime\Experimental\Voronoi\Public;..\..\Source\Runtime\FieldNotification\Public;..\..\Source\Runtime\GameplayTags\Classes;..\..\Source\Runtime\GameplayTags\Public;..\..\Source\Runtime\GeometryCore\Public;..\..\Source\Runtime\ImageCore\Public;..\..\Source\Runtime\ImageWrapper\Public;..\..\Source\Runtime\InputCore\Classes;..\..\Source\Runtime\InputCore\Public;..\..\Source\Runtime\JsonUtilities\Public;..\..\Source\Runtime\Json\Public;..\..\Source\Runtime\MeshDescription\Public;..\..\Source\Runtime\MessagingCommon\Public;..\..\Source\Runtime\Messaging\Public;..\..\Source\Runtime\MovieSceneCapture\Public;..\..\Source\Runtime\Networking\Public;..\..\Source\Runtime\NetworkReplayStreaming\NetworkReplayStreaming\Public;..\..\Source\Runtime\Net\Common\Public;..\..\Source\Runtime\Net\Core\Classes;..\..\Source\Runtime\Net\Core\Public;..\..\Source\Runtime\PacketHandlers\PacketHandler\Classes;..\..\Source\Runtime\PacketHandlers\PacketHandler\Public;..\..\Source\Runtime\PacketHandlers\ReliabilityHandlerComponent\Public;..\..\Source\Runtime\PakFile\Internal;..\..\Source\Runtime\PakFile\Public;..\..\Source\Runtime\PhysicsCore\Public;..\..\Source\Runtime\RenderCore\Public;..\..\Source\Runtime\Renderer\Public;..\..\Source\Runtime\RHI\Public;..\..\Source\Runtime\RSA\Public;..\..\Source\Runtime\SignalProcessing\Public;..\..\Source\Runtime\SkeletalMeshDescription\Public;..\..\Source\Runtime\SlateCore\Public;..\..\Source\Runtime\Slate\Public;..\..\Source\Runtime\Sockets\Public;..\..\Source\Runtime\StaticMeshDescription\Public;..\..\Source\Runtime\SynthBenchmark\Public;..\..\Source\Runtime\TraceLog\Public;..\..\Source\Runtime\TypedElementFramework\Public;..\..\Source\Runtime\TypedElementRuntime\Public;..\..\Source\ThirdParty\Catch2\v3.0.1\src;$(DefaultSystemIncludePaths);</IncludePath>
+    <NMakeForcedIncludes>$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath>$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <AdditionalOptions>/std:c++20  /DSAL_NO_ATTRIBUTE_DECLARATIONS=1 /permissive- /Zc:strictStrings- /Zc:__cplusplus</AdditionalOptions>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ClCompile_AdditionalIncludeDirectories>$(NMakeIncludeSearchPath);..\..\Source\ThirdParty\mimalloc\include;..\..\Source\ThirdParty\LibTiff\Source\Win64;..\..\Source\ThirdParty\LibTiff\Source</ClCompile_AdditionalIncludeDirectories>
+    <ClCompile_ForcedIncludeFiles>$(SolutionDir)Engine\Intermediate\Build\Win64\x64\ChaosUserDataPTTests\Development\ChaosUserDataPTTests\Definitions.h</ClCompile_ForcedIncludeFiles>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\Programs\ChaosUserDataPTTests\ChaosUserDataPTTests.Target.cs"/>
+    <None Include="..\..\Source\Programs\ChaosUserDataPTTests\ChaosUserDataPTTests.Build.cs"/>
+    <None Include="..\..\Source\Programs\ChaosUserDataPTTests\readme.md"/>
+    <ClCompile Include="..\..\Source\Programs\ChaosUserDataPTTests\Private\ChaosUserDataPTTests.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Programs\ChaosUserDataPTTests\Private\TestGroupEvents.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <PropertyGroup>
+    <CleanDependsOn> $(CleanDependsOn); </CleanDependsOn>
+    <CppCleanDependsOn></CppCleanDependsOn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunSettingsFilePath>$(ProjectDir)..\..\Source\Programs\LowLevelTests\vstest.runsettings</RunSettingsFilePath>
+  </PropertyGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
