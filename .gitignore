@@ -69,8 +69,8 @@ captures/
 /AroundMe/Plugins/TestLib/Intermediate/
 /AroundMe/Plugins/TestLib/Binaries/
 /AroundMe/Plugins/TestLib/Binaries/Win64/
-/AroundMe/Plugins/TestLib/ntermediate/
-
+/AroundMe/Plugins/TestLib/Intermediate/
+/UE/Engine/Intermediate/
 # Keystore files
 *.jks
 
