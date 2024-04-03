@@ -15,31 +15,6 @@
 	],
 	"Plugins": [
 		{
-			"Name": "GeoLocation",
-			"Enabled": false,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/756ffbd1a6054f9493ad749cd65aced1"
-		},
-		{
-			"Name": "Paper2D",
-			"Enabled": false
-		},
-		{
-			"Name": "MeshPainting",
-			"Enabled": false
-		},
-		{
-			"Name": "MediaPlate",
-			"Enabled": false
-		},
-		{
-			"Name": "ChaosEditor",
-			"Enabled": false
-		},
-		{
-			"Name": "UVEditor",
-			"Enabled": false
-		},
-		{
 			"Name": "GeometryProcessing",
 			"Enabled": true
 		},
@@ -62,25 +37,6 @@
 		{
 			"Name": "AndroidCamera",
 			"Enabled": true
-		},
-		{
-			"Name": "AndroidMedia",
-			"Enabled": false
-		},
-		{
-			"Name": "AndroidMoviePlayer",
-			"Enabled": false
-		},
-		{
-			"Name": "OnlineSubsystemGooglePlay",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Android"
-			]
-		},
-		{
-			"Name": "AndroidPermission",
-			"Enabled": false
 		}
 	]
 }
