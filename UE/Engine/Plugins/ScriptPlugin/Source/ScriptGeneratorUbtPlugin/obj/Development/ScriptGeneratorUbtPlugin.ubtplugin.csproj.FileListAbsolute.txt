@@ -1,0 +1,11 @@
+E:\AroundMeProject\UE\Engine\Binaries\DotNET\UnrealBuildTool\Plugins\ScriptGeneratorUbtPlugin\ScriptGeneratorUbtPlugin.deps.json
+E:\AroundMeProject\UE\Engine\Binaries\DotNET\UnrealBuildTool\Plugins\ScriptGeneratorUbtPlugin\ScriptGeneratorUbtPlugin.dll
+E:\AroundMeProject\UE\Engine\Binaries\DotNET\UnrealBuildTool\Plugins\ScriptGeneratorUbtPlugin\ref\ScriptGeneratorUbtPlugin.dll
+E:\AroundMeProject\UE\Engine\Binaries\DotNET\UnrealBuildTool\Plugins\ScriptGeneratorUbtPlugin\ScriptGeneratorUbtPlugin.pdb
+E:\AroundMeProject\UE\Engine\Plugins\ScriptPlugin\Source\ScriptGeneratorUbtPlugin\obj\Development\ScriptGeneratorUbtPlugin.ubtplugin.csproj.AssemblyReference.cache
+E:\AroundMeProject\UE\Engine\Plugins\ScriptPlugin\Source\ScriptGeneratorUbtPlugin\obj\Development\ScriptGeneratorUbtPlugin.ubtplugin.GeneratedMSBuildEditorConfig.editorconfig
+E:\AroundMeProject\UE\Engine\Plugins\ScriptPlugin\Source\ScriptGeneratorUbtPlugin\obj\Development\ScriptGeneratorUbtPlugin.ubtplugin.csproj.CoreCompileInputs.cache
+E:\AroundMeProject\UE\Engine\Plugins\ScriptPlugin\Source\ScriptGeneratorUbtPlugin\obj\Development\ScriptGeneratorUbtPlugin.ubtplugin.csproj.CopyComplete
+E:\AroundMeProject\UE\Engine\Plugins\ScriptPlugin\Source\ScriptGeneratorUbtPlugin\obj\Development\ScriptGeneratorUbtPlugin.dll
+E:\AroundMeProject\UE\Engine\Plugins\ScriptPlugin\Source\ScriptGeneratorUbtPlugin\obj\Development\refint\ScriptGeneratorUbtPlugin.dll
+E:\AroundMeProject\UE\Engine\Plugins\ScriptPlugin\Source\ScriptGeneratorUbtPlugin\obj\Development\ScriptGeneratorUbtPlugin.pdb
