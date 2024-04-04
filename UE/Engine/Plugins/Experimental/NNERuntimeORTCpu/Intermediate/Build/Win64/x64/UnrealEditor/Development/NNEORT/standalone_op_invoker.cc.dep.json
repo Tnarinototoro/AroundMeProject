@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\session\\standalone_op_invoker.cc",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\nneort\\pch.nneonnxruntime.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\session\\inference_session.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\optimizer\\graph_transformer_mgr.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\internal\\core\\optimizer\\graph_transformer.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\optimizer\\constant_folding.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\internal\\core\\optimizer\\rewrite_rule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\optimizer\\insert_cast_transformer.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\internal\\core\\framework\\kernel_registry.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\framework\\error_code_helper.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\framework\\tensorseq.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\session\\ort_apis.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

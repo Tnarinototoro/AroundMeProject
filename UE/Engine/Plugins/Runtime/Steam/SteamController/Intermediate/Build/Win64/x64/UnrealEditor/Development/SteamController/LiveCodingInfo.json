@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.SteamController.cpp.obj": [
+			"SteamController.cpp.obj"
+		]
+	}
+}

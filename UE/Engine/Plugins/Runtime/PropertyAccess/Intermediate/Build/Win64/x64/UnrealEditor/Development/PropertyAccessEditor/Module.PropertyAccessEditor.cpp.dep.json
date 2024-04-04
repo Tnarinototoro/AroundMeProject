@@ -1,0 +1,38 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\propertyaccess\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\propertyaccesseditor\\module.propertyaccesseditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\propertyaccess\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\propertyaccesseditor\\definitions.propertyaccesseditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\propertyaccess\\source\\propertyaccesseditor\\private\\propertyaccesseditor.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\propertyaccess\\source\\propertyaccesseditor\\private\\propertyaccesseditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\public\\ipropertyaccesseditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\public\\ipropertyaccesscompiler.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealed\\uht\\ipropertyaccesscompiler.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\propertyaccess.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\propertyaccess.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\propertypath\\public\\propertypathhelpers.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\propertypath\\public\\propertytypecompatibility.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\propertypath\\uht\\propertypathhelpers.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\public\\kismet2\\blueprinteditorutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\classviewer\\public\\classviewermodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\blueprintgraph\\public\\blueprintactiondatabase.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\classes\\settings\\animblueprintsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealed\\uht\\animblueprintsettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\classes\\preferences\\personaoptions.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealed\\uht\\personaoptions.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\propertyaccess\\source\\propertyaccesseditor\\private\\propertyaccesseditormodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\propertyaccess\\source\\propertyaccesseditor\\private\\spropertybinding.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\propertyaccess\\source\\propertyaccesseditor\\private\\spropertybinding.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\detaillayoutbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\idetailpropertyrow.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slate\\public\\widgets\\input\\snumericentrybox.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slate\\public\\widgets\\input\\sspinbox.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slate\\public\\widgets\\colors\\scolorblock.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,10 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.AudioCaptureEditor.cpp.obj": [
+			"AudioCaptureEditor.cpp.obj",
+			"AudioCaptureEditorModule.cpp.obj",
+			"AudioRecordingManager.cpp.obj"
+		]
+	}
+}

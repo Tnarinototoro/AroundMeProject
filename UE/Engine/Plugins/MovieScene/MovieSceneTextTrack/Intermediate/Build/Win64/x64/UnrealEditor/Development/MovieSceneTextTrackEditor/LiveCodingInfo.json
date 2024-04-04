@@ -1,0 +1,12 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MovieSceneTextTrackEditor.cpp.obj": [
+			"MovieSceneTextKeyStruct.gen.cpp.obj",
+			"MovieSceneTextTrackEditor.init.gen.cpp.obj",
+			"MovieSceneTextTrackEditorModule.cpp.obj",
+			"TextPropertyTrackEditor.cpp.obj",
+			"STextKeyEditor.cpp.obj"
+		]
+	}
+}

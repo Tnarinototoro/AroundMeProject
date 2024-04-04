@@ -1,0 +1,9 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MassGameplayTestSuite.cpp.obj": [
+			"MassEntityTemplateTest.cpp.obj",
+			"MassGameplayTestSuiteModule.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\framework\\func_kernel.cc",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\nneort\\pch.nneonnxruntime.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\framework\\func_kernel.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\framework\\op_kernel_context_internal.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

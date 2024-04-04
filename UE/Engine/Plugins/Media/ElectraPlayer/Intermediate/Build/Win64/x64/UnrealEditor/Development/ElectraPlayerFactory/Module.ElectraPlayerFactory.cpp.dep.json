@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electraplayer\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\electraplayerfactory\\module.electraplayerfactory.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electraplayer\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\electraplayerfactory\\definitions.electraplayerfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electraplayer\\source\\electraplayerfactory\\private\\electraplayerfactorymodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electraplayer\\source\\electraplayerfactory\\private\\electraplayerfactoryprivate.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediamodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaoptions.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaplayerfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electraplayer\\source\\electraplayerplugin\\public\\ielectraplayerpluginmodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

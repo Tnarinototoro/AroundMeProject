@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\providers\\cpu\\math\\matmul.cc",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\nneort\\pch.nneonnxruntime.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\providers\\cpu\\math\\matmul.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\providers\\cpu\\math\\gemm_matmul_common.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\providers\\cpu\\math\\matmul_helper.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\util\\math.h",
+            "d:\\vs2022\\vc\\tools\\msvc\\14.35.32215\\include\\cassert",
+            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.22621.0\\ucrt\\assert.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\dependencies\\onnxruntimemlas\\include\\core\\mlas\\inc\\mlas.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

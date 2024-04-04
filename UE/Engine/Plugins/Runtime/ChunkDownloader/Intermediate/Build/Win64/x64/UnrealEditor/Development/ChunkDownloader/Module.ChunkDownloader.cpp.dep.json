@@ -1,0 +1,26 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\chunkdownloader\\module.chunkdownloader.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\coreuobject\\sharedpch.coreuobject.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\chunkdownloader\\definitions.chunkdownloader.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\source\\private\\chunkdownloader.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\source\\public\\chunkdownloader.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\source\\private\\chunkdownloaderlog.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\online\\http\\public\\httpmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\online\\http\\public\\interfaces\\ihttprequest.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\online\\http\\public\\interfaces\\ihttpbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\online\\http\\public\\interfaces\\ihttpresponse.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\source\\private\\download.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\source\\private\\platformstreamdownload.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\source\\private\\chunkdownloadermodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\genericplatform\\genericplatformchunkinstall.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\source\\private\\download.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\chunkdownloader\\source\\private\\platformstreamdownload.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

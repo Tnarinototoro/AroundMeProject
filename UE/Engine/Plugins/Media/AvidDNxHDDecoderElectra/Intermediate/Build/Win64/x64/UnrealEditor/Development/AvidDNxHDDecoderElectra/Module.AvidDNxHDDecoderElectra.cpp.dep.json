@@ -1,0 +1,30 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\aviddnxhddecoderelectra\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\aviddnxhddecoderelectra\\module.aviddnxhddecoderelectra.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\core\\sharedpch.core.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\aviddnxhddecoderelectra\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\aviddnxhddecoderelectra\\definitions.aviddnxhddecoderelectra.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\aviddnxhddecoderelectra\\source\\private\\aviddnxhddecoderelectramodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\aviddnxhddecoderelectra\\source\\private\\aviddnxhddecoderelectramodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\aviddnxhddecoderelectra\\source\\private\\windows\\electramediaaviddnxhddecoder.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\aviddnxhddecoderelectra\\source\\private\\windows\\electramediaaviddnxhddecoder.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\public\\ielectracodecregistry.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\public\\ielectracodecfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\variant.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderresourcedelegate.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderresourcedelegatebase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\windows\\windowselectradecoderresourcedelegate.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\public\\ielectracodecfactorymodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderfeaturesandoptions.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoder.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderoutputvideo.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\windows\\windowselectradecoderplatformoutputhandletypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\electradecodersutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\thirdparty\\aviddnxhd\\dnxhr\\include\\aviddnxcodec.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

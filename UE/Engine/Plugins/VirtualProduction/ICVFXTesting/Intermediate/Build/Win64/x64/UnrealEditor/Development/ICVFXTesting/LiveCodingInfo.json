@@ -1,0 +1,14 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ICVFXTesting.cpp.obj": [
+			"ICVFXTestControllerAutoTest.gen.cpp.obj",
+			"ICVFXTestControllerBase.gen.cpp.obj",
+			"ICVFXTesting.init.gen.cpp.obj",
+			"ICVFXTestLocation.gen.cpp.obj",
+			"ICVFXTestControllerAutoTest.cpp.obj",
+			"ICVFXTestControllerBase.cpp.obj",
+			"ICVFXTestingModule.cpp.obj"
+		]
+	}
+}

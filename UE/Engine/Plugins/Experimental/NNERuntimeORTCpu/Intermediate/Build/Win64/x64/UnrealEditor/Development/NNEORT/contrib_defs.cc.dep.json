@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\graph\\contrib_ops\\contrib_defs.cc",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\nneort\\pch.nneonnxruntime.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\graph\\contrib_ops\\contrib_defs.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\graph\\contrib_ops\\ms_schema.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\dependencies\\onnx\\include\\onnx\\defs\\tensor_proto_util.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\graph\\contrib_ops\\attn_lstm_schema_defs.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\graph\\contrib_ops\\range_schema_defs.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\graph\\op.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\dependencies\\onnxruntimemlas\\include\\core\\mlas\\inc\\mlas.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\graph\\contrib_ops\\onnx_function_util.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\dependencies\\onnx\\include\\onnx\\defs\\function.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\dependencies\\onnx\\include\\onnx\\defs\\attr_proto_util.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\dependencies\\onnx\\include\\onnx\\common\\status.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\dependencies\\onnx\\include\\onnx\\defs\\parser.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

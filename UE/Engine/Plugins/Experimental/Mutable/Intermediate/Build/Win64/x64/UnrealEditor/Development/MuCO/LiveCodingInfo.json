@@ -1,0 +1,41 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MuCO.1.cpp.obj": [
+			"CustomizableInstancePrivateData.gen.cpp.obj",
+			"CustomizableObject.init.gen.cpp.obj",
+			"CustomizableObjectClothingTypes.gen.cpp.obj",
+			"CustomizableObjectExtension.gen.cpp.obj",
+			"CustomizableObjectExtensionData.gen.cpp.obj",
+			"CustomizableObjectParameterTypeDefinitions.gen.cpp.obj",
+			"CustomizableObjectUIData.gen.cpp.obj",
+			"CustomizableInstanceLODManagement.cpp.obj",
+			"CustomizableObject.cpp.obj",
+			"CustomizableObjectCustomVersion.cpp.obj",
+			"CustomizableObjectDGGUI.cpp.obj",
+			"CustomizableObjectIdentifier.cpp.obj",
+			"CustomizableObjectInstance.cpp.obj"
+		],
+		"Module.MuCO.2.cpp.obj": [
+			"CustomizableObjectInstanceDescriptor.cpp.obj",
+			"CustomizableObjectMipDataProvider.cpp.obj",
+			"CustomizableObjectModule.cpp.obj",
+			"CustomizableObjectStreamedExtensionData.cpp.obj",
+			"CustomizableObjectSystem.cpp.obj",
+			"CustomizableSkeletalComponent.cpp.obj",
+			"CustomizableSkeletalMeshActor.cpp.obj",
+			"DefaultImageProvider.cpp.obj",
+			"FMutableTaskGraph.cpp.obj",
+			"LogBenchmarkUtil.cpp.obj",
+			"LogInformationUtil.cpp.obj",
+			"MultilayerProjector.cpp.obj",
+			"MutableMeshBufferUtils.cpp.obj",
+			"MutableProjectorTypeUtils.cpp.obj",
+			"UnrealBakeHelpers.cpp.obj",
+			"UnrealConversionUtils.cpp.obj",
+			"UnrealExtensionDataStreamer.cpp.obj",
+			"UnrealMutableImageProvider.cpp.obj",
+			"UnrealMutableModelDiskStreamer.cpp.obj"
+		]
+	}
+}

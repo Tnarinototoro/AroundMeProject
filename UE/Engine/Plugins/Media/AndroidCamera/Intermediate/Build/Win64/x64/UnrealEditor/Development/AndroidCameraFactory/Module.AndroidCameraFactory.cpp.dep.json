@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\androidcamerafactory\\module.androidcamerafactory.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\androidcamerafactory\\definitions.androidcamerafactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\unrealeditor\\inc\\androidcamerafactory\\uht\\androidcamerafactory.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\unrealeditor\\inc\\androidcamerafactory\\uht\\androidcamerasettings.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\source\\androidcamerafactory\\public\\androidcamerasettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\unrealeditor\\inc\\androidcamerafactory\\uht\\androidcamerasettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\source\\androidcamerafactory\\private\\androidcamerafactorymodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\source\\androidcamerafactory\\private\\androidcamerafactoryprivate.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediamodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaplayerfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\source\\androidcamera\\public\\iandroidcameramodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\source\\androidcamerafactory\\private\\androidcamerasettings.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

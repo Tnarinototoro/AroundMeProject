@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\gameplayinsights\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\gameplayinsightseditor\\module.gameplayinsightseditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\gameplayinsights\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\gameplayinsightseditor\\definitions.gameplayinsightseditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\gameplayinsights\\intermediate\\build\\win64\\unrealeditor\\inc\\gameplayinsightseditor\\uht\\gameplayinsightseditor.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\gameplayinsights\\source\\gameplayinsightseditor\\private\\gameplayinsightseditor.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\gameplayinsights\\source\\gameplayinsightseditor\\private\\insightsskeletalmeshcomponent.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\gameplayinsights\\source\\gameplayinsightseditor\\public\\insightsskeletalmeshcomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\gameplayinsights\\intermediate\\build\\win64\\unrealeditor\\inc\\gameplayinsightseditor\\uht\\insightsskeletalmeshcomponent.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\gameplayinsights\\source\\gameplayinsights\\public\\ianimationprovider.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\traceservices\\public\\traceservices\\model\\analysissession.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\traceservices\\public\\traceservices\\containers\\timelines.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\gameplayinsights\\intermediate\\build\\win64\\unrealeditor\\inc\\gameplayinsightseditor\\uht\\insightsskeletalmeshcomponent.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

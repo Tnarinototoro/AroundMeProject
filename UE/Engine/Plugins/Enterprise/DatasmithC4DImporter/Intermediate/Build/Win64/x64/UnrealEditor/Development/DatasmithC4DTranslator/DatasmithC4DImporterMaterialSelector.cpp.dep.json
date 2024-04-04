@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithc4dimporter\\source\\datasmithc4dtranslator\\private\\datasmithc4dimportermaterialselector.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithc4dimporter\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\datasmithc4dtranslator\\definitions.datasmithc4dtranslator.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

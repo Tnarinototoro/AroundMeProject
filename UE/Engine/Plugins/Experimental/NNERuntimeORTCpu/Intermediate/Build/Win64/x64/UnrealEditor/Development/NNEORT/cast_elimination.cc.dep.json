@@ -1,0 +1,16 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\optimizer\\cast_elimination.cc",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\nneort\\pch.nneonnxruntime.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\internal\\core\\optimizer\\rewrite_rule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\optimizer\\cast_elimination.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\optimizer\\utils.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\nneruntimeortcpu\\source\\thirdparty\\onnxruntime\\onnxruntime\\private\\core\\graph\\graph_utils.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

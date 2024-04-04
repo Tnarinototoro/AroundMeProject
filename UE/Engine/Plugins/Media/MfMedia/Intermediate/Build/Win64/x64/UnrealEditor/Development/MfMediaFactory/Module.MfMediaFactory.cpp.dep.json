@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\mfmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\mfmediafactory\\module.mfmediafactory.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\mfmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\mfmediafactory\\definitions.mfmediafactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\mfmedia\\source\\mfmediafactory\\private\\mfmediafactorymodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\mfmedia\\source\\mfmediafactory\\private\\mfmediafactoryprivate.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediamodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaoptions.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaplayerfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\mfmedia\\source\\mfmedia\\public\\imfmediamodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

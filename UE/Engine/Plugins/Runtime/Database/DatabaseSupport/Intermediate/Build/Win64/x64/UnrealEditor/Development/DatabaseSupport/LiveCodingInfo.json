@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.DatabaseSupport.cpp.obj": [
+			"DatabaseSupport.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,47 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MuR.1.cpp.obj": [
+			"MutableRuntime.init.gen.cpp.obj",
+			"System.gen.cpp.obj",
+			"Miro.cpp.obj",
+			"CodeRunner.cpp.obj"
+		],
+		"Module.MuR.2.cpp.obj": [
+			"CodeRunnerTasked.cpp.obj",
+			"CodeVisitor.cpp.obj",
+			"ExtensionData.cpp.obj",
+			"Image.cpp.obj",
+			"ImageRLE.cpp.obj",
+			"Instance.cpp.obj",
+			"Layout.cpp.obj",
+			"Memory.cpp.obj",
+			"Mesh.cpp.obj",
+			"MeshBufferSet.cpp.obj",
+			"Model.cpp.obj",
+			"MutableRuntimeModule.cpp.obj",
+			"MutableString.cpp.obj",
+			"MutableTrace.cpp.obj",
+			"NullExtensionDataStreamer.cpp.obj",
+			"Operations.cpp.obj",
+			"OpImageCompose.cpp.obj",
+			"OpImageCrop.cpp.obj",
+			"OpImageMipmap.cpp.obj",
+			"OpImagePixelFormat.cpp.obj"
+		],
+		"Module.MuR.3.cpp.obj": [
+			"OpImageProject.cpp.obj",
+			"OpImageResize.cpp.obj",
+			"OpImageSwizzle.cpp.obj",
+			"OpImageTransformPrivate.cpp.obj",
+			"OpMeshFormat.cpp.obj",
+			"OpMeshRemove.cpp.obj",
+			"Parameters.cpp.obj",
+			"PhysicsBody.cpp.obj",
+			"Serialisation.cpp.obj",
+			"Settings.cpp.obj",
+			"Skeleton.cpp.obj",
+			"System.cpp.obj"
+		]
+	}
+}

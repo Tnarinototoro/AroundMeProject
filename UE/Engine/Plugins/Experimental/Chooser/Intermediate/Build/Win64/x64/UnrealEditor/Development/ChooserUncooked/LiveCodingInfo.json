@@ -1,0 +1,11 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ChooserUncooked.cpp.obj": [
+			"ChooserUncooked.init.gen.cpp.obj",
+			"EvaluateChooserNode.gen.cpp.obj",
+			"ChooserUncookedModule.cpp.obj",
+			"EvaluateChooserNode.cpp.obj"
+		]
+	}
+}

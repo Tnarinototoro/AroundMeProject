@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.NiagaraFluids.cpp.obj": [
+			"NiagaraFluids.cpp.obj"
+		]
+	}
+}

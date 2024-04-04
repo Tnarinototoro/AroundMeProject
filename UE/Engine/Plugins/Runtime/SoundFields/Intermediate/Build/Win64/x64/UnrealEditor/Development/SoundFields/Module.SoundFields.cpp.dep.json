@@ -1,0 +1,32 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\soundfields\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\soundfields\\module.soundfields.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\soundfields\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\soundfields\\definitions.soundfields.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\soundfields\\intermediate\\build\\win64\\unrealeditor\\inc\\soundfields\\uht\\soundfields.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\soundfields\\source\\soundfields\\private\\soundfields.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\soundfields\\source\\soundfields\\public\\soundfields.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\soundfields\\intermediate\\build\\win64\\unrealeditor\\inc\\soundfields\\uht\\soundfields.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\audioanalytics.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\engineanalytics.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analyticset\\public\\ianalyticsprovideret.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analyticset\\public\\analyticset.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\analyticsproviderconfigurationdelegate.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\interfaces\\ianalyticsprovidermodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\analyticseventattribute.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\analyticsconversion.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\interfaces\\ianalyticsprovider.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\signalprocessing\\public\\dsp\\floatarraymath.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\soundfieldrendering\\public\\soundfieldrendering.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\soundfieldrendering\\public\\sphericalharmoniccalculator.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\soundfields\\intermediate\\build\\win64\\unrealeditor\\inc\\soundfields\\uht\\soundfields.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\soundfields\\source\\soundfields\\private\\soundfieldsmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\soundfields\\source\\soundfields\\public\\soundfieldsmodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

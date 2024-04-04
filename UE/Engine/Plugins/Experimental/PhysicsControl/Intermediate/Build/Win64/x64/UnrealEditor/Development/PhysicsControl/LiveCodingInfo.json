@@ -1,0 +1,23 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PhysicsControl.1.cpp.obj": [
+			"PhysicsControl.init.gen.cpp.obj",
+			"PhysicsControlComponent.gen.cpp.obj"
+		],
+		"Module.PhysicsControl.2.cpp.obj": [
+			"PhysicsControlData.gen.cpp.obj",
+			"PhysicsControlLimbData.gen.cpp.obj",
+			"PhysicsControlProfileAsset.gen.cpp.obj",
+			"PhysicsControlActor.cpp.obj",
+			"PhysicsControlComponent.cpp.obj",
+			"PhysicsControlComponentHelpers.cpp.obj",
+			"PhysicsControlComponentImpl.cpp.obj",
+			"PhysicsControlComponentLog.cpp.obj",
+			"PhysicsControlModule.cpp.obj",
+			"PhysicsControlNameRecords.cpp.obj",
+			"PhysicsControlProfileAsset.cpp.obj",
+			"PhysicsControlRecord.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\platformcryptotypes\\module.platformcryptotypes.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\core\\sharedpch.core.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\platformcryptotypes\\definitions.platformcryptotypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcryptotypes\\private\\platformcryptotypes.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcryptotypes\\public\\platformcryptotypes.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,111 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "Widgets/SMVVMViewModelPanel.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#ifdef MODELVIEWVIEWMODELEDITOR_SMVVMViewModelPanel_generated_h
+#error "SMVVMViewModelPanel.generated.h already included, missing '#pragma once' in SMVVMViewModelPanel.h"
+#endif
+#define MODELVIEWVIEWMODELEDITOR_SMVVMViewModelPanel_generated_h
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMVVMBlueprintViewModelContextWrapper(); \
+	friend struct Z_Construct_UClass_UMVVMBlueprintViewModelContextWrapper_Statics; \
+public: \
+	DECLARE_CLASS(UMVVMBlueprintViewModelContextWrapper, UObject, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/ModelViewViewModelEditor"), NO_API) \
+	DECLARE_SERIALIZER(UMVVMBlueprintViewModelContextWrapper)
+
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMVVMBlueprintViewModelContextWrapper(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMVVMBlueprintViewModelContextWrapper(UMVVMBlueprintViewModelContextWrapper&&); \
+	NO_API UMVVMBlueprintViewModelContextWrapper(const UMVVMBlueprintViewModelContextWrapper&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMVVMBlueprintViewModelContextWrapper); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMVVMBlueprintViewModelContextWrapper); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UMVVMBlueprintViewModelContextWrapper) \
+	NO_API virtual ~UMVVMBlueprintViewModelContextWrapper();
+
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_28_PROLOG
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_31_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MODELVIEWVIEWMODELEDITOR_API UClass* StaticClass<class UMVVMBlueprintViewModelContextWrapper>();
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMVVMViewModelPanelToolMenuContext(); \
+	friend struct Z_Construct_UClass_UMVVMViewModelPanelToolMenuContext_Statics; \
+public: \
+	DECLARE_CLASS(UMVVMViewModelPanelToolMenuContext, UObject, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/ModelViewViewModelEditor"), NO_API) \
+	DECLARE_SERIALIZER(UMVVMViewModelPanelToolMenuContext)
+
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMVVMViewModelPanelToolMenuContext(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMVVMViewModelPanelToolMenuContext(UMVVMViewModelPanelToolMenuContext&&); \
+	NO_API UMVVMViewModelPanelToolMenuContext(const UMVVMViewModelPanelToolMenuContext&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMVVMViewModelPanelToolMenuContext); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMVVMViewModelPanelToolMenuContext); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UMVVMViewModelPanelToolMenuContext) \
+	NO_API virtual ~UMVVMViewModelPanelToolMenuContext();
+
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_43_PROLOG
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h_46_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MODELVIEWVIEWMODELEDITOR_API UClass* StaticClass<class UMVVMViewModelPanelToolMenuContext>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelEditor_Private_Widgets_SMVVMViewModelPanel_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

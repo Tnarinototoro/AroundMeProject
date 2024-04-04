@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.SteamAudio.cpp.obj": [
+			"SteamAudioModule.cpp.obj"
+		]
+	}
+}

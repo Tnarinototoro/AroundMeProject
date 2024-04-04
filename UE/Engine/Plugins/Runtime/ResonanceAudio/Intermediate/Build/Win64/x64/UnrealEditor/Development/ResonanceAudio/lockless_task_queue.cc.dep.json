@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\resonanceaudio\\source\\resonanceaudio\\private\\resonanceaudiolibrary\\resonance_audio\\utils\\lockless_task_queue.cc",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\resonanceaudio\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\resonanceaudio\\pch.resonanceaudio.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\resonanceaudio\\source\\resonanceaudio\\private\\resonanceaudiolibrary\\resonance_audio\\utils\\lockless_task_queue.h",
+            "d:\\vs2022\\vc\\tools\\msvc\\14.35.32215\\include\\mutex",
+            "d:\\vs2022\\vc\\tools\\msvc\\14.35.32215\\include\\__msvc_chrono.hpp",
+            "d:\\vs2022\\vc\\tools\\msvc\\14.35.32215\\include\\ratio",
+            "d:\\vs2022\\vc\\tools\\msvc\\14.35.32215\\include\\thread",
+            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.22621.0\\ucrt\\process.h",
+            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.22621.0\\ucrt\\corecrt_startup.h",
+            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.22621.0\\ucrt\\math.h",
+            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.22621.0\\ucrt\\corecrt_math_defines.h",
+            "d:\\vs2022\\vc\\tools\\msvc\\14.35.32215\\include\\vcruntime_startup.h",
+            "d:\\vs2022\\vc\\tools\\msvc\\14.35.32215\\include\\stop_token"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

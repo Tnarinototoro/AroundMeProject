@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MfMediaFactory.cpp.obj": [
+			"MfMediaFactoryModule.cpp.obj"
+		]
+	}
+}

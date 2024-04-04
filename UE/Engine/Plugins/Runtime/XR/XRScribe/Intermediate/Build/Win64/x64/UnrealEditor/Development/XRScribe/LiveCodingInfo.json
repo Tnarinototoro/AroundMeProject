@@ -1,0 +1,16 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.XRScribe.cpp.obj": [
+			"XRScribeAPIDecoder.cpp.obj",
+			"XRScribeAPIEncoder.cpp.obj",
+			"XRScribeAPISurface.cpp.obj",
+			"XRScribeCaptureLayer.cpp.obj",
+			"XRScribeDeveloperSettings.cpp.obj",
+			"XRScribeEmulatedPoseManager.cpp.obj",
+			"XRScribeEmulationLayer.cpp.obj",
+			"XRScribeFileFormat.cpp.obj",
+			"XRScribeModule.cpp.obj"
+		]
+	}
+}

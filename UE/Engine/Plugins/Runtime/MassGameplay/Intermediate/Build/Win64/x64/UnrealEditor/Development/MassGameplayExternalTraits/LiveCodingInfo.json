@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MassGameplayExternalTraits.cpp.obj": [
+			"MassGameplayExternalTraitsModule.cpp.obj"
+		]
+	}
+}

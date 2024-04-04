@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.AnalyticsMulticast.cpp.obj": [
+			"AnalyticsMulticast.cpp.obj"
+		]
+	}
+}

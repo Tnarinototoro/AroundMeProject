@@ -1,0 +1,27 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\packethandlers\\aeshandlercomponent\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\aeshandlercomponent\\module.aeshandlercomponent.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\coreuobject\\sharedpch.coreuobject.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\packethandlers\\aeshandlercomponent\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\aeshandlercomponent\\definitions.aeshandlercomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\packethandlers\\aeshandlercomponent\\source\\private\\aeshandlercomponent.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\packethandlers\\aeshandlercomponent\\source\\public\\aeshandlercomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\packethandlers\\packethandler\\public\\packethandler.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\sockets\\public\\ipaddress.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\sockets\\public\\sockettypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\net\\common\\public\\net\\common\\packets\\packetview.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\net\\common\\public\\net\\common\\sockets\\socketerrors.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\net\\common\\public\\net\\common\\packets\\packettraits.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcrypto\\public\\iplatformcrypto.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcrypto\\public\\platformcryptoincludes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcryptoopenssl\\public\\encryptioncontextopenssl.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\ienginecrypto.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\packethandlers\\packethandler\\public\\encryptioncomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcryptotypes\\public\\platformcryptotypes.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

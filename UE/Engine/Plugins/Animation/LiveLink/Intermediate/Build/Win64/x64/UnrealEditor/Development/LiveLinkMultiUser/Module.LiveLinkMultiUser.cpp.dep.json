@@ -1,0 +1,31 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\livelink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\livelinkmultiuser\\module.livelinkmultiuser.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\livelink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\livelinkmultiuser\\definitions.livelinkmultiuser.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\livelink\\source\\livelinkmultiuser\\private\\livelinkmultiusermodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\livelink\\source\\livelinkmultiuser\\private\\livelinkmultiusermodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\concert\\concertsync\\concertsyncclient\\source\\concertsyncclient\\public\\iconcertclienttransactionbridge.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\concert\\concertsync\\concertsynccore\\source\\concertsynccore\\public\\concerttransactionevents.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\coreuobject\\public\\misc\\transactionobjectevent.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\concert\\concertmain\\source\\concerttransport\\public\\identifiertable\\concertidentifiertabledata.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\concert\\concertmain\\intermediate\\build\\win64\\unrealeditor\\inc\\concerttransport\\uht\\concertidentifiertabledata.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\concert\\concertsync\\concertsynccore\\intermediate\\build\\win64\\unrealeditor\\inc\\concertsynccore\\uht\\concerttransactionevents.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\concert\\concertmain\\source\\concerttransport\\public\\identifiertable\\concertidentifiertable.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\concert\\concertsync\\concertsyncclient\\source\\concertsyncclient\\public\\iconcertsyncclientmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\livelink\\source\\livelinkcomponents\\public\\livelinkcontrollerbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\livelinkinterface\\public\\livelinkrole.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\livelinkinterface\\public\\livelinktypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\livelinkinterface\\public\\livelinkrefskeleton.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\livelinkinterface\\uht\\livelinkrefskeleton.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\livelinkinterface\\uht\\livelinktypes.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\livelinkinterface\\uht\\livelinkrole.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\livelink\\intermediate\\build\\win64\\unrealeditor\\inc\\livelinkcomponents\\uht\\livelinkcontrollerbase.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

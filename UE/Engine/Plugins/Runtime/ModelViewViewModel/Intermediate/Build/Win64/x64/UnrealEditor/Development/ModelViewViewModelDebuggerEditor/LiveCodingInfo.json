@@ -1,0 +1,16 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ModelViewViewModelDebuggerEditor.cpp.obj": [
+			"ModelViewViewModelDebuggerEditorModule.cpp.obj",
+			"MVVMDebuggerEditorStyle.cpp.obj",
+			"SDetailsTab.cpp.obj",
+			"SMainDebugTab.cpp.obj",
+			"SMessagesLog.cpp.obj",
+			"SSelectionBase.cpp.obj",
+			"SViewModelBindingDetail.cpp.obj",
+			"SViewModelSelection.cpp.obj",
+			"SViewSelection.cpp.obj"
+		]
+	}
+}

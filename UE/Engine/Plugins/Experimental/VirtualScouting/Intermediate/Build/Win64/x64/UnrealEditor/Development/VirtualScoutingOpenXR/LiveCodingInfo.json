@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.VirtualScoutingOpenXR.cpp.obj": [
+			"VirtualScoutingOpenXR.cpp.obj"
+		]
+	}
+}

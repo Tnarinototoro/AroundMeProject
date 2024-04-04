@@ -1,0 +1,14 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.RHITests.cpp.obj": [
+			"RHIBufferTests.cpp.obj",
+			"RHIDrawTests.cpp.obj",
+			"RHIReadbackTests.cpp.obj",
+			"RHITests.spec.cpp.obj",
+			"RHITestsCommon.cpp.obj",
+			"RHITestsModule.cpp.obj",
+			"RHITextureTests.cpp.obj"
+		]
+	}
+}

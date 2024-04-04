@@ -1,0 +1,42 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\worldconditionstestsuite\\module.worldconditionstestsuite.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\worldconditionstestsuite\\definitions.worldconditionstestsuite.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\intermediate\\build\\win64\\unrealeditor\\inc\\worldconditionstestsuite\\uht\\worldconditionstestsuite.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\intermediate\\build\\win64\\unrealeditor\\inc\\worldconditionstestsuite\\uht\\worldconditiontesttypes.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\source\\worldconditionstestsuite\\public\\worldconditiontesttypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\source\\worldconditions\\public\\worldconditioncontext.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\source\\worldconditions\\public\\worldconditionquery.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutils\\public\\instancedstructcontainer.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutils\\public\\structview.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutils\\public\\instancedstruct.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutils\\public\\structutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\intermediate\\build\\win64\\unrealeditor\\inc\\structutils\\uht\\instancedstruct.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutils\\public\\sharedstruct.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutils\\public\\structutilstypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\intermediate\\build\\win64\\unrealeditor\\inc\\structutils\\uht\\sharedstruct.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\intermediate\\build\\win64\\unrealeditor\\inc\\structutils\\uht\\instancedstructcontainer.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\source\\worldconditions\\public\\worldconditionbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\source\\worldconditions\\public\\worldconditiontypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\intermediate\\build\\win64\\unrealeditor\\inc\\worldconditions\\uht\\worldconditiontypes.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\intermediate\\build\\win64\\unrealeditor\\inc\\worldconditions\\uht\\worldconditionbase.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\intermediate\\build\\win64\\unrealeditor\\inc\\worldconditions\\uht\\worldconditionquery.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\source\\worldconditions\\public\\worldconditionschema.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\intermediate\\build\\win64\\unrealeditor\\inc\\worldconditions\\uht\\worldconditionschema.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\intermediate\\build\\win64\\unrealeditor\\inc\\worldconditionstestsuite\\uht\\worldconditiontesttypes.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\source\\worldconditionstestsuite\\private\\worldconditionstest.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\aitestsuite\\public\\aitestscommon.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\aitestsuite\\public\\testlogger.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\coreuobject\\public\\serialization\\objectandnameasstringproxyarchive.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\serialization\\nameasstringproxyarchive.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\source\\worldconditionstestsuite\\private\\worldconditionstestsuitemodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\worldconditions\\source\\worldconditionstestsuite\\public\\worldconditionstestsuitemodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

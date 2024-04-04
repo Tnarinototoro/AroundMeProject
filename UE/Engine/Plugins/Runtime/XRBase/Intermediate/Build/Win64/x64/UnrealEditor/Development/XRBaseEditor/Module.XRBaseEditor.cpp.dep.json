@@ -1,0 +1,39 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\xrbase\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\xrbaseeditor\\module.xrbaseeditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\xrbase\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\xrbaseeditor\\definitions.xrbaseeditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\xrbase\\source\\xrbaseeditor\\private\\xrbaseeditormodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\xrbase\\source\\xrbaseeditor\\private\\xrdevicevisualizationdetails.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\idetailcustomization.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\xrbase\\source\\xrbaseeditor\\private\\xrdevicevisualizationdetails.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\detaillayoutbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\idetailpropertyrow.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\detailwidgetrow.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\detailcategorybuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\idetailcustomnodebuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\detailbuildertypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\propertyeditorcopypaste.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\headmounteddisplay\\public\\ixrsystemassets.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\headmounteddisplay\\public\\iidentifiablexrdevice.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\headmounteddisplay\\uht\\iidentifiablexrdevice.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\headmounteddisplay\\public\\motioncontrollercomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\sceneviewextension.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\sceneviewextensioncontext.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\sceneviewextensioncontext.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\scenetexturesconfig.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\gbufferinfo.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\headmounteddisplay\\public\\imotioncontroller.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\headmounteddisplay\\uht\\imotioncontroller.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\headmounteddisplay\\public\\lateupdatemanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\headmounteddisplay\\uht\\motioncontrollercomponent.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\xrbase\\source\\xrbase\\public\\xrdevicevisualizationcomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\xrbase\\intermediate\\build\\win64\\unrealeditor\\inc\\xrbase\\uht\\xrdevicevisualizationcomponent.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

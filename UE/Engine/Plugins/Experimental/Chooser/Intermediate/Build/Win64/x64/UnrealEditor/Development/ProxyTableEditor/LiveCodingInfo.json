@@ -1,0 +1,20 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ProxyTableEditor.cpp.obj": [
+			"AssetDefinition_ProxyAsset.gen.cpp.obj",
+			"AssetDefinition_ProxyTable.gen.cpp.obj",
+			"ProxyAssetFactory.gen.cpp.obj",
+			"ProxyTableEditor.gen.cpp.obj",
+			"ProxyTableEditor.init.gen.cpp.obj",
+			"ProxyTableFactory.gen.cpp.obj",
+			"AssetDefinition_ProxyAsset.cpp.obj",
+			"AssetDefinition_ProxyTable.cpp.obj",
+			"ProxyAssetFactory.cpp.obj",
+			"ProxyTableEditor.cpp.obj",
+			"ProxyTableEditorModule.cpp.obj",
+			"ProxyTableFactory.cpp.obj",
+			"StructOutputDataCustomization.cpp.obj"
+		]
+	}
+}

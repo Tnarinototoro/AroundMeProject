@@ -1,0 +1,29 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\rivermaxsynceditor\\module.rivermaxsynceditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\rivermaxsynceditor\\definitions.rivermaxsynceditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\intermediate\\build\\win64\\unrealeditor\\inc\\rivermaxsynceditor\\uht\\mediaoutputsynchronizationpolicyrivermaxfactory.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\source\\rivermaxsynceditor\\private\\mediaoutputsynchronizationpolicyrivermaxfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\intermediate\\build\\win64\\unrealeditor\\inc\\rivermaxsynceditor\\uht\\mediaoutputsynchronizationpolicyrivermaxfactory.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\intermediate\\build\\win64\\unrealeditor\\inc\\rivermaxsynceditor\\uht\\rivermaxsynceditor.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\source\\rivermaxsynceditor\\private\\mediaoutputsynchronizationpolicyrivermaxfactory.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\assettools\\public\\assettypecategories.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\source\\rivermaxsync\\public\\mediaoutputsynchronizationpolicyrivermax.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclustermedia\\public\\synchronization\\displayclustermediaoutputsynchronizationpolicythresholdbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclustermedia\\public\\synchronization\\displayclustermediaoutputsynchronizationpolicyethernetbarrierbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclusterconfiguration\\public\\displayclusterconfigurationtypes_mediasync.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displayclusterconfiguration\\uht\\displayclusterconfigurationtypes_mediasync.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displaycluster\\public\\cluster\\idisplayclustergenericbarriersclient.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displayclustermedia\\uht\\displayclustermediaoutputsynchronizationpolicyethernetbarrierbase.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displayclustermedia\\uht\\displayclustermediaoutputsynchronizationpolicythresholdbase.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\intermediate\\build\\win64\\unrealeditor\\inc\\rivermaxsync\\uht\\mediaoutputsynchronizationpolicyrivermax.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxsync\\source\\rivermaxsynceditor\\private\\rivermaxsynceditormodule.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

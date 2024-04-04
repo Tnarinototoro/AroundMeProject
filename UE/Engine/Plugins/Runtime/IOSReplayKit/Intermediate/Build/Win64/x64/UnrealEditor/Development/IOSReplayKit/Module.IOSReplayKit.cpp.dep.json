@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\iosreplaykit\\module.iosreplaykit.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\iosreplaykit\\definitions.iosreplaykit.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\intermediate\\build\\win64\\unrealeditor\\inc\\iosreplaykit\\uht\\iosreplaykit.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\intermediate\\build\\win64\\unrealeditor\\inc\\iosreplaykit\\uht\\iosreplaykitcontrol.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\source\\iosreplaykit\\public\\iosreplaykitcontrol.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\intermediate\\build\\win64\\unrealeditor\\inc\\iosreplaykit\\uht\\iosreplaykitcontrol.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\source\\iosreplaykit\\private\\iosreplaykit.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\source\\iosreplaykit\\public\\iosreplaykit.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\source\\iosreplaykit\\private\\iosreplaykitcontrol.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\source\\iosreplaykit\\private\\replaykitrecorder.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\iosreplaykit\\source\\iosreplaykit\\private\\replaykitrecorder.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

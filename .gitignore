@@ -1,11 +1,14 @@
 #UE Ignore folers
+**/Intermediate/**
+
+**/Build/**
 /AroundMe/.vs
 /AroundMe/Binaries
 /AroundMe/DerivedDataCache
 /AroundMe/Intermediate
 /AroundMe/Saved
 
-
+!/AroundMe/Intermediate/
 #android ignores
 /AroundMeLib/app/testLib/build/
 *.iml
@@ -441,3 +444,12 @@ google-services.json
 /UE/Engine/Source/ThirdParty/Vulkan/share/vulkan/registry/**
 
 
+/AroundMe/Intermediate
+/AroundMe/Saved
+/UE/Engine/Intermediate
+/UE/Engine/Plugins/2D/Paper2D/Intermediate
+/UE/Engine/Plugins/Experimental/MeshModelingToolsetExp/Intermediate
+/UE/Engine/Plugins/AI/MassAI/Intermediate
+/UE/Engine/Plugins/AI/AISupport/Intermediate
+/UE/Engine/Plugins/AI/EnvironmentQueryEditor/Intermediate
+AroundMe/AroundMe.sln

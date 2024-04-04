@@ -1,0 +1,43 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\pixelstreamingservers\\module.pixelstreamingservers.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\pixelstreamingservers\\definitions.pixelstreamingservers.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\cirruswrapper.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\cirruswrapper.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\public\\pixelstreamingservers.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\monitoredprocess.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\websocketprobe.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\online\\websockets\\public\\iwebsocket.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\online\\websockets\\public\\websocketsmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\pixelstreamingserverslog.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\serverutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\monitoredserverbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\serverbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\pixelstreamingserversmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\monitoredserverbase.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\pixelstreamingservers.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\signallingserver.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\websocketserverwrapper.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\websocketnetworking\\source\\websocketnetworking\\public\\iwebsocketserver.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\websocketnetworking\\source\\websocketnetworking\\public\\websocketnetworkingdelegates.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\websocketnetworking\\source\\websocketnetworking\\public\\inetworkingwebsocket.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\signallingserverlegacy.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\pixelstreamingserverslog.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\pixelstreamingserversmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\serverbase.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\serverutils.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\signallingserver.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\signallingserverlegacy.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\tests\\servertests.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\tests\\automationcommon.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelstreaming\\source\\pixelstreamingservers\\private\\websocketserverwrapper.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\websocketnetworking\\source\\websocketnetworking\\public\\iwebsocketnetworkingmodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

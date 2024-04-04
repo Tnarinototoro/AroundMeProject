@@ -1,0 +1,36 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxdisplaycluster\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\dmxdisplaycluster\\module.dmxdisplaycluster.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxdisplaycluster\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\dmxdisplaycluster\\definitions.dmxdisplaycluster.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxdisplaycluster\\source\\dmxdisplaycluster\\private\\dmxdisplayclustermodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxdisplaycluster\\source\\dmxdisplaycluster\\private\\dmxdisplayclustermodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxdisplaycluster\\source\\dmxdisplaycluster\\private\\dmxdisplayclusterreplicator.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\source\\dmxprotocol\\public\\dmxprotocoltypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\source\\dmxprotocol\\public\\dmxprotocolcommon.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\source\\dmxprotocol\\public\\dmxprotocolconstants.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\source\\dmxprotocol\\public\\dmxprotocollog.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\source\\dmxprotocol\\public\\dmxprotocolmacros.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\intermediate\\build\\win64\\unrealeditor\\inc\\dmxprotocol\\uht\\dmxprotocoltypes.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displaycluster\\public\\cluster\\idisplayclusterclustermanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displaycluster\\public\\displayclusterenums.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displaycluster\\uht\\displayclusterenums.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displaycluster\\public\\idisplaycluster.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displaycluster\\public\\idisplayclustercallbacks.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxdisplaycluster\\source\\dmxdisplaycluster\\private\\dmxdisplayclusterreplicator.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\source\\dmxprotocol\\public\\io\\dmxportmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\source\\dmxprotocol\\public\\io\\dmxinputport.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\source\\dmxprotocol\\public\\io\\dmxport.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\dmx\\dmxprotocol\\source\\dmxprotocol\\public\\io\\dmxrawlistener.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displaycluster\\public\\cluster\\displayclusterclusterevent.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displaycluster\\uht\\displayclusterclusterevent.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\serialization\\arraywriter.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\serialization\\bufferarchive.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

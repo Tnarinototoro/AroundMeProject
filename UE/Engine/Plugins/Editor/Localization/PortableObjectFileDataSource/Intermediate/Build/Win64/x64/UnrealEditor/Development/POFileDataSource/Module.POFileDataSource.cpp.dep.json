@@ -1,0 +1,33 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\localization\\portableobjectfiledatasource\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\pofiledatasource\\module.pofiledatasource.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\localization\\portableobjectfiledatasource\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\pofiledatasource\\definitions.pofiledatasource.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\localization\\portableobjectfiledatasource\\source\\portableobjectfiledatasource\\private\\portableobjectfiledatasourcemodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\contentbrowser\\contentbrowserfiledatasource\\source\\contentbrowserfiledatasource\\public\\contentbrowserfiledatacore.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\contentbrowserdata\\public\\contentbrowseritemdata.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\contentbrowser\\contentbrowserfiledatasource\\source\\contentbrowserfiledatasource\\public\\contentbrowserfiledatasource.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\contentbrowserdata\\public\\contentbrowserdatafilter.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\collectionmanager\\public\\collectionmanagertypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\sourcecontrol\\public\\isourcecontrolstate.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\contentbrowserdata\\uht\\contentbrowserdatafilter.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\contentbrowserdata\\public\\contentbrowserdatasource.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\contentbrowserdata\\public\\contentbrowserdatasubsystem.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\contentbrowserdata\\public\\contentbrowseritem.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\contentbrowserdata\\uht\\contentbrowseritem.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\contentbrowserdata\\uht\\contentbrowserdatasubsystem.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\contentbrowserdata\\public\\contentbrowservirtualpathtree.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\contentbrowserdata\\uht\\contentbrowserdatasource.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\contentbrowserdata\\public\\contentbrowserdatamenucontexts.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\contentbrowserdata\\uht\\contentbrowserdatamenucontexts.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\contentbrowser\\contentbrowserfiledatasource\\source\\contentbrowserfiledatasource\\public\\contentbrowserfiledatapayload.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\contentbrowser\\contentbrowserfiledatasource\\intermediate\\build\\win64\\unrealeditor\\inc\\cbfiledatasource\\uht\\contentbrowserfiledatasource.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\localization\\public\\localizationdelegates.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

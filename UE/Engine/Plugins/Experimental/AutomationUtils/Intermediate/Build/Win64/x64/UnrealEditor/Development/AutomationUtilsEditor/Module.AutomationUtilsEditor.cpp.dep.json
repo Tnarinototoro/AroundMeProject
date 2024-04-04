@@ -1,0 +1,32 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\automationutilseditor\\module.automationutilseditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\automationutilseditor\\definitions.automationutilseditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\unrealeditor\\inc\\automationutilseditor\\uht\\automationutilseditor.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\source\\automationutilseditor\\private\\automationutilseditor.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\source\\automationutilseditor\\private\\screenshotcomparisoncommandlet.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\source\\automationutilseditor\\public\\screenshotcomparisoncommandlet.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\commandlets\\commandlet.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\commandlet.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\unrealeditor\\inc\\automationutilseditor\\uht\\screenshotcomparisoncommandlet.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\screenshotcomparisontools\\public\\imagecomparer.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\screenshotcomparisontools\\uht\\imagecomparer.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\screenshotcomparisontools\\public\\interfaces\\iscreenshottoolsmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\screenshotcomparisontools\\public\\interfaces\\iscreenshotmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\automationmessages\\public\\automationworkermessages.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\automationtest\\public\\automationstate.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\automationtest\\uht\\automationstate.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\automationmessages\\uht\\automationworkermessages.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\jsonutilities\\public\\jsonobjectconverter.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\jsonutilities\\public\\jsonobjectwrapper.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\jsonutilities\\uht\\jsonobjectwrapper.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\unrealeditor\\inc\\automationutilseditor\\uht\\screenshotcomparisoncommandlet.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

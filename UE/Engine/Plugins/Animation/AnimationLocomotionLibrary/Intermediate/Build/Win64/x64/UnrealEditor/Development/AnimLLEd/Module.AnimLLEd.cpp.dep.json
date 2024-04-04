@@ -1,0 +1,31 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\animationlocomotionlibrary\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\animlled\\module.animlled.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\animationlocomotionlibrary\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\animlled\\definitions.animlled.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\animationlocomotionlibrary\\intermediate\\build\\win64\\unrealeditor\\inc\\animlled\\uht\\animationlocomotionlibraryeditor.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\animationlocomotionlibrary\\intermediate\\build\\win64\\unrealeditor\\inc\\animlled\\uht\\distancecurvemodifier.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\animationlocomotionlibrary\\source\\editor\\public\\distancecurvemodifier.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\animationmodifiers\\public\\animationmodifier.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\animationblueprintlibrary\\public\\animationblueprintlibrary.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\animation\\animmetadata.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\animmetadata.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\animgraph\\public\\animationgraph.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\animgraph\\public\\animgraphnode_base.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\public\\ipropertyaccesseditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\animgraph\\uht\\animgraphnode_base.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\animgraph\\uht\\animationgraph.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\animationblueprintlibrary\\uht\\animationblueprintlibrary.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\animationmodifiers\\uht\\animationmodifier.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\animationlocomotionlibrary\\intermediate\\build\\win64\\unrealeditor\\inc\\animlled\\uht\\distancecurvemodifier.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\animationlocomotionlibrary\\source\\editor\\private\\animationlocomotionlibraryeditor.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\animationlocomotionlibrary\\source\\editor\\public\\animationlocomotionlibraryeditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\animationlocomotionlibrary\\source\\editor\\private\\distancecurvemodifier.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

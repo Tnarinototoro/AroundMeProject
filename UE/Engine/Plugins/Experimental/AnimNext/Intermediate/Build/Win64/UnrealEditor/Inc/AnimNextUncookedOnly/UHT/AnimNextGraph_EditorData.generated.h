@@ -1,0 +1,115 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "Graph/AnimNextGraph_EditorData.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#ifdef ANIMNEXTUNCOOKEDONLY_AnimNextGraph_EditorData_generated_h
+#error "AnimNextGraph_EditorData.generated.h already included, missing '#pragma once' in AnimNextGraph_EditorData.h"
+#endif
+#define ANIMNEXTUNCOOKEDONLY_AnimNextGraph_EditorData_generated_h
+
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_ACCESSORS
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUAnimNextGraph_Schema(); \
+	friend struct Z_Construct_UClass_UAnimNextGraph_Schema_Statics; \
+public: \
+	DECLARE_CLASS(UAnimNextGraph_Schema, URigVMSchema, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/AnimNextUncookedOnly"), NO_API) \
+	DECLARE_SERIALIZER(UAnimNextGraph_Schema)
+
+
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UAnimNextGraph_Schema(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UAnimNextGraph_Schema(UAnimNextGraph_Schema&&); \
+	NO_API UAnimNextGraph_Schema(const UAnimNextGraph_Schema&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UAnimNextGraph_Schema); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UAnimNextGraph_Schema); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UAnimNextGraph_Schema) \
+	NO_API virtual ~UAnimNextGraph_Schema();
+
+
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_30_PROLOG
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_ACCESSORS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_33_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> ANIMNEXTUNCOOKEDONLY_API UClass* StaticClass<class UAnimNextGraph_Schema>();
+
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_ACCESSORS
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_ARCHIVESERIALIZER \
+	DECLARE_FSTRUCTUREDARCHIVE_SERIALIZER(UAnimNextGraph_EditorData, ANIMNEXTUNCOOKEDONLY_API)
+
+
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUAnimNextGraph_EditorData(); \
+	friend struct Z_Construct_UClass_UAnimNextGraph_EditorData_Statics; \
+public: \
+	DECLARE_CLASS(UAnimNextGraph_EditorData, UObject, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/AnimNextUncookedOnly"), ANIMNEXTUNCOOKEDONLY_API) \
+	DECLARE_SERIALIZER(UAnimNextGraph_EditorData) \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_ARCHIVESERIALIZER \
+	virtual UObject* _getUObject() const override { return const_cast<UAnimNextGraph_EditorData*>(this); }
+
+
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	ANIMNEXTUNCOOKEDONLY_API UAnimNextGraph_EditorData(UAnimNextGraph_EditorData&&); \
+	ANIMNEXTUNCOOKEDONLY_API UAnimNextGraph_EditorData(const UAnimNextGraph_EditorData&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(ANIMNEXTUNCOOKEDONLY_API, UAnimNextGraph_EditorData); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UAnimNextGraph_EditorData); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UAnimNextGraph_EditorData) \
+	ANIMNEXTUNCOOKEDONLY_API virtual ~UAnimNextGraph_EditorData();
+
+
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_36_PROLOG
+#define FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_ACCESSORS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h_39_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> ANIMNEXTUNCOOKEDONLY_API UClass* StaticClass<class UAnimNextGraph_EditorData>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_Experimental_AnimNext_Source_AnimNextUncookedOnly_Internal_Graph_AnimNextGraph_EditorData_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

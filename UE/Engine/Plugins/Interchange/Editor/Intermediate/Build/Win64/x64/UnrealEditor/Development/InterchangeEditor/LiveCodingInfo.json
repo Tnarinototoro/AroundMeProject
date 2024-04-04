@@ -1,0 +1,11 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.InterchangeEditor.cpp.obj": [
+			"AssetDefinition_InterchangeSceneImportAsset.gen.cpp.obj",
+			"InterchangeEditor.init.gen.cpp.obj",
+			"AssetDefinition_InterchangeSceneImportAsset.cpp.obj",
+			"InterchangeEditorModule.cpp.obj"
+		]
+	}
+}

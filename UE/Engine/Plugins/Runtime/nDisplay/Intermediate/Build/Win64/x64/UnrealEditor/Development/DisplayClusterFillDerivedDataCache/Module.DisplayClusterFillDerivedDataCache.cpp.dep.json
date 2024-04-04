@@ -1,0 +1,29 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\displayclusterfillderiveddatacache\\module.displayclusterfillderiveddatacache.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\displayclusterfillderiveddatacache\\definitions.displayclusterfillderiveddatacache.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclusterfillderiveddatacache\\private\\displayclusterfillderiveddatacachemodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclusterfillderiveddatacache\\public\\displayclusterfillderiveddatacachemodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclusterfillderiveddatacache\\public\\displayclusterfillderiveddatacachelog.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclusterfillderiveddatacache\\public\\displayclusterfillderiveddatacacheworker.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\classes\\commandlets\\deriveddatacachecommandlet.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\commandlets\\commandlet.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\commandlet.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealed\\uht\\deriveddatacachecommandlet.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slate\\public\\framework\\notifications\\notificationmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\coreasynctasknotificationimpl.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\asynctasknotification.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\interfaces\\iprojectmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\moduledescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slate\\public\\widgets\\notifications\\snotificationlist.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclusterfillderiveddatacache\\private\\displayclusterfillderiveddatacacheworker.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\scopedslowtask.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

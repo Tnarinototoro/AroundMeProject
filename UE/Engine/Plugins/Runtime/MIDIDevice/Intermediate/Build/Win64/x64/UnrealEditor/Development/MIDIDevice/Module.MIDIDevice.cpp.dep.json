@@ -1,0 +1,36 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\mididevice\\module.mididevice.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\mididevice\\definitions.mididevice.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\mididevice.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\mididevicecontrollerbase.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\public\\mididevicecontrollerbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\mididevicecontrollerbase.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\private\\mididevicecontroller.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\public\\mididevicecontroller.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\mididevicecontroller.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\private\\mididevicelog.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\thirdparty\\portmidi\\include\\portmidi.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\mididevicecontroller.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\private\\midideviceinputcontroller.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\public\\midideviceinputcontroller.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\midideviceinputcontroller.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\midideviceinputcontroller.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\private\\mididevicemanager.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\public\\mididevicemanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\public\\midideviceoutputcontroller.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\midideviceoutputcontroller.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\mididevicemanager.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\mididevicemanager.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\private\\mididevicemodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\source\\mididevice\\private\\midideviceoutputcontroller.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\mididevice\\intermediate\\build\\win64\\unrealeditor\\inc\\mididevice\\uht\\midideviceoutputcontroller.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

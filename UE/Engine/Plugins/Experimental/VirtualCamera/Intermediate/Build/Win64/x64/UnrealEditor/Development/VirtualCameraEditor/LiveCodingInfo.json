@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.VirtualCameraEditor.cpp.obj": [
+			"VirtualCameraEditorModule.cpp.obj"
+		]
+	}
+}

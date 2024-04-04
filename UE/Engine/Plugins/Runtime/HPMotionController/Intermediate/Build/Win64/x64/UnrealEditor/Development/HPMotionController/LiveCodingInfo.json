@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.HPMotionController.cpp.obj": [
+			"HPMotionController.cpp.obj"
+		]
+	}
+}

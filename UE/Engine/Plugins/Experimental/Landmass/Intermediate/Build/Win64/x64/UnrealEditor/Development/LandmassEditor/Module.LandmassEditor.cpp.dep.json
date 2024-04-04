@@ -1,0 +1,35 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\landmasseditor\\module.landmasseditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\landmasseditor\\definitions.landmasseditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmasseditor\\uht\\landmasseditor.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\editor\\private\\landmassactor.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\editor\\public\\landmassactor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmasseditor\\uht\\landmassactor.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\leveleditor\\public\\leveleditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\leveleditor\\public\\ileveleditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\elements\\framework\\engineelementslibrary.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\engineelementslibrary.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\leveleditor\\public\\viewporttypedefinition.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\leveleditor\\public\\leveleditoroutlinersettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\toolwidgets\\public\\filters\\genericfilter.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\toolwidgets\\public\\filters\\filterbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmasseditor\\uht\\landmassactor.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\editor\\private\\landmassbpeditorextension.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\editor\\public\\landmassbpeditorextension.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmasseditor\\uht\\landmassbpeditorextension.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\public\\leveleditorviewport.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\camera\\cameracomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\cameracomponent.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmasseditor\\uht\\landmassbpeditorextension.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\editor\\private\\landmasseditormodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\editor\\public\\landmasseditormodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

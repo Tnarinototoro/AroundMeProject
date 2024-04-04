@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\riglogic\\source\\riglogiclib\\private\\riglogic\\joints\\bpcm\\builders\\avxhalffloat.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\core\\sharedpch.core.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\riglogic\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\riglogiclibtest\\definitions.riglogiclibtest.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\animation\\riglogic\\source\\riglogiclib\\private\\riglogic\\joints\\bpcm\\builders\\avxhalffloat.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,42 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.AnimNextEditor.cpp.obj": [
+			"AddParameterDialogMenuContext.gen.cpp.obj",
+			"AnimNextEditor.init.gen.cpp.obj",
+			"AnimNextParameterSettings.gen.cpp.obj",
+			"GraphEditorSchemaActions.gen.cpp.obj",
+			"GraphFactory.gen.cpp.obj",
+			"ParameterBlockFactory.gen.cpp.obj",
+			"ParameterBlockViewMenuContext.gen.cpp.obj",
+			"ParameterLibraryFactory.gen.cpp.obj",
+			"ParameterLibraryViewMenuContext.gen.cpp.obj",
+			"ParametersAssetDefinitions.gen.cpp.obj",
+			"ParametersEditorSchemaActions.gen.cpp.obj",
+			"AnimNextEditorModule.cpp.obj",
+			"EditorUtils.cpp.obj",
+			"AnimNextGraphEditor.cpp.obj",
+			"AssetTypeActions.cpp.obj",
+			"GraphEditorMode.cpp.obj",
+			"GraphEditorSchemaActions.cpp.obj",
+			"GraphFactory.cpp.obj",
+			"SActionMenu.cpp.obj",
+			"AnimNextParameterBlockEditor.cpp.obj",
+			"AnimNextParameterLibraryEditor.cpp.obj",
+			"AnimNextParameterSettings.cpp.obj",
+			"ParameterBlockEditorMode.cpp.obj",
+			"ParameterBlockFactory.cpp.obj",
+			"ParameterLibraryEditorMode.cpp.obj",
+			"ParameterLibraryFactory.cpp.obj",
+			"ParametersAssetDefinitions.cpp.obj",
+			"ParametersEditorSchemaActions.cpp.obj",
+			"ParamTypePropertyCustomization.cpp.obj",
+			"SAddParametersDialog.cpp.obj",
+			"SLinkParametersDialog.cpp.obj",
+			"SParameterBlockView.cpp.obj",
+			"SParameterLibraryView.cpp.obj",
+			"SParameterPicker.cpp.obj",
+			"SParametersActionMenu.cpp.obj"
+		]
+	}
+}

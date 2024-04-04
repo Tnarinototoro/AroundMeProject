@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\actorlayerutilities\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\actorlayerutilities\\module.actorlayerutilities.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\actorlayerutilities\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\actorlayerutilities\\definitions.actorlayerutilities.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\actorlayerutilities\\intermediate\\build\\win64\\unrealeditor\\inc\\actorlayerutilities\\uht\\actorlayerutilities.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\actorlayerutilities\\source\\actorlayerutilities\\private\\actorlayerutilities.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\actorlayerutilities\\source\\actorlayerutilities\\public\\actorlayerutilities.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\actorlayerutilities\\intermediate\\build\\win64\\unrealeditor\\inc\\actorlayerutilities\\uht\\actorlayerutilities.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\engineutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\actorlayerutilities\\intermediate\\build\\win64\\unrealeditor\\inc\\actorlayerutilities\\uht\\actorlayerutilities.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

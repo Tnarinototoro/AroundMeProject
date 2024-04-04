@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ElectraPlayerFactory.cpp.obj": [
+			"ElectraPlayerFactoryModule.cpp.obj"
+		]
+	}
+}

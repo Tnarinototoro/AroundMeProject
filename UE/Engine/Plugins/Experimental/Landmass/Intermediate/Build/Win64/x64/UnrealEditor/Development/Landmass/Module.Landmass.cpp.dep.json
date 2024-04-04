@@ -1,0 +1,28 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\landmass\\module.landmass.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\landmass\\definitions.landmass.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmass\\uht\\landmass.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\runtime\\private\\brusheffectslist.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\runtime\\public\\brusheffectslist.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmass\\uht\\brusheffectslist.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmass\\uht\\brusheffectslist.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\runtime\\private\\falloffsettings.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\runtime\\public\\falloffsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmass\\uht\\falloffsettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmass\\uht\\falloffsettings.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\runtime\\private\\landmassmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\runtime\\public\\landmassmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\runtime\\private\\terraincarvingsettings.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\source\\runtime\\public\\terraincarvingsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmass\\uht\\terraincarvingsettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\landmass\\intermediate\\build\\win64\\unrealeditor\\inc\\landmass\\uht\\terraincarvingsettings.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

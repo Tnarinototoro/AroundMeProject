@@ -1,0 +1,29 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\pythonautomationtest\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\pythonautomationtest\\module.pythonautomationtest.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\pythonautomationtest\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\pythonautomationtest\\definitions.pythonautomationtest.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\pythonautomationtest\\intermediate\\build\\win64\\unrealeditor\\inc\\pythonautomationtest\\uht\\pythonautomationtest.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\pythonautomationtest\\source\\pythonautomationtest\\private\\pythonautomationtest.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\pythonautomationtest\\source\\pythonautomationtest\\public\\pythonautomationtest.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\pythonautomationtest\\intermediate\\build\\win64\\unrealeditor\\inc\\pythonautomationtest\\uht\\pythonautomationtest.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\interfaces\\ipluginmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\plugindescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\custombuildsteps.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\localizationdescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\moduledescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\pluginreferencedescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\versescope.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\pythonscriptplugin\\source\\pythonscriptplugin\\public\\ipythonscriptplugin.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\pythonscriptplugin\\source\\pythonscriptplugin\\public\\pythonscripttypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\pythonscriptplugin\\intermediate\\build\\win64\\unrealeditor\\inc\\pythonscriptplugin\\uht\\pythonscripttypes.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\pythonautomationtest\\intermediate\\build\\win64\\unrealeditor\\inc\\pythonautomationtest\\uht\\pythonautomationtest.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\pythonautomationtest\\source\\pythonautomationtest\\private\\pythonautomationtestmodule.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

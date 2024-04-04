@@ -1,0 +1,18 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\webmmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\webmmediafactory\\module.webmmediafactory.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\webmmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\webmmediafactory\\definitions.webmmediafactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\webmmedia\\source\\webmmediafactory\\private\\webmmediafactorymodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\webmmedia\\source\\webmmediafactory\\private\\webmmediafactoryprivate.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediamodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaplayerfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\webmmedia\\source\\webmmedia\\public\\iwebmmediamodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

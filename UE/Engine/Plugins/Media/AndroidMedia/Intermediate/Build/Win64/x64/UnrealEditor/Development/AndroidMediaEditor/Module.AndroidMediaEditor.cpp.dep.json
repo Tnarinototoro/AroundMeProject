@@ -1,0 +1,26 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\androidmediaeditor\\module.androidmediaeditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\androidmediaeditor\\definitions.androidmediaeditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidmedia\\intermediate\\build\\win64\\unrealeditor\\inc\\androidmediaeditor\\uht\\androidmediaeditor.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidmedia\\source\\androidmediaeditor\\private\\androidfilemediasourcefactory.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidmedia\\source\\androidmediaeditor\\private\\androidfilemediasourcefactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidmedia\\intermediate\\build\\win64\\unrealeditor\\inc\\androidmediaeditor\\uht\\androidfilemediasourcefactory.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\mediaassets\\public\\filemediasource.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\mediaassets\\public\\basemediasource.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\mediaassets\\public\\mediasource.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaoptions.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\mediaassets\\uht\\mediasource.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\mediaassets\\uht\\basemediasource.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\mediaassets\\uht\\filemediasource.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidmedia\\intermediate\\build\\win64\\unrealeditor\\inc\\androidmediaeditor\\uht\\androidfilemediasourcefactory.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidmedia\\source\\androidmediaeditor\\private\\androidmediaeditormodule.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

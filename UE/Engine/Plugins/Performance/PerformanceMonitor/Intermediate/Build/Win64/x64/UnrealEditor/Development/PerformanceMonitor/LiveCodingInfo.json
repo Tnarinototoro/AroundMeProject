@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PerformanceMonitor.cpp.obj": [
+			"PerformanceMonitor.cpp.obj"
+		]
+	}
+}

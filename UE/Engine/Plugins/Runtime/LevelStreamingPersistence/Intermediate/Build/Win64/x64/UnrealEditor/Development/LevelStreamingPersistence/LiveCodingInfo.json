@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.LevelStreamingPersistence.cpp.obj": [
+			"LevelStreamingPersistence.init.gen.cpp.obj",
+			"LevelStreamingPersistenceManager.gen.cpp.obj",
+			"LevelStreamingPersistenceSettings.gen.cpp.obj",
+			"LevelStreamingPersistenceManager.cpp.obj",
+			"LevelStreamingPersistenceModule.cpp.obj",
+			"LevelStreamingPersistentObjectPropertyBag.cpp.obj"
+		]
+	}
+}

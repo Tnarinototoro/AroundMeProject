@@ -1,0 +1,64 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "Output/VCamOutputComposure.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#ifdef VCAMCORE_VCamOutputComposure_generated_h
+#error "VCamOutputComposure.generated.h already included, missing '#pragma once' in VCamOutputComposure.h"
+#endif
+#define VCAMCORE_VCamOutputComposure_generated_h
+
+#define FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_ACCESSORS
+#define FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUVCamOutputComposure(); \
+	friend struct Z_Construct_UClass_UVCamOutputComposure_Statics; \
+public: \
+	DECLARE_CLASS(UVCamOutputComposure, UVCamOutputProviderBase, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/VCamCore"), NO_API) \
+	DECLARE_SERIALIZER(UVCamOutputComposure)
+
+
+#define FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UVCamOutputComposure(UVCamOutputComposure&&); \
+	NO_API UVCamOutputComposure(const UVCamOutputComposure&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UVCamOutputComposure); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UVCamOutputComposure); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UVCamOutputComposure) \
+	NO_API virtual ~UVCamOutputComposure();
+
+
+#define FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_14_PROLOG
+#define FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_ACCESSORS \
+	FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h_17_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> VCAMCORE_API UClass* StaticClass<class UVCamOutputComposure>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_Experimental_VirtualCameraCore_Source_VCamCore_Public_Output_VCamOutputComposure_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

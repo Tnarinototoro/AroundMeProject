@@ -1,0 +1,20 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MovieSceneTextTrack.cpp.obj": [
+			"MovieSceneTextChannel.gen.cpp.obj",
+			"MovieSceneTextPropertySystem.gen.cpp.obj",
+			"MovieSceneTextSection.gen.cpp.obj",
+			"MovieSceneTextTrack.gen.cpp.obj",
+			"MovieSceneTextTrack.init.gen.cpp.obj",
+			"TextChannelEvaluatorSystem.gen.cpp.obj",
+			"MovieSceneTextChannel.cpp.obj",
+			"MovieSceneTextPropertySystem.cpp.obj",
+			"MovieSceneTextSection.cpp.obj",
+			"MovieSceneTextTrack.cpp.obj",
+			"MovieSceneTextTrackModule.cpp.obj",
+			"TextChannelEvaluatorSystem.cpp.obj",
+			"TextComponentTypes.cpp.obj"
+		]
+	}
+}

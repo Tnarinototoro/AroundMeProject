@@ -1,0 +1,28 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\cablecomponent\\module.cablecomponent.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\cablecomponent\\definitions.cablecomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\intermediate\\build\\win64\\unrealeditor\\inc\\cablecomponent\\uht\\cablecomponent.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\source\\cablecomponent\\private\\cableactor.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\source\\cablecomponent\\classes\\cableactor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\intermediate\\build\\win64\\unrealeditor\\inc\\cablecomponent\\uht\\cableactor.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\source\\cablecomponent\\classes\\cablecomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\intermediate\\build\\win64\\unrealeditor\\inc\\cablecomponent\\uht\\cablecomponent.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\intermediate\\build\\win64\\unrealeditor\\inc\\cablecomponent\\uht\\cableactor.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\source\\cablecomponent\\private\\cablecomponent.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\materialdomain.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\materialdomain.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\materials\\materialrenderproxy.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\source\\cablecomponent\\private\\cablecomponentstats.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\dynamicmeshbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\intermediate\\build\\win64\\unrealeditor\\inc\\cablecomponent\\uht\\cablecomponent.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\cablecomponent\\source\\cablecomponent\\private\\cablecomponentplugin.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

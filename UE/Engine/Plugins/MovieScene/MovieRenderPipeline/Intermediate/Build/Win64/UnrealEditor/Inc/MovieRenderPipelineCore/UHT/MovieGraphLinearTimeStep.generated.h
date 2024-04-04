@@ -1,0 +1,107 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "Graph/MovieGraphLinearTimeStep.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#ifdef MOVIERENDERPIPELINECORE_MovieGraphLinearTimeStep_generated_h
+#error "MovieGraphLinearTimeStep.generated.h already included, missing '#pragma once' in MovieGraphLinearTimeStep.h"
+#endif
+#define MOVIERENDERPIPELINECORE_MovieGraphLinearTimeStep_generated_h
+
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_SPARSE_DATA
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_ACCESSORS
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMovieGraphLinearTimeStep(); \
+	friend struct Z_Construct_UClass_UMovieGraphLinearTimeStep_Statics; \
+public: \
+	DECLARE_CLASS(UMovieGraphLinearTimeStep, UMovieGraphTimeStepBase, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/MovieRenderPipelineCore"), NO_API) \
+	DECLARE_SERIALIZER(UMovieGraphLinearTimeStep)
+
+
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMovieGraphLinearTimeStep(UMovieGraphLinearTimeStep&&); \
+	NO_API UMovieGraphLinearTimeStep(const UMovieGraphLinearTimeStep&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMovieGraphLinearTimeStep); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMovieGraphLinearTimeStep); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMovieGraphLinearTimeStep) \
+	NO_API virtual ~UMovieGraphLinearTimeStep();
+
+
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_25_PROLOG
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_SPARSE_DATA \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_ACCESSORS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_28_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MOVIERENDERPIPELINECORE_API UClass* StaticClass<class UMovieGraphLinearTimeStep>();
+
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_SPARSE_DATA
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_ACCESSORS
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMovieGraphEngineTimeStep(); \
+	friend struct Z_Construct_UClass_UMovieGraphEngineTimeStep_Statics; \
+public: \
+	DECLARE_CLASS(UMovieGraphEngineTimeStep, UEngineCustomTimeStep, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/MovieRenderPipelineCore"), NO_API) \
+	DECLARE_SERIALIZER(UMovieGraphEngineTimeStep)
+
+
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMovieGraphEngineTimeStep(UMovieGraphEngineTimeStep&&); \
+	NO_API UMovieGraphEngineTimeStep(const UMovieGraphEngineTimeStep&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMovieGraphEngineTimeStep); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMovieGraphEngineTimeStep); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMovieGraphEngineTimeStep) \
+	NO_API virtual ~UMovieGraphEngineTimeStep();
+
+
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_156_PROLOG
+#define FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_SPARSE_DATA \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_ACCESSORS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h_159_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MOVIERENDERPIPELINECORE_API UClass* StaticClass<class UMovieGraphEngineTimeStep>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_MovieScene_MovieRenderPipeline_Source_MovieRenderPipelineCore_Public_Graph_MovieGraphLinearTimeStep_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

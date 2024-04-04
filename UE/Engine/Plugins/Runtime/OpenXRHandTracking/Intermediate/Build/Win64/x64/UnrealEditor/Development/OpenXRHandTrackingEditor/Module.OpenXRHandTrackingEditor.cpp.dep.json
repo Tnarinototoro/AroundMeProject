@@ -1,0 +1,17 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxrhandtracking\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\openxrhandtrackingeditor\\module.openxrhandtrackingeditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxrhandtracking\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\openxrhandtrackingeditor\\definitions.openxrhandtrackingeditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxrhandtracking\\source\\openxrhandtrackingeditor\\private\\openxrhandtrackingeditormodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxrhandtracking\\source\\openxrhandtracking\\public\\openxrhandtrackingsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxrhandtracking\\intermediate\\build\\win64\\unrealeditor\\inc\\openxrhandtracking\\uht\\openxrhandtrackingsettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\settings\\public\\isettingsmodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

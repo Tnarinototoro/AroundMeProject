@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.FileLogging.cpp.obj": [
+			"FileLogging.cpp.obj"
+		]
+	}
+}

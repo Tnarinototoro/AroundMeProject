@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\iris\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\iris\\module.iris.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\coreuobject\\sharedpch.coreuobject.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\iris\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\iris\\definitions.iris.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\iris\\source\\iris\\private\\iris\\irismodule.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

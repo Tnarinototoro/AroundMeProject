@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.HairStrandsRuntime.cpp.obj": [
+			"HairStrandsRuntime.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\blankplugin\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\blankplugin\\module.blankplugin.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\core\\sharedpch.core.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\blankplugin\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\blankplugin\\definitions.blankplugin.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\blankplugin\\source\\blankplugin\\private\\blankplugin.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\developer\\blankplugin\\source\\blankplugin\\public\\iblankplugin.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.SimpleHMD.cpp.obj": [
+			"SimpleHMD.cpp.obj"
+		]
+	}
+}

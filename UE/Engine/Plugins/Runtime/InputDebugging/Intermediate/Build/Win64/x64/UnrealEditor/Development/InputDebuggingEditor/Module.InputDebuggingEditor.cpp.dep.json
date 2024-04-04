@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\inputdebugging\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\inputdebuggingeditor\\module.inputdebuggingeditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\slate\\sharedpch.slate.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\inputdebugging\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\inputdebuggingeditor\\definitions.inputdebuggingeditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\inputdebugging\\source\\inputdebuggingeditor\\private\\inputdebuggingeditormodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\inputdebugging\\source\\inputdebuggingeditor\\public\\inputdebuggingeditormodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slate\\public\\framework\\notifications\\notificationmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\coreasynctasknotificationimpl.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\asynctasknotification.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slate\\public\\widgets\\notifications\\snotificationlist.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\mainframe\\public\\interfaces\\imainframemodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slatecore\\public\\styling\\slatestylemacros.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slatecore\\public\\styling\\slatestyleregistry.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ConClShrSlt.cpp.obj": [
+			"ConcertClientSharedSlateModule.cpp.obj"
+		]
+	}
+}

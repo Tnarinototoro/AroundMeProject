@@ -1,0 +1,31 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\audiomotorsim\\module.audiomotorsim.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\audiomotorsim\\definitions.audiomotorsim.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\unrealeditor\\inc\\audiomotorsim\\uht\\audiomotorsim.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\unrealeditor\\inc\\audiomotorsim\\uht\\audiomotorsimtypes.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\source\\audiomotorsim\\public\\audiomotorsimtypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\unrealeditor\\inc\\audiomotorsim\\uht\\audiomotorsimtypes.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\source\\audiomotorsim\\private\\audiomotormodelcomponent.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\source\\audiomotorsim\\public\\audiomotormodelcomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\unrealeditor\\inc\\audiomotorsim\\uht\\audiomotormodelcomponent.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\source\\audiomotorsim\\public\\iaudiomotorsim.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\unrealeditor\\inc\\audiomotorsim\\uht\\iaudiomotorsim.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\source\\audiomotorsim\\public\\iaudiomotorsimoutput.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\unrealeditor\\inc\\audiomotorsim\\uht\\iaudiomotorsimoutput.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\unrealeditor\\inc\\audiomotorsim\\uht\\audiomotormodelcomponent.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\source\\audiomotorsim\\private\\audiomotorsimmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\source\\audiomotorsim\\public\\audiomotorsimmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\source\\audiomotorsim\\private\\iaudiomotorsim.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\unrealeditor\\inc\\audiomotorsim\\uht\\iaudiomotorsim.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\source\\audiomotorsim\\private\\iaudiomotorsimoutput.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\audiomotorsim\\intermediate\\build\\win64\\unrealeditor\\inc\\audiomotorsim\\uht\\iaudiomotorsimoutput.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

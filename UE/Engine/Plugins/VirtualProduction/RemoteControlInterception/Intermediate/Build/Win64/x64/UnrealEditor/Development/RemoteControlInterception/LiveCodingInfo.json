@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.RemoteControlInterception.cpp.obj": [
+			"RemoteControlInterceptionModule.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,38 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\electracdm\\module.electracdm.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\core\\sharedpch.core.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\electracdm\\definitions.electracdm.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\private\\3rdparty\\tiny-aes-c\\aes.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\private\\3rdparty\\tiny-aes-c\\aes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\private\\clearkey\\clearkeycdm.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\private\\clearkey\\clearkeycdm.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\public\\electracdm.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\public\\electracdmerror.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\public\\electracdmsystem.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\public\\electracdmclient.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\public\\electraencryptedsampleinfo.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\public\\crypto\\streamcryptoaes128.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\base64.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\json\\public\\dom\\jsonobject.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\json\\public\\dom\\jsonvalue.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\json\\public\\serialization\\jsontypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\json\\public\\jsonglobals.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\json\\public\\serialization\\jsonreader.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\json\\public\\serialization\\jsonserializer.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\json\\public\\serialization\\jsonwriter.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\json\\public\\policies\\prettyjsonprintpolicy.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\json\\public\\policies\\jsonprintpolicy.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\private\\crypto\\streamcryptoaes128.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\private\\electracdm.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\private\\electracdmmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\private\\electracdmmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracdm\\source\\electracdm\\public\\ielectracdmmodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

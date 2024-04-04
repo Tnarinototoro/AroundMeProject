@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\googlepad\\module.googlepad.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\googlepad\\definitions.googlepad.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\unrealeditor\\inc\\googlepad\\uht\\googlepad.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\unrealeditor\\inc\\googlepad\\uht\\googlepadfunctionlibrary.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\source\\googlepad\\classes\\googlepadfunctionlibrary.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\unrealeditor\\inc\\googlepad\\uht\\googlepadfunctionlibrary.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\source\\googlepad\\private\\googlepad.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\source\\googlepad\\public\\googlepad.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\source\\googlepad\\private\\googlepadfunctionlibrary.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

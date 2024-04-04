@@ -1,0 +1,45 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.RigVMEditor.cpp.obj": [
+			"RigVMEditor.init.gen.cpp.obj",
+			"RigVMEdGraphEnumNodeSpawner.cpp.obj",
+			"RigVMEdGraphFunctionRefNodeSpawner.cpp.obj",
+			"RigVMEdGraphInvokeEntryNodeSpawner.cpp.obj",
+			"RigVMEdGraphNodeSpawner.cpp.obj",
+			"RigVMEdGraphTemplateNodeSpawner.cpp.obj",
+			"RigVMEdGraphUnitNodeSpawner.cpp.obj",
+			"RigVMEdGraphVariableNodeSpawner.cpp.obj",
+			"RigVMEdGraphConnectionDrawingPolicy.cpp.obj",
+			"RigVMEdGraphPanelNodeFactory.cpp.obj",
+			"RigVMEdGraphPanelPinFactory.cpp.obj",
+			"RigVMDetailsViewWrapperObject.cpp.obj",
+			"RigVMEditor.cpp.obj",
+			"RigVMEditorCommands.cpp.obj",
+			"RigVMEditorMenuContext.cpp.obj",
+			"RigVMExecutionStackCommands.cpp.obj",
+			"RigVMExecutionStackTabSummoner.cpp.obj",
+			"RigVMGraphDetailCustomization.cpp.obj",
+			"RigVMLocalVariableDetailCustomization.cpp.obj",
+			"RigVMVariableDetailCustomization.cpp.obj",
+			"RigVMEditorModule.cpp.obj",
+			"SRigVMExecutionStackView.cpp.obj",
+			"SRigVMGraphBreakLinksWidget.cpp.obj",
+			"SRigVMGraphChangePinType.cpp.obj",
+			"SRigVMGraphFunctionBulkEditWidget.cpp.obj",
+			"SRigVMGraphFunctionLocalizationWidget.cpp.obj",
+			"SRigVMGraphNode.cpp.obj",
+			"SRigVMGraphNodeComment.cpp.obj",
+			"SRigVMGraphNodeKnot.cpp.obj",
+			"SRigVMGraphPinCurveFloat.cpp.obj",
+			"SRigVMGraphPinEditableNameValueWidget.cpp.obj",
+			"SRigVMGraphPinNameList.cpp.obj",
+			"SRigVMGraphPinNameListValueWidget.cpp.obj",
+			"SRigVMGraphPinUserDataNameSpace.cpp.obj",
+			"SRigVMGraphPinUserDataPath.cpp.obj",
+			"SRigVMGraphPinVariableBinding.cpp.obj",
+			"SRigVMGraphPinVariableName.cpp.obj",
+			"SRigVMVariableMappingWidget.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,16 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\msquic\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\msquicruntime\\module.msquicruntime.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\core\\sharedpch.core.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\msquic\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\msquicruntime\\definitions.msquicruntime.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\msquic\\source\\private\\msquicruntimemodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\msquic\\source\\public\\msquicruntimemodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\msquic\\source\\private\\msquicruntimeprivate.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

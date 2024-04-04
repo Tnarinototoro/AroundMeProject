@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.LiveLinkMultiUser.cpp.obj": [
+			"LiveLinkMultiUserModule.cpp.obj"
+		]
+	}
+}

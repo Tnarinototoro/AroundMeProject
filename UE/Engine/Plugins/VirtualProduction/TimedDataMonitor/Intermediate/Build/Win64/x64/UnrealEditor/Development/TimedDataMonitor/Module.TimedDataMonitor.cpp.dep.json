@@ -1,0 +1,39 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\timeddatamonitor\\module.timeddatamonitor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\timeddatamonitor\\definitions.timeddatamonitor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\intermediate\\build\\win64\\unrealeditor\\inc\\timeddatamonitor\\uht\\timeddatamonitor.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\intermediate\\build\\win64\\unrealeditor\\inc\\timeddatamonitor\\uht\\timeddatamonitorcalibration.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\source\\timeddatamonitor\\public\\timeddatamonitorcalibration.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\timemanagement\\public\\itimeddatainput.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\timemanagement\\uht\\itimeddatainput.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\source\\timeddatamonitor\\public\\timeddatamonitortypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\intermediate\\build\\win64\\unrealeditor\\inc\\timeddatamonitor\\uht\\timeddatamonitortypes.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\intermediate\\build\\win64\\unrealeditor\\inc\\timeddatamonitor\\uht\\timeddatamonitorcalibration.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\intermediate\\build\\win64\\unrealeditor\\inc\\timeddatamonitor\\uht\\timeddatamonitorsubsystem.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\source\\timeddatamonitor\\public\\timeddatamonitorsubsystem.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\virtualproduction\\stagedatacore\\public\\stagemessages.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\stagedatacore\\uht\\stagemessages.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\intermediate\\build\\win64\\unrealeditor\\inc\\timeddatamonitor\\uht\\timeddatamonitorsubsystem.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\intermediate\\build\\win64\\unrealeditor\\inc\\timeddatamonitor\\uht\\timeddatamonitortypes.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\source\\timeddatamonitor\\private\\timeddatamonitorcalibration.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\engine\\timecodeprovider.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\timecodeprovider.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\source\\timeddatamonitor\\private\\timeddatamonitormodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\source\\timeddatamonitor\\private\\timeddatamonitorprivate.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\timeddatamonitor\\source\\timeddatamonitor\\private\\timeddatamonitorsubsystem.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\virtualproduction\\stagedatacore\\public\\istagedataprovider.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\timemanagement\\public\\itimemanagementmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\timemanagement\\public\\widgets\\sframeratepicker.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\timemanagement\\public\\commonframerates.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\timemanagement\\public\\widgets\\sframerateentrybox.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\timemanagement\\public\\timeddatainputcollection.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

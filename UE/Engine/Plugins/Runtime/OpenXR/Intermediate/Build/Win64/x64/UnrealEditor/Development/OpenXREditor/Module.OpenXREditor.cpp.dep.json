@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\openxreditor\\module.openxreditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\openxreditor\\definitions.openxreditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\source\\openxreditor\\private\\openxreditormodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\source\\openxreditor\\private\\openxreditormodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\source\\openxreditor\\public\\iopenxreditormodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\source\\openxrhmd\\public\\openxrassetdirectory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\source\\openxrinput\\public\\openxrinputsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\intermediate\\build\\win64\\unrealeditor\\inc\\openxrinput\\uht\\openxrinputsettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\source\\openxrhmd\\public\\openxrhmdsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\openxr\\intermediate\\build\\win64\\unrealeditor\\inc\\openxrhmd\\uht\\openxrhmdsettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\settings\\public\\isettingsmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\classes\\editor\\editorperformancesettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealed\\uht\\editorperformancesettings.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\lensdistortion\\module.lensdistortion.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\lensdistortion\\definitions.lensdistortion.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\intermediate\\build\\win64\\unrealeditor\\inc\\lensdistortion\\uht\\lensdistortion.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\intermediate\\build\\win64\\unrealeditor\\inc\\lensdistortion\\uht\\lensdistortionapi.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\source\\lensdistortion\\classes\\lensdistortionapi.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\intermediate\\build\\win64\\unrealeditor\\inc\\lensdistortion\\uht\\lensdistortionapi.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\intermediate\\build\\win64\\unrealeditor\\inc\\lensdistortion\\uht\\lensdistortionblueprintlibrary.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\source\\lensdistortion\\classes\\lensdistortionblueprintlibrary.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\intermediate\\build\\win64\\unrealeditor\\inc\\lensdistortion\\uht\\lensdistortionblueprintlibrary.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\source\\lensdistortion\\private\\lensdistortion.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\source\\lensdistortion\\public\\ilensdistortion.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\interfaces\\ipluginmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\plugindescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\custombuildsteps.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\localizationdescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\moduledescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\pluginreferencedescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\versescope.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\source\\lensdistortion\\private\\lensdistortionblueprintlibrary.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\compositing\\lensdistortion\\source\\lensdistortion\\private\\lensdistortionrendering.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\engine\\texturerendertarget2d.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\engine\\texturerendertarget.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\texturerendertarget.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\texturerendertarget2d.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rhi\\public\\datadrivenshaderplatforminfo.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

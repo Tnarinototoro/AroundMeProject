@@ -1,0 +1,18 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PluginReferenceViewer.cpp.obj": [
+			"PluginReferenceViewer.init.gen.cpp.obj",
+			"EdGraphNode_PluginReference.cpp.obj",
+			"EdGraph_PluginReferenceViewer.cpp.obj",
+			"HistoryManager.cpp.obj",
+			"PluginReferencePinCategory.cpp.obj",
+			"PluginReferenceViewerCommands.cpp.obj",
+			"PluginReferenceViewerModule.cpp.obj",
+			"PluginReferenceViewerSchema.cpp.obj",
+			"PluginReferenceViewerStyle.cpp.obj",
+			"SPluginReferenceNode.cpp.obj",
+			"SPluginReferenceViewer.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,30 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\stagemonitorcommon\\module.stagemonitorcommon.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\stagemonitorcommon\\definitions.stagemonitorcommon.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\intermediate\\build\\win64\\unrealeditor\\inc\\stagemonitorcommon\\uht\\stagemonitorcommon.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\intermediate\\build\\win64\\unrealeditor\\inc\\stagemonitorcommon\\uht\\stagemonitoringsettings.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\source\\stagemonitorcommon\\public\\stagemonitoringsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\gameplaytags\\classes\\gameplaytagcontainer.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\comparisonutility.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\gameplaytags\\uht\\gameplaytagcontainer.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\virtualproduction\\stagedatacore\\public\\stagemessages.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\stagedatacore\\uht\\stagemessages.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\intermediate\\build\\win64\\unrealeditor\\inc\\stagemonitorcommon\\uht\\stagemonitoringsettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\intermediate\\build\\win64\\unrealeditor\\inc\\stagemonitorcommon\\uht\\stagemonitorutils.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\source\\stagemonitorcommon\\public\\stagemonitorutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\intermediate\\build\\win64\\unrealeditor\\inc\\stagemonitorcommon\\uht\\stagemonitorutils.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\source\\stagemonitorcommon\\private\\stagemonitorcommonmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\source\\stagemonitorcommon\\private\\stagemonitoringsettings.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\stagemonitoring\\source\\stagemonitorcommon\\private\\stagemonitorutils.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\virtualproduction\\vproles\\source\\vproles\\public\\vprolessubsystem.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\virtualproduction\\vproles\\intermediate\\build\\win64\\unrealeditor\\inc\\vproles\\uht\\vprolessubsystem.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

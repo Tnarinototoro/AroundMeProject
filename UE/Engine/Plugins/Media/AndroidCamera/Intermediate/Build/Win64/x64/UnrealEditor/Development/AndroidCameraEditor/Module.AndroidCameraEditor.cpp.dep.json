@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\androidcameraeditor\\module.androidcameraeditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\androidcameraeditor\\definitions.androidcameraeditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\unrealeditor\\inc\\androidcameraeditor\\uht\\androidcameraeditor.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\unrealeditor\\inc\\androidcameraeditor\\uht\\androidcameraruntimesettings.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\source\\androidcameraeditor\\public\\androidcameraruntimesettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\intermediate\\build\\win64\\unrealeditor\\inc\\androidcameraeditor\\uht\\androidcameraruntimesettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\source\\androidcameraeditor\\private\\androidcameramodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\source\\androidcameraeditor\\public\\androidcameraeditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\settings\\public\\isettingsmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\androidcamera\\source\\androidcameraeditor\\private\\androidcameraruntimesettings.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

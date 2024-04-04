@@ -1,0 +1,32 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\animtotexture\\module.animtotexture.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\animtotexture\\definitions.animtotexture.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\intermediate\\build\\win64\\unrealeditor\\inc\\animtotexture\\uht\\animtotexture.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\intermediate\\build\\win64\\unrealeditor\\inc\\animtotexture\\uht\\animtotexturedataasset.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\source\\animtotexture\\public\\animtotexturedataasset.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\intermediate\\build\\win64\\unrealeditor\\inc\\animtotexture\\uht\\animtotexturedataasset.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\intermediate\\build\\win64\\unrealeditor\\inc\\animtotexture\\uht\\animtotextureinstanceplaybackhelpers.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\source\\animtotexture\\public\\animtotextureinstanceplaybackhelpers.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\components\\instancedstaticmeshcomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\elements\\sminstance\\sminstancemanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\elements\\sminstance\\sminstanceelementid.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\instancedstaticmeshdelegates.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\sminstanceelementid.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\sminstancemanager.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\primitiveinstanceupdatecommand.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\instancedstaticmeshcomponent.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\intermediate\\build\\win64\\unrealeditor\\inc\\animtotexture\\uht\\animtotextureinstanceplaybackhelpers.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\source\\animtotexture\\private\\animtotexturedataasset.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\source\\animtotexture\\private\\animtotextureinstanceplaybackhelpers.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\source\\animtotexture\\private\\animtotexturemodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\animtotexture\\source\\animtotexture\\public\\animtotexturemodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

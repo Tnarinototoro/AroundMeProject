@@ -1,0 +1,38 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\zonegraphdebug\\module.zonegraphdebug.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\zonegraphdebug\\definitions.zonegraphdebug.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\unrealeditor\\inc\\zonegraphdebug\\uht\\zonegraphdebug.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\unrealeditor\\inc\\zonegraphdebug\\uht\\zonegraphtestingactor.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraphdebug\\public\\zonegraphtestingactor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraph\\public\\zonegraphtypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraph\\public\\zonegraphbvtree.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\unrealeditor\\inc\\zonegraph\\uht\\zonegraphbvtree.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\unrealeditor\\inc\\zonegraph\\uht\\zonegraphtypes.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\unrealeditor\\inc\\zonegraphdebug\\uht\\zonegraphtestingactor.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraphdebug\\private\\zonegraphdebug.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraphdebug\\public\\izonegraphdebug.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraphdebug\\private\\zonegraphtestingactor.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraph\\public\\zonegraphsubsystem.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraph\\public\\zonegraphdata.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\unrealeditor\\inc\\zonegraph\\uht\\zonegraphdata.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraph\\public\\zonegraphbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\aimodule\\public\\hierarchicalhashgrid2d.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\unrealeditor\\inc\\zonegraph\\uht\\zonegraphbuilder.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\intermediate\\build\\win64\\unrealeditor\\inc\\zonegraph\\uht\\zonegraphsubsystem.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraph\\public\\zonegraphdelegates.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraph\\public\\zonegraphrenderingutilities.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraph\\public\\zonegraphastar.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\aimodule\\public\\graphastar.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\ai\\navigationsystembase.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\navigationsystembase.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\zonegraph\\source\\zonegraph\\public\\zonegraphquery.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

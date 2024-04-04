@@ -1,0 +1,22 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.CQTestTests.cpp.obj": [
+			"CQTestTests.init.gen.cpp.obj",
+			"TestActorWithProperties.gen.cpp.obj",
+			"TestReplicatedActor.gen.cpp.obj",
+			"CQTestTestsModule.cpp.obj",
+			"AssertionTests.cpp.obj",
+			"CQTestConvertTests.cpp.obj",
+			"CommandBuilderTests.cpp.obj",
+			"TestCommandsTests.cpp.obj",
+			"PIENetworkComponentTests.cpp.obj",
+			"SpawnHelperTests.cpp.obj",
+			"TestReplicatedActor.cpp.obj",
+			"CQTestTests.cpp.obj",
+			"CQTestUnitTestHelper.cpp.obj",
+			"ExtensionTests.cpp.obj",
+			"ObjectBuilderTests.cpp.obj"
+		]
+	}
+}

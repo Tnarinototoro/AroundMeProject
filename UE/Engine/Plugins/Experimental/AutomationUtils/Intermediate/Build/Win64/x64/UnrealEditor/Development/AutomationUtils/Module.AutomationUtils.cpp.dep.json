@@ -1,0 +1,32 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\automationutils\\module.automationutils.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\automationutils\\definitions.automationutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\unrealeditor\\inc\\automationutils\\uht\\automationutils.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\source\\automationutils\\private\\automationutils.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\source\\automationutils\\private\\automationutilsblueprintlibrary.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\source\\automationutils\\public\\automationutilsblueprintlibrary.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\unrealeditor\\inc\\automationutils\\uht\\automationutilsblueprintlibrary.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\assetcompilingmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\assetcompilingmanager.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\sceneviewextension.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\sceneviewextensioncontext.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\sceneviewextensioncontext.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\scenetexturesconfig.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\gbufferinfo.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\imageutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\hardwareinfo.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\engine\\gameengine.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slate\\public\\widgets\\sviewport.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\moviescenecapture\\public\\moviescenecapturehandle.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gameengine.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\automationutils\\intermediate\\build\\win64\\unrealeditor\\inc\\automationutils\\uht\\automationutilsblueprintlibrary.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

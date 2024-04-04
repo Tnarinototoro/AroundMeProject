@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\googlepadeditor\\module.googlepadeditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\googlepadeditor\\definitions.googlepadeditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\unrealeditor\\inc\\googlepadeditor\\uht\\googlepadeditor.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\unrealeditor\\inc\\googlepadeditor\\uht\\googlepadruntimesettings.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\source\\googlepadeditor\\public\\googlepadruntimesettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\intermediate\\build\\win64\\unrealeditor\\inc\\googlepadeditor\\uht\\googlepadruntimesettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\source\\googlepadeditor\\private\\googlepadmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\source\\googlepadeditor\\public\\googlepadeditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\settings\\public\\isettingsmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\googlepad\\source\\googlepadeditor\\private\\googlepadruntimesettings.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

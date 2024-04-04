@@ -1,0 +1,27 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\fbxautomationtestbuilder\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\fbxautomationtestbuilder\\module.fbxautomationtestbuilder.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\fbxautomationtestbuilder\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\fbxautomationtestbuilder\\definitions.fbxautomationtestbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\fbxautomationtestbuilder\\source\\fbxautomationtestbuilder\\private\\fbxautomationbuilder.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\fbxautomationtestbuilder\\source\\fbxautomationtestbuilder\\private\\fbxautomationbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\classes\\factories\\fbximportui.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\classes\\factories\\importsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealed\\uht\\fbximportui.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\public\\tests\\fbxautomationcommon.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealed\\uht\\fbxautomationcommon.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\fbxautomationtestbuilder\\source\\fbxautomationtestbuilder\\private\\fbxautomationbuildermodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\fbxautomationtestbuilder\\source\\fbxautomationtestbuilder\\public\\fbxautomationbuildermodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\fbxautomationtestbuilder\\source\\fbxautomationtestbuilder\\private\\fbxautomationbuilderstyle.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\workspacemenustructure\\public\\workspacemenustructure.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\workspacemenustructure\\public\\workspacemenustructuremodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\tests\\fbxautomationtestbuilder\\source\\fbxautomationtestbuilder\\private\\fbxautomationbuilderstyle.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slatecore\\public\\styling\\slatestyleregistry.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

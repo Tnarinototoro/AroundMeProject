@@ -1,0 +1,33 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\facialanimation\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\facialanimation\\module.facialanimation.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\facialanimation\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\facialanimation\\definitions.facialanimation.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\facialanimation\\intermediate\\build\\win64\\unrealeditor\\inc\\facialanimation\\uht\\audiocurvesourcecomponent.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\facialanimation\\source\\facialanimation\\public\\audiocurvesourcecomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\components\\audiocomponent.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\audio\\soundparametercontrollerinterface.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\soundparametercontrollerinterface.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\audioextensions\\public\\iaudioparametertransmitter.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\audiomixer\\public\\quartz\\audiomixerquantizedcommands.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\audiomixer\\public\\quartz\\audiomixerclock.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\audiomixer\\public\\quartz\\quartzmetronome.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\sound\\quartzsubscription.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\sound\\quartzsubscriptiontoken.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\containers\\consumeallmpmcqueue.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\audiocomponent.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\animation\\curvesourceinterface.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\curvesourceinterface.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\facialanimation\\intermediate\\build\\win64\\unrealeditor\\inc\\facialanimation\\uht\\audiocurvesourcecomponent.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\facialanimation\\intermediate\\build\\win64\\unrealeditor\\inc\\facialanimation\\uht\\facialanimation.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\facialanimation\\source\\facialanimation\\private\\audiocurvesourcecomponent.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\facialanimation\\source\\facialanimation\\private\\facialanimationmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\facialanimation\\source\\facialanimation\\private\\facialanimationmodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

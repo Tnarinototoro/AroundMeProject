@@ -1,0 +1,25 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\structutilsengine\\module.structutilsengine.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\structutilsengine\\definitions.structutilsengine.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\intermediate\\build\\win64\\unrealeditor\\inc\\structutilsengine\\uht\\structutilsengine.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutilsengine\\private\\structutilsdelegates.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutilsengine\\public\\structutilsdelegates.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutilsengine\\private\\structutilsenginemodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutilsengine\\public\\structutilsenginemodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutilsengine\\private\\structutilsfunctionlibrary.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutilsengine\\public\\structutilsfunctionlibrary.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutils\\public\\instancedstruct.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\source\\structutils\\public\\structutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\intermediate\\build\\win64\\unrealeditor\\inc\\structutils\\uht\\instancedstruct.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\intermediate\\build\\win64\\unrealeditor\\inc\\structutilsengine\\uht\\structutilsfunctionlibrary.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\structutils\\intermediate\\build\\win64\\unrealeditor\\inc\\structutilsengine\\uht\\structutilsfunctionlibrary.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

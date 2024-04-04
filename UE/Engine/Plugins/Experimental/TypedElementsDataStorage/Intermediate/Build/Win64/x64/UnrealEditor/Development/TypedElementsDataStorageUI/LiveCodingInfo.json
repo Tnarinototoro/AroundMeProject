@@ -1,0 +1,23 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.TypedElementsDataStorageUI.cpp.obj": [
+			"TypedElementCounterWidget.gen.cpp.obj",
+			"TypedElementExportedTextWidget.gen.cpp.obj",
+			"TypedElementGeneralRegistration.gen.cpp.obj",
+			"TypedElementLabelWidget.gen.cpp.obj",
+			"TypedElementPackagePathWidget.gen.cpp.obj",
+			"TypedElementSceneOutliner.gen.cpp.obj",
+			"TypedElementsDataStorageUI.init.gen.cpp.obj",
+			"TypedElementTransformHeadsUpWidget.gen.cpp.obj",
+			"TypedElementCounterWidget.cpp.obj",
+			"TypedElementExportedTextWidget.cpp.obj",
+			"TypedElementGeneralRegistration.cpp.obj",
+			"TypedElementLabelWidget.cpp.obj",
+			"TypedElementPackagePathWidget.cpp.obj",
+			"TypedElementSceneOutliner.cpp.obj",
+			"TypedElementsDataStorageUI.cpp.obj",
+			"TypedElementTransformHeadsUpWidget.cpp.obj"
+		]
+	}
+}

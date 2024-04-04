@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\plugintemplatetool\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\plugintemplatetool\\module.plugintemplatetool.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\plugintemplatetool\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\plugintemplatetool\\definitions.plugintemplatetool.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\plugintemplatetool\\source\\plugintemplatetool\\private\\plugintemplatetoolmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\plugintemplatetool\\source\\plugintemplatetool\\private\\splugintemplatebrowser.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\workspacemenustructure\\public\\workspacemenustructure.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\workspacemenustructure\\public\\workspacemenustructuremodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\plugintemplatetool\\source\\plugintemplatetool\\private\\splugintemplatebrowser.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\editor\\pluginbrowser\\source\\pluginbrowser\\public\\ipluginbrowser.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\public\\features\\ipluginseditorfeature.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\moduledescriptor.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

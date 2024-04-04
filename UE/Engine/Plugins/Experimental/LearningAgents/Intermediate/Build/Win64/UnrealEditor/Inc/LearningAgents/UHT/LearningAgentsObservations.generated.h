@@ -1,0 +1,1708 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "LearningAgentsObservations.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+class UAngleArrayObservation;
+class UAngleObservation;
+class UAngularVelocityArrayObservation;
+class UAngularVelocityObservation;
+class UDirectionArrayObservation;
+class UDirectionObservation;
+class UEnum;
+class UEnumArrayObservation;
+class UEnumObservation;
+class UFloatArrayObservation;
+class UFloatObservation;
+class ULearningAgentsInteractor;
+class UPlanarDirectionArrayObservation;
+class UPlanarDirectionObservation;
+class UPlanarPositionArrayObservation;
+class UPlanarPositionObservation;
+class UPlanarVelocityArrayObservation;
+class UPlanarVelocityObservation;
+class UPositionArrayObservation;
+class UPositionObservation;
+class URotationArrayObservation;
+class URotationObservation;
+class UScalarAngularVelocityArrayObservation;
+class UScalarAngularVelocityObservation;
+class UScalarPositionArrayObservation;
+class UScalarPositionObservation;
+class UScalarVelocityArrayObservation;
+class UScalarVelocityObservation;
+class UTimeArrayObservation;
+class UTimeObservation;
+class UVectorArrayObservation;
+class UVectorObservation;
+class UVelocityArrayObservation;
+class UVelocityObservation;
+#ifdef LEARNINGAGENTS_LearningAgentsObservations_generated_h
+#error "LearningAgentsObservations.generated.h already included, missing '#pragma once' in LearningAgentsObservations.h"
+#endif
+#define LEARNINGAGENTS_LearningAgentsObservations_generated_h
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesULearningAgentsObservation(); \
+	friend struct Z_Construct_UClass_ULearningAgentsObservation_Statics; \
+public: \
+	DECLARE_CLASS(ULearningAgentsObservation, UObject, COMPILED_IN_FLAGS(CLASS_Abstract), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(ULearningAgentsObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API ULearningAgentsObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API ULearningAgentsObservation(ULearningAgentsObservation&&); \
+	NO_API ULearningAgentsObservation(const ULearningAgentsObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, ULearningAgentsObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(ULearningAgentsObservation); \
+	DEFINE_ABSTRACT_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(ULearningAgentsObservation) \
+	NO_API virtual ~ULearningAgentsObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_40_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_43_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class ULearningAgentsObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetFloatObservation); \
+	DECLARE_FUNCTION(execAddFloatObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUFloatObservation(); \
+	friend struct Z_Construct_UClass_UFloatObservation_Statics; \
+public: \
+	DECLARE_CLASS(UFloatObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UFloatObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UFloatObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UFloatObservation(UFloatObservation&&); \
+	NO_API UFloatObservation(const UFloatObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UFloatObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UFloatObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UFloatObservation) \
+	NO_API virtual ~UFloatObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_96_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_99_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UFloatObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetFloatArrayObservation); \
+	DECLARE_FUNCTION(execAddFloatArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUFloatArrayObservation(); \
+	friend struct Z_Construct_UClass_UFloatArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UFloatArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UFloatArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UFloatArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UFloatArrayObservation(UFloatArrayObservation&&); \
+	NO_API UFloatArrayObservation(const UFloatArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UFloatArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UFloatArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UFloatArrayObservation) \
+	NO_API virtual ~UFloatArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_130_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_133_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UFloatArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetVectorObservation); \
+	DECLARE_FUNCTION(execAddVectorObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUVectorObservation(); \
+	friend struct Z_Construct_UClass_UVectorObservation_Statics; \
+public: \
+	DECLARE_CLASS(UVectorObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UVectorObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UVectorObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UVectorObservation(UVectorObservation&&); \
+	NO_API UVectorObservation(const UVectorObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UVectorObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UVectorObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UVectorObservation) \
+	NO_API virtual ~UVectorObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_167_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_170_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UVectorObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetVectorArrayObservation); \
+	DECLARE_FUNCTION(execAddVectorArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUVectorArrayObservation(); \
+	friend struct Z_Construct_UClass_UVectorArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UVectorArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UVectorArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UVectorArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UVectorArrayObservation(UVectorArrayObservation&&); \
+	NO_API UVectorArrayObservation(const UVectorArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UVectorArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UVectorArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UVectorArrayObservation) \
+	NO_API virtual ~UVectorArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_201_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_204_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UVectorArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetEnumObservation); \
+	DECLARE_FUNCTION(execAddEnumObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUEnumObservation(); \
+	friend struct Z_Construct_UClass_UEnumObservation_Statics; \
+public: \
+	DECLARE_CLASS(UEnumObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UEnumObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UEnumObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UEnumObservation(UEnumObservation&&); \
+	NO_API UEnumObservation(const UEnumObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UEnumObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UEnumObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UEnumObservation) \
+	NO_API virtual ~UEnumObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_238_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_241_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UEnumObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetEnumArrayObservation); \
+	DECLARE_FUNCTION(execAddEnumArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUEnumArrayObservation(); \
+	friend struct Z_Construct_UClass_UEnumArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UEnumArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UEnumArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UEnumArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UEnumArrayObservation(UEnumArrayObservation&&); \
+	NO_API UEnumArrayObservation(const UEnumArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UEnumArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UEnumArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UEnumArrayObservation) \
+	NO_API virtual ~UEnumArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_273_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_276_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UEnumArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetTimeObservation); \
+	DECLARE_FUNCTION(execAddTimeObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUTimeObservation(); \
+	friend struct Z_Construct_UClass_UTimeObservation_Statics; \
+public: \
+	DECLARE_CLASS(UTimeObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UTimeObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UTimeObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UTimeObservation(UTimeObservation&&); \
+	NO_API UTimeObservation(const UTimeObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UTimeObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UTimeObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UTimeObservation) \
+	NO_API virtual ~UTimeObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_311_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_314_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UTimeObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetTimeArrayObservation); \
+	DECLARE_FUNCTION(execAddTimeArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUTimeArrayObservation(); \
+	friend struct Z_Construct_UClass_UTimeArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UTimeArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UTimeArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UTimeArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UTimeArrayObservation(UTimeArrayObservation&&); \
+	NO_API UTimeArrayObservation(const UTimeArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UTimeArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UTimeArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UTimeArrayObservation) \
+	NO_API virtual ~UTimeArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_346_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_349_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UTimeArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetAngleObservation); \
+	DECLARE_FUNCTION(execAddAngleObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUAngleObservation(); \
+	friend struct Z_Construct_UClass_UAngleObservation_Statics; \
+public: \
+	DECLARE_CLASS(UAngleObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UAngleObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UAngleObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UAngleObservation(UAngleObservation&&); \
+	NO_API UAngleObservation(const UAngleObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UAngleObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UAngleObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UAngleObservation) \
+	NO_API virtual ~UAngleObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_384_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_387_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UAngleObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetAngleArrayObservation); \
+	DECLARE_FUNCTION(execAddAngleArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUAngleArrayObservation(); \
+	friend struct Z_Construct_UClass_UAngleArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UAngleArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UAngleArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UAngleArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UAngleArrayObservation(UAngleArrayObservation&&); \
+	NO_API UAngleArrayObservation(const UAngleArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UAngleArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UAngleArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UAngleArrayObservation) \
+	NO_API virtual ~UAngleArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_419_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_422_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UAngleArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetRotationObservationFromQuat); \
+	DECLARE_FUNCTION(execSetRotationObservation); \
+	DECLARE_FUNCTION(execAddRotationObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesURotationObservation(); \
+	friend struct Z_Construct_UClass_URotationObservation_Statics; \
+public: \
+	DECLARE_CLASS(URotationObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(URotationObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API URotationObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API URotationObservation(URotationObservation&&); \
+	NO_API URotationObservation(const URotationObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, URotationObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(URotationObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(URotationObservation) \
+	NO_API virtual ~URotationObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_455_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_458_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class URotationObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetRotationArrayObservationFromQuats); \
+	DECLARE_FUNCTION(execSetRotationArrayObservation); \
+	DECLARE_FUNCTION(execAddRotationArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesURotationArrayObservation(); \
+	friend struct Z_Construct_UClass_URotationArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(URotationArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(URotationArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API URotationArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API URotationArrayObservation(URotationArrayObservation&&); \
+	NO_API URotationArrayObservation(const URotationArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, URotationArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(URotationArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(URotationArrayObservation) \
+	NO_API virtual ~URotationArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_499_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_502_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class URotationArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetDirectionObservation); \
+	DECLARE_FUNCTION(execAddDirectionObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUDirectionObservation(); \
+	friend struct Z_Construct_UClass_UDirectionObservation_Statics; \
+public: \
+	DECLARE_CLASS(UDirectionObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UDirectionObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UDirectionObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UDirectionObservation(UDirectionObservation&&); \
+	NO_API UDirectionObservation(const UDirectionObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UDirectionObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UDirectionObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UDirectionObservation) \
+	NO_API virtual ~UDirectionObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_546_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_549_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UDirectionObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetDirectionArrayObservation); \
+	DECLARE_FUNCTION(execAddDirectionArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUDirectionArrayObservation(); \
+	friend struct Z_Construct_UClass_UDirectionArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UDirectionArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UDirectionArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UDirectionArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UDirectionArrayObservation(UDirectionArrayObservation&&); \
+	NO_API UDirectionArrayObservation(const UDirectionArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UDirectionArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UDirectionArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UDirectionArrayObservation) \
+	NO_API virtual ~UDirectionArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_582_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_585_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UDirectionArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetPlanarDirectionObservation); \
+	DECLARE_FUNCTION(execAddPlanarDirectionObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUPlanarDirectionObservation(); \
+	friend struct Z_Construct_UClass_UPlanarDirectionObservation_Statics; \
+public: \
+	DECLARE_CLASS(UPlanarDirectionObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UPlanarDirectionObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UPlanarDirectionObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UPlanarDirectionObservation(UPlanarDirectionObservation&&); \
+	NO_API UPlanarDirectionObservation(const UPlanarDirectionObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UPlanarDirectionObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UPlanarDirectionObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UPlanarDirectionObservation) \
+	NO_API virtual ~UPlanarDirectionObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_619_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_622_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UPlanarDirectionObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetPlanarDirectionArrayObservation); \
+	DECLARE_FUNCTION(execAddPlanarDirectionArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUPlanarDirectionArrayObservation(); \
+	friend struct Z_Construct_UClass_UPlanarDirectionArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UPlanarDirectionArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UPlanarDirectionArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UPlanarDirectionArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UPlanarDirectionArrayObservation(UPlanarDirectionArrayObservation&&); \
+	NO_API UPlanarDirectionArrayObservation(const UPlanarDirectionArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UPlanarDirectionArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UPlanarDirectionArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UPlanarDirectionArrayObservation) \
+	NO_API virtual ~UPlanarDirectionArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_658_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_661_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UPlanarDirectionArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetPositionObservation); \
+	DECLARE_FUNCTION(execAddPositionObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUPositionObservation(); \
+	friend struct Z_Construct_UClass_UPositionObservation_Statics; \
+public: \
+	DECLARE_CLASS(UPositionObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UPositionObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UPositionObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UPositionObservation(UPositionObservation&&); \
+	NO_API UPositionObservation(const UPositionObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UPositionObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UPositionObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UPositionObservation) \
+	NO_API virtual ~UPositionObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_700_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_703_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UPositionObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetPositionArrayObservation); \
+	DECLARE_FUNCTION(execAddPositionArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUPositionArrayObservation(); \
+	friend struct Z_Construct_UClass_UPositionArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UPositionArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UPositionArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UPositionArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UPositionArrayObservation(UPositionArrayObservation&&); \
+	NO_API UPositionArrayObservation(const UPositionArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UPositionArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UPositionArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UPositionArrayObservation) \
+	NO_API virtual ~UPositionArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_738_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_741_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UPositionArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetScalarPositionObservationWithAxis); \
+	DECLARE_FUNCTION(execSetScalarPositionObservation); \
+	DECLARE_FUNCTION(execAddScalarPositionObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUScalarPositionObservation(); \
+	friend struct Z_Construct_UClass_UScalarPositionObservation_Statics; \
+public: \
+	DECLARE_CLASS(UScalarPositionObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UScalarPositionObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UScalarPositionObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UScalarPositionObservation(UScalarPositionObservation&&); \
+	NO_API UScalarPositionObservation(const UScalarPositionObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UScalarPositionObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UScalarPositionObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UScalarPositionObservation) \
+	NO_API virtual ~UScalarPositionObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_777_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_780_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UScalarPositionObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetScalarPositionArrayObservationWithAxis); \
+	DECLARE_FUNCTION(execSetScalarPositionArrayObservation); \
+	DECLARE_FUNCTION(execAddScalarPositionArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUScalarPositionArrayObservation(); \
+	friend struct Z_Construct_UClass_UScalarPositionArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UScalarPositionArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UScalarPositionArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UScalarPositionArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UScalarPositionArrayObservation(UScalarPositionArrayObservation&&); \
+	NO_API UScalarPositionArrayObservation(const UScalarPositionArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UScalarPositionArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UScalarPositionArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UScalarPositionArrayObservation) \
+	NO_API virtual ~UScalarPositionArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_827_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_830_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UScalarPositionArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetPlanarPositionObservation); \
+	DECLARE_FUNCTION(execAddPlanarPositionObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUPlanarPositionObservation(); \
+	friend struct Z_Construct_UClass_UPlanarPositionObservation_Statics; \
+public: \
+	DECLARE_CLASS(UPlanarPositionObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UPlanarPositionObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UPlanarPositionObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UPlanarPositionObservation(UPlanarPositionObservation&&); \
+	NO_API UPlanarPositionObservation(const UPlanarPositionObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UPlanarPositionObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UPlanarPositionObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UPlanarPositionObservation) \
+	NO_API virtual ~UPlanarPositionObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_878_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_881_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UPlanarPositionObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetPlanarPositionArrayObservation); \
+	DECLARE_FUNCTION(execAddPlanarPositionArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUPlanarPositionArrayObservation(); \
+	friend struct Z_Construct_UClass_UPlanarPositionArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UPlanarPositionArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UPlanarPositionArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UPlanarPositionArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UPlanarPositionArrayObservation(UPlanarPositionArrayObservation&&); \
+	NO_API UPlanarPositionArrayObservation(const UPlanarPositionArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UPlanarPositionArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UPlanarPositionArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UPlanarPositionArrayObservation) \
+	NO_API virtual ~UPlanarPositionArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_919_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_922_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UPlanarPositionArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetVelocityObservation); \
+	DECLARE_FUNCTION(execAddVelocityObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUVelocityObservation(); \
+	friend struct Z_Construct_UClass_UVelocityObservation_Statics; \
+public: \
+	DECLARE_CLASS(UVelocityObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UVelocityObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UVelocityObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UVelocityObservation(UVelocityObservation&&); \
+	NO_API UVelocityObservation(const UVelocityObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UVelocityObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UVelocityObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UVelocityObservation) \
+	NO_API virtual ~UVelocityObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_963_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_966_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UVelocityObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetVelocityArrayObservation); \
+	DECLARE_FUNCTION(execAddVelocityArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUVelocityArrayObservation(); \
+	friend struct Z_Construct_UClass_UVelocityArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UVelocityArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UVelocityArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UVelocityArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UVelocityArrayObservation(UVelocityArrayObservation&&); \
+	NO_API UVelocityArrayObservation(const UVelocityArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UVelocityArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UVelocityArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UVelocityArrayObservation) \
+	NO_API virtual ~UVelocityArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_999_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1002_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UVelocityArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetScalarVelocityObservationWithAxis); \
+	DECLARE_FUNCTION(execSetScalarVelocityObservation); \
+	DECLARE_FUNCTION(execAddScalarVelocityObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUScalarVelocityObservation(); \
+	friend struct Z_Construct_UClass_UScalarVelocityObservation_Statics; \
+public: \
+	DECLARE_CLASS(UScalarVelocityObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UScalarVelocityObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UScalarVelocityObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UScalarVelocityObservation(UScalarVelocityObservation&&); \
+	NO_API UScalarVelocityObservation(const UScalarVelocityObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UScalarVelocityObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UScalarVelocityObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UScalarVelocityObservation) \
+	NO_API virtual ~UScalarVelocityObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1036_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1039_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UScalarVelocityObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetScalarVelocityArrayObservationWithAxis); \
+	DECLARE_FUNCTION(execSetScalarVelocityArrayObservation); \
+	DECLARE_FUNCTION(execAddScalarVelocityArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUScalarVelocityArrayObservation(); \
+	friend struct Z_Construct_UClass_UScalarVelocityArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UScalarVelocityArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UScalarVelocityArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UScalarVelocityArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UScalarVelocityArrayObservation(UScalarVelocityArrayObservation&&); \
+	NO_API UScalarVelocityArrayObservation(const UScalarVelocityArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UScalarVelocityArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UScalarVelocityArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UScalarVelocityArrayObservation) \
+	NO_API virtual ~UScalarVelocityArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1080_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1083_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UScalarVelocityArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetPlanarVelocityObservation); \
+	DECLARE_FUNCTION(execAddPlanarVelocityObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUPlanarVelocityObservation(); \
+	friend struct Z_Construct_UClass_UPlanarVelocityObservation_Statics; \
+public: \
+	DECLARE_CLASS(UPlanarVelocityObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UPlanarVelocityObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UPlanarVelocityObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UPlanarVelocityObservation(UPlanarVelocityObservation&&); \
+	NO_API UPlanarVelocityObservation(const UPlanarVelocityObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UPlanarVelocityObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UPlanarVelocityObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UPlanarVelocityObservation) \
+	NO_API virtual ~UPlanarVelocityObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1125_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1128_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UPlanarVelocityObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetPlanarVelocityArrayObservation); \
+	DECLARE_FUNCTION(execAddPlanarVelocityArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUPlanarVelocityArrayObservation(); \
+	friend struct Z_Construct_UClass_UPlanarVelocityArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UPlanarVelocityArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UPlanarVelocityArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UPlanarVelocityArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UPlanarVelocityArrayObservation(UPlanarVelocityArrayObservation&&); \
+	NO_API UPlanarVelocityArrayObservation(const UPlanarVelocityArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UPlanarVelocityArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UPlanarVelocityArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UPlanarVelocityArrayObservation) \
+	NO_API virtual ~UPlanarVelocityArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1164_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1167_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UPlanarVelocityArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetAngularVelocityObservation); \
+	DECLARE_FUNCTION(execAddAngularVelocityObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUAngularVelocityObservation(); \
+	friend struct Z_Construct_UClass_UAngularVelocityObservation_Statics; \
+public: \
+	DECLARE_CLASS(UAngularVelocityObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UAngularVelocityObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UAngularVelocityObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UAngularVelocityObservation(UAngularVelocityObservation&&); \
+	NO_API UAngularVelocityObservation(const UAngularVelocityObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UAngularVelocityObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UAngularVelocityObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UAngularVelocityObservation) \
+	NO_API virtual ~UAngularVelocityObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1206_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1209_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UAngularVelocityObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetAngularVelocityArrayObservation); \
+	DECLARE_FUNCTION(execAddAngularVelocityArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUAngularVelocityArrayObservation(); \
+	friend struct Z_Construct_UClass_UAngularVelocityArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UAngularVelocityArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UAngularVelocityArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UAngularVelocityArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UAngularVelocityArrayObservation(UAngularVelocityArrayObservation&&); \
+	NO_API UAngularVelocityArrayObservation(const UAngularVelocityArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UAngularVelocityArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UAngularVelocityArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UAngularVelocityArrayObservation) \
+	NO_API virtual ~UAngularVelocityArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1242_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1245_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UAngularVelocityArrayObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetScalarAngularVelocityObservationWithAxis); \
+	DECLARE_FUNCTION(execSetScalarAngularVelocityObservation); \
+	DECLARE_FUNCTION(execAddScalarAngularVelocityObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUScalarAngularVelocityObservation(); \
+	friend struct Z_Construct_UClass_UScalarAngularVelocityObservation_Statics; \
+public: \
+	DECLARE_CLASS(UScalarAngularVelocityObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UScalarAngularVelocityObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UScalarAngularVelocityObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UScalarAngularVelocityObservation(UScalarAngularVelocityObservation&&); \
+	NO_API UScalarAngularVelocityObservation(const UScalarAngularVelocityObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UScalarAngularVelocityObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UScalarAngularVelocityObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UScalarAngularVelocityObservation) \
+	NO_API virtual ~UScalarAngularVelocityObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1279_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1282_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UScalarAngularVelocityObservation>();
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execSetScalarAngularVelocityArrayObservationWithAxis); \
+	DECLARE_FUNCTION(execSetScalarAngularVelocityArrayObservation); \
+	DECLARE_FUNCTION(execAddScalarAngularVelocityArrayObservation);
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_ACCESSORS
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUScalarAngularVelocityArrayObservation(); \
+	friend struct Z_Construct_UClass_UScalarAngularVelocityArrayObservation_Statics; \
+public: \
+	DECLARE_CLASS(UScalarAngularVelocityArrayObservation, ULearningAgentsObservation, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/LearningAgents"), NO_API) \
+	DECLARE_SERIALIZER(UScalarAngularVelocityArrayObservation)
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UScalarAngularVelocityArrayObservation(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UScalarAngularVelocityArrayObservation(UScalarAngularVelocityArrayObservation&&); \
+	NO_API UScalarAngularVelocityArrayObservation(const UScalarAngularVelocityArrayObservation&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UScalarAngularVelocityArrayObservation); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UScalarAngularVelocityArrayObservation); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UScalarAngularVelocityArrayObservation) \
+	NO_API virtual ~UScalarAngularVelocityArrayObservation();
+
+
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1323_PROLOG
+#define FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_ACCESSORS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h_1326_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> LEARNINGAGENTS_API UClass* StaticClass<class UScalarAngularVelocityArrayObservation>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_Experimental_LearningAgents_Source_LearningAgents_Public_LearningAgentsObservations_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

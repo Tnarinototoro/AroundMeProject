@@ -1,0 +1,38 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\compositeplane\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\compositeplane\\module.compositeplane.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\compositeplane\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\compositeplane\\definitions.compositeplane.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\compositeplane\\source\\compositeplane\\private\\compositeplane.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\compositeplane\\source\\compositeplane\\private\\compositeplane.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\compositeplane\\source\\compositeplane\\private\\compositeplaneplacement.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\compositeplane\\source\\compositeplane\\private\\compositeplaneplacement.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\placementmode\\public\\iplacementmodemodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\classes\\actorfactories\\actorfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\editorframework\\public\\factories\\assetfactoryinterface.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\instances\\instancedplacementclientinfo.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\ismpartition\\ismcomponentdescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\ismcomponentdescriptor.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\ismpartition\\ismpartitionclient.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\ismpartitionclient.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\ismpartition\\ismpartitioninstancemanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\ismpartitioninstancemanager.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\instances\\instancedplacementhash.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\hashbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\elements\\sminstance\\sminstanceelementid.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\public\\instancedstaticmeshdelegates.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\sminstanceelementid.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\instancedplacementclientinfo.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\editorframework\\uht\\assetfactoryinterface.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealed\\uht\\actorfactory.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\placementmode\\public\\actorplacementinfo.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\classes\\actorfactories\\actorfactoryblueprint.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealed\\uht\\actorfactoryblueprint.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

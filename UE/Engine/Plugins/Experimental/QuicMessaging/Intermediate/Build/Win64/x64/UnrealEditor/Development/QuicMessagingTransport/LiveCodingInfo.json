@@ -1,0 +1,15 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.QuicMessagingTransport.cpp.obj": [
+			"QuicClient.cpp.obj",
+			"QuicEndpoint.cpp.obj",
+			"QuicEndpointManager.cpp.obj",
+			"QuicMessagingTransportModule.cpp.obj",
+			"QuicMessagingTransportPrivate.cpp.obj",
+			"QuicQueues.cpp.obj",
+			"QuicServer.cpp.obj",
+			"QuicUtils.cpp.obj"
+		]
+	}
+}

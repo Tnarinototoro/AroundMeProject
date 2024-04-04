@@ -1,0 +1,115 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "MVVMBlueprintView.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#ifdef MODELVIEWVIEWMODELBLUEPRINT_MVVMBlueprintView_generated_h
+#error "MVVMBlueprintView.generated.h already included, missing '#pragma once' in MVVMBlueprintView.h"
+#endif
+#define MODELVIEWVIEWMODELBLUEPRINT_MVVMBlueprintView_generated_h
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMVVMBlueprintViewSettings(); \
+	friend struct Z_Construct_UClass_UMVVMBlueprintViewSettings_Statics; \
+public: \
+	DECLARE_CLASS(UMVVMBlueprintViewSettings, UObject, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/ModelViewViewModelBlueprint"), MODELVIEWVIEWMODELBLUEPRINT_API) \
+	DECLARE_SERIALIZER(UMVVMBlueprintViewSettings)
+
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	MODELVIEWVIEWMODELBLUEPRINT_API UMVVMBlueprintViewSettings(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	MODELVIEWVIEWMODELBLUEPRINT_API UMVVMBlueprintViewSettings(UMVVMBlueprintViewSettings&&); \
+	MODELVIEWVIEWMODELBLUEPRINT_API UMVVMBlueprintViewSettings(const UMVVMBlueprintViewSettings&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(MODELVIEWVIEWMODELBLUEPRINT_API, UMVVMBlueprintViewSettings); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMVVMBlueprintViewSettings); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UMVVMBlueprintViewSettings) \
+	MODELVIEWVIEWMODELBLUEPRINT_API virtual ~UMVVMBlueprintViewSettings();
+
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_34_PROLOG
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_37_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MODELVIEWVIEWMODELBLUEPRINT_API UClass* StaticClass<class UMVVMBlueprintViewSettings>();
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_ACCESSORS
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_ARCHIVESERIALIZER \
+	DECLARE_FSTRUCTUREDARCHIVE_SERIALIZER(UMVVMBlueprintView, NO_API)
+
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMVVMBlueprintView(); \
+	friend struct Z_Construct_UClass_UMVVMBlueprintView_Statics; \
+public: \
+	DECLARE_CLASS(UMVVMBlueprintView, UObject, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/ModelViewViewModelBlueprint"), NO_API) \
+	DECLARE_SERIALIZER(UMVVMBlueprintView) \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_ARCHIVESERIALIZER \
+	DECLARE_WITHIN(UMVVMWidgetBlueprintExtension_View)
+
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMVVMBlueprintView(UMVVMBlueprintView&&); \
+	NO_API UMVVMBlueprintView(const UMVVMBlueprintView&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMVVMBlueprintView); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMVVMBlueprintView); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMVVMBlueprintView) \
+	NO_API virtual ~UMVVMBlueprintView();
+
+
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_62_PROLOG
+#define FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_ACCESSORS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h_65_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MODELVIEWVIEWMODELBLUEPRINT_API UClass* StaticClass<class UMVVMBlueprintView>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_Runtime_ModelViewViewModel_Source_ModelViewViewModelBlueprint_Public_MVVMBlueprintView_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

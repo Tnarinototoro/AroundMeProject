@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ModelViewViewModelDebugger.cpp.obj": [
+			"ModelViewViewModelDebugger.init.gen.cpp.obj",
+			"MVVMDebugView.gen.cpp.obj",
+			"MVVMDebugViewClass.gen.cpp.obj",
+			"MVVMDebugViewModel.gen.cpp.obj",
+			"ModelViewViewModelDebuggerModule.cpp.obj",
+			"MVVMDebugSnapshot.cpp.obj"
+		]
+	}
+}

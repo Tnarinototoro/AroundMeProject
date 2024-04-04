@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.WebBrowserNativeProxy.cpp.obj": [
+			"WebBrowserNativeProxyModule.cpp.obj"
+		]
+	}
+}

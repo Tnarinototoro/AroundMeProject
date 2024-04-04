@@ -1,0 +1,12 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.JWT.cpp.obj": [
+			"IJwt.cpp.obj",
+			"JsonWebToken.cpp.obj",
+			"JwtAlgorithms.cpp.obj",
+			"JwtUtils.cpp.obj",
+			"JwtTests.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\electracodecfactory\\module.electracodecfactory.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\core\\sharedpch.core.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\electracodecfactory\\definitions.electracodecfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\private\\electracodecfactorymodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\private\\electracodecfactorymodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\public\\ielectracodecfactorymodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\variant.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\public\\ielectracodecfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderresourcedelegate.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderresourcedelegatebase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\windows\\windowselectradecoderresourcedelegate.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\public\\ielectracodecregistry.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecodersmodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

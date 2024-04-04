@@ -1,0 +1,33 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\opusdecoderelectra\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\opusdecoderelectra\\module.opusdecoderelectra.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\core\\sharedpch.core.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\opusdecoderelectra\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\opusdecoderelectra\\definitions.opusdecoderelectra.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\opusdecoderelectra\\source\\opusdecoderelectra\\private\\opusdecoderelectramodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\opusdecoderelectra\\source\\opusdecoderelectra\\private\\opusdecoderelectramodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\opusdecoderelectra\\source\\opusdecoderelectra\\private\\opusdecoder\\electramediaopusdecoder.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\opusdecoderelectra\\source\\opusdecoderelectra\\private\\opusdecoder\\electramediaopusdecoder.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\public\\ielectracodecregistry.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\public\\ielectracodecfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\variant.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderresourcedelegate.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderresourcedelegatebase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\windows\\windowselectradecoderresourcedelegate.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electracodecfactory\\public\\ielectracodecfactorymodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderfeaturesandoptions.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoder.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\ielectradecoderoutputaudio.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\electradecodersutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\electracodecs\\source\\electradecoders\\public\\utils\\mpeg\\electrautilsmp4.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\thirdparty\\libopus\\opus-1.3.1-12\\include\\opus_multistream.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\thirdparty\\libopus\\opus-1.3.1-12\\include\\opus.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\thirdparty\\libopus\\opus-1.3.1-12\\include\\opus_types.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\thirdparty\\libopus\\opus-1.3.1-12\\include\\opus_defines.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

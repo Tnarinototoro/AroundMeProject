@@ -1,0 +1,11 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ImagePlateEditor.cpp.obj": [
+			"AssetDefinition_ImagePlateFileSequence.gen.cpp.obj",
+			"ImagePlateEditor.init.gen.cpp.obj",
+			"ImagePlateEditor.cpp.obj",
+			"ImagePlateFileSequenceFactory.cpp.obj"
+		]
+	}
+}

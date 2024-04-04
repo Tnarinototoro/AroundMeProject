@@ -1,0 +1,37 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\screenreader\\module.screenreader.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\screenreader\\definitions.screenreader.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\screenreader\\uht\\screenreader.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\screenreader\\uht\\screenreaderannouncement.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\announcement\\screenreaderannouncement.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\screenreader\\uht\\screenreaderannouncement.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\screenreader\\uht\\screenreaderreply.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\genericplatform\\screenreaderreply.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\screenreader\\uht\\screenreaderreply.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\private\\announcement\\screenreaderannouncement.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\private\\screenreaderlog.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\private\\announcement\\screenreaderannouncementchannel.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\announcement\\screenreaderannouncementchannel.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\private\\announcement\\screenreaderwidgetannouncementbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\texttospeech\\source\\texttospeech\\public\\genericplatform\\texttospeechbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\private\\announcement\\screenreaderwidgetannouncementbuilder.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\private\\genericplatform\\screenreaderapplicationmessagehandlerbase.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\genericplatform\\screenreaderapplicationmessagehandlerbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\private\\genericplatform\\screenreaderbase.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\genericplatform\\screenreaderbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\genericplatform\\screenreaderuser.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\private\\genericplatform\\screenreaderuser.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\texttospeech\\source\\texttospeech\\public\\genericplatform\\itexttospeechfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\navigation\\screenreadernavigationpolicy.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\texttospeech\\source\\texttospeech\\public\\texttospeechmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\private\\screenreadermodule.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

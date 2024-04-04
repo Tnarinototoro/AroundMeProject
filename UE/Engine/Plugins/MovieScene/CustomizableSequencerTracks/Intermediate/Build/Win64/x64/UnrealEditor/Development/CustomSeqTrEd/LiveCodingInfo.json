@@ -1,0 +1,10 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.CustomSeqTrEd.cpp.obj": [
+			"CustomizableSequencerTracksEditorModule.cpp.obj",
+			"CustomizableSequencerTracksStyle.cpp.obj",
+			"SequencerTrackBPEditor.cpp.obj"
+		]
+	}
+}

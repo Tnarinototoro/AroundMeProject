@@ -1,0 +1,65 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "UI/TypedElementSlateWidgetReferenceColumnUpdateProcessor.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#ifdef TYPEDELEMENTSDATASTORAGE_TypedElementSlateWidgetReferenceColumnUpdateProcessor_generated_h
+#error "TypedElementSlateWidgetReferenceColumnUpdateProcessor.generated.h already included, missing '#pragma once' in TypedElementSlateWidgetReferenceColumnUpdateProcessor.h"
+#endif
+#define TYPEDELEMENTSDATASTORAGE_TypedElementSlateWidgetReferenceColumnUpdateProcessor_generated_h
+
+#define FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_SPARSE_DATA
+#define FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_ACCESSORS
+#define FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUTypedElementSlateWidgetReferenceColumnUpdateFactory(); \
+	friend struct Z_Construct_UClass_UTypedElementSlateWidgetReferenceColumnUpdateFactory_Statics; \
+public: \
+	DECLARE_CLASS(UTypedElementSlateWidgetReferenceColumnUpdateFactory, UTypedElementDataStorageFactory, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/TypedElementsDataStorage"), NO_API) \
+	DECLARE_SERIALIZER(UTypedElementSlateWidgetReferenceColumnUpdateFactory)
+
+
+#define FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UTypedElementSlateWidgetReferenceColumnUpdateFactory(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UTypedElementSlateWidgetReferenceColumnUpdateFactory(UTypedElementSlateWidgetReferenceColumnUpdateFactory&&); \
+	NO_API UTypedElementSlateWidgetReferenceColumnUpdateFactory(const UTypedElementSlateWidgetReferenceColumnUpdateFactory&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UTypedElementSlateWidgetReferenceColumnUpdateFactory); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UTypedElementSlateWidgetReferenceColumnUpdateFactory); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UTypedElementSlateWidgetReferenceColumnUpdateFactory)
+
+
+#define FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_15_PROLOG
+#define FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_SPARSE_DATA \
+	FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_ACCESSORS \
+	FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h_18_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> TYPEDELEMENTSDATASTORAGE_API UClass* StaticClass<class UTypedElementSlateWidgetReferenceColumnUpdateFactory>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_Experimental_TypedElementsDataStorage_Source_TypedElementsDataStorage_Private_UI_TypedElementSlateWidgetReferenceColumnUpdateProcessor_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

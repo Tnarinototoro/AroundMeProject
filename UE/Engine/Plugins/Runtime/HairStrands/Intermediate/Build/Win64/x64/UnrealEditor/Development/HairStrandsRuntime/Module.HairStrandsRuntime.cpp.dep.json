@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\hairstrands\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\hairstrandsruntime\\module.hairstrandsruntime.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\hairstrands\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\hairstrandsruntime\\definitions.hairstrandsruntime.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\hairstrands\\source\\hairstrandsruntime\\private\\hairstrandsruntime.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\hairstrands\\source\\hairstrandscore\\public\\groomcachestreamingmanager.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

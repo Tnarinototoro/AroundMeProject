@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\livelinkprestonmdreditor\\module.livelinkprestonmdreditor.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\livelinkprestonmdreditor\\definitions.livelinkprestonmdreditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\source\\livelinkprestonmdreditor\\private\\livelinkprestonmdreditormodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\source\\livelinkprestonmdreditor\\private\\livelinkprestonmdreditormodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\source\\livelinkprestonmdr\\public\\livelinkprestonmdrfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\livelinkinterface\\public\\livelinksourcefactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\livelinkinterface\\uht\\livelinksourcefactory.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\intermediate\\build\\win64\\unrealeditor\\inc\\livelinkprestonmdr\\uht\\livelinkprestonmdrfactory.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\source\\livelinkprestonmdreditor\\private\\livelinkprestonmdrsourcepanel.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\source\\livelinkprestonmdr\\public\\livelinkprestonmdrconnectionsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\intermediate\\build\\win64\\unrealeditor\\inc\\livelinkprestonmdr\\uht\\livelinkprestonmdrconnectionsettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\livelinkprestonmdr\\source\\livelinkprestonmdreditor\\private\\livelinkprestonmdrsourcepanel.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\propertyeditor\\public\\istructuredetailsview.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

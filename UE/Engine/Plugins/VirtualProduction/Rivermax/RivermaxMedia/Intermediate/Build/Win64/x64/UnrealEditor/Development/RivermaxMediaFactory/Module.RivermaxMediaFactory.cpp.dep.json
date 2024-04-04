@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\rivermaxmediafactory\\module.rivermaxmediafactory.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\rivermaxmediafactory\\definitions.rivermaxmediafactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxmedia\\source\\rivermaxmediafactory\\private\\rivermaxmediafactorymodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaplayerfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediamodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\settings\\public\\isettingsmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\settings\\public\\isettingssection.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\virtualproduction\\rivermax\\rivermaxmedia\\source\\rivermaxmedia\\public\\irivermaxmediamodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

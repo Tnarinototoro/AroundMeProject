@@ -1,0 +1,32 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.TElmntsDataStor.cpp.obj": [
+			"TypedElementActorLabelQueries.gen.cpp.obj",
+			"TypedElementActorTransformQueries.gen.cpp.obj",
+			"TypedElementActorViewportProcessors.gen.cpp.obj",
+			"TypedElementDatabase.gen.cpp.obj",
+			"TypedElementDatabaseCompatibility.gen.cpp.obj",
+			"TypedElementDatabaseUI.gen.cpp.obj",
+			"TypedElementMiscQueries.gen.cpp.obj",
+			"TypedElementProcessorAdaptors.gen.cpp.obj",
+			"TypedElementsDataStorage.init.gen.cpp.obj",
+			"TypedElementSlateWidgetReferenceColumnUpdateProcessor.gen.cpp.obj",
+			"TypedElementSubsystems.gen.cpp.obj",
+			"TypedElementUObjectPackagePathToColumnQueries.gen.cpp.obj",
+			"TypedElementActorLabelQueries.cpp.obj",
+			"TypedElementActorTransformQueries.cpp.obj",
+			"TypedElementActorViewportProcessors.cpp.obj",
+			"TypedElementUObjectPackagePathToColumnQueries.cpp.obj",
+			"TypedElementProcessorAdaptors.cpp.obj",
+			"TypedElementExtendedQueryStore.cpp.obj",
+			"TypedElementMiscQueries.cpp.obj",
+			"TypedElementDatabase.cpp.obj",
+			"TypedElementDatabaseCompatibility.cpp.obj",
+			"TypedElementDatabaseUI.cpp.obj",
+			"TypedElementsDataStorage.cpp.obj",
+			"TypedElementSubsystems.cpp.obj",
+			"TypedElementSlateWidgetReferenceColumnUpdateProcessor.cpp.obj"
+		]
+	}
+}

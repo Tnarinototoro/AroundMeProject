@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ADOSupport.cpp.obj": [
+			"ADOSupport.cpp.obj"
+		]
+	}
+}

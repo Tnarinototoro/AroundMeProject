@@ -1,0 +1,11 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.EditorPerformanceModule.cpp.obj": [
+			"EditorPerformanceModule.init.gen.cpp.obj",
+			"StallLogSubsystem.gen.cpp.obj",
+			"EditorPerformanceModule.cpp.obj",
+			"StallLogSubsystem.cpp.obj"
+		]
+	}
+}

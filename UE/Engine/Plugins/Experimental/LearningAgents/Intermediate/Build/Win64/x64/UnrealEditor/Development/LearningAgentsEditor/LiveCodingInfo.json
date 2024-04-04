@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.LearningAgentsEditor.cpp.obj": [
+			"LearningAgentsEditor.cpp.obj"
+		]
+	}
+}

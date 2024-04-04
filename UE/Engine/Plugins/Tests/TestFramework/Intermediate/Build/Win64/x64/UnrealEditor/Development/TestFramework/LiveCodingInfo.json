@@ -1,0 +1,10 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.TestFramework.cpp.obj": [
+			"AutomationExpectedMessage.spec.cpp.obj",
+			"AutomationSpec.spec.cpp.obj",
+			"TestFramework.cpp.obj"
+		]
+	}
+}

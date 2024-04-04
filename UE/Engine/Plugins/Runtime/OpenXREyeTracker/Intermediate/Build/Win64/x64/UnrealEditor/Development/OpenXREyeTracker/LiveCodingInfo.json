@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.OpenXREyeTracker.cpp.obj": [
+			"OpenXREyeTracker.cpp.obj"
+		]
+	}
+}

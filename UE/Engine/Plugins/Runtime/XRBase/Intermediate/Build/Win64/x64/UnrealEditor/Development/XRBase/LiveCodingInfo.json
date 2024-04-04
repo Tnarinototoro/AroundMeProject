@@ -1,0 +1,28 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.XRBase.cpp.obj": [
+			"XRBase.init.gen.cpp.obj",
+			"DefaultSpectatorScreenController.cpp.obj",
+			"DefaultStereoLayers.cpp.obj",
+			"DefaultXRCamera.cpp.obj",
+			"DefaultXRLoadingScreen.cpp.obj",
+			"HeadMountedDisplayBase.cpp.obj",
+			"HeadMountedDisplayConsoleCommands.cpp.obj",
+			"HeadMountedDisplayFunctionLibrary.cpp.obj",
+			"MotionTrackedDeviceFunctionLibrary.cpp.obj",
+			"StereoLayerManager.cpp.obj",
+			"VRNotificationsComponent.cpp.obj",
+			"XRAssetFunctionLibrary.cpp.obj",
+			"XRBaseModule.cpp.obj",
+			"XRDeviceVisualizationComponent.cpp.obj",
+			"XRLoadingScreenFunctionLibrary.cpp.obj",
+			"XRMotionControllerBase.cpp.obj",
+			"XRRenderBridge.cpp.obj",
+			"XRRenderTargetManager.cpp.obj",
+			"XRSwapChain.cpp.obj",
+			"XRThreadUtils.cpp.obj",
+			"XRTrackingSystemBase.cpp.obj"
+		]
+	}
+}

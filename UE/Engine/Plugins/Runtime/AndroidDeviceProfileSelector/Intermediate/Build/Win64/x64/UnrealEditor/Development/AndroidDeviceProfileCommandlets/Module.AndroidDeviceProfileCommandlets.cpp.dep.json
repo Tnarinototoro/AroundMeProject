@@ -1,0 +1,30 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\androiddeviceprofileselector\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\androiddeviceprofilecommandlets\\module.androiddeviceprofilecommandlets.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\androiddeviceprofileselector\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\androiddeviceprofilecommandlets\\definitions.androiddeviceprofilecommandlets.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\androiddeviceprofileselector\\intermediate\\build\\win64\\unrealeditor\\inc\\androiddeviceprofilecommandlets\\uht\\androiddeviceprofilecommandlets.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\androiddeviceprofileselector\\source\\androiddeviceprofilecommandlets\\private\\androiddeviceprofilecommandlets.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\androiddeviceprofileselector\\source\\androiddeviceprofilecommandlets\\public\\androiddeviceprofilecommandlets.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\androiddeviceprofileselector\\source\\androiddeviceprofilecommandlets\\private\\createandroidpreviewdatafromadbcommandlet.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\androiddeviceprofileselector\\source\\androiddeviceprofilecommandlets\\private\\createandroidpreviewdatafromadbcommandlet.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\engine\\classes\\commandlets\\commandlet.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\commandlet.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\androiddeviceprofileselector\\intermediate\\build\\win64\\unrealeditor\\inc\\androiddeviceprofilecommandlets\\uht\\createandroidpreviewdatafromadbcommandlet.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\piepreviewdevicespecification\\public\\piepreviewdevicespecification.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\piepreviewdevicespecification\\uht\\piepreviewdevicespecification.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\jsonutilities\\public\\jsonobjectconverter.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\jsonutilities\\public\\jsonobjectwrapper.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\jsonutilities\\uht\\jsonobjectwrapper.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\android\\androiddevicedetection\\public\\interfaces\\iandroiddevicedetection.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\android\\androiddevicedetection\\public\\interfaces\\iandroiddevicedetectionmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\serialization\\csv\\csvparser.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\androiddeviceprofileselector\\intermediate\\build\\win64\\unrealeditor\\inc\\androiddeviceprofilecommandlets\\uht\\createandroidpreviewdatafromadbcommandlet.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

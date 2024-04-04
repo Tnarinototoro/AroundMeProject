@@ -1,0 +1,21 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.WaveformEditorWidgets.cpp.obj": [
+			"WaveformEditorWidgets.init.gen.cpp.obj",
+			"WaveformEditorWidgetsSettings.gen.cpp.obj",
+			"STransformedWaveformViewPanel.cpp.obj",
+			"SWaveformEditorInputRoutingOverlay.cpp.obj",
+			"SWaveformEditorMessageDialog.cpp.obj",
+			"SWaveformTransformationRenderLayer.cpp.obj",
+			"SWaveformTransformationsOverlay.cpp.obj",
+			"WaveformEditorGridData.cpp.obj",
+			"WaveformEditorSequenceDataProvider.cpp.obj",
+			"WaveformEditorStyle.cpp.obj",
+			"WaveformEditorWidgetsModule.cpp.obj",
+			"WaveformEditorWidgetsSettings.cpp.obj",
+			"WaveformEditorZoomController.cpp.obj",
+			"WaveformTransformationRenderLayerFactory.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,39 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MassRepresentation.cpp.obj": [
+			"MassInstancedStaticMeshComponent.gen.cpp.obj",
+			"MassMovableVisualizationTrait.gen.cpp.obj",
+			"MassRepresentation.init.gen.cpp.obj",
+			"MassRepresentationActorManagement.gen.cpp.obj",
+			"MassRepresentationFragments.gen.cpp.obj",
+			"MassRepresentationProcessor.gen.cpp.obj",
+			"MassRepresentationSubsystem.gen.cpp.obj",
+			"MassRepresentationTypes.gen.cpp.obj",
+			"MassStationaryISMRepresentationFragmentDestructor.gen.cpp.obj",
+			"MassStationaryISMSwitcherProcessor.gen.cpp.obj",
+			"MassStationaryVisualizationTrait.gen.cpp.obj",
+			"MassUpdateISMProcessor.gen.cpp.obj",
+			"MassVisualizationComponent.gen.cpp.obj",
+			"MassVisualizationLODProcessor.gen.cpp.obj",
+			"MassVisualizationTrait.gen.cpp.obj",
+			"MassVisualizer.gen.cpp.obj",
+			"MassInstancedStaticMeshComponent.cpp.obj",
+			"MassMovableVisualizationTrait.cpp.obj",
+			"MassRepresentationActorManagement.cpp.obj",
+			"MassRepresentationFragments.cpp.obj",
+			"MassRepresentationModule.cpp.obj",
+			"MassRepresentationProcessor.cpp.obj",
+			"MassRepresentationSubsystem.cpp.obj",
+			"MassRepresentationTypes.cpp.obj",
+			"MassStationaryISMRepresentationFragmentDestructor.cpp.obj",
+			"MassStationaryISMSwitcherProcessor.cpp.obj",
+			"MassStationaryVisualizationTrait.cpp.obj",
+			"MassUpdateISMProcessor.cpp.obj",
+			"MassVisualizationComponent.cpp.obj",
+			"MassVisualizationLODProcessor.cpp.obj",
+			"MassVisualizationTrait.cpp.obj",
+			"MassVisualizer.cpp.obj"
+		]
+	}
+}

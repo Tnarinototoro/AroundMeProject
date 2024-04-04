@@ -1,0 +1,9 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.HAPDecoderElectra.cpp.obj": [
+			"HAPDecoderElectraModule.cpp.obj",
+			"ElectraMediaHAPDecoder.cpp.obj"
+		]
+	}
+}

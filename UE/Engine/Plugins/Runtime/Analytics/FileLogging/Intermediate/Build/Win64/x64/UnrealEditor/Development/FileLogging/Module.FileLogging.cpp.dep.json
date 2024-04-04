@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\analytics\\filelogging\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\filelogging\\module.filelogging.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\analytics\\filelogging\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\filelogging\\definitions.filelogging.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\analytics\\filelogging\\source\\filelogging\\private\\filelogging.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\analytics\\filelogging\\source\\filelogging\\public\\filelogging.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\interfaces\\ianalyticsprovidermodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\analyticsproviderconfigurationdelegate.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\analytics\\filelogging\\source\\filelogging\\private\\fileloggingprovider.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\interfaces\\ianalyticsprovider.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\analyticseventattribute.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\analytics\\analytics\\public\\analyticsconversion.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,9 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.10XSCA.cpp.obj": [
+			"N10XSourceCodeAccessModule.cpp.obj",
+			"N10XSourceCodeAccessor.cpp.obj"
+		]
+	}
+}

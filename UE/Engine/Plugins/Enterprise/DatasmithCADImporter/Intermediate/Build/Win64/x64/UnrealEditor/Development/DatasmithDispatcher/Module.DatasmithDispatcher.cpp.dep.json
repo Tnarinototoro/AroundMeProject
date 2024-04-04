@@ -1,0 +1,41 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\datasmithdispatcher\\module.datasmithdispatcher.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\datasmithdispatcher\\definitions.datasmithdispatcher.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\private\\datasmithcommands.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\public\\datasmithcommands.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\cadtools\\public\\caddata.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\cadtools\\public\\cadoptions.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\datasmith\\datasmithcore\\public\\datasmithutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\datasmith\\datasmithcore\\public\\datasmithdefinitions.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\datasmithcore\\uht\\datasmithdefinitions.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\public\\datasmithdispatchertask.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\private\\datasmithdispatcher.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\public\\datasmithdispatcher.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\public\\datasmithworkerhandler.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\public\\datasmithdispatchernetworking.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\sockets\\public\\sockets.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\tasks\\task.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\cadinterfaces\\public\\cadfiledata.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\cadinterfaces\\public\\cadscenegraph.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\cadinterfaces\\public\\cadfilereader.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\cadinterfaces\\public\\cadfileparser.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\public\\datasmithdispatcherconfig.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\public\\datasmithdispatcherlog.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\algo\\count.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\private\\datasmithdispatchermodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\public\\datasmithdispatchermodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\private\\datasmithdispatchernetworking.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\sockets\\public\\socketsubsystem.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\sockets\\public\\addressinfotypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\datasmithdispatcher\\private\\datasmithworkerhandler.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\datasmithcadimporter\\source\\cadtools\\public\\cadtoolsmodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

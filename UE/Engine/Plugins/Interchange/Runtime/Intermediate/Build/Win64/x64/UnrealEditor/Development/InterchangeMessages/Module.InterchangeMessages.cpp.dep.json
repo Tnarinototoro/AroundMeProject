@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\interchange\\runtime\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\interchangemessages\\module.interchangemessages.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\interchange\\runtime\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\interchangemessages\\definitions.interchangemessages.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\interchange\\runtime\\intermediate\\build\\win64\\unrealeditor\\inc\\interchangemessages\\uht\\interchangemessages.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\interchange\\runtime\\source\\messages\\private\\fbx\\interchangefbxmessages.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\interchange\\runtime\\source\\messages\\public\\fbx\\interchangefbxmessages.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\interchange\\core\\public\\interchangeresult.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\interchangecore\\uht\\interchangeresult.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\interchange\\runtime\\intermediate\\build\\win64\\unrealeditor\\inc\\interchangemessages\\uht\\interchangefbxmessages.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\interchange\\runtime\\intermediate\\build\\win64\\unrealeditor\\inc\\interchangemessages\\uht\\interchangefbxmessages.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\interchange\\runtime\\source\\messages\\private\\fbx\\interchangemessagesmodule.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\dataprepeditorscriptingutilities\\module.dataprepeditorscriptingutilities.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\dataprepeditorscriptingutilities\\definitions.dataprepeditorscriptingutilities.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\unrealeditor\\inc\\dataprepeditorscriptingutilities\\uht\\dataprepeditorscriptingutilities.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\unrealeditor\\inc\\dataprepeditorscriptingutilities\\uht\\editordataprepassetlibrary.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepeditorscriptingutilities\\public\\editordataprepassetlibrary.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\unrealeditor\\inc\\dataprepeditorscriptingutilities\\uht\\editordataprepassetlibrary.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepeditorscriptingutilities\\private\\dataprepeditorscriptinglog.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepeditorscriptingutilities\\private\\dataprepeditorscriptinglog.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepeditorscriptingutilities\\private\\dataprepeditorscriptingutilitiesmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepeditorscriptingutilities\\private\\editordataprepassetlibrary.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepcore\\public\\dataprepasset.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepcore\\public\\dataprepactionasset.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepcore\\public\\dataprepparameterizableobject.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\unrealeditor\\inc\\dataprepcore\\uht\\dataprepparameterizableobject.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\unrealeditor\\inc\\dataprepcore\\uht\\dataprepactionasset.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepcore\\public\\dataprepassetinterface.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\unrealeditor\\inc\\dataprepcore\\uht\\dataprepassetinterface.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepcore\\public\\dataprepassetproducers.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\unrealeditor\\inc\\dataprepcore\\uht\\dataprepassetproducers.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\unrealeditor\\inc\\dataprepcore\\uht\\dataprepasset.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepcore\\public\\dataprepcontentproducer.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepcore\\public\\idatapreplogger.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepcore\\public\\idataprepprogressreporter.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\intermediate\\build\\win64\\unrealeditor\\inc\\dataprepcore\\uht\\dataprepcontentproducer.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\dataprepeditor\\source\\dataprepcore\\public\\dataprepcoreutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\editor\\unrealed\\public\\feedbackcontexteditor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\hal\\feedbackcontextansi.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\outputdeviceconsole.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\outputdevicehelper.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

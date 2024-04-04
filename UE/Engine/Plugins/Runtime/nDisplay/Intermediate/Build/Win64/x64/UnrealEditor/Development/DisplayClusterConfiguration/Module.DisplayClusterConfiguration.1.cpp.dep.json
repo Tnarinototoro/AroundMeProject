@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\displayclusterconfiguration\\module.displayclusterconfiguration.1.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\displayclusterconfiguration\\definitions.displayclusterconfiguration.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displayclusterconfiguration\\uht\\displayclusterconfiguration.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displayclusterconfiguration\\uht\\displayclusterconfigurationjsontypes_426.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclusterconfiguration\\private\\formats\\json426\\displayclusterconfigurationjsontypes_426.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclusterconfiguration\\public\\displayclusterconfigurationstrings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displayclusterconfiguration\\uht\\displayclusterconfigurationjsontypes_426.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displayclusterconfiguration\\uht\\displayclusterconfigurationjsontypes_427.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\source\\displayclusterconfiguration\\private\\formats\\json427\\displayclusterconfigurationjsontypes_427.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\ndisplay\\intermediate\\build\\win64\\unrealeditor\\inc\\displayclusterconfiguration\\uht\\displayclusterconfigurationjsontypes_427.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

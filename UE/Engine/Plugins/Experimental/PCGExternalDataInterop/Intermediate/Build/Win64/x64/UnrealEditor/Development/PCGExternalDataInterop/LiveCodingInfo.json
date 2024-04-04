@@ -1,0 +1,12 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.PCGExternalDataInterop.cpp.obj": [
+			"PCGExternalDataInterop.init.gen.cpp.obj",
+			"PCGLoadAlembicElement.gen.cpp.obj",
+			"PCGAlembicInterop.cpp.obj",
+			"PCGLoadAlembicElement.cpp.obj",
+			"PCGExternalDataInteropModule.cpp.obj"
+		]
+	}
+}

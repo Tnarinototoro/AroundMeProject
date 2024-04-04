@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.GPULightmassEditor.cpp.obj": [
+			"GPULightmassEditorModule.cpp.obj"
+		]
+	}
+}

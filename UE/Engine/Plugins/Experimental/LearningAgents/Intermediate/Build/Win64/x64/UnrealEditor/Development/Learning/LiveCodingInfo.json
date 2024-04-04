@@ -1,0 +1,27 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.Learning.cpp.obj": [
+			"Learning.cpp.obj",
+			"LearningAdamOptimizer.cpp.obj",
+			"LearningArray.cpp.obj",
+			"LearningArrayMap.cpp.obj",
+			"LearningCMAOptimizer.cpp.obj",
+			"LearningCompletion.cpp.obj",
+			"LearningCompletionObject.cpp.obj",
+			"LearningFeatureObject.cpp.obj",
+			"LearningFunctionObject.cpp.obj",
+			"LearningKMeans.cpp.obj",
+			"LearningLog.cpp.obj",
+			"LearningNeuralNetwork.cpp.obj",
+			"LearningNeuralNetworkObject.cpp.obj",
+			"LearningOptimizationPlanner.cpp.obj",
+			"LearningPCA.cpp.obj",
+			"LearningProgress.cpp.obj",
+			"LearningPSOOptimizer.cpp.obj",
+			"LearningRandom.cpp.obj",
+			"LearningRecorderObject.cpp.obj",
+			"LearningRewardObject.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,26 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\imgmediafactory\\module.imgmediafactory.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\imgmediafactory\\definitions.imgmediafactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\intermediate\\build\\win64\\unrealeditor\\inc\\imgmediafactory\\uht\\imgmediafactory.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\source\\imgmediafactory\\private\\imgmediafactorymodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\source\\imgmediafactory\\private\\imgmediafactoryprivate.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediamodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaoptions.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\media\\public\\imediaplayerfactory.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\settings\\public\\isettingsmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\settings\\public\\isettingssection.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\source\\imgmediafactory\\public\\imgmediasettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\intermediate\\build\\win64\\unrealeditor\\inc\\imgmediafactory\\uht\\imgmediasettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\source\\imgmedia\\public\\iimgmediamodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\source\\imgmediafactory\\private\\imgmediasettings.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\imgmedia\\intermediate\\build\\win64\\unrealeditor\\inc\\imgmediafactory\\uht\\imgmediasettings.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

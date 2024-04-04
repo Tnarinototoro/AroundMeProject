@@ -1,0 +1,14 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.DecoupledOutputProvider.cpp.obj": [
+			"DecoupledOutputProvider.gen.cpp.obj",
+			"DecoupledOutputProvider.init.gen.cpp.obj",
+			"VCamPixelStreamingSession.gen.cpp.obj",
+			"VCamPixelStreamingSession.cpp.obj",
+			"DecoupledOutputProvider.cpp.obj",
+			"DecoupledOutputProviderModule.cpp.obj",
+			"LogDecoupledOutputProvider.cpp.obj"
+		]
+	}
+}

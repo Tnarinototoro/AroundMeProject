@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.DataCharts.cpp.obj": [
+			"DataCharts.cpp.obj"
+		]
+	}
+}

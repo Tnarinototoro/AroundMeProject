@@ -1,0 +1,28 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.DisplayClusterMedia.cpp.obj": [
+			"DisplayClusterMedia.init.gen.cpp.obj",
+			"DisplayClusterMediaOutputSynchronizationPolicyEthernetBarrier.gen.cpp.obj",
+			"DisplayClusterMediaOutputSynchronizationPolicyEthernetBarrierBase.gen.cpp.obj",
+			"DisplayClusterMediaOutputSynchronizationPolicyThresholdBase.gen.cpp.obj",
+			"DisplayClusterMediaOutputSynchronizationPolicyVblank.gen.cpp.obj",
+			"DisplayClusterMediaCaptureBase.cpp.obj",
+			"DisplayClusterMediaCaptureCamera.cpp.obj",
+			"DisplayClusterMediaCaptureNode.cpp.obj",
+			"DisplayClusterMediaCaptureViewport.cpp.obj",
+			"DisplayClusterMediaHelpers.cpp.obj",
+			"DisplayClusterMediaLog.cpp.obj",
+			"DisplayClusterMediaModule.cpp.obj",
+			"DisplayClusterMediaInputBase.cpp.obj",
+			"DisplayClusterMediaInputNode.cpp.obj",
+			"DisplayClusterMediaInputViewport.cpp.obj",
+			"DisplayClusterFrameQueue.cpp.obj",
+			"DisplayClusterFrameQueueItem.cpp.obj",
+			"DisplayClusterMediaOutputSynchronizationPolicyEthernetBarrier.cpp.obj",
+			"DisplayClusterMediaOutputSynchronizationPolicyEthernetBarrierBase.cpp.obj",
+			"DisplayClusterMediaOutputSynchronizationPolicyThresholdBase.cpp.obj",
+			"DisplayClusterMediaOutputSynchronizationPolicyVblank.cpp.obj"
+		]
+	}
+}

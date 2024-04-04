@@ -1,0 +1,32 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\slatescreenreader\\module.slatescreenreader.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\slatescreenreader\\definitions.slatescreenreader.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\slatescreenreader\\uht\\slatescreenreader.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\slatescreenreader\\uht\\slatescreenreaderenginesubsystem.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\source\\slatescreenreader\\public\\slatescreenreaderenginesubsystem.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\announcement\\screenreaderannouncement.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\screenreader\\uht\\screenreaderannouncement.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\genericplatform\\screenreaderreply.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\screenreader\\uht\\screenreaderreply.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\intermediate\\build\\win64\\unrealeditor\\inc\\slatescreenreader\\uht\\slatescreenreaderenginesubsystem.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\source\\slatescreenreader\\private\\slatescreenreader.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\source\\slatescreenreader\\private\\slatescreenreader.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\genericplatform\\screenreaderbase.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\genericplatform\\screenreaderuser.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\source\\slatescreenreader\\private\\slatescreenreaderlog.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\source\\slatescreenreader\\private\\slatescreenreaderbuilder.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\source\\slatescreenreader\\private\\slatescreenreaderbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\screenreader\\source\\screenreader\\public\\genericplatform\\iscreenreaderbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\source\\slatescreenreader\\private\\slatescreenreaderenginesubsystem.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\source\\slatescreenreader\\public\\slatescreenreadermodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\slatescreenreader\\source\\slatescreenreader\\private\\slatescreenreadermodule.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

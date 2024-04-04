@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.POFileDataSource.cpp.obj": [
+			"PortableObjectFileDataSourceModule.cpp.obj"
+		]
+	}
+}

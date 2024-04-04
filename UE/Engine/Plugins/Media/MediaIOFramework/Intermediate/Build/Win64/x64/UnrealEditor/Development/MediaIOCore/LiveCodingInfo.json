@@ -1,0 +1,35 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MediaIOCore.cpp.obj": [
+			"CaptureCardMediaSource.gen.cpp.obj",
+			"MediaIOCore.init.gen.cpp.obj",
+			"MediaIOCoreDeinterlacer.gen.cpp.obj",
+			"CaptureCardMediaSource.cpp.obj",
+			"FileMediaCapture.cpp.obj",
+			"FileMediaOutput.cpp.obj",
+			"MediaCapture.cpp.obj",
+			"MediaCaptureHelper.cpp.obj",
+			"MediaCaptureRenderPass.cpp.obj",
+			"MediaCaptureSyncPointWatcher.cpp.obj",
+			"MediaIOCoreAudioOutput.cpp.obj",
+			"MediaIOCoreCommonDisplayMode.cpp.obj",
+			"MediaIOCoreDefinitions.cpp.obj",
+			"MediaIOCoreDeinterlacer.cpp.obj",
+			"MediaIOCoreDeviceProvider.cpp.obj",
+			"MediaIOCoreFileWriter.cpp.obj",
+			"MediaIOCoreModule.cpp.obj",
+			"MediaIOCoreSubsystem.cpp.obj",
+			"MediaIOCoreTextureSampleConverter.cpp.obj",
+			"MediaOutput.cpp.obj",
+			"MediaIOCorePlayerBase.cpp.obj",
+			"MediaIOCoreSamples.cpp.obj",
+			"MediaIOCoreAudioSampleBase.cpp.obj",
+			"MediaIOCoreBinarySampleBase.cpp.obj",
+			"MediaIOCoreEncodeTime.cpp.obj",
+			"MediaIOCoreTextureSampleBase.cpp.obj",
+			"MediaIOCoreWaitVsyncThread.cpp.obj",
+			"MediaIODeinterlacerTests.cpp.obj"
+		]
+	}
+}

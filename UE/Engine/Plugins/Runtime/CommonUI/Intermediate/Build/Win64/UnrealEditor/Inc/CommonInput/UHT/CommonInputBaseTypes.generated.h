@@ -1,0 +1,238 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "CommonInputBaseTypes.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#ifdef COMMONINPUT_CommonInputBaseTypes_generated_h
+#error "CommonInputBaseTypes.generated.h already included, missing '#pragma once' in CommonInputBaseTypes.h"
+#endif
+#define COMMONINPUT_CommonInputBaseTypes_generated_h
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_36_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FCommonInputKeyBrushConfiguration_Statics; \
+	static class UScriptStruct* StaticStruct();
+
+
+template<> COMMONINPUT_API UScriptStruct* StaticStruct<struct FCommonInputKeyBrushConfiguration>();
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_54_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FCommonInputKeySetBrushConfiguration_Statics; \
+	static class UScriptStruct* StaticStruct();
+
+
+template<> COMMONINPUT_API UScriptStruct* StaticStruct<struct FCommonInputKeySetBrushConfiguration>();
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_72_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FInputDeviceIdentifierPair_Statics; \
+	COMMONINPUT_API static class UScriptStruct* StaticStruct();
+
+
+template<> COMMONINPUT_API UScriptStruct* StaticStruct<struct FInputDeviceIdentifierPair>();
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_85_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FInputHoldData_Statics; \
+	COMMONINPUT_API static class UScriptStruct* StaticStruct();
+
+
+template<> COMMONINPUT_API UScriptStruct* StaticStruct<struct FInputHoldData>();
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUCommonUIInputData(); \
+	friend struct Z_Construct_UClass_UCommonUIInputData_Statics; \
+public: \
+	DECLARE_CLASS(UCommonUIInputData, UObject, COMPILED_IN_FLAGS(CLASS_Abstract), CASTCLASS_None, TEXT("/Script/CommonInput"), NO_API) \
+	DECLARE_SERIALIZER(UCommonUIInputData)
+
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UCommonUIInputData(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UCommonUIInputData(UCommonUIInputData&&); \
+	NO_API UCommonUIInputData(const UCommonUIInputData&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UCommonUIInputData); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UCommonUIInputData); \
+	DEFINE_ABSTRACT_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UCommonUIInputData) \
+	NO_API virtual ~UCommonUIInputData();
+
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_94_PROLOG
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_97_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> COMMONINPUT_API UClass* StaticClass<class UCommonUIInputData>();
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUCommonUIHoldData(); \
+	friend struct Z_Construct_UClass_UCommonUIHoldData_Statics; \
+public: \
+	DECLARE_CLASS(UCommonUIHoldData, UObject, COMPILED_IN_FLAGS(CLASS_Abstract), CASTCLASS_None, TEXT("/Script/CommonInput"), NO_API) \
+	DECLARE_SERIALIZER(UCommonUIHoldData)
+
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UCommonUIHoldData(UCommonUIHoldData&&); \
+	NO_API UCommonUIHoldData(const UCommonUIHoldData&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UCommonUIHoldData); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UCommonUIHoldData); \
+	DEFINE_ABSTRACT_DEFAULT_CONSTRUCTOR_CALL(UCommonUIHoldData) \
+	NO_API virtual ~UCommonUIHoldData();
+
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_124_PROLOG
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_127_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> COMMONINPUT_API UClass* StaticClass<class UCommonUIHoldData>();
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execGetRegisteredGamepads);
+
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUCommonInputBaseControllerData(); \
+	friend struct Z_Construct_UClass_UCommonInputBaseControllerData_Statics; \
+public: \
+	DECLARE_CLASS(UCommonInputBaseControllerData, UObject, COMPILED_IN_FLAGS(CLASS_Abstract), CASTCLASS_None, TEXT("/Script/CommonInput"), NO_API) \
+	DECLARE_SERIALIZER(UCommonInputBaseControllerData)
+
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UCommonInputBaseControllerData(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UCommonInputBaseControllerData(UCommonInputBaseControllerData&&); \
+	NO_API UCommonInputBaseControllerData(const UCommonInputBaseControllerData&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UCommonInputBaseControllerData); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UCommonInputBaseControllerData); \
+	DEFINE_ABSTRACT_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UCommonInputBaseControllerData) \
+	NO_API virtual ~UCommonInputBaseControllerData();
+
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_148_PROLOG
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_151_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> COMMONINPUT_API UClass* StaticClass<class UCommonInputBaseControllerData>();
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_ACCESSORS
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUCommonInputPlatformSettings(); \
+	friend struct Z_Construct_UClass_UCommonInputPlatformSettings_Statics; \
+public: \
+	DECLARE_CLASS(UCommonInputPlatformSettings, UPlatformSettings, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/CommonInput"), NO_API) \
+	DECLARE_SERIALIZER(UCommonInputPlatformSettings) \
+	static const TCHAR* StaticConfigName() {return TEXT("Game");} \
+
+
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UCommonInputPlatformSettings(UCommonInputPlatformSettings&&); \
+	NO_API UCommonInputPlatformSettings(const UCommonInputPlatformSettings&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UCommonInputPlatformSettings); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UCommonInputPlatformSettings); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UCommonInputPlatformSettings) \
+	NO_API virtual ~UCommonInputPlatformSettings();
+
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_207_PROLOG
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_ACCESSORS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_210_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> COMMONINPUT_API UClass* StaticClass<class UCommonInputPlatformSettings>();
+
+#define FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h_289_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FCommonInputPlatformBaseData_Statics; \
+	static class UScriptStruct* StaticStruct();
+
+
+template<> COMMONINPUT_API UScriptStruct* StaticStruct<struct FCommonInputPlatformBaseData>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_Runtime_CommonUI_Source_CommonInput_Public_CommonInputBaseTypes_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

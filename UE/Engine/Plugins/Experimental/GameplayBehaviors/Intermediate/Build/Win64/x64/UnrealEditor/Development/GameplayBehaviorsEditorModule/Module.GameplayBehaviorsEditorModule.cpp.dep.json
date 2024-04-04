@@ -1,0 +1,18 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\gameplaybehaviors\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\gameplaybehaviorseditormodule\\module.gameplaybehaviorseditormodule.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\gameplaybehaviors\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\gameplaybehaviorseditormodule\\definitions.gameplaybehaviorseditormodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\gameplaybehaviors\\source\\gameplaybehaviorseditormodule\\private\\gameplaybehaviorseditormodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\gameplaybehaviors\\source\\gameplaybehaviorseditormodule\\public\\gameplaybehaviorseditormodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\gameplaybehaviors\\source\\gameplaybehaviorseditormodule\\private\\gameplaybehaviorseditorstyle.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\gameplaybehaviors\\source\\gameplaybehaviorseditormodule\\private\\gameplaybehaviorseditorstyle.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\slatecore\\public\\styling\\slatestyleregistry.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

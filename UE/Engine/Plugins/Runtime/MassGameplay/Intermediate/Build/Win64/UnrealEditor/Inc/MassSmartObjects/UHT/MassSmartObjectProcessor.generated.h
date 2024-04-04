@@ -1,0 +1,150 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "MassSmartObjectProcessor.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#ifdef MASSSMARTOBJECTS_MassSmartObjectProcessor_generated_h
+#error "MassSmartObjectProcessor.generated.h already included, missing '#pragma once' in MassSmartObjectProcessor.h"
+#endif
+#define MASSSMARTOBJECTS_MassSmartObjectProcessor_generated_h
+
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassSmartObjectCandidatesFinderProcessor(); \
+	friend struct Z_Construct_UClass_UMassSmartObjectCandidatesFinderProcessor_Statics; \
+public: \
+	DECLARE_CLASS(UMassSmartObjectCandidatesFinderProcessor, UMassProcessor, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassSmartObjects"), NO_API) \
+	DECLARE_SERIALIZER(UMassSmartObjectCandidatesFinderProcessor)
+
+
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassSmartObjectCandidatesFinderProcessor(UMassSmartObjectCandidatesFinderProcessor&&); \
+	NO_API UMassSmartObjectCandidatesFinderProcessor(const UMassSmartObjectCandidatesFinderProcessor&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassSmartObjectCandidatesFinderProcessor); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassSmartObjectCandidatesFinderProcessor); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassSmartObjectCandidatesFinderProcessor) \
+	NO_API virtual ~UMassSmartObjectCandidatesFinderProcessor();
+
+
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_13_PROLOG
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_16_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSSMARTOBJECTS_API UClass* StaticClass<class UMassSmartObjectCandidatesFinderProcessor>();
+
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassSmartObjectTimedBehaviorProcessor(); \
+	friend struct Z_Construct_UClass_UMassSmartObjectTimedBehaviorProcessor_Statics; \
+public: \
+	DECLARE_CLASS(UMassSmartObjectTimedBehaviorProcessor, UMassProcessor, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassSmartObjects"), NO_API) \
+	DECLARE_SERIALIZER(UMassSmartObjectTimedBehaviorProcessor)
+
+
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassSmartObjectTimedBehaviorProcessor(UMassSmartObjectTimedBehaviorProcessor&&); \
+	NO_API UMassSmartObjectTimedBehaviorProcessor(const UMassSmartObjectTimedBehaviorProcessor&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassSmartObjectTimedBehaviorProcessor); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassSmartObjectTimedBehaviorProcessor); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassSmartObjectTimedBehaviorProcessor) \
+	NO_API virtual ~UMassSmartObjectTimedBehaviorProcessor();
+
+
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_37_PROLOG
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_40_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSSMARTOBJECTS_API UClass* StaticClass<class UMassSmartObjectTimedBehaviorProcessor>();
+
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassSmartObjectUserFragmentDeinitializer(); \
+	friend struct Z_Construct_UClass_UMassSmartObjectUserFragmentDeinitializer_Statics; \
+public: \
+	DECLARE_CLASS(UMassSmartObjectUserFragmentDeinitializer, UMassObserverProcessor, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassSmartObjects"), NO_API) \
+	DECLARE_SERIALIZER(UMassSmartObjectUserFragmentDeinitializer)
+
+
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassSmartObjectUserFragmentDeinitializer(UMassSmartObjectUserFragmentDeinitializer&&); \
+	NO_API UMassSmartObjectUserFragmentDeinitializer(const UMassSmartObjectUserFragmentDeinitializer&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassSmartObjectUserFragmentDeinitializer); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassSmartObjectUserFragmentDeinitializer); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassSmartObjectUserFragmentDeinitializer) \
+	NO_API virtual ~UMassSmartObjectUserFragmentDeinitializer();
+
+
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_52_PROLOG
+#define FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h_55_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSSMARTOBJECTS_API UClass* StaticClass<class UMassSmartObjectUserFragmentDeinitializer>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_Runtime_MassGameplay_Source_MassSmartObjects_Public_MassSmartObjectProcessor_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

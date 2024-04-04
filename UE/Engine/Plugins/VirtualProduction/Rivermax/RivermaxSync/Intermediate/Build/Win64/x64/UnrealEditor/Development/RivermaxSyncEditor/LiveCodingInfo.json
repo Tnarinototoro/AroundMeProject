@@ -1,0 +1,11 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.RivermaxSyncEditor.cpp.obj": [
+			"MediaOutputSynchronizationPolicyRivermaxFactory.gen.cpp.obj",
+			"RivermaxSyncEditor.init.gen.cpp.obj",
+			"MediaOutputSynchronizationPolicyRivermaxFactory.cpp.obj",
+			"RivermaxSyncEditorModule.cpp.obj"
+		]
+	}
+}

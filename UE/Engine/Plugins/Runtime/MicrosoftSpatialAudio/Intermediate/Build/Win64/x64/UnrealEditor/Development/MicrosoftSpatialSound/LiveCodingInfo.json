@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MicrosoftSpatialSound.cpp.obj": [
+			"MicrosoftSpatialSoundPlugin.cpp.obj"
+		]
+	}
+}

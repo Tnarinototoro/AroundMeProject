@@ -1,0 +1,9 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.OpusDecoderElectra.cpp.obj": [
+			"OpusDecoderElectraModule.cpp.obj",
+			"ElectraMediaOpusDecoder.cpp.obj"
+		]
+	}
+}

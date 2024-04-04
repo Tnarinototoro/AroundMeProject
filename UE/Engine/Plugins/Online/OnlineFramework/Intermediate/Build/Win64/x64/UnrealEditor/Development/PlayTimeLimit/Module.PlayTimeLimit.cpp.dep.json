@@ -1,0 +1,31 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlineframework\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\playtimelimit\\module.playtimelimit.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\coreuobject\\sharedpch.coreuobject.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlineframework\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\playtimelimit\\definitions.playtimelimit.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlineframework\\source\\playtimelimit\\private\\playtimelimitimpl.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlineframework\\source\\playtimelimit\\public\\playtimelimitimpl.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlinesubsystem\\source\\public\\interfaces\\onlineplaytimelimit.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlineframework\\source\\playtimelimit\\public\\playtimelimituser.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\coreonline\\public\\online\\coreonlinefwd.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlineframework\\source\\playtimelimit\\public\\playtimelimitmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlineframework\\source\\playtimelimit\\public\\playtimelimitusermock.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\coreonline\\public\\online\\coreonline.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\coreonline\\public\\online\\coreonlinepackage.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\coreonline\\uht\\coreonline.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlineframework\\source\\playtimelimit\\private\\playtimelimitmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlinesubsystem\\source\\public\\onlinesubsystem.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlinesubsystem\\source\\public\\onlinesubsystemmodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlinesubsystem\\source\\public\\onlinesubsystemtypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlinesubsystem\\source\\public\\onlinesubsystemnames.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlinesubsystem\\source\\public\\onlinedelegatemacros.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlinesubsystem\\source\\public\\interfaces\\onlineidentityinterface.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\online\\onlineframework\\source\\playtimelimit\\private\\playtimelimitusermock.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

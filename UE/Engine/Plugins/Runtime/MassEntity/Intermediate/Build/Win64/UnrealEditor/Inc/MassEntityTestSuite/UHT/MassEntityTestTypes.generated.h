@@ -1,0 +1,790 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "MassEntityTestTypes.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#ifdef MASSENTITYTESTSUITE_MassEntityTestTypes_generated_h
+#error "MassEntityTestTypes.generated.h already included, missing '#pragma once' in MassEntityTestTypes.h"
+#endif
+#define MASSENTITYTESTSUITE_MassEntityTestTypes_generated_h
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_30_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestFragment_Float_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassFragment Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestFragment_Float>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_39_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestFragment_Int_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassFragment Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestFragment_Int>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_50_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestFragment_Bool_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassFragment Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestFragment_Bool>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_59_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestFragment_Large_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassFragment Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestFragment_Large>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_71_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestFragment_Array_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassFragment Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestFragment_Array>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_83_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestChunkFragment_Int_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassChunkFragment Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestChunkFragment_Int>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_92_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestSharedFragment_Int_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassSharedFragment Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestSharedFragment_Int>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_101_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestSharedFragment_Float_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassSharedFragment Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestSharedFragment_Float>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_111_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestFragment_Tag_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassTag Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestFragment_Tag>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_117_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestTag_A_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassTag Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestTag_A>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_123_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestTag_B_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassTag Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestTag_B>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_129_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestTag_C_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassTag Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestTag_C>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_135_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FTestTag_D_Statics; \
+	MASSENTITYTESTSUITE_API static class UScriptStruct* StaticStruct(); \
+	typedef FMassTag Super;
+
+
+template<> MASSENTITYTESTSUITE_API UScriptStruct* StaticStruct<struct FTestTag_D>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessorBase(); \
+	friend struct Z_Construct_UClass_UMassTestProcessorBase_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessorBase, UMassProcessor, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessorBase)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessorBase(UMassTestProcessorBase&&); \
+	NO_API UMassTestProcessorBase(const UMassTestProcessorBase&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessorBase); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessorBase); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessorBase) \
+	NO_API virtual ~UMassTestProcessorBase();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_139_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_142_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessorBase>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessor_A(); \
+	friend struct Z_Construct_UClass_UMassTestProcessor_A_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessor_A, UMassTestProcessorBase, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessor_A)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestProcessor_A(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessor_A(UMassTestProcessor_A&&); \
+	NO_API UMassTestProcessor_A(const UMassTestProcessor_A&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessor_A); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessor_A); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessor_A) \
+	NO_API virtual ~UMassTestProcessor_A();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_171_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_174_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessor_A>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessor_B(); \
+	friend struct Z_Construct_UClass_UMassTestProcessor_B_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessor_B, UMassTestProcessorBase, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessor_B)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestProcessor_B(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessor_B(UMassTestProcessor_B&&); \
+	NO_API UMassTestProcessor_B(const UMassTestProcessor_B&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessor_B); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessor_B); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessor_B) \
+	NO_API virtual ~UMassTestProcessor_B();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_177_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_180_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessor_B>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessor_C(); \
+	friend struct Z_Construct_UClass_UMassTestProcessor_C_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessor_C, UMassTestProcessorBase, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessor_C)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestProcessor_C(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessor_C(UMassTestProcessor_C&&); \
+	NO_API UMassTestProcessor_C(const UMassTestProcessor_C&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessor_C); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessor_C); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessor_C) \
+	NO_API virtual ~UMassTestProcessor_C();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_183_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_186_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessor_C>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessor_D(); \
+	friend struct Z_Construct_UClass_UMassTestProcessor_D_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessor_D, UMassTestProcessorBase, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessor_D)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestProcessor_D(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessor_D(UMassTestProcessor_D&&); \
+	NO_API UMassTestProcessor_D(const UMassTestProcessor_D&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessor_D); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessor_D); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessor_D) \
+	NO_API virtual ~UMassTestProcessor_D();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_189_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_192_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessor_D>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessor_E(); \
+	friend struct Z_Construct_UClass_UMassTestProcessor_E_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessor_E, UMassTestProcessorBase, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessor_E)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestProcessor_E(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessor_E(UMassTestProcessor_E&&); \
+	NO_API UMassTestProcessor_E(const UMassTestProcessor_E&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessor_E); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessor_E); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessor_E) \
+	NO_API virtual ~UMassTestProcessor_E();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_195_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_198_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessor_E>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessor_F(); \
+	friend struct Z_Construct_UClass_UMassTestProcessor_F_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessor_F, UMassTestProcessorBase, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessor_F)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestProcessor_F(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessor_F(UMassTestProcessor_F&&); \
+	NO_API UMassTestProcessor_F(const UMassTestProcessor_F&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessor_F); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessor_F); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessor_F) \
+	NO_API virtual ~UMassTestProcessor_F();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_201_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_204_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessor_F>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessor_Floats(); \
+	friend struct Z_Construct_UClass_UMassTestProcessor_Floats_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessor_Floats, UMassTestProcessorBase, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessor_Floats)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessor_Floats(UMassTestProcessor_Floats&&); \
+	NO_API UMassTestProcessor_Floats(const UMassTestProcessor_Floats&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessor_Floats); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessor_Floats); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessor_Floats) \
+	NO_API virtual ~UMassTestProcessor_Floats();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_207_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_210_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessor_Floats>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessor_Ints(); \
+	friend struct Z_Construct_UClass_UMassTestProcessor_Ints_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessor_Ints, UMassTestProcessorBase, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessor_Ints)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessor_Ints(UMassTestProcessor_Ints&&); \
+	NO_API UMassTestProcessor_Ints(const UMassTestProcessor_Ints&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessor_Ints); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessor_Ints); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessor_Ints) \
+	NO_API virtual ~UMassTestProcessor_Ints();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_216_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_219_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessor_Ints>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestProcessor_FloatsInts(); \
+	friend struct Z_Construct_UClass_UMassTestProcessor_FloatsInts_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestProcessor_FloatsInts, UMassTestProcessorBase, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestProcessor_FloatsInts)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestProcessor_FloatsInts(UMassTestProcessor_FloatsInts&&); \
+	NO_API UMassTestProcessor_FloatsInts(const UMassTestProcessor_FloatsInts&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestProcessor_FloatsInts); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestProcessor_FloatsInts); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestProcessor_FloatsInts) \
+	NO_API virtual ~UMassTestProcessor_FloatsInts();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_225_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_228_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestProcessor_FloatsInts>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestStaticCounterProcessor(); \
+	friend struct Z_Construct_UClass_UMassTestStaticCounterProcessor_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestStaticCounterProcessor, UMassProcessor, COMPILED_IN_FLAGS(0 | CLASS_DefaultConfig | CLASS_Config), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestStaticCounterProcessor)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_ENHANCED_CONSTRUCTORS \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestStaticCounterProcessor(UMassTestStaticCounterProcessor&&); \
+	NO_API UMassTestStaticCounterProcessor(const UMassTestStaticCounterProcessor&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestStaticCounterProcessor); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestStaticCounterProcessor); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestStaticCounterProcessor) \
+	NO_API virtual ~UMassTestStaticCounterProcessor();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_235_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_238_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestStaticCounterProcessor>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestWorldSubsystem(); \
+	friend struct Z_Construct_UClass_UMassTestWorldSubsystem_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestWorldSubsystem, UWorldSubsystem, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestWorldSubsystem)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestWorldSubsystem(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestWorldSubsystem(UMassTestWorldSubsystem&&); \
+	NO_API UMassTestWorldSubsystem(const UMassTestWorldSubsystem&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestWorldSubsystem); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestWorldSubsystem); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestWorldSubsystem) \
+	NO_API virtual ~UMassTestWorldSubsystem();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_302_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_305_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestWorldSubsystem>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestEngineSubsystem(); \
+	friend struct Z_Construct_UClass_UMassTestEngineSubsystem_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestEngineSubsystem, UEngineSubsystem, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestEngineSubsystem)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestEngineSubsystem(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestEngineSubsystem(UMassTestEngineSubsystem&&); \
+	NO_API UMassTestEngineSubsystem(const UMassTestEngineSubsystem&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestEngineSubsystem); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestEngineSubsystem); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestEngineSubsystem) \
+	NO_API virtual ~UMassTestEngineSubsystem();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_326_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_329_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestEngineSubsystem>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestLocalPlayerSubsystem(); \
+	friend struct Z_Construct_UClass_UMassTestLocalPlayerSubsystem_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestLocalPlayerSubsystem, ULocalPlayerSubsystem, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestLocalPlayerSubsystem)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestLocalPlayerSubsystem(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestLocalPlayerSubsystem(UMassTestLocalPlayerSubsystem&&); \
+	NO_API UMassTestLocalPlayerSubsystem(const UMassTestLocalPlayerSubsystem&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestLocalPlayerSubsystem); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestLocalPlayerSubsystem); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestLocalPlayerSubsystem) \
+	NO_API virtual ~UMassTestLocalPlayerSubsystem();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_343_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_346_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestLocalPlayerSubsystem>();
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_SPARSE_DATA
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_RPC_WRAPPERS_NO_PURE_DECLS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_ACCESSORS
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUMassTestGameInstanceSubsystem(); \
+	friend struct Z_Construct_UClass_UMassTestGameInstanceSubsystem_Statics; \
+public: \
+	DECLARE_CLASS(UMassTestGameInstanceSubsystem, UGameInstanceSubsystem, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/MassEntityTestSuite"), NO_API) \
+	DECLARE_SERIALIZER(UMassTestGameInstanceSubsystem)
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	NO_API UMassTestGameInstanceSubsystem(); \
+private: \
+	/** Private move- and copy-constructors, should never be used */ \
+	NO_API UMassTestGameInstanceSubsystem(UMassTestGameInstanceSubsystem&&); \
+	NO_API UMassTestGameInstanceSubsystem(const UMassTestGameInstanceSubsystem&); \
+public: \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMassTestGameInstanceSubsystem); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMassTestGameInstanceSubsystem); \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UMassTestGameInstanceSubsystem) \
+	NO_API virtual ~UMassTestGameInstanceSubsystem();
+
+
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_360_PROLOG
+#define FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_SPARSE_DATA \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_ACCESSORS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_INCLASS_NO_PURE_DECLS \
+	FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h_363_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+template<> MASSENTITYTESTSUITE_API UClass* StaticClass<class UMassTestGameInstanceSubsystem>();
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Engine_Plugins_Runtime_MassEntity_Source_MassEntityTestSuite_Public_MassEntityTestTypes_h
+
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

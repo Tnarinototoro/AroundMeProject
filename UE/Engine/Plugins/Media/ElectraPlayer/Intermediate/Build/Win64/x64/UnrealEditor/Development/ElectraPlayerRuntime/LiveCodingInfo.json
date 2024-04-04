@@ -1,0 +1,84 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ElectraPlayerRuntime.1.cpp.obj": [
+			"ElectraPlayer.cpp.obj",
+			"ElectraPlayerAudioDecoderOutput.cpp.obj",
+			"ElectraPlayerRuntimeModule.cpp.obj",
+			"BufferedDataReader.cpp.obj",
+			"MediaThreads.cpp.obj",
+			"AudioDecoder.cpp.obj",
+			"VideoDecoderInputBitstreamProcessorH264.cpp.obj",
+			"VideoDecoderInputBitstreamProcessorH265.cpp.obj",
+			"VideoDecoderInputBitstreamProcessorVP8.cpp.obj",
+			"VideoDecoderInputBitstreamProcessorVP9.cpp.obj",
+			"SubtitleDecoder.cpp.obj",
+			"VideoDecoder.cpp.obj",
+			"VideoDecoderHelpers.cpp.obj",
+			"VideoDecoderInputBitstreamProcessor.cpp.obj",
+			"ElectraVideoDecoder_PC.cpp.obj",
+			"WindowsElectraDecoderResourceManager.cpp.obj",
+			"ParserISO14496-12.cpp.obj"
+		],
+		"Module.ElectraPlayerRuntime.2.cpp.obj": [
+			"ParserMKV.cpp.obj",
+			"HTTPManager.cpp.obj",
+			"HTTPResponseCache.cpp.obj",
+			"PlayerRuntime_PC.cpp.obj",
+			"PlayerRuntimeGlobal.cpp.obj",
+			"ABRFixedStream.cpp.obj",
+			"ABRLiveStream.cpp.obj",
+			"ABRVoDPlus.cpp.obj"
+		],
+		"Module.ElectraPlayerRuntime.3.cpp.obj": [
+			"AdaptiveStreamingPlayer.cpp.obj",
+			"AdaptiveStreamingPlayerABR.cpp.obj",
+			"AdaptiveStreamingPlayerDecoders.cpp.obj",
+			"AdaptiveStreamingPlayerEvents.cpp.obj",
+			"AdaptiveStreamingPlayerManifest.cpp.obj",
+			"AdaptiveStreamingPlayerRenderers.cpp.obj",
+			"AdaptiveStreamingPlayerResourceRequest.cpp.obj",
+			"ManifestBuilderDASH.cpp.obj"
+		],
+		"Module.ElectraPlayerRuntime.4.cpp.obj": [
+			"ManifestDASH.cpp.obj",
+			"ManifestParserDASH.cpp.obj",
+			"PlaylistReaderDASH.cpp.obj",
+			"StreamReaderDASH.cpp.obj"
+		],
+		"Module.ElectraPlayerRuntime.5.cpp.obj": [
+			"DRMManager.cpp.obj",
+			"ExternalDataReader.cpp.obj",
+			"InitSegmentCacheHLS.cpp.obj",
+			"LicenseKeyCacheHLS.cpp.obj",
+			"ManifestBuilderHLS.cpp.obj",
+			"ManifestHLS.cpp.obj",
+			"Parser.cpp.obj",
+			"Playlist.cpp.obj",
+			"PlaylistReaderHLS.cpp.obj",
+			"StreamReaderHLSfmp4.cpp.obj",
+			"TagContainer.cpp.obj",
+			"ManifestMKV.cpp.obj",
+			"PlaylistReaderMKV.cpp.obj",
+			"StreamReaderMKV.cpp.obj",
+			"ManifestMP4.cpp.obj"
+		],
+		"Module.ElectraPlayerRuntime.6.cpp.obj": [
+			"PlaylistReaderMP4.cpp.obj",
+			"StreamReaderMP4.cpp.obj",
+			"PlayerEntityCache.cpp.obj",
+			"RendererAudio.cpp.obj",
+			"RendererVideo.cpp.obj",
+			"StreamAccessUnitBuffer.cpp.obj",
+			"StreamTypes.cpp.obj",
+			"SynchronizedClock.cpp.obj",
+			"AudioChannelMapper.cpp.obj",
+			"HashFunctions.cpp.obj",
+			"ISO639-Map.cpp.obj",
+			"UtilsMP4.cpp.obj",
+			"UtilsMPEG.cpp.obj",
+			"Parser.spec.cpp.obj",
+			"ElectraPlayer_Windows.cpp.obj"
+		]
+	}
+}

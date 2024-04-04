@@ -1,0 +1,16 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\hairstrands\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\haircardgeneratorframework\\module.haircardgeneratorframework.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\hairstrands\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\haircardgeneratorframework\\definitions.haircardgeneratorframework.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\hairstrands\\source\\haircardgeneratorframework\\private\\haircardgenerator.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\hairstrands\\source\\haircardgeneratorframework\\public\\ihaircardgenerator.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\hairstrands\\source\\haircardgeneratorframework\\private\\haircardgeneratorframework.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,16 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.DatasmithContentEditor.cpp.obj": [
+			"AssetDefinition_DatasmithScene.gen.cpp.obj",
+			"DatasmithContentEditor.init.gen.cpp.obj",
+			"AssetDefinition_DatasmithScene.cpp.obj",
+			"DatasmithAreaLightActorDetailsPanel.cpp.obj",
+			"DatasmithContentEditorModule.cpp.obj",
+			"DatasmithContentEditorStyle.cpp.obj",
+			"DatasmithImportInfoCustomization.cpp.obj",
+			"DatasmithSceneActorDetailsPanel.cpp.obj",
+			"DatasmithSceneDetails.cpp.obj"
+		]
+	}
+}

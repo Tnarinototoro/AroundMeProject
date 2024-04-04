@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\lidarpointcloudruntime\\module.lidarpointcloudruntime.1.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\lidarpointcloudruntime\\definitions.lidarpointcloudruntime.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\intermediate\\build\\win64\\unrealeditor\\inc\\lidarpointcloudruntime\\uht\\lidarpointcloud.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\source\\lidarpointcloudruntime\\public\\lidarpointcloud.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\source\\lidarpointcloudruntime\\public\\lidarpointcloudshared.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\intermediate\\build\\win64\\unrealeditor\\inc\\lidarpointcloudruntime\\uht\\lidarpointcloudshared.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\source\\lidarpointcloudruntime\\public\\lidarpointcloudoctree.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\source\\lidarpointcloudruntime\\public\\lidarpointcloudsettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\intermediate\\build\\win64\\unrealeditor\\inc\\lidarpointcloudruntime\\uht\\lidarpointcloudsettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\source\\lidarpointcloudruntime\\public\\meshing\\lidarpointcloudmeshing.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\enterprise\\lidarpointcloud\\intermediate\\build\\win64\\unrealeditor\\inc\\lidarpointcloudruntime\\uht\\lidarpointcloud.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

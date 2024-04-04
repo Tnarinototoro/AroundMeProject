@@ -1,0 +1,28 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\assettags\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\assettags\\module.assettags.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\assettags\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\assettags\\definitions.assettags.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\assettags\\intermediate\\build\\win64\\unrealeditor\\inc\\assettags\\uht\\assettags.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\assettags\\source\\assettags\\private\\assettagsmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\assettags\\source\\assettags\\private\\assettagssubsystem.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\assettags\\source\\assettags\\public\\assettagssubsystem.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\assettags\\intermediate\\build\\win64\\unrealeditor\\inc\\assettags\\uht\\assettagssubsystem.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\assetregistry\\public\\assetregistry\\assetregistrymodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\assetregistry\\public\\assetregistry\\iassetregistry.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\coreuobject\\public\\assetregistry\\arfilter.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\coreuobject\\public\\misc\\assetregistryinterface.h",
+            "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\assetregistry\\uht\\iassetregistry.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\assettags\\intermediate\\build\\win64\\unrealeditor\\inc\\assettags\\uht\\assettagssubsystem.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\collectionmanager\\public\\icollectionmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\collectionmanager\\public\\collectionmanagertypes.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\sourcecontrol\\public\\isourcecontrolstate.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\developer\\collectionmanager\\public\\collectionmanagermodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

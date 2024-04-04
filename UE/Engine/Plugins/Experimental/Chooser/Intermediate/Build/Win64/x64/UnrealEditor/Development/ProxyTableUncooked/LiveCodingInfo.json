@@ -1,0 +1,11 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ProxyTableUncooked.cpp.obj": [
+			"EvaluateProxyNode.gen.cpp.obj",
+			"ProxyTableUncooked.init.gen.cpp.obj",
+			"EvaluateProxyNode.cpp.obj",
+			"ProxyTableUncookedModule.cpp.obj"
+		]
+	}
+}

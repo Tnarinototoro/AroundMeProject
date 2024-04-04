@@ -1,0 +1,18 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\platformcrypto\\module.platformcrypto.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\core\\sharedpch.core.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\platformcrypto\\definitions.platformcrypto.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcrypto\\private\\platformcrypto.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcrypto\\public\\iplatformcrypto.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcrypto\\public\\platformcryptoincludes.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\experimental\\platformcrypto\\source\\platformcryptoopenssl\\public\\encryptioncontextopenssl.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\ienginecrypto.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

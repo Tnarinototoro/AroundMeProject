@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.NVCodecsRHI.cpp.obj": [
+			"NVCodecRHIModule.cpp.obj"
+		]
+	}
+}

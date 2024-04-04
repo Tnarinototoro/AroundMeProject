@@ -1,0 +1,11 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.DatasmithCloTranslator.cpp.obj": [
+			"DatasmithCloImportOptions.gen.cpp.obj",
+			"DatasmithCloTranslator.init.gen.cpp.obj",
+			"DatasmithCloTranslator.cpp.obj",
+			"DatasmithCloTranslatorModule.cpp.obj"
+		]
+	}
+}

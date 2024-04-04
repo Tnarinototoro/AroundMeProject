@@ -1,0 +1,43 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\wavetable\\module.wavetable.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\wavetable\\definitions.wavetable.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\unrealeditor\\inc\\wavetable\\uht\\wavetable.init.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\private\\wavetable.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\public\\wavetable.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\public\\wavetablesampler.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\unrealeditor\\inc\\wavetable\\uht\\wavetable.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\signalprocessing\\public\\dsp\\floatarraymath.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\unrealeditor\\inc\\wavetable\\uht\\wavetable.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\private\\wavetablebank.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\public\\wavetablebank.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\public\\wavetabletransform.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\public\\wavetablesettings.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\unrealeditor\\inc\\wavetable\\uht\\wavetablesettings.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\unrealeditor\\inc\\wavetable\\uht\\wavetabletransform.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\unrealeditor\\inc\\wavetable\\uht\\wavetablebank.generated.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\algo\\anyof.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\algo\\noneof.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\coreuobject\\public\\uobject\\objectsavecontext.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\coreuobject\\public\\uobject\\objectsaveoverride.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\unrealeditor\\inc\\wavetable\\uht\\wavetablebank.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\private\\wavetableimporter.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\public\\wavetableimporter.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\private\\wavetablelogging.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\private\\wavetablelogging.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\private\\wavetablemodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\public\\wavetablemodule.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\private\\wavetablesampler.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\private\\wavetablesettings.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\unrealeditor\\inc\\wavetable\\uht\\wavetablesettings.gen.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\source\\wavetable\\private\\wavetabletransform.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\runtime\\wavetable\\intermediate\\build\\win64\\unrealeditor\\inc\\wavetable\\uht\\wavetabletransform.gen.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelcapture\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\pixelcaptureshaders\\module.pixelcaptureshaders.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\aroundmeproject\\ue\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelcapture\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\pixelcaptureshaders\\definitions.pixelcaptureshaders.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelcapture\\source\\pixelcaptureshaders\\private\\pixelcaptureshadersmodule.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\interfaces\\ipluginmanager.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\plugindescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\custombuildsteps.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\localizationdescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\moduledescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\pluginreferencedescriptor.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\projects\\public\\versescope.h",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelcapture\\source\\pixelcaptureshaders\\private\\rgbtoyuvshader.cpp",
+            "e:\\aroundmeproject\\ue\\engine\\plugins\\media\\pixelcapture\\source\\pixelcaptureshaders\\public\\rgbtoyuvshader.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\shaderparameterstruct.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphresources.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rhi\\public\\rhitransientresourceallocator.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphparameter.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphtexturesubresource.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphresources.inl",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphutils.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphbuilder.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphblackboard.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\misc\\generatedtypename.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphevent.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphevent.inl",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphpass.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphparameters.inl",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphtrace.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphvalidation.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\tasks\\pipe.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\core\\public\\tasks\\task.h",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rendercore\\public\\rendergraphbuilder.inl",
+            "e:\\aroundmeproject\\ue\\engine\\source\\runtime\\rhi\\public\\datadrivenshaderplatforminfo.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

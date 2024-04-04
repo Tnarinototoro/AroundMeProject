@@ -1,0 +1,8 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.WebAuth.cpp.obj": [
+			"WebAuthModule.cpp.obj"
+		]
+	}
+}
