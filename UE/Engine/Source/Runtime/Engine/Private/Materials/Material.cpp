@@ -6927,28 +6927,54 @@ static bool IsPropertyActive_Internal(EMaterialProperty InProperty,
 		case MP_Roughness:
 			Active = ShadingModels.IsLit() && (!bIsTranslucentBlendMode || !bIsVolumetricTranslucencyLightingMode);
 			break;
+
 		case MP_Anisotropy:
-			Active = ShadingModels.HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat }) && (!bIsTranslucentBlendMode || !bIsVolumetricTranslucencyLightingMode);
-			break;
-		case MP_Metallic:
-			// Subsurface models store opacity in place of Metallic in the GBuffer
-			Active = ShadingModels.IsLit() && (!bIsTranslucentBlendMode || !bIsVolumetricTranslucencyLightingMode);
+			Active = ShadingModels.HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat
+#if DIY_ENGINE_CE
+				,MSM_DIYToonHair, MSM_DIYToonDefault 
+#endif
+				
+				}) && 
+				(!bIsTranslucentBlendMode || !bIsVolumetricTranslucencyLightingMode);
 			break;
 		case MP_Normal:
 			Active = (ShadingModels.IsLit() && (!bIsTranslucentBlendMode || !bIsNonDirectionalTranslucencyLightingMode)) || bUsesDistortion;
 			break;
 		case MP_Tangent:
-			Active = ShadingModels.HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat }) && (!bIsTranslucentBlendMode || !bIsVolumetricTranslucencyLightingMode);
+			Active = ShadingModels.HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat
+#if DIY_ENGINE_CE
+
+				,MSM_DIYToonHair, MSM_DIYToonDefault
+#endif
+			 }) && (!bIsTranslucentBlendMode || !bIsVolumetricTranslucencyLightingMode);
 			break;
 		case MP_SubsurfaceColor:
-			Active = ShadingModels.HasAnyShadingModel({ MSM_Subsurface, MSM_PreintegratedSkin, MSM_TwoSidedFoliage, MSM_Cloth });
+			Active = ShadingModels.HasAnyShadingModel({ MSM_Subsurface, MSM_PreintegratedSkin, MSM_TwoSidedFoliage, MSM_Cloth
+#if DIY_ENGINE_CE
+				,MSM_DIYToonHair,MSM_DIYToonSkin,MSM_DIYToonDefault
+#endif
+				});
 			break;
 		case MP_CustomData0:
-			Active = ShadingModels.HasAnyShadingModel({ MSM_ClearCoat, MSM_Hair, MSM_Cloth, MSM_Eye, MSM_SubsurfaceProfile });
+			Active = ShadingModels.HasAnyShadingModel({ MSM_ClearCoat, MSM_Hair, MSM_Cloth, MSM_Eye, MSM_SubsurfaceProfile
+#if DIY_ENGINE_CE
+
+				,MSM_DIYToonHair,MSM_DIYToonSkin,MSM_DIYToonDefault
+#endif
+				
+				});
 			break;
 		case MP_CustomData1:
-			Active = ShadingModels.HasAnyShadingModel({ MSM_ClearCoat, MSM_Eye });
+			Active = ShadingModels.HasAnyShadingModel({ MSM_ClearCoat, MSM_Eye
+				
+#if DIY_ENGINE_CE
+
+				,MSM_DIYToonHair,MSM_DIYToonSkin,MSM_DIYToonDefault
+#endif
+				
+				});
 			break;
+
 		case MP_EmissiveColor:
 			// Emissive is always active, even for light functions and post process materials, 
 			// but not for AlphaHoldout

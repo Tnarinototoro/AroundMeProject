@@ -201,4 +201,41 @@ void SetGBufferForShadingModel(
 	#endif
 	}
 #endif
+
+
+
+#if DIY_ENGINE_CE
+
+
+#if MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT
+	else if (ShadingModel == SHADINGMODELID_DIY_TOON_DEFAULT)
+	{
+		GBuffer.CustomData.rgb = EncodeSubsurfaceColor(SubsurfaceColor);
+		GBuffer.CustomData.a = GetMaterialCustomData0(MaterialParameters);
+	}
+#endif
+#if MATERIAL_SHADINGMODEL_DIY_TOON_SKIN
+	else if (ShadingModel == SHADINGMODELID_DIY_TOON_SKIN)
+	{
+		GBuffer.CustomData.rgb = EncodeSubsurfaceColor(SubsurfaceColor);
+		GBuffer.CustomData.a = GetMaterialCustomData0(MaterialParameters);
+	}
+#endif
+#if MATERIAL_SHADINGMODEL_DIY_TOON_HAIR
+	else if (ShadingModel == SHADINGMODELID_DIY_TOON_HAIR)
+	{
+		GBuffer.CustomData.rgb = EncodeSubsurfaceColor(SubsurfaceColor);
+		GBuffer.CustomData.a = GetMaterialCustomData0(MaterialParameters);
+	}
+#endif
+
+
+
+#endif
+
+
+
+
+
+
 }

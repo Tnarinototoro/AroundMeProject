@@ -406,10 +406,19 @@ FText FMaterialAttributeDefinitionMap::GetAttributeOverrideForMaterial(const FGu
 		CustomPinNames.Add({ MSM_Cloth, "Cloth" });
 		CustomPinNames.Add({ MSM_Eye, "Iris Mask" });
 		CustomPinNames.Add({ MSM_SubsurfaceProfile, "Curvature" });
+
+#if DIY_ENGINE_CE
+		CustomPinNames.Add({ MSM_DIYToonDefault, "RampIndex" });
+		CustomPinNames.Add({ MSM_DIYToonSkin, "RampIndex" });
+		CustomPinNames.Add({ MSM_DIYToonHair, "Specular Range" });
+#endif
+
 		return FText::FromString(GetPinNameFromShadingModelField(Material->GetShadingModels(), CustomPinNames, "Custom Data 0"));
 	case MP_CustomData1:
 		CustomPinNames.Add({ MSM_ClearCoat, "Clear Coat Roughness" });
 		CustomPinNames.Add({ MSM_Eye, "Iris Distance" });
+
+		
 		return FText::FromString(GetPinNameFromShadingModelField(Material->GetShadingModels(), CustomPinNames, "Custom Data 1"));
 	case MP_AmbientOcclusion:
 		return LOCTEXT("AmbientOcclusion", "Ambient Occlusion");

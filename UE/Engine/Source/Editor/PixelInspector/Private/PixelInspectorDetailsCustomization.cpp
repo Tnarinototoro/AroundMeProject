@@ -257,6 +257,52 @@ void FPixelInspectorDetailsCustomization::CustomizeDetails(IDetailLayoutBuilder&
 			DetailBuilder.HideProperty(ClothProp);
 		}
 		break;
+
+#if DIY_ENGINE_CE
+
+		case MSM_DIYToonDefault:
+		{
+			DetailBuilder.HideProperty(SubSurfaceColorProp);
+			DetailBuilder.HideProperty(ClearCoatProp);
+			DetailBuilder.HideProperty(ClearCoatRoughnessProp);
+			DetailBuilder.HideProperty(WorldNormalProp);
+			DetailBuilder.HideProperty(BackLitProp);
+			DetailBuilder.HideProperty(ClothProp);
+			DetailBuilder.HideProperty(EyeTangentProp);
+			DetailBuilder.HideProperty(IrisMaskProp);
+			DetailBuilder.HideProperty(IrisDistanceProp);
+		}
+		break;
+		case MSM_DIYToonSkin:
+		{
+			DetailBuilder.HideProperty(SubSurfaceColorProp);
+			DetailBuilder.HideProperty(ClearCoatProp);
+			DetailBuilder.HideProperty(ClearCoatRoughnessProp);
+			DetailBuilder.HideProperty(WorldNormalProp);
+			DetailBuilder.HideProperty(BackLitProp);
+			DetailBuilder.HideProperty(ClothProp);
+			DetailBuilder.HideProperty(EyeTangentProp);
+			DetailBuilder.HideProperty(IrisMaskProp);
+			DetailBuilder.HideProperty(IrisDistanceProp);
+		}
+		break;
+		case MSM_DIYToonHair:
+		{
+			DetailBuilder.HideProperty(SubSurfaceColorProp);
+			DetailBuilder.HideProperty(ClearCoatProp);
+			DetailBuilder.HideProperty(ClearCoatRoughnessProp);
+			DetailBuilder.HideProperty(WorldNormalProp);
+			DetailBuilder.HideProperty(BackLitProp);
+			DetailBuilder.HideProperty(ClothProp);
+			DetailBuilder.HideProperty(EyeTangentProp);
+			DetailBuilder.HideProperty(IrisMaskProp);
+			DetailBuilder.HideProperty(IrisDistanceProp);
+		}
+		break;
+
+#endif
+		
+
 	}
 }
 

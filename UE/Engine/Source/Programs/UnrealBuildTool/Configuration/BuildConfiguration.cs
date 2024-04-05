@@ -23,7 +23,7 @@ namespace UnrealBuildTool
 		/// Use existing static libraries for all engine modules in this target.
 		/// </summary>
 		[CommandLine("-UsePrecompiled")]
-		public bool bUsePrecompiled = true;
+		public bool bUsePrecompiled = false;
 
 		/// <summary>
 		/// Whether debug info should be written to the console.

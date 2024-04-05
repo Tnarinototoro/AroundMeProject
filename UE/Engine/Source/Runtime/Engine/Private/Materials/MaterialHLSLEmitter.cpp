@@ -622,7 +622,24 @@ static void GetMaterialEnvironment(EShaderPlatform InPlatform,
 
 			bMaterialRequestsDualSourceBlending = true;
 		}
-
+#if DIY_ENGINE_CE
+		if (ShadingModels.HasShadingModel(MSM_DIYToonDefault))
+		{
+			OutEnvironment.SetDefine(TEXT("MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT"), TEXT("1"));
+			NumSetMaterials++;
+		}
+		if (ShadingModels.HasShadingModel(MSM_DIYToonSkin))
+		{
+			OutEnvironment.SetDefine(TEXT("MATERIAL_SHADINGMODEL_DIY_TOON_SKIN"), TEXT("1"));
+			NumSetMaterials++;
+		}
+		if (ShadingModels.HasShadingModel(MSM_DIYToonHair))
+		{
+			OutEnvironment.SetDefine(TEXT("MATERIAL_SHADINGMODEL_DIY_TOON_HAIR"), TEXT("1"));
+			NumSetMaterials++;
+		}
+#endif
+		
 		if (ShadingModels.HasShadingModel(MSM_SingleLayerWater) && FDataDrivenShaderPlatformInfo::GetRequiresDisableForwardLocalLights(InPlatform))
 		{
 			OutEnvironment.SetDefine(TEXT("DISABLE_FORWARD_LOCAL_LIGHTS"), TEXT("1"));

@@ -104,6 +104,19 @@ float3 SkyLightDiffuse(FGBufferData GBuffer, float AmbientOcclusion, float2 Buff
 		Lighting += SkyVisData.SkyDiffuseLookUpMul * SubsurfaceLookup * SubsurfaceColor;
 	}
 
+#if DIY_ENGINE_CE
+
+if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+{
+	float3 SubsurfaceColor = ExtractSubsurfaceColor(GBuffer);
+	DiffuseColor += SubsurfaceColor;
+	Lighting = GBuffer.BaseColor * SubsurfaceColor;
+	// return Lighting;
+}
+
+#endif
+
+
 	if (GBuffer.ShadingModelID == SHADINGMODELID_SUBSURFACE || GBuffer.ShadingModelID == SHADINGMODELID_PREINTEGRATED_SKIN)
 	{
 		float3 SubsurfaceColor = ExtractSubsurfaceColor(GBuffer);

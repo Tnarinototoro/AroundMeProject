@@ -875,6 +875,49 @@ void FPixelShaderInOut_MainPS(
 	float3 SubsurfaceColor = 0;
 	// 0..1, SubsurfaceProfileId = int(x * 255)
 	float SubsurfaceProfile = 0;
+
+
+#if DIY_ENGINE_CE
+
+
+#if !STRATA_ENABLED
+#if MATERIAL_SHADINGMODEL_SUBSURFACE || MATERIAL_SHADINGMODEL_PREINTEGRATED_SKIN || MATERIAL_SHADINGMODEL_SUBSURFACE_PROFILE || MATERIAL_SHADINGMODEL_TWOSIDED_FOLIAGE || MATERIAL_SHADINGMODEL_CLOTH || MATERIAL_SHADINGMODEL_EYE || /*Change*/MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT || MATERIAL_SHADINGMODEL_DIY_TOON_SKIN || MATERIAL_SHADINGMODEL_DIY_TOON_HAIR
+	if (ShadingModel == SHADINGMODELID_SUBSURFACE || ShadingModel == SHADINGMODELID_PREINTEGRATED_SKIN || ShadingModel == SHADINGMODELID_SUBSURFACE_PROFILE || ShadingModel == SHADINGMODELID_TWOSIDED_FOLIAGE || ShadingModel == SHADINGMODELID_CLOTH || ShadingModel == SHADINGMODELID_EYE || /*Change*/SHADINGMODELID_DIY_TOON_DEFAULT || SHADINGMODELID_DIY_TOON_SKIN || SHADINGMODELID_DIY_TOON_HAIR)
+
+	{
+		float4 SubsurfaceData = GetMaterialSubsurfaceData(PixelMaterialInputs);
+
+		if (false) // Dummy if to make the ifdef logic play nicely
+		{
+		}
+#if MATERIAL_SHADINGMODEL_SUBSURFACE || MATERIAL_SHADINGMODEL_PREINTEGRATED_SKIN || MATERIAL_SHADINGMODEL_TWOSIDED_FOLIAGE
+		else if (ShadingModel == SHADINGMODELID_SUBSURFACE || ShadingModel == SHADINGMODELID_PREINTEGRATED_SKIN || ShadingModel == SHADINGMODELID_TWOSIDED_FOLIAGE)
+		{
+			SubsurfaceColor = SubsurfaceData.rgb * View.DiffuseOverrideParameter.w + View.DiffuseOverrideParameter.xyz;
+		}
+#endif
+#if MATERIAL_SHADINGMODEL_CLOTH || MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT || MATERIAL_SHADINGMODEL_DIY_TOON_SKIN || MATERIAL_SHADINGMODEL_DIY_TOON_HAIR
+		else if (ShadingModel == SHADINGMODELID_CLOTH || SHADINGMODELID_DIY_TOON_DEFAULT || SHADINGMODELID_DIY_TOON_SKIN || SHADINGMODELID_DIY_TOON_HAIR)
+		{
+			SubsurfaceColor = SubsurfaceData.rgb;
+		}
+#endif
+
+		SubsurfaceProfile = SubsurfaceData.a;
+	}
+#endif
+#endif // !STRATA_ENABLED
+
+
+
+
+
+
+#else
+
+
+
+
 #if !STRATA_ENABLED
 #if MATERIAL_SHADINGMODEL_SUBSURFACE || MATERIAL_SHADINGMODEL_PREINTEGRATED_SKIN || MATERIAL_SHADINGMODEL_SUBSURFACE_PROFILE || MATERIAL_SHADINGMODEL_TWOSIDED_FOLIAGE || MATERIAL_SHADINGMODEL_CLOTH || MATERIAL_SHADINGMODEL_EYE
 	if (ShadingModel == SHADINGMODELID_SUBSURFACE || ShadingModel == SHADINGMODELID_PREINTEGRATED_SKIN || ShadingModel == SHADINGMODELID_SUBSURFACE_PROFILE || ShadingModel == SHADINGMODELID_TWOSIDED_FOLIAGE || ShadingModel == SHADINGMODELID_CLOTH || ShadingModel == SHADINGMODELID_EYE)
@@ -901,6 +944,16 @@ void FPixelShaderInOut_MainPS(
 	}
 #endif
 #endif // !STRATA_ENABLED
+
+
+
+
+#endif
+
+
+
+
+
 
 #if STRATA_ENABLED && !STRATA_OPTIMIZED_UNLIT
 	// Initialise a Strata header with normal in registers
@@ -1341,6 +1394,35 @@ void FPixelShaderInOut_MainPS(
 #endif
 
 	half3 Emissive = 0;
+
+
+#if DIY_ENGINE_CE
+
+#if !STRATA_ENABLED
+
+	// Volume lighting for lit translucency
+#if (MATERIAL_SHADINGMODEL_DEFAULT_LIT || MATERIAL_SHADINGMODEL_SUBSURFACE || MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT || MATERIAL_SHADINGMODEL_DIY_TOON_SKIN || MATERIAL_SHADINGMODEL_DIY_TOON_HAIR) && (MATERIALBLENDING_TRANSLUCENT || MATERIALBLENDING_ADDITIVE) && !FORWARD_SHADING
+	if (GBuffer.ShadingModelID == SHADINGMODELID_DEFAULT_LIT || GBuffer.ShadingModelID == SHADINGMODELID_SUBSURFACE || SHADINGMODELID_DIY_TOON_DEFAULT || SHADINGMODELID_DIY_TOON_SKIN || SHADINGMODELID_DIY_TOON_HAIR)
+	{
+		Color += GetTranslucencyVolumeLighting(MaterialParameters, PixelMaterialInputs, BasePassInterpolants, GBuffer, IndirectIrradiance);
+	}
+#endif
+
+	#if !MATERIAL_SHADINGMODEL_UNLIT && USE_DEVELOPMENT_SHADERS
+		float3 GBufferDiffuseColor = GBuffer.DiffuseColor;
+		float3 GBufferSpecularColor = GBuffer.SpecularColor;
+		EnvBRDFApproxFullyRough(GBufferDiffuseColor, GBufferSpecularColor);
+		Color = lerp(Color, GBufferDiffuseColor, View.UnlitViewmodeMask);
+	#endif
+
+	Emissive = GetMaterialEmissive(PixelMaterialInputs);
+
+#endif // !STRATA_ENABLED
+
+
+
+#else
+
 #if !STRATA_ENABLED
 
 	// Volume lighting for lit translucency
@@ -1361,6 +1443,21 @@ void FPixelShaderInOut_MainPS(
 	Emissive = GetMaterialEmissive(PixelMaterialInputs);
 
 #endif // !STRATA_ENABLED
+
+
+
+#endif  //DIY_ENGINE_CE
+
+
+
+
+
+
+
+
+
+
+
 
 #if USE_DEVELOPMENT_SHADERS
 	float3 OutOfBoundsMaskLuminance = 0;

@@ -265,6 +265,18 @@ namespace PixelInspector
 			return EMaterialShadingModel::MSM_SingleLayerWater;
 		case PIXEL_INSPECTOR_SHADINGMODELID_THIN_TRANSLUCENT:
 			return EMaterialShadingModel::MSM_ThinTranslucent;
+
+#if DIY_ENGINE_CE
+		case PIXEL_INSPECTOR_SHADINGMODELID_DIY_TOON_DEFAULT:
+			return EMaterialShadingModel::MSM_DIYToonDefault;
+		case PIXEL_INSPECTOR_SHADINGMODELID_DIY_TOON_SKIN:
+			return EMaterialShadingModel::MSM_DIYToonSkin;
+		case PIXEL_INSPECTOR_SHADINGMODELID_DIY_TOON_HAIR:
+			return EMaterialShadingModel::MSM_DIYToonHair;
+#endif
+		
+
+
 		case PIXEL_INSPECTOR_SHADINGMODELID_STRATA:
 			return EMaterialShadingModel::MSM_Strata;
 		};

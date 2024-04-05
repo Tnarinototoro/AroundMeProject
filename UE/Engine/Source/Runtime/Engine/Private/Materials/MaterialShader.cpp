@@ -114,6 +114,12 @@ FString GetShadingModelString(EMaterialShadingModel ShadingModel)
 		case MSM_Eye:				ShadingModelName = TEXT("MSM_Eye"); break;
 		case MSM_SingleLayerWater:	ShadingModelName = TEXT("MSM_SingleLayerWater"); break;
 		case MSM_ThinTranslucent:	ShadingModelName = TEXT("MSM_ThinTranslucent"); break;
+#if DIY_ENGINE_CE
+		case MSM_DIYToonDefault:     ShadingModelName = TEXT("MSM_DIYToonDefault"); break;
+		case MSM_DIYToonSkin:        ShadingModelName = TEXT("MSM_DIYToonSkin"); break;
+		case MSM_DIYToonHair:        ShadingModelName = TEXT("MSM_DIYToonHair"); break;
+#endif
+		
 		default: ShadingModelName = TEXT("Unknown"); break;
 	}
 	return ShadingModelName;
@@ -246,7 +252,25 @@ void UpdateMaterialShaderCompilingStats(const FMaterial* Material)
 	{
 		INC_DWORD_STAT_BY(STAT_ShaderCompiling_NumUnlitMaterialShaders, 1);
 	}
-	else if (ShadingModels.HasAnyShadingModel({ MSM_DefaultLit, MSM_Subsurface, MSM_PreintegratedSkin, MSM_ClearCoat, MSM_Cloth, MSM_SubsurfaceProfile, MSM_TwoSidedFoliage, MSM_SingleLayerWater, MSM_ThinTranslucent }))
+	else if (ShadingModels.HasAnyShadingModel({ 
+		MSM_DefaultLit, 
+		MSM_Subsurface, 
+		MSM_PreintegratedSkin, 
+		MSM_ClearCoat, 
+		MSM_Cloth, 
+		MSM_SubsurfaceProfile, 
+		MSM_TwoSidedFoliage,
+		MSM_SingleLayerWater, 
+		MSM_ThinTranslucent,
+
+#if DIY_ENGINE_CE
+		MSM_DIYToonDefault,
+		MSM_DIYToonSkin,
+		MSM_DIYToonHair
+#endif
+		
+		
+		}))
 	{
 		INC_DWORD_STAT_BY(STAT_ShaderCompiling_NumLitMaterialShaders, 1);
 	}

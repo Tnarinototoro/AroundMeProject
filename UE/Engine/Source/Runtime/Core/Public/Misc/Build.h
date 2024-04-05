@@ -494,3 +494,8 @@
 #ifndef UE_DEPRECATED_PROFILER_ENABLED
 	#define UE_DEPRECATED_PROFILER_ENABLED 0
 #endif
+
+//DIY ENGINE Customization
+#ifndef DIY_ENGINE_CE 
+#define DIY_ENGINE_CE 1
+#endif 

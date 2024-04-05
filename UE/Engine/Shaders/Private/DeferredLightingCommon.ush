@@ -372,6 +372,38 @@ FLightAccumulator AccumulateDynamicLighting(
 		{
 			const bool bNeedsSeparateSubsurfaceLightAccumulation = UseSubsurfaceProfile(GBuffer.ShadingModelID);
 
+
+
+#if DIY_ENGINE_CE
+
+            float3 LightColor = LightData.Color;
+			float3 ToonAttenuation;
+			if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+			{
+				float ShadowOffset = GBuffer.CustomData.a;
+				ShadowOffset = (ShadowOffset - 0.5) * 2;
+				float ShadowPart = saturate(Shadow.SurfaceShadow * dot(N, L) + ShadowOffset);
+				ToonAttenuation = GetToonSurfaceShadow(ShadowPart, GBuffer.Metallic);
+				if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN)
+				{
+					ToonAttenuation = GetSkinShadow(ToonAttenuation, GBuffer.CustomData.rgb * GBuffer.BaseColor);
+				}
+				ToonAttenuation *= LightColor * LightMask;
+			}
+
+#endif
+
+
+			
+
+
+
+
+
+
+
+
+
 		#if NON_DIRECTIONAL_DIRECT_LIGHTING
 			float Lighting;
 
@@ -389,8 +421,30 @@ FLightAccumulator AccumulateDynamicLighting(
 			}
 
 			float3 LightingDiffuse = Diffuse_Lambert( GBuffer.DiffuseColor ) * Lighting;
+
+
+#if DIY_ENGINE_CE
+
+if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+			{
+			    LightAccumulator_AddSplit(LightAccumulator, LightingDiffuse, 0.0f, 0, ToonAttenuation, bNeedsSeparateSubsurfaceLightAccumulation);
+			}
+			//End
+			else
+			   LightAccumulator_AddSplit(LightAccumulator, LightingDiffuse, 0.0f, 0, MaskedLightColor * Shadow.SurfaceShadow, bNeedsSeparateSubsurfaceLightAccumulation);
+
+#endif
+
+
+
+
+
 			LightAccumulator_AddSplit(LightAccumulator, LightingDiffuse, 0.0f, 0, MaskedLightColor * Shadow.SurfaceShadow, bNeedsSeparateSubsurfaceLightAccumulation);
 		#else
+
+
+
+
 			FDirectLighting Lighting;
 
 			if (LightData.bRectLight)
@@ -416,8 +470,33 @@ FLightAccumulator AccumulateDynamicLighting(
 			}
 
 			Lighting.Specular *= LightData.SpecularScale;
-				
+	
+	
+
+
+
+#if DIY_ENGINE_CE
+
+if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+			{
+				LightAccumulator_AddSplit(LightAccumulator, Lighting.Diffuse, Lighting.Specular, Lighting.Diffuse, ToonAttenuation, bNeedsSeparateSubsurfaceLightAccumulation);
+			}
+			else
+			    LightAccumulator_AddSplit( LightAccumulator, Lighting.Diffuse, Lighting.Specular, Lighting.Diffuse, MaskedLightColor * Shadow.SurfaceShadow, bNeedsSeparateSubsurfaceLightAccumulation );
+
+
+#else
+
 			LightAccumulator_AddSplit( LightAccumulator, Lighting.Diffuse, Lighting.Specular, Lighting.Diffuse, MaskedLightColor * Shadow.SurfaceShadow, bNeedsSeparateSubsurfaceLightAccumulation );
+			
+#endif
+
+
+
+
+
+
+
 			LightAccumulator_AddSplit( LightAccumulator, Lighting.Transmission, 0.0f, Lighting.Transmission, MaskedLightColor * Shadow.TransmissionShadow, bNeedsSeparateSubsurfaceLightAccumulation );
 
 			LightAccumulator.EstimatedCost += 0.4f;		// add the cost of the lighting computations (should sum up to 1 form one light)

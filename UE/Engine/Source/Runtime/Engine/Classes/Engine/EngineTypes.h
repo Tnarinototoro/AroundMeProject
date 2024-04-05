@@ -634,6 +634,13 @@ enum EMaterialShadingModel : int
 	MSM_SingleLayerWater		UMETA(DisplayName="SingleLayerWater"),
 	MSM_ThinTranslucent			UMETA(DisplayName="Thin Translucent"),
 	MSM_Strata					UMETA(DisplayName="Substrate", Hidden),
+
+#if DIY_ENGINE_CE
+	MSM_DIYToonDefault     UMETA(DisplayName = "DIYToonDefault"),
+	MSM_DIYToonSkin       UMETA(DisplayName = "DIYToonSkin"),
+	MSM_DIYToonHair       UMETA(DisplayName = "DIYToonHair"),
+#endif
+	
 	/** Number of unique shading models. */
 	MSM_NUM						UMETA(Hidden),
 	/** Shading model will be determined by the Material Expression Graph,
