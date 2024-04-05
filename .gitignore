@@ -318,3 +318,13 @@ AroundMe/AroundMe.sln
 /UE/Engine/Saved
 /UE/Engine/Plugins/AI/AISupport/Intermediate
 /UE/Engine/Programs/AutomationTool
+
+
+**/Intermediate/**
+**/Saved/
+
+**/.vs/
+
+
+**/Build/
+/UE/Engine/Plugins
