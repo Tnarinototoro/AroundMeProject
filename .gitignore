@@ -1,14 +1,5 @@
 
-/AroundMe/.vs
-AroundMe/.vsconfig
-AroundMe/AroundMe.sln
-/AroundMe/Binaries
-/AroundMe/Intermediate
-/AroundMe/Plugins/DIYAndroidServiceLib/Binaries
-/AroundMe/Plugins/DIYAndroidServiceLib/Intermediate
-/AroundMe/Saved
-/UE/.vs
-*.exp
+
 
 #
 # This file tells Git about engine files that never really belong in source control.  They are usually build products, log
@@ -302,6 +293,11 @@ AroundMe/AroundMe.sln
 
 # Ignore vulkan registry
 /UE/Engine/Source/ThirdParty/Vulkan/share/vulkan/registry/**
+
+
+
+
+#AroundMe Project CE
 /AroundMe/Saved
 /AroundMe/Intermediate
 AroundMe/AroundMe.sln
@@ -328,3 +324,13 @@ AroundMe/AroundMe.sln
 **/Build/
 /UE/Engine/Plugins
 
+/AroundMe/.vs
+AroundMe/.vsconfig
+AroundMe/AroundMe.sln
+/AroundMe/Binaries
+/AroundMe/Intermediate
+/AroundMe/Plugins/DIYAndroidServiceLib/Binaries
+/AroundMe/Plugins/DIYAndroidServiceLib/Intermediate
+/AroundMe/Saved
+/UE/.vs
+*.exp
