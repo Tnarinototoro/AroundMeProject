@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.OpenXRAR.cpp.obj": [
-			"OpenXRAR.cpp.obj",
-			"OpenXRARTrackedGeometryDataHolder.cpp.obj"
-		]
-	}
-}

@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.DisplayClusterFillDerivedDataCache.cpp.obj": [
-			"DisplayClusterFillDerivedDataCacheModule.cpp.obj",
-			"DisplayClusterFillDerivedDataCacheWorker.cpp.obj"
-		]
-	}
-}

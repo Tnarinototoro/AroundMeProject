@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.LiveLinkPrestonMDREditor.cpp.obj": [
-			"LiveLinkPrestonMDREditorModule.cpp.obj",
-			"LiveLinkPrestonMDRSourcePanel.cpp.obj"
-		]
-	}
-}

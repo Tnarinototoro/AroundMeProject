@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.AvidDNxHDDecoderElectra.cpp.obj": [
-			"AvidDNxHDDecoderElectraModule.cpp.obj",
-			"ElectraMediaAvidDNxHDDecoder.cpp.obj"
-		]
-	}
-}

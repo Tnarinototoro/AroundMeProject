@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.VPRolesEditor.cpp.obj": [
-			"VPRolesEditorModule.cpp.obj",
-			"VPRolesEditorStyle.cpp.obj"
-		]
-	}
-}

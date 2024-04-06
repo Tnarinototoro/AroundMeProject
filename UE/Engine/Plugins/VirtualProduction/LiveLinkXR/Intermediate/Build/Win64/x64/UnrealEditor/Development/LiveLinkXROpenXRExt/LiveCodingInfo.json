@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.LiveLinkXROpenXRExt.cpp.obj": [
-			"LiveLinkXROpenXRExt.cpp.obj",
-			"LiveLinkXROpenXRExtModule.cpp.obj"
-		]
-	}
-}

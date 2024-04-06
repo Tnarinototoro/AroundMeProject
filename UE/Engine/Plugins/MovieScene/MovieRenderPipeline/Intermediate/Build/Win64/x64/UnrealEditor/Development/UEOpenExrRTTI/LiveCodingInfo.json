@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.UEOpenExrRTTI.cpp.obj": [
-			"OpenExrRTTIModule.cpp.obj"
-		]
-	}
-}

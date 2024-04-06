@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.SteamShared.cpp.obj": [
-			"SteamSharedModule.cpp.obj"
-		]
-	}
-}

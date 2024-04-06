@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.DatasmithNativeTranslator.cpp.obj": [
-			"DatasmithNativeTranslator.cpp.obj",
-			"DatasmithNativeTranslatorModule.cpp.obj"
-		]
-	}
-}

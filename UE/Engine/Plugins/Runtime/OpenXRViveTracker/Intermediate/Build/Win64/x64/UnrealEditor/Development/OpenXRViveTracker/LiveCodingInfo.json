@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.OpenXRViveTracker.cpp.obj": [
-			"OpenXRViveTracker.cpp.obj"
-		]
-	}
-}

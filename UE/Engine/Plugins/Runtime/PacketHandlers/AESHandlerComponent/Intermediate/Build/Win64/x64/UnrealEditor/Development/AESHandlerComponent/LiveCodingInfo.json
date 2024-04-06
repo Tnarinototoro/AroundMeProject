@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.AESHandlerComponent.cpp.obj": [
-			"AESHandlerComponent.cpp.obj"
-		]
-	}
-}

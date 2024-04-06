@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.CLionSCA.cpp.obj": [
-			"CLionSourceCodeAccessModule.cpp.obj",
-			"CLionSourceCodeAccessor.cpp.obj"
-		]
-	}
-}

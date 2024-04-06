@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.RivermaxMediaFactory.cpp.obj": [
-			"RivermaxMediaFactoryModule.cpp.obj"
-		]
-	}
-}

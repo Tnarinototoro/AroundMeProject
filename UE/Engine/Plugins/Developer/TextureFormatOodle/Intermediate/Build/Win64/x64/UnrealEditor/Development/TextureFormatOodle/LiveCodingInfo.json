@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.TextureFormatOodle.cpp.obj": [
-			"example_jobify.cpp.obj",
-			"TextureFormatOodle.cpp.obj"
-		]
-	}
-}

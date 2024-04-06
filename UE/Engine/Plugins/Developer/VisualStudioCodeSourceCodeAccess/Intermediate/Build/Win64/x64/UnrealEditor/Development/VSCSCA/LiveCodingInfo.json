@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.VSCSCA.cpp.obj": [
-			"VisualStudioCodeSourceCodeAccessModule.cpp.obj",
-			"VisualStudioCodeSourceCodeAccessor.cpp.obj"
-		]
-	}
-}

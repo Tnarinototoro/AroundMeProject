@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.USDMultiUser.cpp.obj": [
-			"USDMultiUserModule.cpp.obj"
-		]
-	}
-}

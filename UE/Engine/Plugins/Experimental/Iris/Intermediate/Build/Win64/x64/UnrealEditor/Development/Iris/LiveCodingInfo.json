@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.Iris.cpp.obj": [
-			"IrisModule.cpp.obj"
-		]
-	}
-}

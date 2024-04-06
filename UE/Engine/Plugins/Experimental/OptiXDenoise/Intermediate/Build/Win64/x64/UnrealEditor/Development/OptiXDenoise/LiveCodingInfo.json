@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.OptiXDenoise.cpp.obj": [
-			"OptiXDenoiser.cpp.obj",
-			"Plugin.cpp.obj"
-		]
-	}
-}

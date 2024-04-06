@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.AppleProResDecoderElectra.cpp.obj": [
-			"AppleProResDecoderElectraModule.cpp.obj",
-			"ElectraMediaProResDecoder.cpp.obj"
-		]
-	}
-}

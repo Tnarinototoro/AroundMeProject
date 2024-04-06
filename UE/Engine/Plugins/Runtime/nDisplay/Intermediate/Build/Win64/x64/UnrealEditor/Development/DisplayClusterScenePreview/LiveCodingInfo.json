@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.DisplayClusterScenePreview.cpp.obj": [
-			"DisplayClusterLightCardEditorHelper.cpp.obj",
-			"DisplayClusterScenePreviewModule.cpp.obj"
-		]
-	}
-}

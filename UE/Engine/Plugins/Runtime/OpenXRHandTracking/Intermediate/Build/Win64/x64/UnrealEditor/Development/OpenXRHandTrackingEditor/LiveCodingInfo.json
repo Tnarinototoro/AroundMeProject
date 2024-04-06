@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.OpenXRHandTrackingEditor.cpp.obj": [
-			"OpenXRHandTrackingEditorModule.cpp.obj"
-		]
-	}
-}

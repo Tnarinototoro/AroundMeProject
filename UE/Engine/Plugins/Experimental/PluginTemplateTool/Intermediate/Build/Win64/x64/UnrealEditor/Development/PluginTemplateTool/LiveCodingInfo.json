@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.PluginTemplateTool.cpp.obj": [
-			"PluginTemplateToolModule.cpp.obj",
-			"SPluginTemplateBrowser.cpp.obj"
-		]
-	}
-}

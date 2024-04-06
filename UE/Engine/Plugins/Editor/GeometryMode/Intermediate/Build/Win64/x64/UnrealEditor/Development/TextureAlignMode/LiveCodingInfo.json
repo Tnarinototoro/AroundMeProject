@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.TextureAlignMode.cpp.obj": [
-			"TextureAlignEdMode.cpp.obj",
-			"TextureAlignMode.cpp.obj"
-		]
-	}
-}

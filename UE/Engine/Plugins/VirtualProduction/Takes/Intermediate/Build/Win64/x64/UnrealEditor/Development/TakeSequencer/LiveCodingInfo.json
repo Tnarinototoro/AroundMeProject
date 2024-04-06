@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.TakeSequencer.cpp.obj": [
-			"TakeSequencerModule.cpp.obj",
-			"TakeTrackEditor.cpp.obj"
-		]
-	}
-}

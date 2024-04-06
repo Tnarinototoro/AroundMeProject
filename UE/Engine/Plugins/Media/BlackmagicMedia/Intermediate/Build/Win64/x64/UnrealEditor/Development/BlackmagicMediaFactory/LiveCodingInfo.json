@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.BlackmagicMediaFactory.cpp.obj": [
-			"BlackmagicMediaFactoryModule.cpp.obj"
-		]
-	}
-}

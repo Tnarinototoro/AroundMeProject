@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.CryptoKeysOpenSSL.cpp.obj": [
-			"CryptoKeysOpenSSL.cpp.obj"
-		]
-	}
-}

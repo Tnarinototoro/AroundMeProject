@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.LiveLinkCameraEditor.cpp.obj": [
-			"LiveLinkCameraControllerCustomization.cpp.obj",
-			"LiveLinkCameraEditorModule.cpp.obj"
-		]
-	}
-}

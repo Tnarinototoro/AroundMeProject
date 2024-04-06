@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.OnlineSubsystemAmazon.cpp.obj": [
-			"OnlineIdentityAmazon.cpp.obj",
-			"OnlineSubsystemAmazon.cpp.obj"
-		]
-	}
-}

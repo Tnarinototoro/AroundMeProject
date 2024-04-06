@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.OpenXRMsftHandInteraction.cpp.obj": [
-			"OpenXRMsftHandInteraction.cpp.obj"
-		]
-	}
-}

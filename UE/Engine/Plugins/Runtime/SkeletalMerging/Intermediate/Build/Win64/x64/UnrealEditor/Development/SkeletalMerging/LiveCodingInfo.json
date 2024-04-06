@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.SkeletalMerging.cpp.obj": [
-			"SkeletalMerging.init.gen.cpp.obj",
-			"SkeletalMergingLibrary.cpp.obj"
-		]
-	}
-}

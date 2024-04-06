@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.ElectraPlayerPluginHandler.cpp.obj": [
-			"ElectraPlayerPluginHandlerModule.cpp.obj"
-		]
-	}
-}

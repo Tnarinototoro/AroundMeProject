@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.RemoteControlMultiUser.cpp.obj": [
-			"RemoteControlMultiUserModule.cpp.obj"
-		]
-	}
-}

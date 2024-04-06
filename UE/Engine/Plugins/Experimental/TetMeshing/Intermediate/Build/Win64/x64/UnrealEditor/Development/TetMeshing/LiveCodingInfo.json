@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.TetMeshing.cpp.obj": [
-			"TetMeshingPlugin.cpp.obj"
-		]
-	}
-}

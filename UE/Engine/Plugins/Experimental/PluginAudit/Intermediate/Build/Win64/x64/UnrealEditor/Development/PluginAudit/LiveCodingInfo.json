@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.PluginAudit.cpp.obj": [
-			"PluginAuditModule.cpp.obj",
-			"SPluginAuditBrowser.cpp.obj"
-		]
-	}
-}

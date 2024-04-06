@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.PixelStreamingPlayerEditor.cpp.obj": [
-			"PixelStreamingPlayerEditorModule.cpp.obj"
-		]
-	}
-}

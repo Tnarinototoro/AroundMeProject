@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.OptimusDeveloper.cpp.obj": [
-			"OptimusDeveloperModule.cpp.obj"
-		]
-	}
-}

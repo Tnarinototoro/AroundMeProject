@@ -1,8 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.Fab.cpp.obj": [
-			"FabModule.cpp.obj"
-		]
-	}
-}

@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.PatchCheck.cpp.obj": [
-			"PatchCheck.cpp.obj",
-			"PatchCheckModule.cpp.obj"
-		]
-	}
-}

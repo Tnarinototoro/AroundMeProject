@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.XRBaseEditor.cpp.obj": [
-			"XRBaseEditorModule.cpp.obj",
-			"XRDeviceVisualizationDetails.cpp.obj"
-		]
-	}
-}

@@ -1,9 +1,0 @@
-{
-	"RemapUnityFiles": 
-	{
-		"Module.VPxDecoderElectra.cpp.obj": [
-			"VPxDecoderElectraModule.cpp.obj",
-			"ElectraMediaVPxDecoder.cpp.obj"
-		]
-	}
-}
