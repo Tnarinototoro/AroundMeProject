@@ -257,9 +257,6 @@ void FPixelInspectorDetailsCustomization::CustomizeDetails(IDetailLayoutBuilder&
 			DetailBuilder.HideProperty(ClothProp);
 		}
 		break;
-
-#if DIY_ENGINE_CE
-
 		case MSM_DIYToonDefault:
 		{
 			DetailBuilder.HideProperty(SubSurfaceColorProp);
@@ -300,7 +297,7 @@ void FPixelInspectorDetailsCustomization::CustomizeDetails(IDetailLayoutBuilder&
 		}
 		break;
 
-#endif
+
 		
 
 	}

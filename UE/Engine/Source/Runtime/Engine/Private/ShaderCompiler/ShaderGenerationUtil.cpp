@@ -142,12 +142,10 @@ void FShaderCompileUtilities::ApplyFetchEnvironment(FShaderMaterialPropertyDefin
 	FETCH_COMPILE_BOOL(MATERIAL_SHADINGMODEL_SINGLELAYERWATER);
 	FETCH_COMPILE_BOOL(MATERIAL_SHADINGMODEL_THIN_TRANSLUCENT);
 
-
-#if DIY_ENGINE_CE
 	FETCH_COMPILE_BOOL(MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT)
 	FETCH_COMPILE_BOOL(MATERIAL_SHADINGMODEL_DIY_TOON_SKIN)
 	FETCH_COMPILE_BOOL(MATERIAL_SHADINGMODEL_DIY_TOON_HAIR)
-#endif
+
 
 
 	FETCH_COMPILE_BOOL(SINGLE_LAYER_WATER_SEPARATED_MAIN_LIGHT);
@@ -1796,7 +1794,6 @@ static void DetermineUsedMaterialSlots(
 			Slots[GBS_SeparatedMainDirLight] = true;
 		}
 	}
-#if DIY_ENGINE_CE
 	if (Mat.MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT)
 	{
 		SetStandardGBufferSlots(Slots, bWriteEmissive, bHasTangent, bHasVelocity, bHasStaticLighting, bIsStrataMaterial);
@@ -1812,7 +1809,7 @@ static void DetermineUsedMaterialSlots(
 		SetStandardGBufferSlots(Slots, bWriteEmissive, bHasTangent, bHasVelocity, bHasStaticLighting, bIsStrataMaterial);
 		Slots[GBS_CustomData] = bUseCustomData;
 	}
-#endif
+
 	
 
 

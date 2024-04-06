@@ -31,14 +31,12 @@
 #define SHADINGMODELID_THIN_TRANSLUCENT		11
 #define SHADINGMODELID_STRATA				12		// Temporary while we convert everything to Strata
 
-#if DIY_ENGINE_CE
+
 #define SHADINGMODELID_DIY_TOON_DEFAULT		13
 #define SHADINGMODELID_DIY_TOON_SKIN			14
 #define SHADINGMODELID_DIY_TOON_HAIR			15
 #define SHADINGMODELID_NUM					16
-#else
-#define SHADINGMODELID_NUM					13
-#endif
+
 
 
 
@@ -74,13 +72,11 @@ float3 GetShadingModelColor(uint ShadingModelID)
 	else if (ShadingModelID == SHADINGMODELID_THIN_TRANSLUCENT) return float3(1.0f, 0.8f, 0.3f);
 	else if (ShadingModelID == SHADINGMODELID_STRATA) return float3(1.0f, 1.0f, 0.0f);
 	
-
-#if DIY_ENGINE_CE
 	else if (ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT) return float3(0.1f, 0.5f, 0.1f);
 	else if (ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN) return float3(0.5f, 0.1f, 0.1f);
 	else if (ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR) return float3(0.1f, 0.1f, 0.5f);
 	
-#endif
+
 
 
 	else return float3(1.0f, 1.0f, 1.0f); // White
@@ -102,14 +98,14 @@ float3 GetShadingModelColor(uint ShadingModelID)
 		case SHADINGMODELID_STRATA: return float3(1.0f, 1.0f, 0.0f);
 
 
-#if DIY_ENGINE_CE
+
         case SHADINGMODELID_DIY_TOON_DEFAULT:
 			return float3(0.1f, 0.5f, 0.1f);
 		case SHADINGMODELID_DIY_TOON_SKIN:
 			return float3(0.5f, 0.1f, 0.1f);
 		case SHADINGMODELID_DIY_TOON_HAIR:
 			return float3(0.1f, 0.1f, 0.5f);
-#endif		
+	
 		
 		
 		default: return float3(1.0f, 1.0f, 1.0f); // White

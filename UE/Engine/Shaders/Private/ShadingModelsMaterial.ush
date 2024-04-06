@@ -204,8 +204,6 @@ void SetGBufferForShadingModel(
 
 
 
-#if DIY_ENGINE_CE
-
 
 #if MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT
 	else if (ShadingModel == SHADINGMODELID_DIY_TOON_DEFAULT)
@@ -231,7 +229,7 @@ void SetGBufferForShadingModel(
 
 
 
-#endif
+
 
 
 

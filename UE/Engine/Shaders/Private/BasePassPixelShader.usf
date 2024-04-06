@@ -877,8 +877,6 @@ void FPixelShaderInOut_MainPS(
 	float SubsurfaceProfile = 0;
 
 
-#if DIY_ENGINE_CE
-
 
 #if !STRATA_ENABLED
 #if MATERIAL_SHADINGMODEL_SUBSURFACE || MATERIAL_SHADINGMODEL_PREINTEGRATED_SKIN || MATERIAL_SHADINGMODEL_SUBSURFACE_PROFILE || MATERIAL_SHADINGMODEL_TWOSIDED_FOLIAGE || MATERIAL_SHADINGMODEL_CLOTH || MATERIAL_SHADINGMODEL_EYE || /*Change*/MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT || MATERIAL_SHADINGMODEL_DIY_TOON_SKIN || MATERIAL_SHADINGMODEL_DIY_TOON_HAIR
@@ -907,51 +905,6 @@ void FPixelShaderInOut_MainPS(
 	}
 #endif
 #endif // !STRATA_ENABLED
-
-
-
-
-
-
-#else
-
-
-
-
-#if !STRATA_ENABLED
-#if MATERIAL_SHADINGMODEL_SUBSURFACE || MATERIAL_SHADINGMODEL_PREINTEGRATED_SKIN || MATERIAL_SHADINGMODEL_SUBSURFACE_PROFILE || MATERIAL_SHADINGMODEL_TWOSIDED_FOLIAGE || MATERIAL_SHADINGMODEL_CLOTH || MATERIAL_SHADINGMODEL_EYE
-	if (ShadingModel == SHADINGMODELID_SUBSURFACE || ShadingModel == SHADINGMODELID_PREINTEGRATED_SKIN || ShadingModel == SHADINGMODELID_SUBSURFACE_PROFILE || ShadingModel == SHADINGMODELID_TWOSIDED_FOLIAGE || ShadingModel == SHADINGMODELID_CLOTH || ShadingModel == SHADINGMODELID_EYE)
-	{
-		float4 SubsurfaceData = GetMaterialSubsurfaceData(PixelMaterialInputs);
-
-		if (false) // Dummy if to make the ifdef logic play nicely
-		{
-		}
-#if MATERIAL_SHADINGMODEL_SUBSURFACE || MATERIAL_SHADINGMODEL_PREINTEGRATED_SKIN || MATERIAL_SHADINGMODEL_TWOSIDED_FOLIAGE
-		else if (ShadingModel == SHADINGMODELID_SUBSURFACE || ShadingModel == SHADINGMODELID_PREINTEGRATED_SKIN || ShadingModel == SHADINGMODELID_TWOSIDED_FOLIAGE)
-		{
-			SubsurfaceColor = SubsurfaceData.rgb * View.DiffuseOverrideParameter.w + View.DiffuseOverrideParameter.xyz;
-		}
-#endif
-#if MATERIAL_SHADINGMODEL_CLOTH
-		else if (ShadingModel == SHADINGMODELID_CLOTH)
-		{
-			SubsurfaceColor = SubsurfaceData.rgb;
-		}
-#endif
-
-		SubsurfaceProfile = SubsurfaceData.a;
-	}
-#endif
-#endif // !STRATA_ENABLED
-
-
-
-
-#endif
-
-
-
 
 
 
@@ -1396,7 +1349,6 @@ void FPixelShaderInOut_MainPS(
 	half3 Emissive = 0;
 
 
-#if DIY_ENGINE_CE
 
 #if !STRATA_ENABLED
 
@@ -1421,32 +1373,7 @@ void FPixelShaderInOut_MainPS(
 
 
 
-#else
 
-#if !STRATA_ENABLED
-
-	// Volume lighting for lit translucency
-#if (MATERIAL_SHADINGMODEL_DEFAULT_LIT || MATERIAL_SHADINGMODEL_SUBSURFACE) && (MATERIALBLENDING_TRANSLUCENT || MATERIALBLENDING_ADDITIVE) && !FORWARD_SHADING
-	if (GBuffer.ShadingModelID == SHADINGMODELID_DEFAULT_LIT || GBuffer.ShadingModelID == SHADINGMODELID_SUBSURFACE)
-	{
-		Color += GetTranslucencyVolumeLighting(MaterialParameters, PixelMaterialInputs, BasePassInterpolants, GBuffer, IndirectIrradiance);
-	}
-#endif
-
-	#if !MATERIAL_SHADINGMODEL_UNLIT && USE_DEVELOPMENT_SHADERS
-		float3 GBufferDiffuseColor = GBuffer.DiffuseColor;
-		float3 GBufferSpecularColor = GBuffer.SpecularColor;
-		EnvBRDFApproxFullyRough(GBufferDiffuseColor, GBufferSpecularColor);
-		Color = lerp(Color, GBufferDiffuseColor, View.UnlitViewmodeMask);
-	#endif
-
-	Emissive = GetMaterialEmissive(PixelMaterialInputs);
-
-#endif // !STRATA_ENABLED
-
-
-
-#endif  //DIY_ENGINE_CE
 
 
 

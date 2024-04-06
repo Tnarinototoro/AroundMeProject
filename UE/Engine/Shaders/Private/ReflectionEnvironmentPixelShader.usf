@@ -108,14 +108,13 @@ float4 CompositeReflections(float4 ReflectionInput, float2 BufferUV, float InRou
 float3 ReflectionEnvironment(FGBufferData GBuffer, float AmbientOcclusion, float2 BufferUV, float2 ScreenPosition, float4 SvPosition, float3 BentNormal, float3 SpecularColor, uint ShadingModelID)
 {
 
-#if DIY_ENGINE_CE
+
 BRANCH
 	if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
 	{
 		return float3(0.0f, 0.0f, 0.0f);
 	}
 
-#endif
 
 
 
@@ -395,7 +394,6 @@ void ReflectionEnvironmentSkyLighting(
 		float3 SkyLighting = CloudVolumetricAOShadow * SkyLightDiffuse(GBuffer, AmbientOcclusion, BufferUV, ScreenPosition, BentNormal, DiffuseColor);
 
 
-#if DIY_ENGINE_CE
 
 if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
 	{
@@ -403,7 +401,6 @@ if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.Shading
 		SkyLighting = SubsurfaceColor.rgb * GBuffer.BaseColor;
 	}
 
-#endif
 
 
 		FLightAccumulator LightAccumulator = (FLightAccumulator)0;

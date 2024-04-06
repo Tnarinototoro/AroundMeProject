@@ -374,7 +374,7 @@ FLightAccumulator AccumulateDynamicLighting(
 
 
 
-#if DIY_ENGINE_CE
+
 
             float3 LightColor = LightData.Color;
 			float3 ToonAttenuation;
@@ -386,12 +386,12 @@ FLightAccumulator AccumulateDynamicLighting(
 				ToonAttenuation = GetToonSurfaceShadow(ShadowPart, GBuffer.Metallic);
 				if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN)
 				{
-					ToonAttenuation = GetSkinShadow(ToonAttenuation, GBuffer.CustomData.rgb * GBuffer.BaseColor);
+					ToonAttenuation = GetSkinShadow(ToonAttenuation.x, GBuffer.CustomData.rgb * GBuffer.BaseColor);
 				}
 				ToonAttenuation *= LightColor * LightMask;
 			}
 
-#endif
+
 
 
 			
@@ -423,7 +423,7 @@ FLightAccumulator AccumulateDynamicLighting(
 			float3 LightingDiffuse = Diffuse_Lambert( GBuffer.DiffuseColor ) * Lighting;
 
 
-#if DIY_ENGINE_CE
+
 
 if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
 			{
@@ -433,7 +433,7 @@ if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.Shading
 			else
 			   LightAccumulator_AddSplit(LightAccumulator, LightingDiffuse, 0.0f, 0, MaskedLightColor * Shadow.SurfaceShadow, bNeedsSeparateSubsurfaceLightAccumulation);
 
-#endif
+
 
 
 
@@ -475,7 +475,7 @@ if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.Shading
 
 
 
-#if DIY_ENGINE_CE
+
 
 if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
 			{
@@ -483,19 +483,6 @@ if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.Shading
 			}
 			else
 			    LightAccumulator_AddSplit( LightAccumulator, Lighting.Diffuse, Lighting.Specular, Lighting.Diffuse, MaskedLightColor * Shadow.SurfaceShadow, bNeedsSeparateSubsurfaceLightAccumulation );
-
-
-#else
-
-			LightAccumulator_AddSplit( LightAccumulator, Lighting.Diffuse, Lighting.Specular, Lighting.Diffuse, MaskedLightColor * Shadow.SurfaceShadow, bNeedsSeparateSubsurfaceLightAccumulation );
-			
-#endif
-
-
-
-
-
-
 
 			LightAccumulator_AddSplit( LightAccumulator, Lighting.Transmission, 0.0f, Lighting.Transmission, MaskedLightColor * Shadow.TransmissionShadow, bNeedsSeparateSubsurfaceLightAccumulation );
 

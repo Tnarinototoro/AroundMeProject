@@ -635,11 +635,9 @@ enum EMaterialShadingModel : int
 	MSM_ThinTranslucent			UMETA(DisplayName="Thin Translucent"),
 	MSM_Strata					UMETA(DisplayName="Substrate", Hidden),
 
-#if DIY_ENGINE_CE
 	MSM_DIYToonDefault     UMETA(DisplayName = "DIYToonDefault"),
 	MSM_DIYToonSkin       UMETA(DisplayName = "DIYToonSkin"),
 	MSM_DIYToonHair       UMETA(DisplayName = "DIYToonHair"),
-#endif
 	
 	/** Number of unique shading models. */
 	MSM_NUM						UMETA(Hidden),

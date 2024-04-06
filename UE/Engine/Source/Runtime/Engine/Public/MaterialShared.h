@@ -132,10 +132,9 @@ inline bool IsSubsurfaceShadingModel(FMaterialShadingModelField ShadingModel)
 	return ShadingModel.HasShadingModel(MSM_Subsurface) || ShadingModel.HasShadingModel(MSM_PreintegratedSkin) ||
 		ShadingModel.HasShadingModel(MSM_SubsurfaceProfile) || ShadingModel.HasShadingModel(MSM_TwoSidedFoliage) ||
 		ShadingModel.HasShadingModel(MSM_Cloth) || ShadingModel.HasShadingModel(MSM_Eye)
-#if DIY_ENGINE_CE
 		/* Changed*/ || ShadingModel.HasShadingModel(MSM_DIYToonDefault) || ShadingModel.HasShadingModel(MSM_DIYToonSkin)
 		|| ShadingModel.HasShadingModel(MSM_DIYToonHair)
-#endif
+
 		;
 }
 

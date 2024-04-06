@@ -205,7 +205,6 @@ float3 CombineRoughSpecular(FGBufferData GBuffer, bool bHasBackfaceDiffuse, floa
 	{
 		Lighting = ClearCoatLayerCombine(GBuffer, NoV, AddContrastAndSpecularScale(RayTracedReflections.xyz), AddContrastAndSpecularScale(RoughReflections), SpecularColor);
 	}
-#if DIY_ENGINE_CE
 else if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
 	{
 		// #lumen_todo: add support for Toon shading models
@@ -217,7 +216,6 @@ else if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.Sh
 		}
 		Lighting *= EnvBRDF(SpecularColor, 1.0f, NoV);
 	}
-#endif
 	else
 	{
 		Lighting = MixSpecularAndRoughReflections(GBuffer.Roughness, bHasBackfaceDiffuse, RayTracedReflections, RoughReflections) * EnvBRDF(SpecularColor, GBuffer.Roughness, NoV);
@@ -561,7 +559,7 @@ void MainPS(
 				}
 
 
-#if DIY_ENGINE_CE
+
 if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
 {
 float3 SubsurfaceColor=ExtractSubsurfaceColor(GBuffer);
@@ -572,8 +570,7 @@ DiffuseColor=SubsurfaceColor*GBuffer.BaseColor;
 
 
 }
-	              
-#endif
+	             
 					
 				
 
@@ -594,11 +591,10 @@ DiffuseColor=SubsurfaceColor*GBuffer.BaseColor;
 				#else
 
 
-#if DIY_ENGINE_CE
+
 if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
 	                        IndirectLighting.Specular = SpecularIndirectLighting *  EnvBRDF(SpecularColor, 1.0f, NoV);
 	               else
-#endif
 					IndirectLighting.Specular = AddContrastAndSpecularScale(SpecularIndirectLighting.xyz) * EnvBRDF(SpecularColor, GBuffer.Roughness, NoV);
 				
 				

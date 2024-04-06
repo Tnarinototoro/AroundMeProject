@@ -2209,7 +2209,7 @@ void FHLSLMaterialTranslator::GetMaterialEnvironment(EShaderPlatform InPlatform,
 
 			bMaterialRequestsDualSourceBlending = true;
 		}
-#if DIY_ENGINE_CE
+
 		
 		if (ShadingModels.HasShadingModel(MSM_DIYToonDefault))
 		{
@@ -2228,7 +2228,7 @@ void FHLSLMaterialTranslator::GetMaterialEnvironment(EShaderPlatform InPlatform,
 		}
 
 		
-#endif
+
 		
 
 		if (ShadingModels.HasShadingModel(MSM_SingleLayerWater) && FDataDrivenShaderPlatformInfo::GetRequiresDisableForwardLocalLights(Platform))

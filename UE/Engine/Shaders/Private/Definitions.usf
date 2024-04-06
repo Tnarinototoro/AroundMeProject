@@ -109,9 +109,6 @@
 #endif
 
 
-#if DIY_ENGINE_CE
-
-
 #ifndef MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT
 #define MATERIAL_SHADINGMODEL_DIY_TOON_DEFAULT				0
 #endif
@@ -124,8 +121,6 @@
 #define MATERIAL_SHADINGMODEL_DIY_TOON_HAIR				0
 #endif
 
-
-#endif
 
 
 
