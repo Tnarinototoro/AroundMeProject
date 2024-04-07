@@ -20,22 +20,7 @@
 *
 !*/
 
-# C/C++ source files
-!*.c
-!*.cc
-!*.cpp
-!*.cpp.template
-!*.h
-!*.h.template
-!*.hpp
-!*.inl
-!*.inc
-!*.m
-!*.mm
-!*.rc
-!*.rc2
-!*.def
-!*.manifest
+
 
 # ISPC files
 !*.ispc
@@ -336,3 +321,21 @@ AroundMe/AroundMe.sln
 *.exp
 
 **/obj/**
+
+
+# C/C++ source files
+!*.c
+!*.cc
+!*.cpp
+!*.cpp.template
+!*.h
+!*.h.template
+!*.hpp
+!*.inl
+!*.inc
+!*.m
+!*.mm
+!*.rc
+!*.rc2
+!*.def
+!*.manifest
