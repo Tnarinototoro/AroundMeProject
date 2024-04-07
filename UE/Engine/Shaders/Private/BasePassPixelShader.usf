@@ -1076,7 +1076,25 @@ void FPixelShaderInOut_MainPS(
 #if !STRATA_ENABLED || STRATA_INLINE_SINGLELAYERWATER
 
 	// So that the following code can still use DiffuseColor and SpecularColor.
+
+//DIY_ENGINE_CE START
+
+BRANCH
+if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+{
+	GBuffer.SpecularColor = ComputeF0(GBuffer.Specular, GBuffer.BaseColor, 0.0f);
+}
+else
+{
 	GBuffer.SpecularColor = ComputeF0(Specular, BaseColor, Metallic);
+}
+
+//DIY_ENGINE_CE END
+	
+
+
+
+
 
 #if MATERIAL_NORMAL_CURVATURE_TO_ROUGHNESS
 	const float GeometricAARoughness = GetRoughnessFromNormalCurvature(MaterialParameters);
@@ -1098,7 +1116,27 @@ void FPixelShaderInOut_MainPS(
 		AdjustBaseColorAndSpecularColorForSubsurfaceProfileLighting(BaseColor, GBuffer.SpecularColor, Specular, bChecker);
 	}
 #endif
+
+
+
+
+//DIY_ENGINE_CE START
+	BRANCH
+if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+{
+	GBuffer.DiffuseColor = BaseColor;
+}
+else
+{
 	GBuffer.DiffuseColor = BaseColor - BaseColor * Metallic;
+}
+//DIY_ENGINE_CE END
+
+
+
+
+
+
 
 #if USE_DEVELOPMENT_SHADERS
 	{

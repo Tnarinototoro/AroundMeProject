@@ -439,8 +439,16 @@ FMaterialRelevance UMaterialInterface::GetRelevance_Internal(const UMaterial* Ma
 
 		// Note that even though XX_GameThread() api is called, this function can be called on non game thread via 
 		// GetRelevance_Concurrent()
-		bool bUsesAnisotropy = MaterialResource->GetShadingModels().HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat }) && 
+		
+		
+		//DIY_ENGINE_CE START
+		/*bool bUsesAnisotropy = MaterialResource->GetShadingModels().HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat }) && 
+			MaterialResource->MaterialUsesAnisotropy_GameThread();*/
+
+		bool bUsesAnisotropy = MaterialResource->GetShadingModels().HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat, MSM_DIYToonHair, MSM_DIYToonDefault }) &&
 			MaterialResource->MaterialUsesAnisotropy_GameThread();
+
+		//DIY_ENGINE_CE END
 
 		const EBlendMode BlendMode = (EBlendMode)GetBlendMode();
 		const bool bIsTranslucent = IsTranslucentBlendMode(BlendMode) || bIsSinglePassWaterTranslucent || bIsMobilePixelProjectedTranslucent; // We want meshes with water materials to be scheduled for translucent pass on mobile. And we also have to render the meshes used for mobile pixel projection reflection in translucent pass.

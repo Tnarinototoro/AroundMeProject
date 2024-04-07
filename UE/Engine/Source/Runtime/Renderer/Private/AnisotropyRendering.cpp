@@ -31,7 +31,10 @@ static bool IsAnisotropyPassCompatible(const EShaderPlatform Platform, FMaterial
 		FDataDrivenShaderPlatformInfo::GetSupportsAnisotropicMaterials(Platform) &&
 		MaterialParameters.bHasAnisotropyConnected &&
 		!IsTranslucentBlendMode(MaterialParameters) &&
-		MaterialParameters.ShadingModels.HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat });
+	//DIY_ENGINE_CE START
+		MaterialParameters.ShadingModels.HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat,MSM_DIYToonHair,MSM_DIYToonDefault });
+//DIY_ENGINE_CE END
+		
 }
 
 class FAnisotropyVS : public FMeshMaterialShader
@@ -138,7 +141,15 @@ bool GetAnisotropyPassShaders(
 static bool ShouldDraw(const FMaterial& Material, bool bMaterialUsesAnisotropy)
 {
 	const bool bIsNotTranslucent = IsOpaqueOrMaskedBlendMode(Material);
-	return (bMaterialUsesAnisotropy && bIsNotTranslucent && Material.GetShadingModels().HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat }));
+//DIY_ENGINE_CE START
+	//return (bMaterialUsesAnisotropy && bIsNotTranslucent && Material.GetShadingModels().HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat }));
+	return (bMaterialUsesAnisotropy && bIsNotTranslucent && Material.GetShadingModels().HasAnyShadingModel({ MSM_DefaultLit, MSM_ClearCoat, MSM_DIYToonHair }));
+//DIY_ENGINE_CE END
+	
+	
+
+
+
 }
 
 void FAnisotropyMeshProcessor::AddMeshBatch(

@@ -1025,13 +1025,19 @@ FDirectLighting IntegrateBxDF( FGBufferData GBuffer, half3 N, half3 V, half3 L, 
 			return EyeBxDF( GBuffer, N, V, L, Falloff, NoL, AreaLight, Shadow );
 
 
-
+		//DIY_ENGINE_CE START
 case SHADINGMODELID_DIY_TOON_DEFAULT:
 			return CelToonBxDF(GBuffer, N, V, L, Falloff, NoL, AreaLight, Shadow);
 case SHADINGMODELID_DIY_TOON_SKIN:
 			return CelToonBxDF(GBuffer, N, V, L, Falloff, NoL, AreaLight, Shadow);
+
+	
+
+
 case SHADINGMODELID_DIY_TOON_HAIR:
-			return CelToonBxDF(GBuffer, N, V, L, Falloff, NoL, AreaLight, Shadow);
+			return ToonHairBxDF(GBuffer, N, V, L, Falloff, NoL, AreaLight, Shadow);
+
+			//DIY_ENGINE_CE END
 
 
 		default:

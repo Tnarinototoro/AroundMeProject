@@ -414,15 +414,50 @@ void GBufferPostDecode(inout FGBufferData Ret, bool bChecker, bool bGetNormalize
 	
 	// derived from BaseColor, Metalness, Specular
 	{
-		Ret.SpecularColor = ComputeF0(Ret.Specular, Ret.BaseColor, Ret.Metallic);
-	
+//DIY_ENGINE_CE START
+
+
+	//Ret.SpecularColor = ComputeF0(Ret.Specular, Ret.BaseColor, Ret.Metallic);
+BRANCH
+if (Ret.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || Ret.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || Ret.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+{
+	Ret.SpecularColor = ComputeF0(Ret.Specular, Ret.BaseColor, 0);
+}
+else
+{
+	Ret.SpecularColor = ComputeF0(Ret.Specular, Ret.BaseColor, Ret.Metallic);
+}
+//DIY_ENGINE_CE END
+
+
 		if (UseSubsurfaceProfile(Ret.ShadingModelID))
 		{
 			AdjustBaseColorAndSpecularColorForSubsurfaceProfileLightingCopyHack(Ret.BaseColor, Ret.SpecularColor, Ret.Specular, bChecker);
 		}
 	
+
+
+//DIY_ENGINE_CE START
+//Ret.DiffuseColor = Ret.BaseColor - Ret.BaseColor * Ret.Metallic;
+	BRANCH
+	if (Ret.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || Ret.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || Ret.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+	{
+		Ret.DiffuseColor = Ret.BaseColor;
+	}
+	else
+	{
 		Ret.DiffuseColor = Ret.BaseColor - Ret.BaseColor * Ret.Metallic;
+	}
+//DIY_ENGINE_CE END
+
+		
 	
+	
+
+
+
+
+
 		#if USE_DEVELOPMENT_SHADERS
 		{
 			// this feature is only needed for development/editor - we can compile it out for a shipping build (see r.CompileShadersForDevelopment cvar help)

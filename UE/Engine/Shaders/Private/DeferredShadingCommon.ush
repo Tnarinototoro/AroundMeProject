@@ -1003,14 +1003,48 @@ FGBufferData DecodeGBufferData(
 
 	// derived from BaseColor, Metalness, Specular
 	{
-		GBuffer.SpecularColor = ComputeF0(GBuffer.Specular, GBuffer.BaseColor, GBuffer.Metallic);
+
+//DIY_ENGINE_CE START
+BRANCH
+if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+{
+	GBuffer.SpecularColor = ComputeF0(GBuffer.Specular, GBuffer.BaseColor, 0.0f);
+}
+else
+{
+	GBuffer.SpecularColor = ComputeF0(GBuffer.Specular, GBuffer.BaseColor, GBuffer.Metallic);
+}
+//DIY_ENGINE_CE END
+
+
+
+
+
 
 		if (UseSubsurfaceProfile(GBuffer.ShadingModelID))
 		{
 			AdjustBaseColorAndSpecularColorForSubsurfaceProfileLighting(GBuffer.BaseColor, GBuffer.SpecularColor, GBuffer.Specular, bChecker);
 		}
 
+
+
+
+//DIY_ENGINE_CE START
+
+	BRANCH
+	if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
+	{
+		GBuffer.DiffuseColor = GBuffer.BaseColor;
+	}
+	else
+	{
 		GBuffer.DiffuseColor = GBuffer.BaseColor - GBuffer.BaseColor * GBuffer.Metallic;
+	}
+
+
+
+//DIY_ENGINE_CE END
+
 
 		#if USE_DEVELOPMENT_SHADERS
 		{
