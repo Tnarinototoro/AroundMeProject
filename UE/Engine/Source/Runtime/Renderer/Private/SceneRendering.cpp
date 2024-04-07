@@ -1867,6 +1867,28 @@ void FViewInfo::SetupUniformBufferParameters(
 		}
 	}
 
+
+
+//DIY_ENGINE_CE START old
+	//if (GEngine->ToonSkinRampTexture)
+	//{
+	//	const FTextureResource* TextureResource = GEngine->ToonSkinRampTexture->GetResource();
+	//	if (TextureResource)
+	//	{
+	//		ViewUniformShaderParameters.ToonRampBRDF = TextureResource->TextureRHI;
+	//	}
+	//}
+//DIY_ENGINE_CE END
+	
+	
+//DIY_ENGINE_CE START old
+	ViewUniformShaderParameters.ToonRampBRDF = GetDefault<UToonRenderingSettings>()->GetTextureRHI();
+//DIY_ENGINE_CE END
+
+
+
+
+
 	ViewUniformShaderParameters.GlobalVirtualTextureMipBias = FVirtualTextureSystem::Get().GetGlobalMipBias();
 
 	const uint32 VirtualTextureFeedbackScale = GetVirtualTextureFeedbackScale(Family);

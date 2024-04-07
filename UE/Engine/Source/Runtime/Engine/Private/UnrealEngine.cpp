@@ -3137,6 +3137,12 @@ void UEngine::InitializeObjectReferences()
 	LoadEngineTexture(MiniFontTexture, *MiniFontTextureName.ToString());
 	LoadEngineTexture(WeightMapPlaceholderTexture, *WeightMapPlaceholderTextureName.ToString());
 	LoadEngineTexture(LightMapDensityTexture, *LightMapDensityTextureName.ToString());
+
+//DIY_ENGINE_CE START
+	ConditionallyLoadToonSkinRampTexture();
+//DIY_ENGINE_CE END
+	
+
 	ConditionallyLoadPreIntegratedSkinBRDFTexture();
 
 #if WITH_EDITOR
@@ -16506,6 +16512,21 @@ bool UEngine::CommitMapChange( FWorldContext &Context )
 		return true;
 	}
 }
+//DIY_ENGINE_CE START
+void UEngine::ConditionallyLoadToonSkinRampTexture()
+{
+	if (ToonSkinRampTexture == nullptr)
+	{
+		uint32 ShadingModelsMask = GetPlatformShadingModelsMask(GMaxRHIShaderPlatform);
+		uint32 SkinShadingMask = (1u << (uint32)MSM_DIYToonSkin);
+		if (GIsEditor || (ShadingModelsMask & SkinShadingMask) != 0)
+		{
+			LoadEngineTexture(ToonSkinRampTexture, *ToonSkinRampTextureName.ToString());
+		}
+	}
+}
+//DIY_ENGINE_CE END
+
 void UEngine::AddNewPendingStreamingLevel(UWorld *InWorld, FName PackageName, bool bNewShouldBeLoaded, bool bNewShouldBeVisible, int32 LODIndex)
 {
 	FWorldContext &Context = GetWorldContextFromWorldChecked(InWorld);

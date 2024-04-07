@@ -952,6 +952,14 @@ FViewUniformShaderParameters::FViewUniformShaderParameters()
 	PreIntegratedBRDF = GWhiteTexture->TextureRHI;
 	PreIntegratedBRDFSampler = TStaticSamplerState<SF_Bilinear, AM_Clamp, AM_Clamp, AM_Clamp>::GetRHI();
 
+//DIY_ENGINE_CE START
+	ToonRampBRDF = GWhiteTexture->TextureRHI;
+	ToonRampBRDFSampler = TStaticSamplerState<SF_Bilinear, AM_Clamp, AM_Clamp, AM_Clamp>::GetRHI();
+//DIY_ENGINE_CE END
+	
+
+
+
 	TransmittanceLutTexture = GWhiteTexture->TextureRHI;
 	TransmittanceLutTextureSampler = TStaticSamplerState<SF_Bilinear>::GetRHI();
 

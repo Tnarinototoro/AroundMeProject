@@ -980,7 +980,20 @@ BEGIN_GLOBAL_SHADER_PARAMETER_STRUCT_WITH_CONSTRUCTOR(FViewUniformShaderParamete
 	SHADER_PARAMETER_SAMPLER(SamplerState, SharedTrilinearClampedSampler)
 	SHADER_PARAMETER_TEXTURE(Texture2D, PreIntegratedBRDF)
 	SHADER_PARAMETER_SAMPLER(SamplerState, PreIntegratedBRDFSampler)
+
+//DIY_ENGINE_CE START
+SHADER_PARAMETER_TEXTURE(Texture2D, ToonRampBRDF)
+SHADER_PARAMETER_SAMPLER(SamplerState, ToonRampBRDFSampler)
+//DIY_ENGINE_CE END
+	
+
+
 	SHADER_PARAMETER_SRV(StructuredBuffer<float4>, SkyIrradianceEnvironmentMap)
+
+
+
+
+
 	// Atmosphere
 	SHADER_PARAMETER_TEXTURE(Texture2D, TransmittanceLutTexture)
 	SHADER_PARAMETER_SAMPLER(SamplerState, TransmittanceLutTextureSampler)
