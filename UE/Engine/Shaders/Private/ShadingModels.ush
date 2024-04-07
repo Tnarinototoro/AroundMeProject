@@ -983,7 +983,56 @@ FDirectLighting CelToonBxDF(FGBufferData GBuffer, half3 N, half3 V, half3 L, flo
 	return Lighting;
 }
 
-
+FDirectLighting ToonHairBxDF(FGBufferData GBuffer, half3 N, half3 V, half3 L, float Falloff, float NoL, FAreaLight AreaLight, FShadowTerms Shadow)
+{
+	half rim = saturate(ceil(Fresnel((1 - 0.8) * 1000, 0, N, V))); //边缘光
+	float Tshift = GBuffer.Metallic;
+	half3 T = normalize(cross(N, GBuffer.WorldTangent));
+	half NoLOffset = saturate(ceil(NoL)); //二值化
+	float3 LightColor = AreaLight.FalloffColor * Falloff * (rim + NoLOffset);
+	T = ShiftT(T, N, Tshift);
+	float Range = GBuffer.CustomData.a * 1000;
+	float AnisotropySpecular = saturate(StrandSpecular(T, V, L, Range, GBuffer.Specular));
+	FDirectLighting Lighting;
+	Lighting.Diffuse = LightColor * Diffuse_Lambert(GBuffer.BaseColor);
+	Lighting.Specular = LightColor * AnisotropySpecular * NoLOffset;
+	Lighting.Transmission = 0;
+	return Lighting;
+}
+FDirectLighting ToonSkinBxDF(FGBufferData GBuffer, half3 N, half3 V, half3 L, float Falloff, float NoL, FAreaLight AreaLight, FShadowTerms Shadow)
+{
+	float Metallic = GBuffer.Metallic;
+	float ToonID = GBuffer.CustomData.a; //曲线数据ID
+	half ToonFallOffColorA = Texture2DSampleLevel(View.ToonRampBRDF, View.ToonRampBRDFSampler, float2(saturate(dot(N, L)), ToonID), 0).a;
+	half3 ToonFallOffColorRGB = Texture2DSampleLevel(View.ToonRampBRDF, View.ToonRampBRDFSampler, float2(saturate(dot(N, L) * 0.5 + 0.5), ToonID), 0).rgb; //采样图片，UV使用dot N L
+	half rim = saturate(ceil(Fresnel((1 - Metallic) * 1000, 0, N, V))) * 2; //边缘光
+	float SpecularOffset = GBuffer.Specular;
+	float SpecularRange = saturate(GBuffer.Roughness - 0.5);
+	float3 ShadowColor = 0;
+	ShadowColor = GBuffer.BaseColor * ShadowColor;
+	
+	float SoftScatterStrength = 0;
+	
+	half NoLOffset = dot(N, L); //二值化
+	
+	float3 LightColor = AreaLight.FalloffColor * Falloff * (rim + ToonFallOffColorRGB); //控制颜色，后面乘到漫反射
+	half3 H = normalize(V + L);
+	float NoH = saturate(dot(N, H));
+	FDirectLighting Lighting;
+	Lighting.Diffuse = LightColor * Diffuse_Lambert(GBuffer.BaseColor);
+	
+	float InScatter = pow(saturate(dot(L, -V)), 12) * lerp(3, .1f, 1);
+	float NormalContribution = saturate(dot(N, H));
+	float BackScatter = GBuffer.GBufferAO * NormalContribution / (PI * 2);
+	Lighting.Specular = ToonStep(SpecularRange, (saturate(D_GGX(SpecularOffset, NoH)))) * (AreaLight.FalloffColor * GBuffer.SpecularColor * Falloff * 8); //默认卡通高光
+	float3 TransmissionSoft = AreaLight.FalloffColor * (Falloff * lerp(BackScatter, 1, InScatter)) * ShadowColor * SoftScatterStrength;
+	float3 ShadowLightener = 0;
+	ShadowLightener = saturate(smoothstep(0, 1, saturate(1 - NoLOffset))) * ShadowColor * 0.1;
+	
+	
+	Lighting.Transmission = (ShadowLightener + TransmissionSoft) * Falloff;
+	return Lighting;
+}
 
 
 FDirectLighting PreintegratedSkinBxDF( FGBufferData GBuffer, half3 N, half3 V, half3 L, float Falloff, half NoL, FAreaLight AreaLight, FShadowTerms Shadow )
@@ -1029,7 +1078,7 @@ FDirectLighting IntegrateBxDF( FGBufferData GBuffer, half3 N, half3 V, half3 L, 
 case SHADINGMODELID_DIY_TOON_DEFAULT:
 			return CelToonBxDF(GBuffer, N, V, L, Falloff, NoL, AreaLight, Shadow);
 case SHADINGMODELID_DIY_TOON_SKIN:
-			return CelToonBxDF(GBuffer, N, V, L, Falloff, NoL, AreaLight, Shadow);
+			return ToonSkinBxDF(GBuffer, N, V, L, Falloff, NoL, AreaLight, Shadow);
 
 	
 
@@ -1060,37 +1109,3 @@ FDirectLighting EvaluateBxDF( FGBufferData GBuffer, half3 N, half3 V, half3 L, f
 }
 
 
-FDirectLighting ToonSkinBxDF(FGBufferData GBuffer, half3 N, half3 V, half3 L, float Falloff, float NoL, FAreaLight AreaLight, FShadowTerms Shadow)
-{
-	float Metallic = GBuffer.Metallic;
-	float ToonID = GBuffer.CustomData.a;//曲线数据ID
-	half ToonFallOffColorA = Texture2DSampleLevel(View.ToonRampBRDF, View.ToonRampBRDFSampler, float2(saturate(dot(N, L)), ToonID), 0).a;
-	half3 ToonFallOffColorRGB = Texture2DSampleLevel(View.ToonRampBRDF, View.ToonRampBRDFSampler, float2(saturate(dot(N, L) * 0.5 + 0.5), ToonID), 0).rgb;//采样图片，UV使用dot N L
-	half rim = saturate(ceil(Fresnel((1 - Metallic) * 1000, 0, N, V))) * 2; //边缘光
-	float SpecularOffset = GBuffer.Specular;
-	float SpecularRange = saturate(GBuffer.Roughness - 0.5);
-	float3 ShadowColor = 0;
-	ShadowColor = GBuffer.BaseColor * ShadowColor;
-	
-	float SoftScatterStrength = 0;
-	
-	half NoLOffset = dot(N, L); //二值化
-	
-	float3 LightColor = AreaLight.FalloffColor * Falloff * (rim + ToonFallOffColorRGB);//控制颜色，后面乘到漫反射
-	half3 H = normalize(V + L);
-	float NoH = saturate(dot(N, H));
-	FDirectLighting Lighting;
-	Lighting.Diffuse = LightColor * Diffuse_Lambert(GBuffer.BaseColor);
-	
-	float InScatter = pow(saturate(dot(L, -V)), 12) * lerp(3, .1f, 1);
-	float NormalContribution = saturate(dot(N, H));
-	float BackScatter = GBuffer.GBufferAO * NormalContribution / (PI * 2);
-	Lighting.Specular = ToonStep(SpecularRange, (saturate(D_GGX(SpecularOffset, NoH)))) * (AreaLight.FalloffColor * GBuffer.SpecularColor * Falloff * 8);//默认卡通高光
-	float3 TransmissionSoft = AreaLight.FalloffColor * (Falloff * lerp(BackScatter, 1, InScatter)) * ShadowColor * SoftScatterStrength;
-	float3 ShadowLightener = 0;
-	ShadowLightener = saturate(smoothstep(0, 1, saturate(1 - NoLOffset))) * ShadowColor * 0.1;
-	
-	
-	Lighting.Transmission = (ShadowLightener + TransmissionSoft) * Falloff;
-	return Lighting;
-}

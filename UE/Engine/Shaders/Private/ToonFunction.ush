@@ -85,19 +85,3 @@ float3 ShiftT(float3 T, float3 N, float shift)
 	return normalize(T + shift * N);
 }
 
-FDirectLighting ToonHairBxDF(FGBufferData GBuffer, half3 N, half3 V, half3 L, float Falloff, float NoL, FAreaLight AreaLight, FShadowTerms Shadow)
-{
-	half rim = saturate(ceil(Fresnel((1 - 0.8) * 1000, 0, N, V)));//边缘光
-	float Tshift = GBuffer.Metallic;
-	half3 T = normalize(cross(N,GBuffer.WorldTangent));
-	half NoLOffset = saturate(ceil(NoL));//二值化
-	float3 LightColor = AreaLight.FalloffColor * Falloff * (rim + NoLOffset);
-	T = ShiftT(T,N,Tshift);
-	float Range = GBuffer.CustomData.a * 1000;
-	float AnisotropySpecular = saturate(StrandSpecular(T, V, L, Range, GBuffer.Specular));
-	FDirectLighting Lighting;
-	Lighting.Diffuse = LightColor * Diffuse_Lambert(GBuffer.BaseColor);
-	Lighting.Specular = LightColor * AnisotropySpecular * NoLOffset;
-	Lighting.Transmission = 0;
-	return Lighting;
-}
