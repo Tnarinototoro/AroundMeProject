@@ -32,3 +32,41 @@ float3 GetSkinShadow(float Shadow, float3 Color0)
 	float3 Color2 = Color0 * float3(1.0, 0.5, 0);
 	return LerpMultiFloat3(0, Color1, Color2, 1, Shadow);
 }
+
+half Fresnel(half Exponent, half BaseReflectionFraction, half3 N, half3 V)
+{
+	//half NoV = dot(N, V);
+	//NoV = max(NoV, 0.0f);
+	//half Fres = pow(abs(1 - max(NoV, 0.0f)), Exponent);
+	//Fres = Fres * (1 - BaseReflectionFraction) + BaseReflectionFraction;
+	//return Fres;
+
+	// 确保 N 和 V 是单位向量
+    // NoV 计算视线方向与表面法线的点积，确保该值不会小于0
+    half NoV = max(dot(N, V), 0.0);
+
+    // 使用 pow 函数计算 Fresnel 公式的主体部分
+    half Fres = pow(abs(1.0 - NoV), Exponent);
+
+    // 结合基础反射分数来调整 Fresnel 效应
+    Fres = Fres * (1.0 - BaseReflectionFraction) + BaseReflectionFraction;
+
+    return Fres;
+
+
+}
+
+
+
+float StrandSpecular(float3 T, float3 V, float3 L, float exponent, float scale)
+{
+	float3 H = normalize(L + V);
+	float dotTH = dot(T, H);
+	float sinTH = sqrt(1.0 - dotTH * dotTH);
+	float dirAtten = smoothstep(-1.0, 0.0, dotTH);
+	return dirAtten * pow(sinTH, exponent) * scale;
+}
+float3 ShiftT(float3 T, float3 N, float shift)
+{
+	return normalize(T + shift * N);
+}

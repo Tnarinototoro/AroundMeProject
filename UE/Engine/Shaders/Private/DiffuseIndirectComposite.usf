@@ -168,7 +168,7 @@ FShadingOcclusion GetShadingOcclusion(uint2 InPixelPos, float3 V, float3 N, floa
 float3 AddContrastAndSpecularScale(float3 In)
 {
 	// Constrast adjustment with mid-grey as 'anchor' point so that overall exposure don't change
-	In = pow(In * (1.f / 0.18f), LumenReflectionContrast) * 0.18f;
+	In = pow(abs(In * (1.f / 0.18f)), LumenReflectionContrast) * 0.18f;
 	return In * LumenReflectionSpecularScale;
 }
 
@@ -212,7 +212,7 @@ else if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.Sh
 		Lighting = RoughReflections * (1 - FadeAlpha);
 		if (FadeAlpha > 0.0f)
 		{
-			Lighting += RayTracedReflections * FadeAlpha;
+			Lighting += (RayTracedReflections.xyz) * FadeAlpha;
 		}
 		Lighting *= EnvBRDF(SpecularColor, 1.0f, NoV);
 	}
@@ -593,7 +593,7 @@ DiffuseColor=SubsurfaceColor*GBuffer.BaseColor;
 
 
 if (GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_DEFAULT || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_SKIN || GBuffer.ShadingModelID == SHADINGMODELID_DIY_TOON_HAIR)
-	                        IndirectLighting.Specular = SpecularIndirectLighting *  EnvBRDF(SpecularColor, 1.0f, NoV);
+	                        IndirectLighting.Specular = SpecularIndirectLighting.xyz *  EnvBRDF(SpecularColor, 1.0f, NoV);
 	               else
 					IndirectLighting.Specular = AddContrastAndSpecularScale(SpecularIndirectLighting.xyz) * EnvBRDF(SpecularColor, GBuffer.Roughness, NoV);
 				
