@@ -23,7 +23,7 @@ namespace UnrealBuildTool
 		/// Use existing static libraries for all engine modules in this target.
 		/// </summary>
 		[CommandLine("-UsePrecompiled")]
-		public bool bUsePrecompiled = true;
+		public bool bUsePrecompiled = false;
 
 		/// <summary>
 		/// Whether debug info should be written to the console.
@@ -53,7 +53,7 @@ namespace UnrealBuildTool
 		/// </summary>
 		[XmlConfigFile]
 		[CommandLine("-NoXGE", Value = "false")]
-		public bool bAllowXGE = false;
+		public bool bAllowXGE = true;
 
 		/// <summary>
 		/// Whether FASTBuild may be used.
@@ -67,7 +67,7 @@ namespace UnrealBuildTool
 		/// </summary>
 		[XmlConfigFile]
 		[CommandLine("-NoSNDBS", Value = "false")]
-		public bool bAllowSNDBS = false;
+		public bool bAllowSNDBS = true;
 
 		/// <summary>
 		/// Enables support for very fast iterative builds by caching target data. Turning this on causes Unreal Build Tool to emit
@@ -100,7 +100,7 @@ namespace UnrealBuildTool
 		/// </summary>
 		[XmlConfigFile]
 		[CommandLine("-MaxParallelActions")]
-		public int MaxParallelActions = 16;
+		public int MaxParallelActions = 0;
 
 		/// <summary>
 		/// Consider logical cores when determining how many total cpu cores are available.
