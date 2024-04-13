@@ -1,38 +1,45 @@
 
+/AroundMe/.vs
+UE/UE5.sln
+/UE/Templates
+/UE/Samples
+/UE/Engine/Extras
+/UE/Engine/Content
+/UE/Engine/Plugins
+/UE/Engine/Source/ThirdParty
+/UE/FeaturePacks
+/UE/Engine/Binaries
+/AroundMe/Saved
+/UE/.vs
+
+/UE/Engine/Documentation
+/UE/Engine/Saved
+/UE/Engine/Source/
+
+**/Build/**
+**/Builds/**
+**/Intermediate/**
+**/DerivedDataCache/**
+**/Saved/**
+/UE/Engine/Programs
+/AroundMe/Plugins/DIYAndroidServiceLib/Binaries
+/AroundMe/Binaries
+/UE/.vscode
 
 
-#
-# This file tells Git about engine files that never really belong in source control.  They are usually build products, log
-# files and intermediate files generated from a compiler or the engine runtime.
-#
-#
-# NOTE:
-#  Paths that start with / match paths relative to the root (where the .gitignore file is)
-#  Paths that end with / will match a folder and all files under it (but not a regular file with no extension)
-#  Use * for wildcards.  Wildcards stop at path separators
-#  Use ** for a wildcard that spans path separators
-#  Paths in this file should use forward slash characters, not back slashes
-#  Use \ to escape special characters like ! and #
-#  Use ! to negate a previous pattern.  But it doesn't work if the parent sub-folder was masked out already.
-#
 
-# Ignore all files by default, but scan all directories
-*
-!*/
 
+
+# Exceptions
 
 
 # ISPC files
 !*.ispc
 !*.isph
 
-# Re-ignore vs host manifest
-*.vshost.exe.manifest
-
 # Java source files
 !*.java
 !*.java.template
-
 # C# source files
 !*.cs
 !*.cs.template
@@ -49,8 +56,6 @@
 !*.txt
 !*.md
 
-# Swift files
-*.swift
 
 # Script files
 !*.bat
@@ -93,7 +98,6 @@
 !*.vcproj
 !*.vcxproj
 !*.vcxproj.filters
-!*.sln
 !*.xcodeproj
 !*.xcconfig
 !*.vsprops
@@ -111,218 +115,6 @@
 !VERSION
 !ChangeLog
 
-# Ignore Unix backup files
-*~
-
-# Exceptions
-/*.sln
-/*.xcodeproj
-/Makefile
-/CMakeLists.txt
-/cmake-build-debug
-*.target.xml
-*.dll.config
-*.exe.config
-*.exe.manifest
-/.kdev4/
-/UE4CodeCompletionFolders.txt
-/UE4CodeLitePreProcessor.txt
-/UE5CodeCompletionFolders.txt
-/UE5CodeLitePreProcessor.txt
-
-# Add exceptions for Mac Mono binaries needed to run GitDependencies.exe.
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/bin/*
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/etc/mono/config
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/etc/mono/4.5/machine.config
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/lib/libMonoPosixHelper.dylib
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/lib/mono/4.5/mscorlib.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/lib/mono/gac/Mono.Posix/4.0.0.0__0738eb9f132ed756/Mono.Posix.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/lib/mono/gac/Mono.Security/4.0.0.0__0738eb9f132ed756/Mono.Security.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/lib/mono/gac/System/4.0.0.0__b77a5c561934e089/System.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/lib/mono/gac/System.Configuration/4.0.0.0__b03f5f7f11d50a3a/System.Configuration.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/lib/mono/gac/System.Core/4.0.0.0__b77a5c561934e089/System.Core.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Mac/lib/mono/gac/System.Xml/4.0.0.0__b77a5c561934e089/System.Xml.dll
-
-# Exception for VirtualProduction LiveLinkVCamFiles
-!/UE/Engine/Extras/VirtualProduction/LiveLinkVCAM/**
-/UE/Engine/Extras/VirtualProduction/LiveLinkVCAM/LiveLinkProvider.framework/LiveLinkProvider
-/UE/Engine/Extras/VirtualProduction/LiveLinkVCAM/UE4LiveLinkProvider.framework/UE4LiveLinkProvider
-/UE/Engine/Extras/VirtualProduction/LiveLinkVCAM/UE5LiveLinkProvider.framework/UE5LiveLinkProvider
-
-# Exception for VP EpicStageApp dart files
-!/UE/Engine/Extras/VirtualProduction/EpicStageApp/**/*.dart
-
-# Ignore the automatically created mono symlink
-/UE/Engine/Binaries/ThirdParty/Mono/Mac/bin/mono
-
-# Add exceptions for Linux Mono binaries needed to run GitDependencies.exe.
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/bin/*
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/etc/mono/config
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/etc/mono/4.5/machine.config
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/x86_64-unknown-linux-gnu/bin/mono-boehm
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/x86_64-unknown-linux-gnu/bin/mono-sgen
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/x86_64-unknown-linux-gnu/lib/libMonoPosixHelper.so
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/lib/mono/4.5/mscorlib.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/lib/mono/gac/Mono.Posix/4.0.0.0__0738eb9f132ed756/Mono.Posix.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/lib/mono/gac/Mono.Security/4.0.0.0__0738eb9f132ed756/Mono.Security.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/lib/mono/gac/System/4.0.0.0__b77a5c561934e089/System.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/lib/mono/gac/System.Configuration/4.0.0.0__b03f5f7f11d50a3a/System.Configuration.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/lib/mono/gac/System.Core/4.0.0.0__b77a5c561934e089/System.Core.dll
-!/UE/Engine/Binaries/ThirdParty/Mono/Linux/lib/mono/gac/System.Xml/4.0.0.0__b77a5c561934e089/System.Xml.dll
-
-# Ignore the automatically created mono symlink
-/UE/Engine/Binaries/ThirdParty/Mono/Linux/bin/mono
-/UE/Engine/Binaries/ThirdParty/Mono/Linux/bin/mono-boehm
-/UE/Engine/Binaries/ThirdParty/Mono/Linux/bin/mono-sgen
-
-# Add exceptions for GitDependencies
-!/UE/Engine/Binaries/DotNET/GitDependencies/
-!/UE/Engine/Binaries/DotNET/GitDependencies.exe
-!/UE/Engine/Binaries/DotNET/GitDependencies.dll
-!/UE/Engine/Binaries/DotNET/GitDependencies.runtimeconfig.json
-
-# Add Horde dockerfiles
-!/UE/Engine/Source/Programs/Horde/**/Dockerfile
-
-# Ignore NET binaries
-/UE/Engine/Binaries/ThirdParty/DotNet/
-/UE/Engine/Binaries/DotNET/UnrealBuildTool/
-/UE/Engine/Binaries/DotNET/AutomationTool/
-/UE/Engine/Source/Programs/DotNETCommon/BuildUtilities/bin/
-/UE/Engine/Source/Programs/Shared/*/bin/
-
-# Ignore documentation generated for C# tools
-/UE/Engine/Binaries/DotNET/UnrealBuildTool.xml
-/UE/Engine/Binaries/DotNET/AutomationScripts/BuildGraph.Automation.xml
-/UE/Engine/Binaries/DotNET/AutomationScripts/Newtonsoft.Json.xml
-/UE/Engine/Platforms/Hololens/Binaries/DotNET/AutomationTool/AutomationScripts/Platforms/HoloLens/*.xml
-/UE/Engine/Source/Programs/AutomationTool/BuildGraph/BuildGraph.Automation.xml
-
-# Ignore generated files from C# tools
-/UE/Engine/Platforms/**/*.deps.json
-/UE/Engine/Source/Programs/**/*.deps.json
-/UE/Engine/Source/Programs/**/*.runtimeconfig*.json
-/UE/Engine/Source/Programs/**/Properties/launchSettings.json
-/UE/Engine/Source/Programs/UnrealBuildTool.Tests/bin/
-/UE/Engine/Binaries/DotNet/**/*.deps.json
-/UE/Engine/Binaries/DotNet/Android/UnrealAndroidFileTool/*.xml
-/UE/Engine/Binaries/DotNet/**/*.runtimeconfig*.json
-
-# Ignore Datasmith generated sources on all platforms
-/UE/Engine/Binaries/**/DatasmithFacadeCSharp
-/UE/Engine/Binaries/**/DatasmithSDK
-
-# Ignore Android packageInfo.txt file
-/UE/Engine/Binaries/Android/packageInfo.txt
-
-# Ignore version files in the Engine/Binaries directory created by UBT
-/UE/Engine/Binaries/**/*.version
-
-# Ignore built Mac apps
-/UE/Engine/Binaries/Mac/UnrealEditor*.app/**
-/UE/Engine/Binaries/Mac/UnrealGame*.app/**
-
-# Ignore generated Xcode settings file
-/UE/Engine/Build/Xcode/ContentOnlySettings.xcconfig
-
-# Ignore .build folder
-/UE/Engine/Binaries/*.build/**
-
-# Ignore exp files in Engine and Plugin Binaries directories as they aren't C/C++ source files
-#/UE/Engine/**/Binaries/**/*.exp
-
-# Ignore temporary code folders generated by live coding
-/UE/enc_temp_folder/
-
-# Ignore content folders
-/UE/Content/
-
-# Ignore DDC
-/UE/Engine/DerivedDataCache/**
-
-# Ignore intermediate folders
-/UE/Intermediate/
-/UE/obj/
-
-# Ignore any saved local files
-/UE/Saved/
-/UE/Engine/Programs/MemoryProfiler2/**
-/UE/Engine/Programs/UnrealBuildTool/**
-/UE/LocalBuilds/
-
-# Ignore Swarm local save files
-/UE/Engine/Binaries/DotNET/SwarmAgent.DeveloperOptions.xml
-/UE/Engine/Binaries/DotNET/SwarmAgent.Options.xml
-
-# Explcitly ignore Mac DS_Store files, regardless of where they are
-/UE/.DS_Store
-
-# Ignore VS / VS Code settings directory
-/UE/.vs
-/UE/.vscode
-
-# Ignore CLion directory
-/UE/.idea/
-
-# Ignore Rider directories
-/UE//Engine/Plugins/Developer/RiderLink
-
-# Annoying windows files
-/UE/[Dd]esktop.ini
-
-# Ignore the headers and cpp files in the clang toolchain on Linux
-/UE/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/**
-
-# Ignore USD resources copied into Binaries directory at build time
-/UE/Engine/Binaries/ThirdParty/USD/**
-
-# Ignore vulkan registry
-/UE/Engine/Source/ThirdParty/Vulkan/share/vulkan/registry/**
-
-
-
-
-#AroundMe Project CE
-/AroundMe/Saved
-/AroundMe/Intermediate
-AroundMe/AroundMe.sln
-/AroundMe/Plugins/DIYAndroidServiceLib/Intermediate
-/UE/Engine/Intermediate
-/UE/Engine/Plugins/AI/MassAI/Intermediate
-/UE/Engine/Source/Programs/Shared
-/UE/Engine/Source/Programs/AutomationTool
-/UE/Engine/Plugins/Experimental/MeshModelingToolsetExp/Intermediate
-/UE/Engine/Plugins/2D/Paper2D/Intermediate
-/UE/Engine/Plugins/AI/EnvironmentQueryEditor/Intermediate
-/UE/Engine/Programs/LiveCodingConsole/Saved
-/UE/Engine/Saved
-/UE/Engine/Plugins/AI/AISupport/Intermediate
-/UE/Engine/Programs/AutomationTool
-
-
-**/Intermediate/**
-**/Saved/
-
-**/.vs/
-
-
-**/Build/
-/UE/Engine/Plugins
-
-/AroundMe/.vs
-AroundMe/.vsconfig
-AroundMe/AroundMe.sln
-/AroundMe/Binaries
-/AroundMe/Intermediate
-/AroundMe/Plugins/DIYAndroidServiceLib/Binaries
-/AroundMe/Plugins/DIYAndroidServiceLib/Intermediate
-/AroundMe/Saved
-/UE/.vs
-*.exp
-
-**/obj/**
-
-
 # C/C++ source files
 !*.c
 !*.cc
@@ -339,7 +131,3 @@ AroundMe/AroundMe.sln
 !*.rc2
 !*.def
 !*.manifest
-UE/UE5.sln
-
-!/AroundMe/Content/
-

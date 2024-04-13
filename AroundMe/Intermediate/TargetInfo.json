@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "AroundMe",
+			"Path": "..\\Source\\AroundMe.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "AroundMeEditor",
+			"Path": "..\\Source\\AroundMeEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
