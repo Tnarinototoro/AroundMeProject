@@ -340,3 +340,6 @@ AroundMe/AroundMe.sln
 !*.def
 !*.manifest
 UE/UE5.sln
+
+!/AroundMe/Content/
+
