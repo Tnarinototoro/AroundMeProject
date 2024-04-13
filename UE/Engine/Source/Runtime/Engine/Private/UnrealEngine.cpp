@@ -3138,8 +3138,10 @@ void UEngine::InitializeObjectReferences()
 	LoadEngineTexture(WeightMapPlaceholderTexture, *WeightMapPlaceholderTextureName.ToString());
 	LoadEngineTexture(LightMapDensityTexture, *LightMapDensityTextureName.ToString());
 
+	LoadEngineTexture(ToonSkinRampTexture, *ToonSkinRampTextureName.ToString());
+	UE_LOG(LogEngine, Error, TEXT("XXXXXXXX Ramp map path is  (%s) "), *ToonSkinRampTextureName.ToString());
 //DIY_ENGINE_CE START
-	ConditionallyLoadToonSkinRampTexture();
+	//ConditionallyLoadToonSkinRampTexture();
 //DIY_ENGINE_CE END
 	
 

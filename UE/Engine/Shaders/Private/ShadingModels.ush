@@ -1020,7 +1020,7 @@ FDirectLighting ToonSkinBxDF(FGBufferData GBuffer, half3 N, half3 V, half3 L, fl
 	float NoH = saturate(dot(N, H));
 	FDirectLighting Lighting;
 	Lighting.Diffuse = LightColor * Diffuse_Lambert(GBuffer.BaseColor);
-	
+	float p=0;
 	float InScatter = pow(saturate(dot(L, -V)), 12) * lerp(3, .1f, 1);
 	float NormalContribution = saturate(dot(N, H));
 	float BackScatter = GBuffer.GBufferAO * NormalContribution / (PI * 2);

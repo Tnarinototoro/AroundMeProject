@@ -131,3 +131,5 @@ UE/UE5.sln
 !*.rc2
 !*.def
 !*.manifest
+AroundMe/AroundMe.sln
+AroundMe/.vsconfig
