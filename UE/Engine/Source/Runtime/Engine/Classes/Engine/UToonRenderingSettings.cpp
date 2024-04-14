@@ -9,11 +9,16 @@ FTextureRHIRef UToonRenderingSettings::GetTextureRHI() const
 {
 	if (ToonRampTexture)
 	{
+		//UE_LOG(LogEngine, Error, TEXT("PPPPPPPPP Ramp is loaded Again %s"), *ToonRampTextureName.ToString());
 		return ToonRampTexture->GetResource()->TextureRHI;
 	}
 	else
+	{
+		//UE_LOG(LogEngine, Error, TEXT("KKKKKKKKKKKKKKKKKKKKKKK Ramp is loaded Again %s"), *ToonRampTextureName.ToString());
 		return GBlackTexture->TextureRHI;
+	}
 }
+		
 void UToonRenderingSettings::PostInitProperties()
 {
 	Super::PostInitProperties();
@@ -27,6 +32,7 @@ void UToonRenderingSettings::PreEditChange(FProperty* PropertyAboutToChange)
 }
 void UToonRenderingSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
+	//UE_LOG(LogEngine, Error, TEXT("YYYYYYYYYY Ramp is loaded Again %s"), *ToonRampTextureName.ToString());
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 	if (PropertyChangedEvent.Property)
 	{
@@ -60,6 +66,7 @@ void UToonRenderingSettings::LoadDefaultObjects()
 	{
 		ToonRampTexture = CastChecked<UTexture2D>(ToonRampClassObject);
 		ToonRampTexture->AddToRoot();
+		//UE_LOG(LogEngine, Error, TEXT("MMMMMMMMMMMMMM Ramp is loaded successfully Again %s"), *ToonRampTextureName.ToString());
 	}
 #if WITH_EDITOR
 	if (!ToonRampTexture)
@@ -69,6 +76,7 @@ void UToonRenderingSettings::LoadDefaultObjects()
 		{
 			ToonRampTexture = CastChecked<UTexture2D>(ToonRampClassObject);
 			ToonRampTexture->AddToRoot();
+			//UE_LOG(LogEngine, Error, TEXT("ZZZZZZZZZZZZ Ramp is loaded successfully Again %s"), *ToonRampTextureName.ToString());
 		}
 	}
 #endif

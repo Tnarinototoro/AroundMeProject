@@ -1342,17 +1342,7 @@ public:
 	
 	
 	
-	
-//DIY_ENGINE_CE START
-	/** Texture used for pre-integrated skin shading */
-	UPROPERTY()
-		TObjectPtr<class UTexture2D> ToonSkinRampTexture;
 
-	/** Path of the texture used for pre-integrated skin shading */
-	UPROPERTY(globalconfig)
-		FSoftObjectPath ToonSkinRampTextureName;
-
-//DIY_ENGINE_CE END
 	
 
 	/** Tiled blue-noise texture */
@@ -3567,11 +3557,6 @@ public:
 	bool PrepareMapChange(UWorld* InWorld, const TArray<FName>& LevelNames) { return PrepareMapChange(GetWorldContextFromWorldChecked(InWorld), LevelNames); }
 	void ConditionalCommitMapChange(UWorld* InWorld) { return ConditionalCommitMapChange(GetWorldContextFromWorldChecked(InWorld)); }
 	
-
-//DIY_ENGINE_CE START
-/** Conditionally load this texture for a platform. Always loaded in Editor */
-ENGINE_API void ConditionallyLoadToonSkinRampTexture();
-//DIY_ENGINE_CE END
 
 
 	

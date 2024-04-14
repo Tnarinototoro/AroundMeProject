@@ -1870,20 +1870,10 @@ void FViewInfo::SetupUniformBufferParameters(
 
 
 
-//DIY_ENGINE_CE START old
-	//if (GEngine->ToonSkinRampTexture)
-	//{
-	//	const FTextureResource* TextureResource = GEngine->ToonSkinRampTexture->GetResource();
-	//	if (TextureResource)
-	//	{
-	//		ViewUniformShaderParameters.ToonRampBRDF = TextureResource->TextureRHI;
-	//	}
-	//}
-//DIY_ENGINE_CE END
-	
-	
+
 //DIY_ENGINE_CE START old
 	ViewUniformShaderParameters.ToonRampBRDF = GetDefault<UToonRenderingSettings>()->GetTextureRHI();
+	//UE_LOG(LogEngine,Error, TEXT("fuck the toon ramp texture is %s"), *GetDefault<UToonRenderingSettings>()->GetTextureRHI()->GetName().ToString())
 //DIY_ENGINE_CE END
 
 

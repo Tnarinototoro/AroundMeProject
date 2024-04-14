@@ -3138,11 +3138,8 @@ void UEngine::InitializeObjectReferences()
 	LoadEngineTexture(WeightMapPlaceholderTexture, *WeightMapPlaceholderTextureName.ToString());
 	LoadEngineTexture(LightMapDensityTexture, *LightMapDensityTextureName.ToString());
 
-	LoadEngineTexture(ToonSkinRampTexture, *ToonSkinRampTextureName.ToString());
-	UE_LOG(LogEngine, Error, TEXT("XXXXXXXX Ramp map path is  (%s) "), *ToonSkinRampTextureName.ToString());
-//DIY_ENGINE_CE START
-	//ConditionallyLoadToonSkinRampTexture();
-//DIY_ENGINE_CE END
+	
+
 	
 
 	ConditionallyLoadPreIntegratedSkinBRDFTexture();
@@ -16514,20 +16511,7 @@ bool UEngine::CommitMapChange( FWorldContext &Context )
 		return true;
 	}
 }
-//DIY_ENGINE_CE START
-void UEngine::ConditionallyLoadToonSkinRampTexture()
-{
-	if (ToonSkinRampTexture == nullptr)
-	{
-		uint32 ShadingModelsMask = GetPlatformShadingModelsMask(GMaxRHIShaderPlatform);
-		uint32 SkinShadingMask = (1u << (uint32)MSM_DIYToonSkin);
-		if (GIsEditor || (ShadingModelsMask & SkinShadingMask) != 0)
-		{
-			LoadEngineTexture(ToonSkinRampTexture, *ToonSkinRampTextureName.ToString());
-		}
-	}
-}
-//DIY_ENGINE_CE END
+
 
 void UEngine::AddNewPendingStreamingLevel(UWorld *InWorld, FName PackageName, bool bNewShouldBeLoaded, bool bNewShouldBeVisible, int32 LODIndex)
 {

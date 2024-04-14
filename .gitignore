@@ -1,6 +1,6 @@
 
 /AroundMe/.vs
-UE/UE5.sln
+/UE/UE5.sln
 /UE/Templates
 /UE/Samples
 /UE/Engine/Extras
@@ -11,20 +11,24 @@ UE/UE5.sln
 /UE/Engine/Binaries
 /AroundMe/Saved
 /UE/.vs
-
 /UE/Engine/Documentation
 /UE/Engine/Saved
 /UE/Engine/Source/
+/UE/Engine/Programs
+/AroundMe/Plugins/DIYAndroidServiceLib/Binaries
+/AroundMe/Binaries
+/UE/.vscode
 
+/AroundMe/AroundMe.sln
+/AroundMe/.vsconfig
+/AroundMe/AroundMe.uproject
+/UE/.uedependencies
 **/Build/**
 **/Builds/**
 **/Intermediate/**
 **/DerivedDataCache/**
 **/Saved/**
-/UE/Engine/Programs
-/AroundMe/Plugins/DIYAndroidServiceLib/Binaries
-/AroundMe/Binaries
-/UE/.vscode
+
 
 
 
@@ -70,11 +74,10 @@ UE/UE5.sln
 
 # Other configuration and markup files
 !*.ini
-!*.json
+
 !*.tps
 !*.xml
 !*.xaml
-!*.uproject
 !*.uplugin
 !*.html
 !*.html.template
@@ -131,5 +134,4 @@ UE/UE5.sln
 !*.rc2
 !*.def
 !*.manifest
-AroundMe/AroundMe.sln
-AroundMe/.vsconfig
+

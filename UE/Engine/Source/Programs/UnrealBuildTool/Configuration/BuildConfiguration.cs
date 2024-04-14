@@ -100,7 +100,7 @@ namespace UnrealBuildTool
 		/// </summary>
 		[XmlConfigFile]
 		[CommandLine("-MaxParallelActions")]
-		public int MaxParallelActions = 0;
+		public int MaxParallelActions = 32;
 
 		/// <summary>
 		/// Consider logical cores when determining how many total cpu cores are available.

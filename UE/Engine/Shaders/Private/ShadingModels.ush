@@ -1001,6 +1001,7 @@ FDirectLighting ToonHairBxDF(FGBufferData GBuffer, half3 N, half3 V, half3 L, fl
 }
 FDirectLighting ToonSkinBxDF(FGBufferData GBuffer, half3 N, half3 V, half3 L, float Falloff, float NoL, FAreaLight AreaLight, FShadowTerms Shadow)
 {
+#if 1
 	float Metallic = GBuffer.Metallic;
 	float ToonID = GBuffer.CustomData.a; //曲线数据ID
 	half ToonFallOffColorA = Texture2DSampleLevel(View.ToonRampBRDF, View.ToonRampBRDFSampler, float2(saturate(dot(N, L)), ToonID), 0).a;
@@ -1031,6 +1032,8 @@ FDirectLighting ToonSkinBxDF(FGBufferData GBuffer, half3 N, half3 V, half3 L, fl
 	
 	
 	Lighting.Transmission = (ShadowLightener + TransmissionSoft) * Falloff;
+#endif
+	
 	return Lighting;
 }
 
