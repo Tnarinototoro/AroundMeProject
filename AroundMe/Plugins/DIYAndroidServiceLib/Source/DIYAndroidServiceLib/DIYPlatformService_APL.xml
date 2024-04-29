@@ -45,13 +45,13 @@
 	</buildGradleAdditions>-->
 
 
-	<!--<gradleProperties>
+	<gradleProperties>
 		<insert>
 			android.useAndroidX=true
 			android.enableJetifier=true
 		</insert>
 		
-	</gradleProperties>-->
+	</gradleProperties>
 
 
 
@@ -60,7 +60,7 @@
 	</init>
 
 
-	<!--<baseBuildGradleAdditions>
+	<baseBuildGradleAdditions>
 		<insert>
 			allprojects
 			{
@@ -72,11 +72,11 @@
 			}
 
 		</insert>
-	</baseBuildGradleAdditions>-->
+	</baseBuildGradleAdditions>
 
 
 
-	<!--<baseBuildGradleAdditions>
+	<baseBuildGradleAdditions>
 		<insert>
 			
 			allprojects {
@@ -106,13 +106,13 @@
 			}
 			}
 		</insert>
-	</baseBuildGradleAdditions>-->
+	</baseBuildGradleAdditions>
 
 
-	<!--<proguardAdditions>
+	<proguardAdditions>
 		<insert>
 		</insert>
-	</proguardAdditions>-->
+	</proguardAdditions>
 
 
 

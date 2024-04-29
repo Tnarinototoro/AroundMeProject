@@ -53,7 +53,7 @@ namespace UnrealBuildTool
 		/// </summary>
 		[XmlConfigFile]
 		[CommandLine("-NoXGE", Value = "false")]
-		public bool bAllowXGE = true;
+		public bool bAllowXGE = false;
 
 		/// <summary>
 		/// Whether FASTBuild may be used.
@@ -67,7 +67,7 @@ namespace UnrealBuildTool
 		/// </summary>
 		[XmlConfigFile]
 		[CommandLine("-NoSNDBS", Value = "false")]
-		public bool bAllowSNDBS = true;
+		public bool bAllowSNDBS = false;
 
 		/// <summary>
 		/// Enables support for very fast iterative builds by caching target data. Turning this on causes Unreal Build Tool to emit
@@ -100,7 +100,7 @@ namespace UnrealBuildTool
 		/// </summary>
 		[XmlConfigFile]
 		[CommandLine("-MaxParallelActions")]
-		public int MaxParallelActions = 32;
+		public int MaxParallelActions = 16;
 
 		/// <summary>
 		/// Consider logical cores when determining how many total cpu cores are available.
