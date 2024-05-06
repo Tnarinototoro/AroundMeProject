@@ -21,7 +21,7 @@ public:
 
 protected:
     virtual void BeginPlay() override;
-
+    void LoadMusicFromDirectory(const FString& Path);
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Music")
         UDataTable* MusicTracksTable;
@@ -30,8 +30,10 @@ public:
         UAudioComponent* AudioComponent;
 
     UFUNCTION(BlueprintCallable, Category = "Music")
-        void PlayMusic(int32 TrackIndex);
+        void PlayMusic(const FName& TrackID);
 
     UFUNCTION(BlueprintCallable, Category = "Music")
         void StopMusic();
+    void PlayMusic(USoundBase* Sound);
+    
 };
