@@ -4,57 +4,152 @@
 #include "DIY_MusicPlayer.h"
 #include "DIY_MusicPlayerDefines.h"
 #include "AssetRegistry/AssetRegistryModule.h"
+#include "Misc/DateTime.h"
+#include "AroundMe/DIY_Utilities.h"
 
+
+ADIY_MusicPlayer*  ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;
 ADIY_MusicPlayer::ADIY_MusicPlayer()
 {
-    // Set this actor to call Tick() every frame if needed
     PrimaryActorTick.bCanEverTick = false;
-
     AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+    AudioComponent->bAllowSpatialization = false; // 关闭空间化以实现2D音效
+    AudioComponent->bIsUISound = true; // 设置为UI声音，通常用于2D背景音乐
     AudioComponent->SetupAttachment(RootComponent);
-    LoadMusicFromDirectory(TEXT("/Game/Audio/BGM/Anim_Crossing"));  // 注意使用虚拟路径
+   
+}
+
+ADIY_MusicPlayer::~ADIY_MusicPlayer()
+{
+
+}
+
+ADIY_MusicPlayer* ADIY_MusicPlayer::GetMusicPlayer()
+{
+    checkf(nullptr != gMusicPlayerInstance, TEXT("music player is got too early"));
+
+    return ADIY_MusicPlayer::gMusicPlayerInstance;
 }
 
 void ADIY_MusicPlayer::BeginPlay()
 {
     Super::BeginPlay();
+    checkf(AudioComponent != nullptr, TEXT("Audio component shall be setup properly to start game"));
+   
+    AudioComponent->OnAudioFinished.AddUniqueDynamic(this, &ADIY_MusicPlayer::OnMusicFinished);
+    PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
+
+    checkf(ADIY_MusicPlayer::gMusicPlayerInstance == nullptr, TEXT("More than one music player instance is created now which is not allowed"));
+    
+    ADIY_MusicPlayer::gMusicPlayerInstance = this;
+    UDIY_Utilities::DIY_PrintLogToScreen(1.0f, FString{ "Music player  Instance Created!" });
+    //LoadMusicFromDirectory();
 }
 
-void ADIY_MusicPlayer::LoadMusicFromDirectory(const FString& Path)
+void ADIY_MusicPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+    if (AudioComponent->OnAudioFinished.IsAlreadyBound(this, &ADIY_MusicPlayer::OnMusicFinished))
+    {
+        AudioComponent->OnAudioFinished.RemoveDynamic(this, &ADIY_MusicPlayer::OnMusicFinished);
+    }
+    ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;
+
+}
+
+void ADIY_MusicPlayer::OnMusicFinished()
+{
+   
+    PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
+}
+
+uint32 ADIY_MusicPlayer::GenerateDateCorrespondingMusicIndex()
+{
+    //@todo weather system needs to be implemented
+    uint32 base_index = 0;
+    const FDateTime& now_time = FDateTime::Now();
+    return now_time.GetHour()+ base_index;
+}
+
+void ADIY_MusicPlayer::LoadMusicFromDirectory()
+{
+    FString RelativePath = FPaths::ProjectContentDir() + TEXT("Audio/BGM/Anim_Crossing/");
+    FString AbsolutePath = FPaths::ConvertRelativePathToFull(RelativePath);
+    UE_LOG(LogTemp, Warning, TEXT("Full path found is %s"), *AbsolutePath);
+
+    TArray<FString> Files;
+    IFileManager::Get().FindFilesRecursive(Files, *AbsolutePath, TEXT("*.uasset"), true, false, false);
+    UE_LOG(LogTemp, Warning, TEXT("Number of files found: %d"), Files.Num());
+
     FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
     TArray<FAssetData> AssetDatas;
 
     FARFilter Filter;
+    Filter.bRecursiveClasses = true;
     Filter.bRecursivePaths = true;
-    Filter.ClassNames.Add(USoundBase::StaticClass()->GetFName());
-    Filter.PackagePaths.Add(*Path); // 将目录路径转换为FName并添加至过滤器
+    Filter.ClassPaths.Add(USoundWave::StaticClass()->GetClassPathName());
 
-    AssetRegistryModule.Get().GetAssets(Filter, AssetDatas);
-
-    for (const FAssetData& Asset : AssetDatas)
+    for (const FString& File : Files)
     {
-        USoundBase* LoadedSound = Cast<USoundBase>(Asset.GetAsset());
+        FString AssetPath = FPackageName::FilenameToLongPackageName(File);
+        UE_LOG(LogTemp, Warning, TEXT("Asset path added to filter: %s"), *AssetPath);
+        Filter.PackagePaths.Add(*AssetPath);
+    }
+
+    bool bSuccess = AssetRegistryModule.Get().GetAssets(Filter, AssetDatas);
+    UE_LOG(LogTemp, Warning, TEXT("Assets retrieval was %s with %d assets found"), bSuccess ? TEXT("successful") : TEXT("unsuccessful"), AssetDatas.Num());
+
+    bool anyGot = false;
+    for (const FAssetData& AssetData : AssetDatas)
+    {
+        USoundBase* LoadedSound = Cast<USoundBase>(AssetData.GetAsset());
         if (LoadedSound)
         {
-            // 这里可以存储音乐到一个数组，或者直接播放
-            PlayMusic(LoadedSound);
+            UE_LOG(LogTemp, Warning, TEXT("Sound Track Added: %s"), *LoadedSound->GetName());
+           // MusicTracks.Add(LoadedSound);
+            anyGot = true;
         }
+    }
+
+    if (!anyGot)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("No sound track loaded properly"));
     }
 }
 
-void ADIY_MusicPlayer::PlayMusic(const FName& TrackID)
+void ADIY_MusicPlayer::PlayMusicByIndex(ESoundTrackID Index)
 {
-    if (MusicTracksTable)
+   
+
+    USoundBase* SoundToPlay=(*MusicTracks.Find(Index));
+    if (SoundToPlay)
     {
-        const FDIY_MusicTrackInfoDataTableRow* TrackInfo = MusicTracksTable->FindRow<FDIY_MusicTrackInfoDataTableRow>(TrackID, TEXT(""), true);
-        if (TrackInfo && TrackInfo->Sound)
+        if (SoundToPlay && AudioComponent)
         {
-            AudioComponent->SetSound(TrackInfo->Sound);
-            AudioComponent->Play();
+
+            AudioComponent->SetSound(SoundToPlay);
+            AudioComponent->FadeIn(3.0f, 0.6f);
+            mCurrentPlayingSoundTrack = (int32)Index;
+
+
+            UE_LOG(LogTemp, Warning, TEXT("Now playing: %s"), *SoundToPlay->GetName());
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Sound resource is null"));
         }
     }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Sound index is invalid"));
+    }
 }
+
+void ADIY_MusicPlayer::PlayMusicCorrespondingToTime()
+{
+    PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
+}
+
+
 
 void ADIY_MusicPlayer::StopMusic()
 {
@@ -64,11 +159,8 @@ void ADIY_MusicPlayer::StopMusic()
     }
 }
 
-void ADIY_MusicPlayer::PlayMusic(USoundBase* Sound)
+ESoundTrackID ADIY_MusicPlayer::GetCurrentMusicTrackID()
 {
-    if (Sound && AudioComponent)
-    {
-        AudioComponent->SetSound(Sound);
-        AudioComponent->Play();
-    }
+    return (ESoundTrackID)mCurrentPlayingSoundTrack;
 }
+

@@ -21,10 +21,10 @@ class DIYPLATFORMSERVICE_API ADIYPlatformServiceProvider : public AActor
 	GENERATED_BODY()
 
 
-	// 多播委托
+	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeviceDetectedDelegate_GarbageName);
 
-	// 声明多播委托
+
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeviceDetectedDelegate_WithName, const FString&, inDeviceInfo);
 public:
 

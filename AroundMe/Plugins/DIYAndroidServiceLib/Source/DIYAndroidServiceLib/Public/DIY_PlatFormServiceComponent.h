@@ -13,10 +13,10 @@ class DIYPLATFORMSERVICE_API UDIY_PlatFormServiceComponent : public UActorCompon
 	GENERATED_BODY()
 
 
-	// 多播委托
+
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeviceDetectedDelegate_GarbageName);
 
-	// 声明多播委托
+
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeviceDetectedDelegate_WithName, const FString&, inDeviceInfo);
 
 public:	
@@ -26,7 +26,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	// 定义用于清理的函数
+
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	UFUNCTION()
