@@ -41,7 +41,7 @@ class AROUNDME_API ADIY_MainPlayer : public ACharacter
 	GENERATED_BODY()
 
 private:
-	
+
 public:
 	// Sets default values for this pawn's properties
 	ADIY_MainPlayer();
@@ -62,76 +62,105 @@ protected:
 		void HandleXYMouseMove(const FInputActionValue& Value);
 
 	UFUNCTION()
-		void HandleXYPlayerMove(const FInputActionValue& Value);	
+		void HandleXYPlayerMove(const FInputActionValue& Value);
 	UFUNCTION()
 		void HandlePlayerJump(const FInputActionValue& Value);
 	UFUNCTION()
 		void HandleXYPlayerMoveInputFinished(const FInputActionValue& Value);
 
-	UFUNCTION(BlueprintCallable, Category = "DIY")
+	UFUNCTION(BlueprintCallable, Category = "A_DIY")
 		void ChangeHair(EHairType NewHairType);
 
-	UFUNCTION(BlueprintCallable, Category = "DIY")
+	UFUNCTION(BlueprintCallable, Category = "A_DIY")
 		void ChangeHat(EHatType NewHatType);
-	UFUNCTION(BlueprintCallable, Category = "DIY")
-		void PicUpDetectedItem(AActor* inActor,FName SocketName= FName("hand_rSocket"));
-	UFUNCTION(BlueprintCallable, Category = "DIY")
+	UFUNCTION(BlueprintCallable, Category = "A_DIY")
+		void PicUpDetectedItem(AActor* inActor, FName SocketName = FName("hand_rSocket"));
+	UFUNCTION(BlueprintCallable, Category = "A_DIY")
 		void PlacePickedUpItem();
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "A_DIY")
 		class USpringArmComponent* CameraBoom;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "A_DIY")
 		class UCameraComponent* FollowCamera;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "DIY")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "A_DIY")
 		UInputMappingContext* MainPlayerInputMappingContext;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DIY")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "A_DIY")
 		USkeletalMeshComponent* HairComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DIY")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "A_DIY")
 		USkeletalMeshComponent* HatComponent;
 
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "DIY")
-	FVector2D LookAcceleration;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "A_DIY")
+		FVector2D LookAcceleration;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "DIY")
-	float LookSpeedInterpRate;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "A_DIY")
+		float LookSpeedInterpRate;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "A_DIY")
 		TMap<EHairType, FSoftObjectPath> HairMeshesMap;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "A_DIY")
 		TMap<EHatType, FSoftObjectPath> HatMeshesMap;
 
 	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
-		Category = "DIY")
-	EMainPlayerActingStateType CurrentActingState{ EMainPlayerActingStateType::State_Base_Motion};
+		Category = "A_DIY")
+		EMainPlayerActingStateType CurrentActingState {
+		EMainPlayerActingStateType::State_Base_Motion
+	};
 	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
-		Category = "DIY")
-		AActor* PickUpedActor {nullptr};
+		Category = "A_DIY")
+		AActor* PickUpedActor {
+		nullptr
+	};
 	UPROPERTY(BlueprintReadOnly, //EditAnywhere,
-		Category = "DIY")
-	bool IsInputingMove{ false };
+		Category = "A_DIY")
+		bool IsInputingMove{ false };
+
+	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
+		EditDefaultsOnly,
+		Category = "A_DIY")
+		float UpDownCameraLerpInterval{ 2.0f };
+
+	UPROPERTY(BlueprintReadWrite,
+		EditDefaultsOnly,
+		//EditAnywhere,
+		Category = "A_DIY")
+		float UpDownCameraLerpTriggerThresHold{ 1.0f };
 
 	void UpdateTPSCamera(float deltaTime);
 	void UpdatePlayerMove(float deltaTime);
-	
-public:	
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	void UpdateUpDownCam(float DeltaTime);
 private:
-	FVector2D inPutVector2D{ FVector2D::ZeroVector};
+
+	enum UpDownCameraType
+	{
+		//pitch around 15-20
+		Cam_Horizon_Type,
+		//pitch around 40-45
+		Cam_Basic_TPS_Type,
+
+		//pitch around 60-75
+		Cam_Flying_Type,
+
+		Type_Count
+	};
+	FVector2D inPutVector2D{ FVector2D::ZeroVector };
 	FVector2D CurrentLookSpeed{};
 	FVector2D TargetLookSpeed{};
 	FVector DesiredDir_ByPlayerInput_FollowCamView{};
-	
-
+	float CurrentTargetPitch{ 45.0f };
+	uint8 CurrentUpDownType{ UpDownCameraType::Cam_Basic_TPS_Type };
+	uint8 TargetUpDownType{ UpDownCameraType::Cam_Basic_TPS_Type };
 	void UpdateDesiredDir_ByPlayerInput_FollowCamView(float DeltaTime);
-	
+	float UpDownCamPitchDepo[UpDownCameraType::Type_Count]{ 359.0f,340.0f,320.f };
 	
 };

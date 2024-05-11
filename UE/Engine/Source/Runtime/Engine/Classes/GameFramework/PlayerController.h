@@ -1562,6 +1562,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Game|Player", meta=(Keywords="up down"))
 	ENGINE_API virtual void AddPitchInput(float Val);
 
+
+	/**
+	 * Add Pitch (look up) input. This value is multiplied by InputPitchScale.
+	 * @param Val Amount to add to Pitch. This value is multiplied by InputPitchScale.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Game|Player", meta = (Keywords = "up down"))
+		ENGINE_API virtual FRotator GetInputRotation() const;
 	/**
 	 * Add Yaw (turn) input. This value is multiplied by InputYawScale.
 	 * @param Val Amount to add to Yaw. This value is multiplied by InputYawScale.

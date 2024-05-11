@@ -5533,6 +5533,11 @@ void APlayerController::AddPitchInput(float Val)
 	RotationInput.Pitch += !IsLookInputIgnored() ? Val * (GetDefault<UInputSettings>()->bEnableLegacyInputScales ? InputPitchScale_DEPRECATED : 1.0f) : 0.0f;
 }
 
+FRotator APlayerController::GetInputRotation() const
+{
+	return RotationInput;
+}
+
 void APlayerController::AddYawInput(float Val)
 {
 	RotationInput.Yaw += !IsLookInputIgnored() ? Val * (GetDefault<UInputSettings>()->bEnableLegacyInputScales ? InputYawScale_DEPRECATED : 1.0f) : 0.0f;

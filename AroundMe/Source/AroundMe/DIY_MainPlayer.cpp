@@ -113,13 +113,14 @@ void ADIY_MainPlayer::UpdateTPSCamera(float deltaTime)
 	
 	FVector ActorLocation = GetActorLocation();
 	FVector EndLocation = ActorLocation + (GetActorForwardVector() * 100);
-	DrawDebugLine(GetWorld(), ActorLocation, EndLocation, FColor::Green, false, -1, 0, 5);
+	//DrawDebugLine(GetWorld(), ActorLocation, EndLocation, FColor::Green, false, -1, 0, 5);
 
 	//if there is any input from player
 	if (inPutVector2D.Length() > 0.1f && IsInputingMove)
 	{
 		
 		FRotator CameraRot = FollowCamera->GetComponentRotation();
+
 
 
 
@@ -157,7 +158,7 @@ void ADIY_MainPlayer::Tick(float DeltaTime)
 	UpdateTPSCamera(DeltaTime);
 	
 	UpdatePlayerMove(DeltaTime);
-
+	UpdateUpDownCam(DeltaTime);
 }
 
 
@@ -211,6 +212,46 @@ void ADIY_MainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	}
 }
 
+void ADIY_MainPlayer::UpdateUpDownCam(float DeltaTime)
+{
+	
+	float current_pitch_depot= UpDownCamPitchDepo[CurrentUpDownType];
+	bool should_execute_lerp{ false };
+
+	float target_pitch{ 0 };
+	if (TargetUpDownType != CurrentUpDownType)
+	{
+		should_execute_lerp = true;
+		target_pitch= UpDownCamPitchDepo[(int)TargetUpDownType];
+	}
+	else
+	{
+		if (GetControlRotation().Pitch != current_pitch_depot)
+		{
+			
+			target_pitch = current_pitch_depot;
+			should_execute_lerp = true;
+		}
+		
+	}
+
+
+	if(should_execute_lerp)
+	{
+		
+		/*float cur_lerped_pitch = FMath::FInterpTo(GetControlRotation().Pitch, target_pitch, DeltaTime, LookSpeedInterpRate);
+
+		UE_LOG(MainPlayerLog, Warning, TEXT("target pitch %f current pitch %f ,calculated pitch is %f"), target_pitch, GetControlRotation().Pitch, cur_lerped_pitch);*/
+		AddControllerPitchInput(target_pitch - GetControlRotation().Pitch);
+
+		
+		if (GetControlRotation().Pitch == target_pitch)
+		{
+			CurrentUpDownType = TargetUpDownType;
+		}
+	}
+}
+
 void ADIY_MainPlayer::UpdateDesiredDir_ByPlayerInput_FollowCamView(float DeltaTime)
 {
 	FVector ForwardActorVector = FollowCamera->GetForwardVector();
@@ -235,18 +276,35 @@ void ADIY_MainPlayer::HandleXYMouseMove(const FInputActionValue& Value)
 {
 	FVector2D Axis2DValue = Value.Get<FVector2D>();
 
+	if (CurrentUpDownType == TargetUpDownType)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Current input Y %f"), Axis2DValue.Y);
+		if (FMath::Abs(Axis2DValue.Y) > UpDownCameraLerpTriggerThresHold)
+		{
 
-	TargetLookSpeed = Axis2DValue * LookAcceleration;
+			if (Axis2DValue.Y > 0)
+			{
+				TargetUpDownType=0;
 
 
-	CurrentLookSpeed.X = FMath::FInterpTo(CurrentLookSpeed.X, TargetLookSpeed.X, GetWorld()->GetDeltaSeconds(), LookSpeedInterpRate);
-	CurrentLookSpeed.Y = FMath::FInterpTo(CurrentLookSpeed.Y, TargetLookSpeed.Y, GetWorld()->GetDeltaSeconds(), LookSpeedInterpRate);
+
+			}
+			else
+			{
+				TargetUpDownType = 2;
 
 
-	AddControllerYawInput(CurrentLookSpeed.X * GetWorld()->GetDeltaSeconds());
-	AddControllerPitchInput(-CurrentLookSpeed.Y * GetWorld()->GetDeltaSeconds());
+			}
+		}
+		else
+		{
+			TargetUpDownType = 1;
+		}
+	}
 	
+
 	
+	UE_LOG(MainPlayerLog, Warning, TEXT("XXXXXXX pitch x %f, target type %d current type %d"),GetControlRotation().Pitch, TargetUpDownType, CurrentUpDownType);
 }
 
 void ADIY_MainPlayer::HandleXYPlayerMove(const FInputActionValue& Value)
@@ -257,7 +315,7 @@ void ADIY_MainPlayer::HandleXYPlayerMove(const FInputActionValue& Value)
 
 	FVector ActorLocation = GetActorLocation();
 	FVector EndLocation = ActorLocation + DesiredDir_ByPlayerInput_FollowCamView * 600.f;
-	DrawDebugLine(GetWorld(), ActorLocation, EndLocation, FColor::Red, false, -1, 0, 10);
+	//DrawDebugLine(GetWorld(), ActorLocation, EndLocation, FColor::Red, false, -1, 0, 10);
 	//UE_LOG(MainPlayerLog, Warning, TEXT("MHandling Move input x %f, y %f"), inPutVector2D.X, inPutVector2D.Y);
 	
 

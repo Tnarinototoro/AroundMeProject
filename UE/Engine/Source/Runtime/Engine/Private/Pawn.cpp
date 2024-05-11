@@ -580,6 +580,16 @@ FRotator APawn::GetControlRotation() const
 	return Controller ? Controller->GetControlRotation() : FRotator::ZeroRotator;
 }
 
+FRotator APawn::GetInPutRotation() const
+{
+	if (Controller && Controller->IsLocalPlayerController())
+	{
+		APlayerController* const PC = CastChecked<APlayerController>(Controller);
+		PC->GetInputRotation();
+	}
+	
+}
+
 void APawn::OnRep_Controller()
 {
 	bool bNotifyControllerChange = (Controller == nullptr);

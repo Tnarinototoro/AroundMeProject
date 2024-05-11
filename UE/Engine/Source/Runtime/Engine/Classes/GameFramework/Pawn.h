@@ -253,6 +253,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category=Pawn)
 	ENGINE_API FRotator GetControlRotation() const;
 
+
+	/** Get the rotation of from input  controller, often the 'view' rotation of this Pawn. */
+	UFUNCTION(BlueprintCallable, Category = Pawn)
+		ENGINE_API FRotator GetInPutRotation() const;
+
 	/** Called when Controller is replicated */
 	UFUNCTION()
 	ENGINE_API virtual void OnRep_Controller();
