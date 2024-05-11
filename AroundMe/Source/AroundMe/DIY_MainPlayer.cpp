@@ -212,45 +212,6 @@ void ADIY_MainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	}
 }
 
-void ADIY_MainPlayer::UpdateUpDownCam(float DeltaTime)
-{
-	
-	float current_pitch_depot= UpDownCamPitchDepo[CurrentUpDownType];
-	bool should_execute_lerp{ false };
-
-	float target_pitch{ 0 };
-	if (TargetUpDownType != CurrentUpDownType)
-	{
-		should_execute_lerp = true;
-		target_pitch= UpDownCamPitchDepo[(int)TargetUpDownType];
-	}
-	else
-	{
-		if (GetControlRotation().Pitch != current_pitch_depot)
-		{
-			
-			target_pitch = current_pitch_depot;
-			should_execute_lerp = true;
-		}
-		
-	}
-
-
-	if(should_execute_lerp)
-	{
-		
-		/*float cur_lerped_pitch = FMath::FInterpTo(GetControlRotation().Pitch, target_pitch, DeltaTime, LookSpeedInterpRate);
-
-		UE_LOG(MainPlayerLog, Warning, TEXT("target pitch %f current pitch %f ,calculated pitch is %f"), target_pitch, GetControlRotation().Pitch, cur_lerped_pitch);*/
-		AddControllerPitchInput(target_pitch - GetControlRotation().Pitch);
-
-		
-		if (GetControlRotation().Pitch == target_pitch)
-		{
-			CurrentUpDownType = TargetUpDownType;
-		}
-	}
-}
 
 void ADIY_MainPlayer::UpdateDesiredDir_ByPlayerInput_FollowCamView(float DeltaTime)
 {
@@ -271,40 +232,92 @@ void ADIY_MainPlayer::UpdateDesiredDir_ByPlayerInput_FollowCamView(float DeltaTi
 	
 }
 
+void ADIY_MainPlayer::UpdateUpDownCam(float DeltaTime)
+{
+
+	float current_pitch_depot = UpDownCamPitchDepo[CurrentUpDownType];
+	bool should_execute_lerp{ false };
+
+	float target_pitch{ 0 };
+	if (TargetUpDownType != CurrentUpDownType)
+	{
+		should_execute_lerp = true;
+		target_pitch = UpDownCamPitchDepo[(int)TargetUpDownType];
+	}
+	else
+	{
+
+		if (GetControlRotation().Pitch != current_pitch_depot)
+		{
+
+			target_pitch = current_pitch_depot;
+			should_execute_lerp = true;
+		}
+
+	}
+
+
+	if (should_execute_lerp)
+	{
+		 
+		
+		FRotator NewRotator = GetControlRotation();
+
+		NewRotator.Pitch = FMath::FInterpTo(NewRotator.Pitch, target_pitch, DeltaTime, LookSpeedInterpRate);
+
+	
+		
+		 
+		Controller->SetControlRotation(NewRotator);
+		
+
+		
+		if (FMath::Abs(GetControlRotation().Pitch - target_pitch) <= 0.1f)
+		{
+			CurrentUpDownType = TargetUpDownType;
+		}
+		
+	}
+	//UE_LOG(MainPlayerLog, Warning, TEXT("xxxxxx cur rotation pitch %f"), GetControlRotation().Pitch);
+}
+
 
 void ADIY_MainPlayer::HandleXYMouseMove(const FInputActionValue& Value)
 {
 	FVector2D Axis2DValue = Value.Get<FVector2D>();
 
-	if (CurrentUpDownType == TargetUpDownType)
+	UE_LOG(MainPlayerLog, Warning, TEXT("yYYYYY before pitch x %f, added pitch %f"), GetControlRotation().Pitch, Axis2DValue.Y * 5.0f);
+
+	
+
+
+	if (FMath::Abs(Axis2DValue.Y) > UpDownCameraLerpTriggerThresHold)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Current input Y %f"), Axis2DValue.Y);
-		if (FMath::Abs(Axis2DValue.Y) > UpDownCameraLerpTriggerThresHold)
+
+		if (Axis2DValue.Y > 0)
 		{
-
-			if (Axis2DValue.Y > 0)
+			if (TargetUpDownType >= 1)
 			{
-				TargetUpDownType=0;
-
-
-
+				--TargetUpDownType;
 			}
-			else
-			{
-				TargetUpDownType = 2;
 
 
-			}
+
 		}
 		else
 		{
-			TargetUpDownType = 1;
+			if (TargetUpDownType < UpDownCameraType::Cam_Flying_Type)
+			{
+				++TargetUpDownType;
+			}
+
+
 		}
 	}
 	
 
 	
-	UE_LOG(MainPlayerLog, Warning, TEXT("XXXXXXX pitch x %f, target type %d current type %d"),GetControlRotation().Pitch, TargetUpDownType, CurrentUpDownType);
+	UE_LOG(MainPlayerLog, Warning, TEXT("xxxxxxxx after pitch %f"),GetControlRotation().Pitch);
 }
 
 void ADIY_MainPlayer::HandleXYPlayerMove(const FInputActionValue& Value)
