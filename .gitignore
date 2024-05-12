@@ -1,28 +1,18 @@
 
-/AroundMe/.vs
-/UE/UE5.sln
-/UE/Templates
-/UE/Samples
-/UE/Engine/Extras
-/UE/Engine/Content
-/UE/Engine/Plugins
-/UE/Engine/Source/ThirdParty
-/UE/FeaturePacks
-/UE/Engine/Binaries
-/AroundMe/Saved
-/UE/.vs
-/UE/Engine/Documentation
-/UE/Engine/Saved
-/UE/Engine/Source/
-/UE/Engine/Programs
-/AroundMe/Plugins/DIYAndroidServiceLib/Binaries
-/AroundMe/Binaries
-/UE/.vscode
+# Ignore all files by default, but scan all directories
+*
+!*/
 
-/AroundMe/AroundMe.sln
-/AroundMe/.vsconfig
-/AroundMe/AroundMe.uproject
-/UE/.uedependencies
+
+
+!/AroundMe/Source/
+!/AroundMe/Content/
+!/AroundMe/Config/
+!/AroundMe/Plugins/
+!/AroundMe/AroundMe.uproject
+
+
+!/AroundMe/AroundMeLib/
 **/Build/**
 **/Builds/**
 **/Intermediate/**
@@ -32,106 +22,4 @@
 
 
 
-
-
-# Exceptions
-
-
-# ISPC files
-!*.ispc
-!*.isph
-
-# Java source files
-!*.java
-!*.java.template
-# C# source files
-!*.cs
-!*.cs.template
-!*.aspx
-!*.resx
-
-# Shader formats
-!*.usf
-!*.ush
-!*.hlsl
-!*.glsl
-
-# Text files
-!*.txt
-!*.md
-
-
-# Script files
-!*.bat
-!*.sh
-!*.pl
-!*.py
-!*.ps1
-!*.js
-!*.ts
-!*.tsx
-!*.command
-
-# Other configuration and markup files
-!*.ini
-
-!*.tps
-!*.xml
-!*.xaml
-!*.uplugin
-!*.html
-!*.html.template
-!*.css
-!*.udn
-!*.config
-!*.version
-!.git*
-!.dockerignore
-!.editorconfig
-!.plist
-!.yaml
-!.yml
-
-# Projects and makefiles
-!*.cmake
-!*.mk
-!*.dsp
-!*.dsw
-!*.csproj
-!*.vcproj
-!*.vcxproj
-!*.vcxproj.filters
-!*.xcodeproj
-!*.xcconfig
-!*.vsprops
-!*.snippet
-!Dockerfile
-!Makefile
-!Makefile.*
-!Settings.settings
-
-# Specific names
-!README
-!AUTHORS
-!LICENSE
-!FAQ
-!VERSION
-!ChangeLog
-
-# C/C++ source files
-!*.c
-!*.cc
-!*.cpp
-!*.cpp.template
-!*.h
-!*.h.template
-!*.hpp
-!*.inl
-!*.inc
-!*.m
-!*.mm
-!*.rc
-!*.rc2
-!*.def
-!*.manifest
 
