@@ -1,6 +1,4 @@
 // All rights reserved to ShadowCandle Studio
-
-
 #include "DIY_MainPlayer.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -263,18 +261,29 @@ void ADIY_MainPlayer::UpdateUpDownCam(float DeltaTime)
 		
 		FRotator NewRotator = GetControlRotation();
 
-		NewRotator.Pitch = FMath::FInterpTo(NewRotator.Pitch, target_pitch, DeltaTime, LookSpeedInterpRate);
+		NewRotator.Pitch = FMath::FInterpTo(NewRotator.Pitch, target_pitch, DeltaTime, UpDownCameraLerpSpeed);
 
 	
 		
-		 
+	
 		Controller->SetControlRotation(NewRotator);
-		
 
-		
+
+		float new_fov=FMath::FInterpTo(FollowCamera->FieldOfView,UpDownCamFOVDepo[TargetUpDownType],DeltaTime,UpDownCameraLerpSpeed);
+
+
+		FollowCamera->SetFieldOfView(new_fov);
+
+
+		float new_target_spring_length=FMath::FInterpTo(CameraBoom->TargetArmLength,UpDownCamSpringLengthDepo[TargetUpDownType],DeltaTime,UpDownCameraLerpSpeed);
+
+
+		CameraBoom->TargetArmLength=new_target_spring_length;
+
 		if (FMath::Abs(GetControlRotation().Pitch - target_pitch) <= 0.1f)
 		{
 			CurrentUpDownType = TargetUpDownType;
+			
 		}
 		
 	}
@@ -286,12 +295,13 @@ void ADIY_MainPlayer::HandleXYMouseMove(const FInputActionValue& Value)
 {
 	FVector2D Axis2DValue = Value.Get<FVector2D>();
 
-	UE_LOG(MainPlayerLog, Warning, TEXT("yYYYYY before pitch x %f, added pitch %f"), GetControlRotation().Pitch, Axis2DValue.Y * 5.0f);
-
-	
+	//UE_LOG(MainPlayerLog, Warning, TEXT("yYYYYY before pitch x %f, added pitch %f"), GetControlRotation().Pitch, Axis2DValue.Y * 5.0f);
 
 
-	if (FMath::Abs(Axis2DValue.Y) > UpDownCameraLerpTriggerThresHold)
+
+	if(CurrentUpDownType==TargetUpDownType)
+	{
+		if (FMath::Abs(Axis2DValue.Y) > UpDownCameraLerpTriggerThresHold)
 	{
 
 		if (Axis2DValue.Y > 0)
@@ -315,9 +325,11 @@ void ADIY_MainPlayer::HandleXYMouseMove(const FInputActionValue& Value)
 		}
 	}
 	
+	}
+	
 
 	
-	UE_LOG(MainPlayerLog, Warning, TEXT("xxxxxxxx after pitch %f"),GetControlRotation().Pitch);
+	//UE_LOG(MainPlayerLog, Warning, TEXT("xxxxxxxx after pitch %f"),GetControlRotation().Pitch);
 }
 
 void ADIY_MainPlayer::HandleXYPlayerMove(const FInputActionValue& Value)
