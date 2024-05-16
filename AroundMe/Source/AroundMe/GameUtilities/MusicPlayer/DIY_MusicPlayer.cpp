@@ -5,7 +5,7 @@
 #include "DIY_MusicPlayerDefines.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Misc/DateTime.h"
-#include "AroundMe/DIY_Utilities.h"
+#include "AroundMe/GameUtilities/DIY_Utilities.h"
 
 
 ADIY_MusicPlayer*  ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;

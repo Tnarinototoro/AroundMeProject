@@ -2,7 +2,7 @@
 
 
 #include "DIY_CropGrowthComponent.h"
-#include "DIY_ChangeStaticMeshComponent.h"
+
 // Sets default values for this component's properties
 UDIY_CropGrowthComponent::UDIY_CropGrowthComponent()
 {

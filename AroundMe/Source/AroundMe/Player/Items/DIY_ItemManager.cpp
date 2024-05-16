@@ -3,7 +3,7 @@
 
 #include "DIY_ItemManager.h"
 #include "Misc/MessageDialog.h"
-#include "DIY_Utilities.h"
+
 #include "DIY_ItemDefines.h"
 #include "Engine/StreamableManager.h"
 #include "Engine/AssetManager.h"

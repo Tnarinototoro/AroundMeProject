@@ -1,25 +1,14 @@
-
-# Ignore all files by default, but scan all directories
-*
-!*/
-
-
-
-!/AroundMe/Source/
-!/AroundMe/Content/
-!/AroundMe/Config/
-!/AroundMe/Plugins/
-!/AroundMe/AroundMe.uproject
-
-
-!/AroundMe/AroundMeLib/
 **/Build/**
 **/Builds/**
 **/Intermediate/**
 **/DerivedDataCache/**
 **/Saved/**
+**/.vs/**
+**/.vscode/**
+**/Binaries/**
 
 
-
-
-
+AroundMe/.ignore
+AroundMe/AroundMe.sln
+AroundMe/AroundMe.code-workspace
+AroundMe/.vsconfig
