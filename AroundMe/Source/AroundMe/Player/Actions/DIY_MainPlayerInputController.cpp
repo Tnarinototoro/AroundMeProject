@@ -97,35 +97,6 @@ void UDIY_MainPlayerInputController::HandleXYPlayerMove(const FInputActionValue&
 
 	
 }
-// UDIY_MainPlayerActionController* UDIY_MainPlayerInputController::AcquireMainPlayerActionController()
-// {
-// 	if(nullptr!=mMainPlayerActionController)
-// 	return mMainPlayerActionController;
-
-// 	AActor* Owner = GetOwner();
-//     if (Owner)
-//     {
-//         mMainPlayerActionController=Owner->FindComponentByClass<UDIY_MainPlayerActionController>();
-//     }
-// 	ensure(mMainPlayerActionController);
-//     return mMainPlayerActionController;
-// }
-
-// UDIY_MainPlayerCameraController* UDIY_MainPlayerInputController::AcquireMainPlayerCameraController()
-// {
-// 	if(nullptr!=mMainPlayerCameraController)
-// 	return mMainPlayerCameraController;
-
-// 	AActor* Owner = GetOwner();
-//     if (Owner)
-//     {
-//         mMainPlayerCameraController=Owner->FindComponentByClass<UDIY_MainPlayerCameraController>();
-//     }
-// 	ensure(mMainPlayerCameraController);
-//     return mMainPlayerCameraController;
-
-// }
-
 
 
 
@@ -133,7 +104,7 @@ void UDIY_MainPlayerInputController::HandleXYPlayerMove(const FInputActionValue&
 
 void UDIY_MainPlayerInputController::HandlePlayerJump(const FInputActionValue &Value)
 {
-   
+   TriggerProcessJumpInput.Broadcast(Value);
     AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->ProcessJumpInput();
 	//\UE_LOG(MainPlayerLog, Warning, TEXT("Jump started"));
 	
@@ -156,10 +127,6 @@ void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue& 
 
 
 
-}
-void UDIY_MainPlayerInputController::CustomFunction()
-{
-    UE_LOG(LogTemp, Warning, TEXT("Custom Value: %f"), CustomValue);
 }
 
 

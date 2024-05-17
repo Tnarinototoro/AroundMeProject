@@ -48,9 +48,16 @@ void ADIY_MainPlayer::BeginPlay()
 		PC->PlayerCameraManager->ViewPitchMax = 45.0f;   
 		
 	}
-	
-	
 
+	AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->TriggerProcessJumpInput.AddDynamic(this,&ADIY_MainPlayer::DoJumpAction);
+
+}
+
+void ADIY_MainPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->TriggerProcessJumpInput.RemoveDynamic(this,&ADIY_MainPlayer::DoJumpAction);
 
 }
 
@@ -108,6 +115,11 @@ void ADIY_MainPlayer::UpdatePlayerMove(float deltaTime)
 	{
 		AddMovementInput(AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->DesiredDir_ByPlayerInput_FollowCamView);
 	}
+}
+
+void ADIY_MainPlayer::DoJumpAction(const FInputActionValue &Value)
+{
+	Jump();
 }
 
 // Called every frame

@@ -14,8 +14,7 @@ class AROUNDME_API UDIY_MainPlayerInputController : public UActorComponent
 
 public:    
 
-
-	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnJumpActionPressed, const FInputActionValue&, inKeyValue);
     // 设置默认值
     UDIY_MainPlayerInputController();
 
@@ -53,11 +52,14 @@ public:
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "A_DIY")
 	UInputMappingContext* MainPlayerInputMappingContext;
-    // 一个自定义的函数
-    UFUNCTION(BlueprintCallable, Category="Custom")
-    void CustomFunction();
+
 
     void RegisterInputMappings(class APlayerController* PC);
+
+
+    //those delegates are used to offer convenience when customizing logic after receiving the notify
+	UPROPERTY(BlueprintAssignable, Category = "InputReaction")
+		FOnJumpActionPressed TriggerProcessJumpInput;
 
 UPROPERTY(BlueprintReadOnly, //EditAnywhere,
 		Category = "A_DIY")

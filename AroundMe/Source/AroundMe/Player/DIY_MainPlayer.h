@@ -30,6 +30,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PawnClientRestart() override;
 	void LoadAndSetSkeletalMesh(USkeletalMeshComponent* Component, const FSoftObjectPath& AssetToLoad);
 	void OnMeshLoaded(USkeletalMeshComponent* Component, FSoftObjectPath AssetPath);
@@ -69,11 +70,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "A_DIY")
 		TMap<EHatType, FSoftObjectPath> HatMeshesMap;
 
-	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
-		Category = "A_DIY")
-		EMainPlayerActingStateType CurrentActingState {
-		EMainPlayerActingStateType::State_Base_Motion
-	};
+	
 	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
 		Category = "A_DIY")
 		AActor* PickUpedActor {
@@ -104,6 +101,7 @@ private:
 
 	DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerInputController)
 	
-    
+	UFUNCTION()
+    void DoJumpAction(const struct FInputActionValue& Value);
 	
 };
