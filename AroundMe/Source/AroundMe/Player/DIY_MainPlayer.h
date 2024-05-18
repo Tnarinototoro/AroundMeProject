@@ -56,19 +56,19 @@ protected:
 
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "A_DIY")
-		USkeletalMeshComponent* HairComponent;
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "A_DIY")
+	// 	USkeletalMeshComponent* HairComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "A_DIY")
-		USkeletalMeshComponent* HatComponent;
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "A_DIY")
+	// 	USkeletalMeshComponent* HatComponent;
 
 
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "A_DIY")
-		TMap<EHairType, FSoftObjectPath> HairMeshesMap;
+	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "A_DIY")
+	// 	TMap<EHairType, FSoftObjectPath> HairMeshesMap;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "A_DIY")
-		TMap<EHatType, FSoftObjectPath> HatMeshesMap;
+	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "A_DIY")
+	// 	TMap<EHatType, FSoftObjectPath> HatMeshesMap;
 
 	
 	UPROPERTY(BlueprintReadWrite, //EditAnywhere,

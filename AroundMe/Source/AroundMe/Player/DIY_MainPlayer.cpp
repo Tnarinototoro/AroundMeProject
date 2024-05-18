@@ -22,14 +22,14 @@ ADIY_MainPlayer::ADIY_MainPlayer()
 
 
 
-	HairComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HairComponent"));
-	HairComponent->SetupAttachment(GetMesh());
+	// HairComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HairComponent"));
+	// HairComponent->SetupAttachment(GetMesh());
 
 	
-	HatComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HatComponent"));
+	// HatComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HatComponent"));
 	
 
-	HatComponent->SetupAttachment(GetMesh(),TEXT("headSocket"));
+	// HatComponent->SetupAttachment(GetMesh(),TEXT("headSocket"));
 
 	
 }
@@ -154,13 +154,13 @@ IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer,UDIY_MainPlayerInputControll
 void ADIY_MainPlayer::ChangeHair(EHairType NewHairType)
 {
 	FSoftObjectPath HairMeshToLoad = GetHairMeshReferenceFromType(NewHairType);
-	LoadAndSetSkeletalMesh(HairComponent, HairMeshToLoad);
+	//LoadAndSetSkeletalMesh(HairComponent, HairMeshToLoad);
 }
 
 void ADIY_MainPlayer::ChangeHat(EHatType NewHatType)
 {
 	FSoftObjectPath HatMeshToLoad = GetHatMeshReferenceFromType(NewHatType);
-	LoadAndSetSkeletalMesh(HatComponent, HatMeshToLoad);
+	//LoadAndSetSkeletalMesh(HatComponent, HatMeshToLoad);
 }
 void ADIY_MainPlayer::PicUpDetectedItem(AActor* inActor,FName SocketName)
 {
@@ -218,12 +218,16 @@ void ADIY_MainPlayer::OnMeshLoaded(USkeletalMeshComponent* Component, FSoftObjec
 
 FSoftObjectPath ADIY_MainPlayer::GetHairMeshReferenceFromType(EHairType HairType)
 {
-	const FSoftObjectPath* MeshReference = HairMeshesMap.Find(HairType);
-	return MeshReference ? *MeshReference : FSoftObjectPath();
+	// const FSoftObjectPath* MeshReference = HairMeshesMap.Find(HairType);
+	// return MeshReference ? *MeshReference : FSoftObjectPath();
+
+	return FSoftObjectPath();
 }
 
 FSoftObjectPath ADIY_MainPlayer::GetHatMeshReferenceFromType(EHatType HatType)
 {
-	const FSoftObjectPath* MeshReference = HatMeshesMap.Find(HatType);
-	return MeshReference ? *MeshReference : FSoftObjectPath();
+	// const FSoftObjectPath* MeshReference = HatMeshesMap.Find(HatType);
+	// return MeshReference ? *MeshReference : FSoftObjectPath();
+
+	return FSoftObjectPath();
 }

@@ -34,13 +34,26 @@ UDIY_MainPlayerCameraController::UDIY_MainPlayerCameraController()
 	// 	UE_LOG(LogTemp, Warning, TEXT("CameraBoom is NOT attached to PlayerCapsule."));
 	// }
 
-    // 初始化自定义属性
-    CustomValue = 0.0f;
+   
 }
 
 void UDIY_MainPlayerCameraController::BeginPlay()
 {
     Super::BeginPlay();
+	AController * cur_controller=AcquireOwnerPawnController();
+
+	if(cur_controller)
+	{
+		FRotator NewRotator = cur_controller->GetControlRotation();
+
+		NewRotator.Pitch =340.f ;
+
+	
+		
+	
+		cur_controller->SetControlRotation(NewRotator);
+	}
+	
 }
 
 void UDIY_MainPlayerCameraController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
@@ -51,11 +64,7 @@ void UDIY_MainPlayerCameraController::TickComponent(float DeltaTime, ELevelTick 
     UpdateUpDownCam(DeltaTime);
 }
 
-void UDIY_MainPlayerCameraController::CustomFunction()
-{
-     // 打印自定义值
-    UE_LOG(LogTemp, Warning, TEXT("Custom Value: %f"), CustomValue);
-}
+
 AController *UDIY_MainPlayerCameraController::AcquireOwnerPawnController()
 {
 	AActor* Owner = GetOwner();
