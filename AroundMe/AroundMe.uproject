@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{57A229B4-4490-7920-89E0-E8895B2EE34F}",
+	"EngineAssociation": "{E6E61482-4F0C-E68D-9F7C-3FAC894894E4}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -37,6 +37,11 @@
 		{
 			"Name": "AndroidCamera",
 			"Enabled": true
+		},
+		{
+			"Name": "AssetsCleaner",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/3caab7c6e81f449296989122c043ae21"
 		}
 	]
 }
