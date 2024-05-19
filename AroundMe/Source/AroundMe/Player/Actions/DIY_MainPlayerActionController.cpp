@@ -5,7 +5,7 @@ UDIY_MainPlayerActionController::UDIY_MainPlayerActionController()
      
     PrimaryComponentTick.bCanEverTick = true;
 
-
+    
 }
 
 void UDIY_MainPlayerActionController::BeginPlay()
@@ -18,10 +18,7 @@ void UDIY_MainPlayerActionController::TickComponent(float DeltaTime, ELevelTick 
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UDIY_MainPlayerActionController::CustomFunction()
-{
 
-}
 
 void UDIY_MainPlayerActionController::ProcessJumpInput()
 {

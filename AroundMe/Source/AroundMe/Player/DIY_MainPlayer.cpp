@@ -78,9 +78,6 @@ void ADIY_MainPlayer::PawnClientRestart()
 void ADIY_MainPlayer::UpdateTPSCamera(float deltaTime)
 {
 	
-
-	
-	
 	FVector ActorLocation = GetActorLocation();
 	FVector EndLocation = ActorLocation + (GetActorForwardVector() * 100);
 	//DrawDebugLine(GetWorld(), ActorLocation, EndLocation, FColor::Green, false, -1, 0, 5);

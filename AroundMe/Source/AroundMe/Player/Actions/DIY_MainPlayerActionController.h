@@ -25,9 +25,7 @@ public:
     UPROPERTY(BlueprintReadWrite, //EditAnywhere,
 		Category = "A_DIY")
 		EMainPlayerActingStateType CurrentActingState {EMainPlayerActingStateType::State_Base_Motion};
-    // 一个自定义的函数
-    UFUNCTION(BlueprintCallable, Category="Custom")
-    void CustomFunction();
+   
 
     void ProcessJumpInput();
 };

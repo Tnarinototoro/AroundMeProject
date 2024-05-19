@@ -33,6 +33,9 @@ public:
     UFUNCTION()
 	void HandleXYMouseMove(const FInputActionValue& Value);
 
+    //UFUNCTION()
+    //void HandleXYMouseMoveHoldCompleted(const FInputActionValue& Value);
+
 	UFUNCTION()
 	void HandleXYPlayerMove(const FInputActionValue& Value);
 
@@ -40,15 +43,24 @@ public:
 	void HandlePlayerJump(const FInputActionValue& Value);
 
 
+    UFUNCTION()
+	void onInteractPressed(const FInputActionValue& Value);
+
+    UFUNCTION()
+	void onInteractReleased(const FInputActionValue& Value);
+
+    UFUNCTION()
+    void onInteractPressing(const FInputActionValue& Value);
+
+    UFUNCTION()
+    void onInteractTriggered(const FInputActionValue& Value);
+
 	UFUNCTION()
 	void HandleXYPlayerMoveInputFinished(const FInputActionValue& Value);
     //-----------------------------input finctions end
 
 
 
-    // 一个自定义的属性
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Custom")
-    float CustomValue;
     
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "A_DIY")
 	UInputMappingContext* MainPlayerInputMappingContext;
