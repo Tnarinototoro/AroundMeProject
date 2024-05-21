@@ -128,6 +128,26 @@ void ADIY_MainPlayer::Tick(float DeltaTime)
 	UpdateTPSCamera(DeltaTime);
 	
 	UpdatePlayerMove(DeltaTime);
+
+
+	if (PickUpedActor != nullptr)
+	{
+		ADIY_ItemBase* ItemBase = Cast<ADIY_ItemBase>(PickUpedActor);
+		if (ItemBase)
+		{
+			FQuat cur_socket_quat= GetMesh()->GetSocketQuaternion("hand_rSocket");
+			FQuat target_picked_item_world_quat = ItemBase->InitRotator.Quaternion();
+			FQuat relative_quat = cur_socket_quat.Inverse() * target_picked_item_world_quat;
+			FVector for_ward_loc = GetActorForwardVector().GetSafeNormal() * 500.0f;
+			for_ward_loc.Z = 10.0f;
+			FVector target_loc = GetActorLocation() + for_ward_loc;
+			FVector socket_loc = GetMesh()->GetSocketLocation("hand_rSocket");
+			FVector relative_location = { ItemBase ->InitWorldPosition-socket_loc};
+			
+			ItemBase->SetActorRelativeRotation(relative_quat);
+			ItemBase->SetActorLocation(target_loc);
+		}
+	}
 	
 }
 

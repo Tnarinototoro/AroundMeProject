@@ -62,7 +62,7 @@ public:
 
 
     
-    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "A_DIY")
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "DIY_MainPlayerInputController")
 	UInputMappingContext* MainPlayerInputMappingContext;
 
 
@@ -70,11 +70,11 @@ public:
 
 
     //those delegates are used to offer convenience when customizing logic after receiving the notify
-	UPROPERTY(BlueprintAssignable, Category = "InputReaction")
+	UPROPERTY(BlueprintAssignable, Category = "DIY_MainPlayerInputController")
 		FOnJumpActionPressed TriggerProcessJumpInput;
 
 UPROPERTY(BlueprintReadOnly, //EditAnywhere,
-		Category = "A_DIY")
+		Category = "DIY_MainPlayerInputController")
 		bool IsInputingMove{ false };
 
   

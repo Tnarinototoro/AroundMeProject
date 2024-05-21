@@ -20,7 +20,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable, Category = "Growth")
+	UFUNCTION(BlueprintCallable, Category = "DIY_CropGrowthComponen")
 		bool GrowWithSteps(int DeltaSteps); // async load  mesh and set it
 
 	

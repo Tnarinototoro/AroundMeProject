@@ -33,10 +33,10 @@ public:
 	FVector2D CurrentLookSpeed{};
 	FVector2D TargetLookSpeed{};
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "A_DIY")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "DIY_MainPlayerCameraController")
 		FVector2D LookAcceleration;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "A_DIY")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "DIY_MainPlayerCameraController")
 		float LookSpeedInterpRate;
 
     // Called every frame
@@ -47,21 +47,21 @@ public:
 
 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "A_DIY")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY_MainPlayerCameraController")
 	class USpringArmComponent* CameraBoom;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "A_DIY")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY_MainPlayerCameraController")
 	class UCameraComponent* FollowCamera;
 
 	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
 		EditDefaultsOnly,
-		Category = "A_DIY")
+		Category = "DIY_MainPlayerCameraController")
 		float UpDownCameraLerpSpeed{ 2.0f };
 
 	UPROPERTY(BlueprintReadWrite,
 		EditDefaultsOnly,
 		//EditAnywhere,
-		Category = "A_DIY")
+		Category = "DIY_MainPlayerCameraController")
 		float UpDownCameraLerpTriggerThresHold{ 1.0f };
 
 

@@ -41,7 +41,7 @@ public:
    
     static ADIY_MusicPlayer* GetMusicPlayer();
     // 音乐资源数组
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Music")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_MusicPlayer")
         TMap<ESoundTrackID,USoundBase*> MusicTracks;
 
     // 音频组件用于播放2D音乐
@@ -52,13 +52,13 @@ public:
     void LoadMusicFromDirectory();
 
     // 根据索引播放音乐
-    UFUNCTION(BlueprintCallable, Category = "Music")
+    UFUNCTION(BlueprintCallable, Category = "DIY_MusicPlayer")
         void PlayMusicByIndex(ESoundTrackID musicID);
-    UFUNCTION(BlueprintCallable, Category = "Music")
+    UFUNCTION(BlueprintCallable, Category = "DIY_MusicPlayer")
         void PlayMusicCorrespondingToTime();
     // 停止音乐播放
-    UFUNCTION(BlueprintCallable, Category = "Music")
+    UFUNCTION(BlueprintCallable, Category = "DIY_MusicPlayer")
         void StopMusic();
-    UFUNCTION(BlueprintCallable, Category = "Music")
+    UFUNCTION(BlueprintCallable, Category = "DIY_MusicPlayer")
         ESoundTrackID GetCurrentMusicTrackID();
 };

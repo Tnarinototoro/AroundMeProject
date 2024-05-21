@@ -22,7 +22,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
+	UPROPERTY(EditDefaultsOnly, Category = "DIY_ChangeStaticMeshComponent")
 		TArray<TSoftObjectPtr<UStaticMesh>> PossibleMeshes; 
 
 	
@@ -46,6 +46,6 @@ public:
 	{
 		return CurrentStateIndex;
 	}
-	UFUNCTION(BlueprintCallable, Category = "Mesh")
+	UFUNCTION(BlueprintCallable, Category = "DIY_ChangeStaticMeshComponent")
 		void ChangeState(int TargetIndex, bool ForceExecuting); // async load  mesh and set it 
 };

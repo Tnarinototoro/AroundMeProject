@@ -85,13 +85,14 @@ void ADIY_ItemBase::OnPickUp(APawn* Picker, FName SocketName)
 		if (PickerMesh)
 		{
 			BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			AttachToComponent(PickerMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketName);
+			AttachToComponent(PickerMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName);
 		}
 	}
 }
 
 void ADIY_ItemBase::OnPlaced()
 {
+	
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	this->SetActorRotation(InitRotator);

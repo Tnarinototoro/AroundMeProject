@@ -39,14 +39,14 @@ protected:
 
 
 
-	UFUNCTION(BlueprintCallable, Category = "A_DIY")
+	UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
 		void ChangeHair(EHairType NewHairType);
 
-	UFUNCTION(BlueprintCallable, Category = "A_DIY")
+	UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
 		void ChangeHat(EHatType NewHatType);
-	UFUNCTION(BlueprintCallable, Category = "A_DIY")
+	UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
 		void PicUpDetectedItem(AActor* inActor, FName SocketName = FName("hand_rSocket"));
-	UFUNCTION(BlueprintCallable, Category = "A_DIY")
+	UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
 		void PlacePickedUpItem();
 
 
@@ -71,12 +71,16 @@ protected:
 	// 	TMap<EHatType, FSoftObjectPath> HatMeshesMap;
 
 	
-	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
-		Category = "A_DIY")
-		AActor* PickUpedActor {
-		nullptr
-	};
+	UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayer")
+	AActor* PickUpedActor {nullptr};
 	
+
+	UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayer")
+	int GarbageNameNum{ 0 };
+
+	UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayer")
+	int WithNameNum{ 0 };
+
 
 
 

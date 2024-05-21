@@ -19,11 +19,11 @@ public:
     static ADIY_ItemManager* GetManager();
 
  
-    UFUNCTION(BlueprintCallable, Category = "Items")
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
         void InitializeItemReferences();
 
     // Spawn an Item
-    UFUNCTION(BlueprintCallable, Category = "Items")
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
         void SpawnItemByID(EItemID ItemID, const FVector& Location, const FRotator& Rotation);
 
     // Called every frame
@@ -39,10 +39,10 @@ protected:
 
     
   
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Items")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemManager")
         UDataTable* ItemDataTable;
    
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Items")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemManager")
         TMap < EItemID, FSoftObjectPath > BP_Items_Map;
  
     
