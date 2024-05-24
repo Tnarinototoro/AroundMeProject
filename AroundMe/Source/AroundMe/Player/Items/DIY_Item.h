@@ -34,7 +34,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
-		void OnPickUp(APawn* Picker, FName SocketName);
+		void OnPickUp(class AActor* Picker, FName SocketName);
 	UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
 		void OnPlaced();
 

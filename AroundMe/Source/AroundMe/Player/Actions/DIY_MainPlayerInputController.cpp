@@ -5,6 +5,7 @@
 #include "DIY_MainPlayerActionController.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "DIY_ItemDetector.h"
 
 UDIY_MainPlayerInputController::UDIY_MainPlayerInputController()
 {
@@ -122,23 +123,67 @@ void UDIY_MainPlayerInputController::HandlePlayerJump(const FInputActionValue &V
 	
 }
 
-void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &Value)
+
+
+void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue& Value)
 {
-	//UE_LOG(MainPlayerLog, Warning, TEXT("Holding Started"));
+	
+
+	
+	AActor* detected_actor= AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor();
+	static bool execute_pick_up{ true };
+	if (execute_pick_up)
+	{
+		if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_Base_Motion)
+		{
+			if (nullptr != detected_actor)
+			{
+				AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PicUpDetectedItem(detected_actor, "hand_rSocket");
+
+				AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_PickingUp;
+				UE_LOG(MainPlayerLog, Warning, TEXT("Picked up the actor yyyyyyyy"));
+			}
+		}
+		
+
+
+
+		execute_pick_up = false;
+
+
+	}
+	else
+	{
+		if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_PickingUp)
+		{
+			AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PlacePickedUpItem();
+			AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_Base_Motion;
+			UE_LOG(MainPlayerLog, Warning, TEXT("PLaced the actorxxxxxxxx"));
+		}
+
+
+		execute_pick_up = true;
+	}
+
+	
+	
 }
 
-void UDIY_MainPlayerInputController::onInteractReleased(const FInputActionValue &Value)
+
+
+void UDIY_MainPlayerInputController::onInteractReleased(const FInputActionValue& Value)
 {
-	//UE_LOG(MainPlayerLog, Warning, TEXT("Holding holding released"));
+	
+	UE_LOG(MainPlayerLog, Warning, TEXT("Holding holding released"));
 }
 
 void UDIY_MainPlayerInputController::onInteractPressing(const FInputActionValue &Value)
 {
-	//UE_LOG(MainPlayerLog, Warning, TEXT("onInteractPressing !!!!"));
+	UE_LOG(MainPlayerLog, Warning, TEXT("onInteractPressing !!!!"));
 }
 void UDIY_MainPlayerInputController::onInteractTriggered(const FInputActionValue &Value)
 {
-	//UE_LOG(MainPlayerLog, Warning, TEXT("Interct Holding !!!!"));
+	UE_LOG(MainPlayerLog, Warning, TEXT("Interct Holding !!!!"));
 }
 
 void UDIY_MainPlayerInputController::HandleXYPlayerMoveInputFinished(const FInputActionValue& Value)
@@ -152,7 +197,7 @@ void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue& 
 {
 	FVector2D Axis2DValue = Value.Get<FVector2D>();
 
-	UE_LOG(MainPlayerLog, Warning, TEXT("HandleXYMouseMove triggered !!!!"));
+	//UE_LOG(MainPlayerLog, Warning, TEXT("HandleXYMouseMove triggered !!!!"));
 	AcquireOwnerActorOwnedUDIY_MainPlayerCameraController()->HandleMouseMoveForUpDownCam(Axis2DValue);
 
 
@@ -216,3 +261,5 @@ IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController,UDIY_Main
 
 
 IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController,UDIY_MainPlayerActionController)
+
+IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController, UDIY_ItemDetector)

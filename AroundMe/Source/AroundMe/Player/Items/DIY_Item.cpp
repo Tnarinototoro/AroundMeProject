@@ -76,7 +76,7 @@ void ADIY_ItemBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ADIY_ItemBase::OnPickUp(APawn* Picker, FName SocketName)
+void ADIY_ItemBase::OnPickUp(AActor* Picker, FName SocketName)
 {
 	
 	if (Picker)
@@ -86,6 +86,8 @@ void ADIY_ItemBase::OnPickUp(APawn* Picker, FName SocketName)
 		{
 			BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			AttachToComponent(PickerMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName);
+			UE_LOG(MainPlayerLog, Warning, TEXT("attached to the actor successfully"));
+			
 		}
 	}
 }
@@ -99,6 +101,8 @@ void ADIY_ItemBase::OnPlaced()
 	FVector CurLocation=this->GetActorLocation();
 	CurLocation.Z = InitWorldPosition.Z;
 	this->SetActorLocation(CurLocation);
+
+	UE_LOG(MainPlayerLog, Warning, TEXT("released to ground successfully"));
 }
 
 void ADIY_ItemBase::ResumeTrinkling()

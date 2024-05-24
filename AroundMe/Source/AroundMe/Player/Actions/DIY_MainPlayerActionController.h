@@ -19,6 +19,26 @@ protected:
     // Called when the game starts
     virtual void BeginPlay() override;
 
+   
+public:    
+
+    void ProcessJumpInput();
+    // Called every frame
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+    void PicUpDetectedItem(class AActor* inActor, FName SocketName);
+
+    void PlacePickedUpItem();
+
+    UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
+    EMainPlayerActingStateType CurrentActingState {EMainPlayerActingStateType::State_Base_Motion};
+    UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
+    bool CraftSuccessSign{ false };
+
+    UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayer")
+    AActor* PickUpedActor{ nullptr };
+
+
     UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
     float mActingRate{ 0.0f };
 
@@ -28,14 +48,4 @@ protected:
 
     UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
     FDIY_ItemDataTableRow mCurrentReceipt;
-public:    
-    // Called every frame
-    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-    UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
-    EMainPlayerActingStateType CurrentActingState {EMainPlayerActingStateType::State_Base_Motion};
-    UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
-    bool CraftSuccessSign{ false };
-
-    void ProcessJumpInput();
 };

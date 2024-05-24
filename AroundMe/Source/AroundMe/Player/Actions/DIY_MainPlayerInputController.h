@@ -15,7 +15,7 @@ class AROUNDME_API UDIY_MainPlayerInputController : public UActorComponent
 public:    
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnJumpActionPressed, const FInputActionValue&, inKeyValue);
-    // 设置默认值
+
     UDIY_MainPlayerInputController();
 
 protected:
@@ -45,6 +45,9 @@ public:
 
     UFUNCTION()
 	void onInteractPressed(const FInputActionValue& Value);
+   
+
+
 
     UFUNCTION()
 	void onInteractReleased(const FInputActionValue& Value);
@@ -91,5 +94,7 @@ private:
 
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerActionController)
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerCameraController)
+    DECLARE_GET_COMPONENT_HELPER(UDIY_ItemDetector)
+    
 
 };

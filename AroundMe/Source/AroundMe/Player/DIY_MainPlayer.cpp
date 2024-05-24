@@ -11,6 +11,7 @@
 #include "Engine/AssetManager.h"
 #include "Actions/DIY_MainPlayerInputController.h"
 #include "AroundMe/GameUtilities/DIY_HelperMacros.h"
+#include "Actions/DIY_MainPlayerActionController.h"
 
 
 
@@ -114,6 +115,55 @@ void ADIY_MainPlayer::UpdatePlayerMove(float deltaTime)
 	}
 }
 
+
+void ADIY_MainPlayer::UpdateGameLogic(float deltaTime)
+{
+
+
+	switch (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState)
+	{
+	case EMainPlayerActingStateType::State_Building:
+	{
+		
+		APlayerController* PC = Cast<APlayerController>(GetController());
+		if (PC)
+		{
+			
+			
+			if (PC->IsInputKeyDown(EKeys::TouchKeys[1]) || PC->IsInputKeyDown(EKeys::Q))
+			{
+				float progress =FMath::Clamp<float>( (PC->GetInputKeyTimeDown(EKeys::TouchKeys[1])+ PC->GetInputKeyTimeDown(EKeys::Q))/4.0f,0.f,1.0f);
+				
+
+				AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->mActingRate= FMath::Lerp<float>(1.0f, 10.0f, progress);
+
+				if (progress >= 1.0f)
+				{
+					AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CraftSuccessSign = true;
+				}
+
+			}
+			else
+			{
+				AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->mActingRate = 1.0f;
+			}
+
+		}
+
+		break;
+	}
+		
+	
+	default:
+		break;
+	}
+	UCharacterMovementComponent* cur_movement_compo = GetCharacterMovement();
+
+	ensure(cur_movement_compo&&cur_movement_compo->GetMaxSpeed()>0.f);
+
+	AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->mSpeedRate = cur_movement_compo->GetLastUpdateVelocity().Length() / cur_movement_compo->GetMaxSpeed();
+}
+
 void ADIY_MainPlayer::DoJumpAction(const FInputActionValue &Value)
 {
 	Jump();
@@ -130,9 +180,13 @@ void ADIY_MainPlayer::Tick(float DeltaTime)
 	UpdatePlayerMove(DeltaTime);
 
 
-	if (PickUpedActor != nullptr)
+
+	UpdateGameLogic(DeltaTime);
+
+	AActor* picked_up_actor = AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpedActor;
+	if (picked_up_actor != nullptr)
 	{
-		ADIY_ItemBase* ItemBase = Cast<ADIY_ItemBase>(PickUpedActor);
+		ADIY_ItemBase* ItemBase = Cast<ADIY_ItemBase>(picked_up_actor);
 		if (ItemBase)
 		{
 			FQuat cur_socket_quat= GetMesh()->GetSocketQuaternion("hand_rSocket");
@@ -168,50 +222,21 @@ IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer,UDIY_MainPlayerCameraControl
 IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer,UDIY_MainPlayerInputController)
 
 
-void ADIY_MainPlayer::ChangeHair(EHairType NewHairType)
-{
-	FSoftObjectPath HairMeshToLoad = GetHairMeshReferenceFromType(NewHairType);
-	//LoadAndSetSkeletalMesh(HairComponent, HairMeshToLoad);
-}
+IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer,UDIY_MainPlayerActionController)
 
-void ADIY_MainPlayer::ChangeHat(EHatType NewHatType)
-{
-	FSoftObjectPath HatMeshToLoad = GetHatMeshReferenceFromType(NewHatType);
-	//LoadAndSetSkeletalMesh(HatComponent, HatMeshToLoad);
-}
-void ADIY_MainPlayer::PicUpDetectedItem(AActor* inActor,FName SocketName)
-{
-	if (!PickUpedActor)
-	{
-		if (inActor)
-		{
-			
-			ADIY_ItemBase* ItemBase = Cast<ADIY_ItemBase>(inActor);
-			if (ItemBase)
-			{
-				ItemBase->OnPickUp(this, SocketName);
-				PickUpedActor = inActor;
-			}
+//void ADIY_MainPlayer::ChangeHair(EHairType NewHairType)
+//{
+//	FSoftObjectPath HairMeshToLoad = GetHairMeshReferenceFromType(NewHairType);
+//	//LoadAndSetSkeletalMesh(HairComponent, HairMeshToLoad);
+//}
+//
+//void ADIY_MainPlayer::ChangeHat(EHatType NewHatType)
+//{
+//	FSoftObjectPath HatMeshToLoad = GetHatMeshReferenceFromType(NewHatType);
+//	//LoadAndSetSkeletalMesh(HatComponent, HatMeshToLoad);
+//}
 
 
-		}
-	}
-	
-}
-//this will null the pickedUpActor Pointer
-void ADIY_MainPlayer::PlacePickedUpItem()
-{
-	if (PickUpedActor)
-	{
-		ADIY_ItemBase* ItemBase = Cast<ADIY_ItemBase>(PickUpedActor);
-		if (ItemBase)
-		{
-			ItemBase->OnPlaced();
-			PickUpedActor = nullptr;
-		}
-		
-	}
-}
 void ADIY_MainPlayer::LoadAndSetSkeletalMesh(USkeletalMeshComponent* Component, const FSoftObjectPath& AssetToLoad)
 {
 	if (Component && AssetToLoad.IsValid())

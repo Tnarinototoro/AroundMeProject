@@ -39,15 +39,11 @@ protected:
 
 
 
-	UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
-		void ChangeHair(EHairType NewHairType);
+	//UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
+	//	void ChangeHair(EHairType NewHairType);
 
-	UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
-		void ChangeHat(EHatType NewHatType);
-	UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
-		void PicUpDetectedItem(AActor* inActor, FName SocketName = FName("hand_rSocket"));
-	UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
-		void PlacePickedUpItem();
+	//UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayer")
+	//	void ChangeHat(EHatType NewHatType);
 
 
 
@@ -71,8 +67,7 @@ protected:
 	// 	TMap<EHatType, FSoftObjectPath> HatMeshesMap;
 
 	
-	UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayer")
-	AActor* PickUpedActor {nullptr};
+	
 	
 
 	UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayer")
@@ -85,8 +80,10 @@ protected:
 
 
 	void UpdateTPSCamera(float deltaTime);
-	
 
+	
+	
+	void UpdateGameLogic(float deltaTime);
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -104,6 +101,12 @@ private:
 
 
 	DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerInputController)
+
+
+
+
+	DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerActionController)
+	
 	
 	UFUNCTION()
     void DoJumpAction(const struct FInputActionValue& Value);
