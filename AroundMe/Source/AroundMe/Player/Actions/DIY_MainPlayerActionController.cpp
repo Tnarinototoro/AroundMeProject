@@ -1,6 +1,6 @@
 #include "DIY_MainPlayerActionController.h"
 #include "AroundMe/Player/Items/DIY_Item.h"
-
+#include "AroundMe/GameUtilities/Logs/DIY_LogHelper.h"
 
 UDIY_MainPlayerActionController::UDIY_MainPlayerActionController()
 {
@@ -32,7 +32,9 @@ void UDIY_MainPlayerActionController::PicUpDetectedItem(AActor* inActor, FName S
 			{
 				ItemBase->OnPickUp(GetOwner(), SocketName);
 				PickUpedActor = inActor;
-				UE_LOG(MainPlayerLog, Warning, TEXT("Picked up the actor successfully"));
+
+				EASY_LOG_MAINPLAYER(TEXT("Picked up the actor successfully"));
+				// UE_LOG(MainPlayerLog, Warning, TEXT("Picked up the actor successfully"));
 
 			}
 
