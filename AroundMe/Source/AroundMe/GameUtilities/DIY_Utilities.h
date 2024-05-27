@@ -7,7 +7,7 @@
 #include "DIY_Utilities.generated.h"
 
 
-class ADIY_ItemManager;
+
 /**
  * 
  */
@@ -18,7 +18,7 @@ class AROUNDME_API UDIY_Utilities : public UBlueprintFunctionLibrary
 public:
 	// Get ItemManager static singleton
 	UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
-		static ADIY_ItemManager* DIY_GetItemManagerInstance();
+		static class ADIY_ItemManager* DIY_GetItemManagerInstance();
 
 	// Function to enable or disable logging
 	UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")

@@ -1,6 +1,10 @@
 #include "DIY_MainPlayerCameraController.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/Controller.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+
+
 UDIY_MainPlayerCameraController::UDIY_MainPlayerCameraController()
 {
       // 启用每帧调用Tick()

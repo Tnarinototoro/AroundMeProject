@@ -1,5 +1,8 @@
 // All rights reserved to ShadowCandle Studio
 #include "DIY_MainPlayer.h"
+
+
+
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
@@ -10,10 +13,10 @@
 #include "Items/DIY_Item.h"
 #include "Engine/AssetManager.h"
 #include "Actions/DIY_MainPlayerInputController.h"
-#include "AroundMe/GameUtilities/DIY_HelperMacros.h"
+#include "../GameUtilities/DIY_HelperMacros.h"
 #include "Actions/DIY_MainPlayerActionController.h"
-
-
+#include "../GameUtilities/Logs/DIY_LogHelper.h"
+#include "Camera/DIY_MainPLayerCameraController.h"
 
 // Sets default values
 ADIY_MainPlayer::ADIY_MainPlayer()
@@ -72,7 +75,8 @@ void ADIY_MainPlayer::PawnClientRestart()
 	{
 		AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->RegisterInputMappings(PC);
 	}
-	UE_LOG(MainPlayerLog, Warning, TEXT("is enbled for input %d"),InputEnabled());
+	EASY_LOG_MAINPLAYER("is enbled for input %d", InputEnabled());
+	
 }
 
 
@@ -209,9 +213,9 @@ void ADIY_MainPlayer::Tick(float DeltaTime)
 // Called to bind functionality to input
 void ADIY_MainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	UE_LOG(MainPlayerLog, Warning, TEXT("PlayerInputComponent binded"));
+
+	EASY_LOG_MAINPLAYER("PlayerInputComponent binded");
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
 	AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->SetupPlayerInputComponent(PlayerInputComponent);
 	
 }

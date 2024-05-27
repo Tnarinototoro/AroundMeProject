@@ -54,4 +54,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemBase")
 		float HighLightColorTranklingInterval{ 1.0f };
+
+
+	
+
+protected:
+
+private:
+  int32 CombinedFlags{0};
 };

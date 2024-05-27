@@ -3,7 +3,7 @@
 
 #include "DIY_Item.h"
 #include "Components/BoxComponent.h" 
-
+#include "../../GameUtilities/Logs/DIY_LogHelper.h"
 
 void ADIY_ItemBase::UpdateHighLight()
 {
@@ -86,7 +86,7 @@ void ADIY_ItemBase::OnPickUp(AActor* Picker, FName SocketName)
 		{
 			BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			AttachToComponent(PickerMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName);
-			UE_LOG(MainPlayerLog, Warning, TEXT("attached to the actor successfully"));
+			EASY_LOG_MAINPLAYER("attached to the actor successfully");
 			
 		}
 	}
@@ -101,8 +101,8 @@ void ADIY_ItemBase::OnPlaced()
 	FVector CurLocation=this->GetActorLocation();
 	CurLocation.Z = InitWorldPosition.Z;
 	this->SetActorLocation(CurLocation);
+	EASY_LOG_MAINPLAYER("released to ground successfully");
 
-	UE_LOG(MainPlayerLog, Warning, TEXT("released to ground successfully"));
 }
 
 void ADIY_ItemBase::ResumeTrinkling()

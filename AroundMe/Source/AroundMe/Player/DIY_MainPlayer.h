@@ -2,16 +2,17 @@
 
 #pragma once
 
+#include "Actions/DIY_AcitonDefines.h"
+#include "../GameUtilities/DIY_HelperMacros.h"
+
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+
 #include "Equipments/DIYEquipmentEnums.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/Pawn.h"
 #include "UObject/SoftObjectPath.h"
-#include "AroundMe/GameUtilities/DIY_HelperMacros.h"
-#include "AroundMe/Player/Actions/DIY_AcitonDefines.h"
+
 #include "DIY_MainPlayer.generated.h"
-
-
 
 UCLASS()
 class AROUNDME_API ADIY_MainPlayer : public ACharacter

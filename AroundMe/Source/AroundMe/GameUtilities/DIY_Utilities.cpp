@@ -1,10 +1,8 @@
 // All rights reserved to ShadowCandle Studio
 
+#include "DIY_Utilities.h"
 
-#include "AroundMe/GameUtilities/DIY_Utilities.h"
-
-
-
+#include "../Player/Items/DIY_ItemManager.h"
 
 bool UDIY_Utilities::bShouldLogToGameScreen = true;
 ADIY_ItemManager* UDIY_Utilities::DIY_GetItemManagerInstance()

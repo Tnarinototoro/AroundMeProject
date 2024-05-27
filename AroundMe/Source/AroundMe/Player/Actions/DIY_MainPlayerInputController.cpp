@@ -6,7 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DIY_ItemDetector.h"
-
+#include "AroundMe/GameUtilities/Logs/DIY_LogHelper.h"
+#include "AroundMe/Player/Camera/DIY_MainPlayerCameraController.h"
 UDIY_MainPlayerInputController::UDIY_MainPlayerInputController()
 {
       // 启用每帧调用Tick()
@@ -50,7 +51,8 @@ void UDIY_MainPlayerInputController::SetupPlayerInputComponent(UInputComponent *
 				if(!AlreadyLoadedInPutActionNames.Contains(Cur_Action_Name))
 				{
 					AlreadyLoadedInPutActionNames.Add(Cur_Action_Name);
-					UE_LOG(MainPlayerLog, Warning, TEXT(" %s is binded well"),*cur_action->GetName());
+					EASY_LOG_MAINPLAYER("%s is binded well",*cur_action->GetName());
+					
 
 					if (Cur_Action_Name == "IA_DIY_Mouse")
 					{
@@ -95,14 +97,14 @@ void UDIY_MainPlayerInputController::SetupPlayerInputComponent(UInputComponent *
 
 void UDIY_MainPlayerInputController::HandleXYPlayerMove(const FInputActionValue& Value)
 {
-	//UE_LOG(MainPlayerLog, Warning, TEXT("MHandling Move input XXXXXXX"));
+	
 	inPutVector2D = Value.Get<FVector2D>();
 
 
 	// FVector ActorLocation = GetActorLocation();
 	// FVector EndLocation = ActorLocation + DesiredDir_ByPlayerInput_FollowCamView * 600.f;
 	//DrawDebugLine(GetWorld(), ActorLocation, EndLocation, FColor::Red, false, -1, 0, 10);
-	//UE_LOG(MainPlayerLog, Warning, TEXT("MHandling Move input x %f, y %f"), inPutVector2D.X, inPutVector2D.Y);
+	
 	
 
 	IsInputingMove = true;
@@ -119,7 +121,7 @@ void UDIY_MainPlayerInputController::HandlePlayerJump(const FInputActionValue &V
 {
    TriggerProcessJumpInput.Broadcast(Value);
     AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->ProcessJumpInput();
-	//\UE_LOG(MainPlayerLog, Warning, TEXT("Jump started"));
+
 	
 }
 
@@ -141,7 +143,7 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue& 
 				AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PicUpDetectedItem(detected_actor, "hand_rSocket");
 
 				AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_PickingUp;
-				UE_LOG(MainPlayerLog, Warning, TEXT("Picked up the actor yyyyyyyy"));
+				EASY_LOG_MAINPLAYER("Picked up the actor yyyyyyyy");
 			}
 		}
 		
@@ -158,7 +160,8 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue& 
 		{
 			AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PlacePickedUpItem();
 			AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_Base_Motion;
-			UE_LOG(MainPlayerLog, Warning, TEXT("PLaced the actorxxxxxxxx"));
+			EASY_LOG_MAINPLAYER("PLaced the actorxxxxxxxx");
+		
 		}
 
 
@@ -173,22 +176,22 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue& 
 
 void UDIY_MainPlayerInputController::onInteractReleased(const FInputActionValue& Value)
 {
-	
-	UE_LOG(MainPlayerLog, Warning, TEXT("Holding holding released"));
+	EASY_LOG_MAINPLAYER("Holding holding released");
 }
 
 void UDIY_MainPlayerInputController::onInteractPressing(const FInputActionValue &Value)
 {
-	UE_LOG(MainPlayerLog, Warning, TEXT("onInteractPressing !!!!"));
+	EASY_LOG_MAINPLAYER("onInteractPressing !!!!");
 }
 void UDIY_MainPlayerInputController::onInteractTriggered(const FInputActionValue &Value)
 {
-	UE_LOG(MainPlayerLog, Warning, TEXT("Interct Holding !!!!"));
+	EASY_LOG_MAINPLAYER("Interct Holding !!!!");
+	
 }
 
 void UDIY_MainPlayerInputController::HandleXYPlayerMoveInputFinished(const FInputActionValue& Value)
 {
-	//UE_LOG(MainPlayerLog, Warning, TEXT("MHandling Move input finished YYYYYYYY"));
+	
 
 	inPutVector2D.Zero();
 	IsInputingMove = false;
@@ -197,7 +200,7 @@ void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue& 
 {
 	FVector2D Axis2DValue = Value.Get<FVector2D>();
 
-	//UE_LOG(MainPlayerLog, Warning, TEXT("HandleXYMouseMove triggered !!!!"));
+	
 	AcquireOwnerActorOwnedUDIY_MainPlayerCameraController()->HandleMouseMoveForUpDownCam(Axis2DValue);
 
 
@@ -205,13 +208,7 @@ void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue& 
 
 }
 
-//void UDIY_MainPlayerInputController::HandleXYMouseMoveHoldCompleted(const FInputActionValue& Value)
-//{
-//	UE_LOG(MainPlayerLog, Warning, TEXT("HandleXYMouseMoveHoldCompleted complted !!!!"));
-//
-//
-//
-//}
+
 
 
 
@@ -224,7 +221,7 @@ void UDIY_MainPlayerInputController::RegisterInputMappings(APlayerController *PC
     Subsystem->ClearAllMappings();
     if (nullptr != MainPlayerInputMappingContext)
     {
-        UE_LOG(MainPlayerLog, Warning, TEXT("MainPlayerInputMappingContext added"));
+		EASY_LOG_MAINPLAYER("MainPlayerInputMappingContext added");
         // Add each mapping context, along with their priority values. Higher values outprioritize lower values.
         Subsystem->AddMappingContext(MainPlayerInputMappingContext, 1);
 	

@@ -1,8 +1,8 @@
 #include "DIY_ItemDetector.h"
 #include "Components/BoxComponent.h"
 
-#include "AroundMe/Player/Items/DIY_Item.h"
-#include "AroundMe/GameUtilities/Logs/DIY_LogHelper.h"
+#include "../Items/DIY_Item.h"
+#include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "GameFramework/Actor.h"
 
 UDIY_ItemDetector::UDIY_ItemDetector()
@@ -50,8 +50,8 @@ AActor* UDIY_ItemDetector::GetDetectedActor() const
 
 void UDIY_ItemDetector::ProcessBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
-    UE_LOG(MainPlayerLog, Warning, TEXT("ProcessBeginOverlapEvent"));
+    EASY_LOG_MAINPLAYER("ProcessBeginOverlapEvent");
+  
 
     if (!mDetectedActor && OtherActor)
     {
@@ -71,7 +71,7 @@ void UDIY_ItemDetector::ProcessBeginOverlapEvent(UPrimitiveComponent* Overlapped
 
 void UDIY_ItemDetector::ProcessEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    UE_LOG(MainPlayerLog, Warning, TEXT("ProcessEndOverlapEvent"));
+    EASY_LOG_MAINPLAYER("ProcessEndOverlapEvent");
     if (mDetectedActor == OtherActor)
     {
         if (IsValid(mDetectedActor))

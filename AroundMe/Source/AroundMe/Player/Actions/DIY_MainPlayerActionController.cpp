@@ -32,9 +32,7 @@ void UDIY_MainPlayerActionController::PicUpDetectedItem(AActor* inActor, FName S
 			{
 				ItemBase->OnPickUp(GetOwner(), SocketName);
 				PickUpedActor = inActor;
-
-				EASY_LOG_MAINPLAYER(TEXT("Picked up the actor successfully"));
-				// UE_LOG(MainPlayerLog, Warning, TEXT("Picked up the actor successfully"));
+				EASY_LOG_MAINPLAYER("Picked up the actor successfully");
 
 			}
 
@@ -52,7 +50,7 @@ void UDIY_MainPlayerActionController::PlacePickedUpItem()
 		{
 			ItemBase->OnPlaced();
 			PickUpedActor = nullptr;
-			UE_LOG(MainPlayerLog, Warning, TEXT("placed vvvvv up the actor successfully"));
+			EASY_LOG_MAINPLAYER("placed vvvvv up the actor successfully");
 		}
 
 	}
