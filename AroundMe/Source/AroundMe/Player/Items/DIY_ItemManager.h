@@ -50,8 +50,8 @@ private:
 
   
     static ADIY_ItemManager* ManagerInstance;
-    void SpawnActorFromClass(UClass* inClass , const FVector& Location, const FRotator& Rotation);
-    void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation);
+    void SpawnActorFromClass(UClass* inClass , const FVector& Location, const FRotator& Rotation,const FDIY_ItemDefualtConfig& inConfig);
+    void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig);
 
  
     //TMap<EItemID, TSoftObjectPtr<UClass>> LoadedItemSoftAllClasses;

@@ -8,6 +8,9 @@
 #include "Engine/StreamableManager.h"
 #include "Engine/AssetManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "DIY_Item.h"
+#include "../../GameUtilities/Logs/DIY_LogHelper.h"
+#include "../../GameUtilities/DIY_Utilities.h"
 
 ADIY_ItemManager* ADIY_ItemManager::ManagerInstance = nullptr;
 
@@ -65,10 +68,12 @@ void ADIY_ItemManager::SpawnItemByID(EItemID ItemID, const FVector& Location, co
 
     FSoftObjectPath* needed_pathobject= CachedPathObjects.Find(ItemID);
     FSoftObjectPath ItemPath{nullptr};
+    const FDIY_ItemDefualtConfig* cur_config{nullptr};
     if (nullptr != needed_pathobject)
     {
         ItemPath = *needed_pathobject;
-        UE_LOG(LogTemp, Warning, TEXT("Path Got from cache"));
+        EASY_LOG_MAINPLAYER("Path Got from cache");
+       
     }
     else
     {
@@ -80,21 +85,25 @@ void ADIY_ItemManager::SpawnItemByID(EItemID ItemID, const FVector& Location, co
         if (Row)
         {
             FString PathString = Row->ItemPath.ToString();
+
+            cur_config = &(Row->ItemDefualtConfig);
             if (!PathString.EndsWith(TEXT("_C")))
             {
                 PathString.Append(TEXT("_C"));
             }
             ItemPath = FSoftObjectPath(PathString);
-            UE_LOG(LogTemp, Warning, TEXT("Path Got from Looking Into the table"));
+            EASY_LOG_MAINPLAYER("Path Got from Looking Into the table");
+            
         }
         else
         {
-            UE_LOG(LogTemp, Warning, TEXT("Item ID not found in DataTable: %d"), static_cast<int32>(ItemID));
+            EASY_LOG_MAINPLAYER("Item ID not found in DataTable: %d", static_cast<int32>(ItemID));
+           
         }
     }
     
-
-    if (ItemPath.IsValid())
+  
+    if (ItemPath.IsValid()&&cur_config!=nullptr)
     {
         CachedPathObjects.FindOrAdd(ItemID, ItemPath);
         TSoftObjectPtr<UClass> ClassToLoad(ItemPath);
@@ -103,20 +112,22 @@ void ADIY_ItemManager::SpawnItemByID(EItemID ItemID, const FVector& Location, co
         {
 
            
-            SpawnActorFromClass(LoadedClass, Location, Rotation);
-            UE_LOG(LogTemp, Warning, TEXT("Spawned From Editor Cache"));
+            SpawnActorFromClass(LoadedClass, Location, Rotation, *cur_config);
+            EASY_LOG_MAINPLAYER("Spawned From Editor Cache");
+          
             return;
         }
 
-        UAssetManager::GetStreamableManager().RequestAsyncLoad(ItemPath, FStreamableDelegate::CreateUObject(this, &ADIY_ItemManager::OnItemClassLoaded, ItemID, ItemPath, Location, Rotation));
+        UAssetManager::GetStreamableManager().RequestAsyncLoad(ItemPath, FStreamableDelegate::CreateUObject(this, &ADIY_ItemManager::OnItemClassLoaded, ItemID, ItemPath, Location, Rotation,*cur_config));
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("Item path is invalid for ID: %d"), static_cast<int32>(ItemID));
+        EASY_LOG_MAINPLAYER("Item path is invalid for ID: %d", static_cast<int32>(ItemID));
+       
     }
 }
 
-void ADIY_ItemManager::OnItemClassLoaded(EItemID ItemID,FSoftObjectPath ItemPath, FVector Location, FRotator Rotation)
+void ADIY_ItemManager::OnItemClassLoaded(EItemID ItemID,FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig)
 {
     TSoftObjectPtr<UClass> ClassToLoad(ItemPath);
     UClass* LoadedClass = ClassToLoad.Get();
@@ -124,28 +135,38 @@ void ADIY_ItemManager::OnItemClassLoaded(EItemID ItemID,FSoftObjectPath ItemPath
     if (LoadedClass)
     {
         
-        SpawnActorFromClass(LoadedClass, Location, Rotation);
-        UE_LOG(LogTemp, Warning, TEXT("Spawned From Loading"));
+        SpawnActorFromClass(LoadedClass, Location, Rotation, inConfig);
+
+        EASY_LOG_MAINPLAYER("Spawned From Loading");
+     
        
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("Failed to load class for path: %s"), *ItemPath.ToString());
+
+        EASY_LOG_MAINPLAYER("Failed to load class for path: %s", *ItemPath.ToString());
+        
     }
 }
 
-void ADIY_ItemManager::SpawnActorFromClass(UClass* ActorClass, const FVector& Location, const FRotator& Rotation)
+void ADIY_ItemManager::SpawnActorFromClass(UClass* ActorClass, const FVector& Location, const FRotator& Rotation, const FDIY_ItemDefualtConfig& inConfig)
 {
     if (UWorld* World = GetWorld())
     {
         AActor* SpawnedActor = World->SpawnActor<AActor>(ActorClass, Location, Rotation);
         if (SpawnedActor)
         {
-            
+            ADIY_ItemBase* tmp_item = Cast<ADIY_ItemBase>(SpawnedActor);
+            if (nullptr != tmp_item)
+            {
+                tmp_item->InitWithConfig(inConfig);
+                EASY_LOG_MAINPLAYER("Actor spawned successfully with config");
+            }
         }
         else
         {
-            UE_LOG(LogTemp, Error, TEXT("Failed to spawn actor from class."));
+            EASY_LOG_MAINPLAYER("Failed to spawn actor from class.");
+         
         }
     }
 }

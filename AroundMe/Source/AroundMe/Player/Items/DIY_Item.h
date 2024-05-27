@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "DIY_ItemDefines.h"
 #include "DIY_Item.generated.h"
 /**
  * 
@@ -23,8 +25,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY_ItemBase")
 		class UStaticMeshComponent* BasicStaticMeshComponent; 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY_ItemBase")
-		class UBoxComponent* BoxCollision; 
+
 
 	void UpdateHighLight();
 public:
@@ -55,11 +56,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemBase")
 		float HighLightColorTranklingInterval{ 1.0f };
 
+	void InitWithConfig(const FDIY_ItemDefualtConfig& inConfig);
+
+
 
 	
 
 protected:
 
 private:
-  int32 CombinedFlags{0};
+  FDIY_ItemDefualtConfig config_copy;
+  int32 BulkInteractionFlags{ 0 };
 };

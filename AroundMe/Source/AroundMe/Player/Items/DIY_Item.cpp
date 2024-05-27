@@ -4,6 +4,7 @@
 #include "DIY_Item.h"
 #include "Components/BoxComponent.h" 
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
+#include "../Interactions/DIY_InteractionUtility.h"
 
 void ADIY_ItemBase::UpdateHighLight()
 {
@@ -30,16 +31,11 @@ ADIY_ItemBase::ADIY_ItemBase()
 	// Set this actor to call Tick() every frame
 	PrimaryActorTick.bCanEverTick = true;
 	
-	BasicStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BasicStaticMeshComponent")); // ���滻����ʵ�ʵ������
-	BasicStaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
+	BasicStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BasicStaticMeshComponent"));
+	//BasicStaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
 	RootComponent = BasicStaticMeshComponent;
 	
-	// Create and attach a Box Collision component as the root component
-	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
-	//BoxCollision->SetSimulatePhysics(true);
-	BoxCollision->SetCollisionProfileName(TEXT("DIY_Item_Pres"));
-	//BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	BoxCollision->SetupAttachment(RootComponent);
+	
 	
 	
 	
@@ -84,7 +80,7 @@ void ADIY_ItemBase::OnPickUp(AActor* Picker, FName SocketName)
 		USkeletalMeshComponent* PickerMesh = Picker->FindComponentByClass<USkeletalMeshComponent>();
 		if (PickerMesh)
 		{
-			BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			AttachToComponent(PickerMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName);
 			EASY_LOG_MAINPLAYER("attached to the actor successfully");
 			
@@ -96,7 +92,7 @@ void ADIY_ItemBase::OnPlaced()
 {
 	
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	this->SetActorRotation(InitRotator);
 	FVector CurLocation=this->GetActorLocation();
 	CurLocation.Z = InitWorldPosition.Z;
@@ -125,4 +121,32 @@ void ADIY_ItemBase::PauseTrinkling()
 	}
 	BasicStaticMeshComponent->SetRenderCustomDepth(false);
 	isEnabledHighLighting = false;
+}
+
+void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
+{
+	config_copy = inConfig;
+
+
+	for (EDIY_InteractItemFlag cur_flag : config_copy.ConfiguredFlags)
+	{
+		UDIY_InteractionUtility::SetFlag(BulkInteractionFlags,cur_flag);
+		EASY_LOG_MAINPLAYER("Actor spawned with flag %d",BulkInteractionFlags);
+	}
+	
+
+	if (!UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Static) &&
+		UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Obey_Physics_Rules)
+		)
+	{
+		BasicStaticMeshComponent->SetCollisionProfileName(TEXT("DIY_Item_Pres"));
+		BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		BasicStaticMeshComponent->SetSimulatePhysics(true);
+		EASY_LOG_MAINPLAYER("Actor successgully spawned with configs adopted");
+	}
+
+
+
+	checkf(BulkInteractionFlags >= 0,TEXT("flags are invalid"));
+	
 }

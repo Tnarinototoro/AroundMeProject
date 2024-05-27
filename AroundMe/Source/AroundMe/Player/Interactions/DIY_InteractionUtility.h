@@ -17,7 +17,7 @@ public:
   UFUNCTION(BlueprintCallable, Category = "DIY_InteractionUtility")
   static bool IsFlagSet(const int32 &inOriginCombinedFlag, const EDIY_InteractItemFlag &inFlag) 
   {
-    return inOriginCombinedFlag | GetRealValueFromFlag(inFlag);
+    return inOriginCombinedFlag & GetRealValueFromFlag(inFlag);
   }
 
   UFUNCTION(BlueprintCallable, Category = "DIY_InteractionUtility")

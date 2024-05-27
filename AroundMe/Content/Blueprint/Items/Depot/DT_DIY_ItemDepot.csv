@@ -1,0 +1,2 @@
+---,ItemDefualtConfig,ItemPath
+NewRow,"(ItemID=EItemID_Axe,RequiredGarbageDeviceResource=999,RequiredWithNameDeviceResource=999,ConfiguredFlags=)","/Game/Blueprint/Items/Depot/BP_00_Item_Axe.BP_00_Item_Axe"
