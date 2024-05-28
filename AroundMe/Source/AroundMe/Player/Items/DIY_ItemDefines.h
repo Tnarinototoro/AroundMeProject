@@ -11,12 +11,12 @@
 
     UENUM(BlueprintType) enum class EItemID : uint8 
 	{
-      EItemID_Axe,
-      EItemID_Basket,
-      EItemID_Crate,
-      EItemID_Hammer,
-      EItemID_Hoe,
+      EItemID_ButterFlyNet,
       EItemID_PickAxe,
+      EItemID_FishingPod,
+      EItemID_WoodCuttingAxe,
+      EItemID_PokeBall,
+      EItemID_Shovel,
       EItemID_PaperBird,
       EItemID_Trick_Mover_01, // one way mover
       EItemID_Trick_Rotator_01,
@@ -60,6 +60,8 @@ struct FDIY_ItemDefualtConfig
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
   int RequiredWithNameDeviceResource{999};
 
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+  float ObjectMass{ 1.0f };
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
   TArray<EDIY_InteractItemFlag> ConfiguredFlags;
 

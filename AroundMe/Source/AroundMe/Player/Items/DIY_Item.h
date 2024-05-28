@@ -64,6 +64,12 @@ public:
 
 protected:
 
+	class AActor* PossiblePicker{ nullptr };
+	bool HasImpulseTask{ false };
+	FVector PulseVec{ 0.0f,0.f,0.f };
+	void SetCollisionProfileName_Recursively(class USceneComponent* inFirstCompo, FName InCollisionProfileName);
+	void SetCollisionEnabled_Recursively(class USceneComponent* inFirstCompo, ECollisionEnabled::Type NewType);
+	void SetSimulatePhysics_Recursively(class USceneComponent* inFirstCompo, bool inEnable);
 private:
   FDIY_ItemDefualtConfig config_copy;
   int32 BulkInteractionFlags{ 0 };

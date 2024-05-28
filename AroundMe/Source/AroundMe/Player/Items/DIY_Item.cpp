@@ -4,7 +4,11 @@
 #include "DIY_Item.h"
 #include "Components/BoxComponent.h" 
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
+#include "DrawDebugHelpers.h"
 #include "../Interactions/DIY_InteractionUtility.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
+
+
 
 void ADIY_ItemBase::UpdateHighLight()
 {
@@ -28,11 +32,11 @@ void ADIY_ItemBase::UpdateHighLight()
 
 ADIY_ItemBase::ADIY_ItemBase()
 {
-	// Set this actor to call Tick() every frame
+	
 	PrimaryActorTick.bCanEverTick = true;
 	
 	BasicStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BasicStaticMeshComponent"));
-	//BasicStaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
+	
 	RootComponent = BasicStaticMeshComponent;
 	
 	
@@ -70,6 +74,13 @@ void ADIY_ItemBase::BeginPlay()
 void ADIY_ItemBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+
+	if (HasImpulseTask&&PossiblePicker==nullptr)
+	{
+		HasImpulseTask = false;
+		BasicStaticMeshComponent->AddImpulse(PulseVec, NAME_None, true);
+	}
 }
 
 void ADIY_ItemBase::OnPickUp(AActor* Picker, FName SocketName)
@@ -77,10 +88,12 @@ void ADIY_ItemBase::OnPickUp(AActor* Picker, FName SocketName)
 	
 	if (Picker)
 	{
+		PossiblePicker = Picker;
 		USkeletalMeshComponent* PickerMesh = Picker->FindComponentByClass<USkeletalMeshComponent>();
 		if (PickerMesh)
 		{
-			BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			/*BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			BasicStaticMeshComponent->SetSimulatePhysics(false);*/
 			AttachToComponent(PickerMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName);
 			EASY_LOG_MAINPLAYER("attached to the actor successfully");
 			
@@ -91,13 +104,48 @@ void ADIY_ItemBase::OnPickUp(AActor* Picker, FName SocketName)
 void ADIY_ItemBase::OnPlaced()
 {
 	
+	
+
+	checkf(PossiblePicker != nullptr,TEXT("Item is not attached to actor"));
+
+
+	FVector pulse_dir= PossiblePicker->GetActorForwardVector()+PossiblePicker->GetActorUpVector();
+	
+	
+
+	
+
+	pulse_dir=pulse_dir.GetSafeNormal();
+	
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-	BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	this->SetActorRotation(InitRotator);
-	FVector CurLocation=this->GetActorLocation();
-	CurLocation.Z = InitWorldPosition.Z;
-	this->SetActorLocation(CurLocation);
+	
+	FVector StartLocation = GetActorLocation();
+	FVector EndLocation = StartLocation + pulse_dir*1000.0f;
+
+	// 箭头颜色
+	FColor ArrowColor = FColor::Red;
+
+	// 箭头尺寸
+	float ArrowSize = 10.0f;
+
+	// 持续时间（秒），0 表示只在当前帧绘制
+	float Duration = 2.0f;
+
+	// 厚度
+	float Thickness = 2.0f;
+
+	
+	// 绘制箭头
+	DrawDebugLine(GetWorld(), StartLocation, EndLocation, ArrowColor, true, 2.0f, 0, Thickness);
+
+	HasImpulseTask = true;
+	PulseVec = pulse_dir * 2000;
+	
+	
+
 	EASY_LOG_MAINPLAYER("released to ground successfully");
+
+	PossiblePicker = nullptr;
 
 }
 
@@ -142,6 +190,18 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
 		BasicStaticMeshComponent->SetCollisionProfileName(TEXT("DIY_Item_Pres"));
 		BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		BasicStaticMeshComponent->SetSimulatePhysics(true);
+		BasicStaticMeshComponent->SetMassOverrideInKg(NAME_None, config_copy.ObjectMass,true);
+		
+		
+		
+		//UPhysicalMaterial* PhysMaterial = NewObject<UPhysicalMaterial>();
+		//PhysMaterial->Friction = 1.0f;  // 增加摩擦系数
+		//PhysMaterial->Restitution = 0.1f;  // 减少反弹系数
+		//BasicStaticMeshComponent->SetPhysMaterialOverride(PhysMaterial);
+
+	
+		BasicStaticMeshComponent->SetLinearDamping(0.9f);
+		BasicStaticMeshComponent->SetAngularDamping(0.9f);
 		EASY_LOG_MAINPLAYER("Actor successgully spawned with configs adopted");
 	}
 
@@ -149,4 +209,61 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
 
 	checkf(BulkInteractionFlags >= 0,TEXT("flags are invalid"));
 	
+}
+
+void ADIY_ItemBase::SetCollisionProfileName_Recursively(USceneComponent* inFirstCompo, FName InCollisionProfileName)
+{
+	UStaticMeshComponent* cur_first_static_mesh_compo = Cast<UStaticMeshComponent>(inFirstCompo);
+
+	cur_first_static_mesh_compo->SetCollisionProfileName(InCollisionProfileName);
+	checkf(cur_first_static_mesh_compo, TEXT("first compo is not static mesh or anything"));
+
+
+	TArray<USceneComponent*> cur_all_children_compos;
+	cur_first_static_mesh_compo->GetChildrenComponents(true, cur_all_children_compos);
+	for (USceneComponent* cur_compo : cur_all_children_compos)
+	{
+		if (UStaticMeshComponent* cur_static = Cast<UStaticMeshComponent>(cur_compo))
+		{
+			cur_static->SetCollisionProfileName(InCollisionProfileName);
+		}
+	}
+}
+
+void ADIY_ItemBase::SetCollisionEnabled_Recursively(USceneComponent* inFirstCompo, ECollisionEnabled::Type NewType)
+{
+	UStaticMeshComponent* cur_first_static_mesh_compo = Cast<UStaticMeshComponent>(inFirstCompo);
+
+	cur_first_static_mesh_compo->SetCollisionEnabled(NewType);
+	checkf(cur_first_static_mesh_compo, TEXT("first compo is not static mesh or anything"));
+
+
+	TArray<USceneComponent*> cur_all_children_compos;
+	cur_first_static_mesh_compo->GetChildrenComponents(true, cur_all_children_compos);
+	for (USceneComponent* cur_compo : cur_all_children_compos)
+	{
+		if (UStaticMeshComponent* cur_static = Cast<UStaticMeshComponent>(cur_compo))
+		{
+			cur_static->SetCollisionEnabled(NewType);
+		}
+	}
+}
+
+void ADIY_ItemBase::SetSimulatePhysics_Recursively(USceneComponent* inFirstCompo, bool inEnable)
+{
+	UStaticMeshComponent* cur_first_static_mesh_compo = Cast<UStaticMeshComponent>(inFirstCompo);
+
+	cur_first_static_mesh_compo->SetSimulatePhysics(inEnable);
+	checkf(cur_first_static_mesh_compo, TEXT("first compo is not static mesh or anything"));
+
+
+	TArray<USceneComponent*> cur_all_children_compos;
+	cur_first_static_mesh_compo->GetChildrenComponents(true, cur_all_children_compos);
+	for (USceneComponent* cur_compo : cur_all_children_compos)
+	{
+		if (UStaticMeshComponent* cur_static = Cast<UStaticMeshComponent>(cur_compo))
+		{
+			cur_static->SetSimulatePhysics(inEnable);
+		}
+	}
 }
