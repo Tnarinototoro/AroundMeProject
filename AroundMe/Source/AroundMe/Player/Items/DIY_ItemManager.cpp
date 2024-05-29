@@ -160,6 +160,7 @@ void ADIY_ItemManager::SpawnActorFromClass(UClass* ActorClass, const FVector& Lo
             if (nullptr != tmp_item)
             {
                 tmp_item->InitWithConfig(inConfig);
+
                 EASY_LOG_MAINPLAYER("Actor spawned successfully with config");
             }
         }

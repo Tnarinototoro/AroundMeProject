@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "DIY_ItemDefines.h"
+//#include "PhysicalMaterials/PhysicalMaterial.h"
 #include "DIY_ItemManager.generated.h"
 
 
@@ -44,8 +45,9 @@ protected:
    
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemManager")
         TMap < EItemID, FSoftObjectPath > BP_Items_Map;
- 
-    
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemManager")
+        TArray<class UPhysicalMaterial*> Item_PhysicsDepo;
 private:
 
   

@@ -6,7 +6,7 @@
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "DrawDebugHelpers.h"
 #include "../Interactions/DIY_InteractionUtility.h"
-#include "PhysicalMaterials/PhysicalMaterial.h"
+
 
 
 
@@ -190,18 +190,12 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
 		BasicStaticMeshComponent->SetCollisionProfileName(TEXT("DIY_Item_Pres"));
 		BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		BasicStaticMeshComponent->SetSimulatePhysics(true);
-		BasicStaticMeshComponent->SetMassOverrideInKg(NAME_None, config_copy.ObjectMass,true);
-		
-		
-		
-		//UPhysicalMaterial* PhysMaterial = NewObject<UPhysicalMaterial>();
-		//PhysMaterial->Friction = 1.0f;  // 增加摩擦系数
-		//PhysMaterial->Restitution = 0.1f;  // 减少反弹系数
-		//BasicStaticMeshComponent->SetPhysMaterialOverride(PhysMaterial);
+		BasicStaticMeshComponent->SetMassOverrideInKg(NAME_None, config_copy.ItemMass,true);
+		BasicStaticMeshComponent->SetPhysMaterialOverride(config_copy.ItemPhysicsMtl);
 
 	
-		BasicStaticMeshComponent->SetLinearDamping(0.9f);
-		BasicStaticMeshComponent->SetAngularDamping(0.9f);
+		BasicStaticMeshComponent->SetLinearDamping(config_copy.LinearDamping);
+		BasicStaticMeshComponent->SetAngularDamping(config_copy.AngualrDamping);
 		EASY_LOG_MAINPLAYER("Actor successgully spawned with configs adopted");
 	}
 

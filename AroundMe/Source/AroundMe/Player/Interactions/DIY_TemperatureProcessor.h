@@ -10,6 +10,9 @@ class AROUNDME_API UDIY_TemperatureProcessor : public UActorComponent
     GENERATED_BODY()
 
 public:    
+
+
+    //Todo enum Temperature
    
     UDIY_TemperatureProcessor();
 

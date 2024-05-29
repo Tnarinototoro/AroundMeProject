@@ -202,6 +202,7 @@ void ADIY_MainPlayer::Tick(float DeltaTime)
 			FVector socket_loc = GetMesh()->GetSocketLocation("hand_rSocket");
 			FVector relative_location = { ItemBase ->InitWorldPosition-socket_loc};
 			
+			target_loc = socket_loc;
 			ItemBase->SetActorRelativeRotation(relative_quat);
 			ItemBase->SetActorLocation(target_loc);
 		}
@@ -218,6 +219,8 @@ void ADIY_MainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->SetupPlayerInputComponent(PlayerInputComponent);
 	
+
+
 }
 
 
