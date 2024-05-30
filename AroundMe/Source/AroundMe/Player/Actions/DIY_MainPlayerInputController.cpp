@@ -192,8 +192,8 @@ void UDIY_MainPlayerInputController::onInteractTriggered(const FInputActionValue
 void UDIY_MainPlayerInputController::HandleXYPlayerMoveInputFinished(const FInputActionValue& Value)
 {
 	
-
-	inPutVector2D.Zero();
+	//EASY_LOG_MAINPLAYER("XY INPUT FINISHED");
+	inPutVector2D=inPutVector2D.Zero();
 	IsInputingMove = false;
 }
 void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue& Value)

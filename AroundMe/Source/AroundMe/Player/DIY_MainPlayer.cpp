@@ -193,18 +193,12 @@ void ADIY_MainPlayer::Tick(float DeltaTime)
 		ADIY_ItemBase* ItemBase = Cast<ADIY_ItemBase>(picked_up_actor);
 		if (ItemBase)
 		{
-			FQuat cur_socket_quat= GetMesh()->GetSocketQuaternion("hand_rSocket");
-			FQuat target_picked_item_world_quat = ItemBase->InitRotator.Quaternion();
-			FQuat relative_quat = cur_socket_quat.Inverse() * target_picked_item_world_quat;
-			FVector for_ward_loc = GetActorForwardVector().GetSafeNormal() * 500.0f;
-			for_ward_loc.Z = 10.0f;
-			FVector target_loc = GetActorLocation() + for_ward_loc;
+			const FTransform cur_item_pick_socket_trans = ItemBase->GetRootComponent()->GetSocketTransform("PickSocket");
+			const FTransform cur_item_pick_socket_trans_relative = ItemBase->GetRootComponent()->GetSocketTransform("PickSocket", ERelativeTransformSpace::RTS_Actor);
 			FVector socket_loc = GetMesh()->GetSocketLocation("hand_rSocket");
-			FVector relative_location = { ItemBase ->InitWorldPosition-socket_loc};
-			
-			target_loc = socket_loc;
-			ItemBase->SetActorRelativeRotation(relative_quat);
-			ItemBase->SetActorLocation(target_loc);
+			FVector relative_location = { socket_loc- cur_item_pick_socket_trans .GetLocation()};
+			ItemBase->SetActorRelativeRotation(cur_item_pick_socket_trans_relative.GetRotation().Inverse());
+			ItemBase->SetActorLocation(relative_location+ItemBase->GetActorLocation());
 		}
 	}
 	

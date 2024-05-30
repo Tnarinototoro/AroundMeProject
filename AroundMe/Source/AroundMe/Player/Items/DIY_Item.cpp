@@ -78,8 +78,8 @@ void ADIY_ItemBase::Tick(float DeltaTime)
 
 	if (HasImpulseTask&&PossiblePicker==nullptr)
 	{
-		HasImpulseTask = false;
-		BasicStaticMeshComponent->AddImpulse(PulseVec, NAME_None, true);
+		//HasImpulseTask = false;
+		//BasicStaticMeshComponent->AddImpulse(PulseVec, NAME_None, true);
 	}
 }
 
@@ -92,8 +92,11 @@ void ADIY_ItemBase::OnPickUp(AActor* Picker, FName SocketName)
 		USkeletalMeshComponent* PickerMesh = Picker->FindComponentByClass<USkeletalMeshComponent>();
 		if (PickerMesh)
 		{
-			/*BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			BasicStaticMeshComponent->SetSimulatePhysics(false);*/
+			
+			
+			BasicStaticMeshComponent->SetSimulatePhysics(false);
+			BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			
 			AttachToComponent(PickerMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName);
 			EASY_LOG_MAINPLAYER("attached to the actor successfully");
 			
@@ -136,7 +139,7 @@ void ADIY_ItemBase::OnPlaced()
 
 	
 	// 绘制箭头
-	DrawDebugLine(GetWorld(), StartLocation, EndLocation, ArrowColor, true, 2.0f, 0, Thickness);
+	//DrawDebugLine(GetWorld(), StartLocation, EndLocation, ArrowColor, true, 2.0f, 0, Thickness);
 
 	HasImpulseTask = true;
 	PulseVec = pulse_dir * 2000;
@@ -146,6 +149,10 @@ void ADIY_ItemBase::OnPlaced()
 	EASY_LOG_MAINPLAYER("released to ground successfully");
 
 	PossiblePicker = nullptr;
+
+	BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	BasicStaticMeshComponent->SetSimulatePhysics(true);
+	
 
 }
 
