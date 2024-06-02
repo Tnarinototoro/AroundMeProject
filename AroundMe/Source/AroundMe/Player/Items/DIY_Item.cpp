@@ -81,6 +81,24 @@ void ADIY_ItemBase::Tick(float DeltaTime)
 		//HasImpulseTask = false;
 		//BasicStaticMeshComponent->AddImpulse(PulseVec, NAME_None, true);
 	}
+
+
+	if (TargetPhysicsState == 1 )
+	{
+		BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+		TargetPhysicsState = -1;
+
+
+	}
+
+	if (TargetPhysicsState==0)
+	{
+		BasicStaticMeshComponent->SetSimulatePhysics(true);
+		BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
+		TargetPhysicsState = -1;
+
+	}
 }
 
 void ADIY_ItemBase::OnPickUp(AActor* Picker, FName SocketName)
@@ -95,10 +113,12 @@ void ADIY_ItemBase::OnPickUp(AActor* Picker, FName SocketName)
 			
 			
 			BasicStaticMeshComponent->SetSimulatePhysics(false);
-			BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			//BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			
 			AttachToComponent(PickerMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName);
 			EASY_LOG_MAINPLAYER("attached to the actor successfully");
+
+			TargetPhysicsState = 1;
 			
 		}
 	}
@@ -151,8 +171,9 @@ void ADIY_ItemBase::OnPlaced()
 	PossiblePicker = nullptr;
 
 	BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	BasicStaticMeshComponent->SetSimulatePhysics(true);
 	
+	
+	TargetPhysicsState = 0;
 
 }
 
@@ -206,7 +227,7 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
 		EASY_LOG_MAINPLAYER("Actor successgully spawned with configs adopted");
 	}
 
-
+	BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera,ECollisionResponse::ECR_Ignore);
 
 	checkf(BulkInteractionFlags >= 0,TEXT("flags are invalid"));
 	

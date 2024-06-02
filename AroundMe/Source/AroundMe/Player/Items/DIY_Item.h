@@ -73,4 +73,8 @@ protected:
 private:
   FDIY_ItemDefualtConfig config_copy;
   int32 BulkInteractionFlags{ 0 };
+
+
+  // 0--> physics   1---> pickup state no phy no collision  -1 no need to do any thing
+  int TargetPhysicsState{ -1 }; 
 };
