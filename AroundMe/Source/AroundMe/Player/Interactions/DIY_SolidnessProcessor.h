@@ -22,29 +22,43 @@ public:
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 
-
-
-    float durability{100.0f};
-
-
-
-    float sphereness{0.6};
-
-
-    float outer_damage{200.0f};
-
-
-    float cutting_damage_ratio{0.6};
-
-    float cutting_damage_susceptibility{2.0f};
-
-    float blunt_damage_susceptibility{0.1f};
-
-
     
+    
+ //Solidness data and functions start <--------------------------------------------------------------------------------------------------------------------
+
+protected:
+ 
+    UPROPERTY(BlueprintReadOnly)
+        float Final_Durability{ 0.f };
+
+    //those functions are only here for reference will be moved to actor level
+    void AcceptDamage(float inDamage, float inDamageSphereNess);
+    void GiveDamage(class AActor* inDamageTaker, float giveDamage);
+
+private:
+
+ 
+
+
+   
 
 
 
    
+
+//Solidness data and functions End -------------------------------------------------------------------------------------------------------------------->
+    
+
+//Solidness Configs Start <--------------------------------------------------------------------------------------------------------------------
+
+private:
+    
+    float cutting_damage_susceptibility{ 2.0f };
+
+    float blunt_damage_susceptibility{ 0.1f };
+
+    float sphereness{ 0.6 };
+  //Solidness Configs  End -------------------------------------------------------------------------------------------------------------------->
+
 
 };

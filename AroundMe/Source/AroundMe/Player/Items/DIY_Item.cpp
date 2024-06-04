@@ -6,8 +6,8 @@
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "DrawDebugHelpers.h"
 #include "../Interactions/DIY_InteractionUtility.h"
-
-
+#include "Components/WidgetComponent.h"
+#include "../../UIWidgets/DIY_ItemStateWidget.h"
 
 
 void ADIY_ItemBase::UpdateHighLight()
@@ -41,8 +41,26 @@ ADIY_ItemBase::ADIY_ItemBase()
 	
 	
 	
-	
-	
+	//FStringClassReference MyWidgetClassRef(TEXT("/Game/UI/DIY_UI_ResourceRemaing.DIY_UI_ResourceRemaing_C"));
+
+	/*if (UClass* MyWidgetClass = MyWidgetClassRef.TryLoadClass<UUserWidget>())
+	{
+		
+	}
+	*/
+	ItemStateWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("ItemStateWidgetComponent"));
+
+
+	ItemStateWidgetComponent->SetupAttachment(BasicStaticMeshComponent);
+	ItemStateWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	ItemStateWidgetComponent->SetDrawAtDesiredSize(false);
+	ItemStateWidgetComponent->SetWidgetClass(UDIY_ItemStateWidget::StaticClass());
+	//ItemStateWidgetComponent->SetOwnerPlayer(pc->GetLocalPlayer());
+	//ItemStateWidgetComponent->SetWidgetClass(MyWidgetClass);
+
+	ItemStateWidgetComponent->SetPivot(FVector2D(0.5f, 0.5f));
+	ItemStateWidgetComponent->SetVisibility(true);
+	// 设置 WidgetClass 为 UDIY_ItemInfoWidget
 
 	
 	
@@ -75,7 +93,7 @@ void ADIY_ItemBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
+	UpdateWidgetText(TEXT("DIY ITem state Test"));
 	if (HasImpulseTask&&PossiblePicker==nullptr)
 	{
 		//HasImpulseTask = false;
@@ -286,6 +304,18 @@ void ADIY_ItemBase::SetSimulatePhysics_Recursively(USceneComponent* inFirstCompo
 		if (UStaticMeshComponent* cur_static = Cast<UStaticMeshComponent>(cur_compo))
 		{
 			cur_static->SetSimulatePhysics(inEnable);
+		}
+	}
+}
+
+void ADIY_ItemBase::UpdateWidgetText(const FString& NewText)
+{
+	if (UUserWidget* Widget = ItemStateWidgetComponent->GetUserWidgetObject())
+	{
+		UDIY_ItemStateWidget* InfoWidget = Cast<UDIY_ItemStateWidget>(Widget);
+		if (InfoWidget)
+		{
+			InfoWidget->UpdateText(NewText);
 		}
 	}
 }

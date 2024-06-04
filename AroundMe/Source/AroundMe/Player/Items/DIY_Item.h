@@ -71,9 +71,12 @@ protected:
 	void SetCollisionEnabled_Recursively(class USceneComponent* inFirstCompo, ECollisionEnabled::Type NewType);
 	void SetSimulatePhysics_Recursively(class USceneComponent* inFirstCompo, bool inEnable);
 private:
+
+UPROPERTY(VisibleAnywhere, Category = "UI")
+		class UWidgetComponent* ItemStateWidgetComponent;
   FDIY_ItemDefualtConfig config_copy;
   int32 BulkInteractionFlags{ 0 };
-
+  void UpdateWidgetText(const FString& NewText);
 
   // 0--> physics   1---> pickup state no phy no collision  -1 no need to do any thing
   int TargetPhysicsState{ -1 }; 
