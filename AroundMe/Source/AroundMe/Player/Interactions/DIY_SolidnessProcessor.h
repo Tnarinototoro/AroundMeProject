@@ -2,10 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "DIY_InteractionCommonInterFace.h"
 #include "DIY_SolidnessProcessor.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_SolidnessProcessor : public UActorComponent
+class AROUNDME_API UDIY_SolidnessProcessor : public UActorComponent, public IDIY_InteractionCommonInterFace
 {
     GENERATED_BODY()
 
@@ -21,9 +22,13 @@ public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+    virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig) override;
+    
+    inline float GetFinal_Durability() const 
+    {
+        return Final_Durability;
 
-    
-    
+    }
  //Solidness data and functions start <--------------------------------------------------------------------------------------------------------------------
 
 protected:

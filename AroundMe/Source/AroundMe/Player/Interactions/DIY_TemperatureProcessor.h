@@ -2,10 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "DIY_InteractionCommonInterFace.h"
 #include "DIY_TemperatureProcessor.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_TemperatureProcessor : public UActorComponent
+class AROUNDME_API UDIY_TemperatureProcessor : public UActorComponent, public IDIY_InteractionCommonInterFace
 {
     GENERATED_BODY()
 
@@ -15,7 +16,7 @@ public:
     //Todo enum Temperature
    
     UDIY_TemperatureProcessor();
-
+    virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig) override;
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;

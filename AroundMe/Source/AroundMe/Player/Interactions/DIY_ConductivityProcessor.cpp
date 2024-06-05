@@ -36,6 +36,10 @@ void UDIY_ConductivityProcessor::TickComponent(float DeltaTime, ELevelTick TickT
   
 }
 
+void UDIY_ConductivityProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig)
+{
+}
+
 void UDIY_ConductivityProcessor::OnConnectedToElectricity(float inAmpere)
 {
     OuterWolrdGivenAmpere = FMath::Max(inAmpere, OuterWolrdGivenAmpere);

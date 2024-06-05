@@ -26,6 +26,10 @@ void UDIY_SolidnessProcessor::TickComponent(float DeltaTime, ELevelTick TickType
   
 }
 
+void UDIY_SolidnessProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig)
+{
+}
+
 void UDIY_SolidnessProcessor::AcceptDamage(float inDamage, float inDamageSphereNess)
 {
    

@@ -10,6 +10,10 @@ UDIY_TemperatureProcessor::UDIY_TemperatureProcessor()
 
 }
 
+void UDIY_TemperatureProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig)
+{
+}
+
 
 void UDIY_TemperatureProcessor::BeginPlay()
 {

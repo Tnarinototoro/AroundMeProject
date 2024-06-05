@@ -8,6 +8,9 @@
 #include "../Interactions/DIY_InteractionUtility.h"
 #include "Components/WidgetComponent.h"
 #include "../../UIWidgets/DIY_ItemStateWidget.h"
+#include "../Interactions/DIY_SolidnessProcessor.h"
+#include "../Interactions/DIY_TemperatureProcessor.h"
+#include "../Interactions/DIY_ConductivityProcessor.h"
 
 
 void ADIY_ItemBase::UpdateHighLight()
@@ -54,13 +57,12 @@ ADIY_ItemBase::ADIY_ItemBase()
 	ItemStateWidgetComponent->SetupAttachment(BasicStaticMeshComponent);
 	ItemStateWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	ItemStateWidgetComponent->SetDrawAtDesiredSize(false);
+	//here the widget is created
 	ItemStateWidgetComponent->SetWidgetClass(UDIY_ItemStateWidget::StaticClass());
-	//ItemStateWidgetComponent->SetOwnerPlayer(pc->GetLocalPlayer());
-	//ItemStateWidgetComponent->SetWidgetClass(MyWidgetClass);
-
+	
 	ItemStateWidgetComponent->SetPivot(FVector2D(0.5f, 0.5f));
 	ItemStateWidgetComponent->SetVisibility(true);
-	// 设置 WidgetClass 为 UDIY_ItemInfoWidget
+	
 
 	
 	
@@ -93,7 +95,9 @@ void ADIY_ItemBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	UpdateWidgetText(TEXT("DIY ITem state Test"));
+
+	UpdateStateWidgetInfo(DeltaTime);
+	
 	if (HasImpulseTask&&PossiblePicker==nullptr)
 	{
 		//HasImpulseTask = false;
@@ -248,6 +252,62 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
 	BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera,ECollisionResponse::ECR_Ignore);
 
 	checkf(BulkInteractionFlags >= 0,TEXT("flags are invalid"));
+
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Can_Be_Destroyed))
+	{
+		// 动态添加组件
+		Possible_Solidness_Processor = Cast<UDIY_SolidnessProcessor>(AddComponentByClass(UDIY_SolidnessProcessor::StaticClass(), false, FTransform(), false));
+
+		if (Possible_Solidness_Processor)
+		{
+			
+			Possible_Solidness_Processor->RegisterComponent();
+		
+		
+			Possible_Solidness_Processor->OnInitWithConfigCopy(&config_copy);
+
+			
+			AddInstanceComponent(Possible_Solidness_Processor);
+		}
+
+	}
+
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::React_To_Temperature))
+	{
+		// 动态添加组件
+		Possible_Temperature_Processor = Cast<UDIY_TemperatureProcessor>(AddComponentByClass(UDIY_TemperatureProcessor::StaticClass(), false, FTransform(), false));
+
+		if (Possible_Temperature_Processor)
+		{
+
+			Possible_Temperature_Processor->RegisterComponent();
+
+
+			Possible_Temperature_Processor->OnInitWithConfigCopy(&config_copy);
+
+
+			AddInstanceComponent(Possible_Temperature_Processor);
+		}
+	}
+
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Has_Any_Conductivity))
+	{
+		// 动态添加组件
+		Possible_Conductivity_Processor = Cast<UDIY_ConductivityProcessor>(AddComponentByClass(UDIY_ConductivityProcessor::StaticClass(), false, FTransform(), false));
+
+		if (Possible_Conductivity_Processor)
+		{
+
+			Possible_Conductivity_Processor->RegisterComponent();
+
+
+			Possible_Conductivity_Processor->OnInitWithConfigCopy(&config_copy);
+
+
+			AddInstanceComponent(Possible_Conductivity_Processor);
+		}
+	}
+
 	
 }
 
@@ -308,14 +368,47 @@ void ADIY_ItemBase::SetSimulatePhysics_Recursively(USceneComponent* inFirstCompo
 	}
 }
 
-void ADIY_ItemBase::UpdateWidgetText(const FString& NewText)
+void ADIY_ItemBase::UpdateWidgetText_Internal(const FString& NewText)
 {
+	if (StateDisplayWidget)
+	{
+		StateDisplayWidget->UpdateText(NewText);
+
+		return;
+	}
+	
+
 	if (UUserWidget* Widget = ItemStateWidgetComponent->GetUserWidgetObject())
 	{
-		UDIY_ItemStateWidget* InfoWidget = Cast<UDIY_ItemStateWidget>(Widget);
-		if (InfoWidget)
+		StateDisplayWidget = Cast<UDIY_ItemStateWidget>(Widget);
+		if (StateDisplayWidget)
 		{
-			InfoWidget->UpdateText(NewText);
+			StateDisplayWidget->UpdateText(NewText);
 		}
 	}
+}
+
+void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
+{
+	
+	
+	FString updated_text{};
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::React_To_Temperature)&&nullptr!=Possible_Temperature_Processor)
+	{
+		updated_text += FString::Printf(TEXT("Temp: temp %f, moist %f \n"), Possible_Temperature_Processor->GetFinalTemperatureValue(), Possible_Temperature_Processor->GetFinalMoistureValue());
+	}
+
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Has_Any_Conductivity)&&nullptr!=Possible_Conductivity_Processor)
+	{
+		updated_text += FString::Printf(TEXT("Conduc: AmpereInten %f \n"), Possible_Conductivity_Processor->GetFinal_ElectricityIntensityAmpere());
+	}
+
+
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Can_Be_Destroyed)&&nullptr!=Possible_Solidness_Processor)
+	{
+		updated_text += FString::Printf(TEXT("Solid: Durab %f \n"), Possible_Solidness_Processor->GetFinal_Durability());
+	}
+
+	UpdateWidgetText_Internal(updated_text);
+
 }

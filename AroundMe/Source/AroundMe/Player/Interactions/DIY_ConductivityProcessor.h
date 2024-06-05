@@ -3,19 +3,23 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "../../GameUtilities/DIY_HelperMacros.h"
+#include "DIY_InteractionCommonInterFace.h"
 #include "DIY_ConductivityProcessor.generated.h"
 
 
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_ConductivityProcessor : public UActorComponent
+class AROUNDME_API UDIY_ConductivityProcessor : public UActorComponent, public IDIY_InteractionCommonInterFace
 {
     GENERATED_BODY()
 
 public:    
    
     UDIY_ConductivityProcessor();
-
+    inline float GetFinal_ElectricityIntensityAmpere() const 
+    {
+        return Final_ElectricityIntensityAmpere;
+    }
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;
@@ -27,8 +31,8 @@ protected:
 public:    
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-    
-    
+    virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig) override;
+   
     void OnConnectedToElectricity(float inAmpere);
 
     void AddInstantElectricityAmpere(float inAmpere);
