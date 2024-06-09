@@ -34,6 +34,11 @@ public:
         return CurrentConductivityState;
 
     }
+
+    inline const FDIY_ConductivityAttr& GetConductivityAttr() const
+    {
+        return copy_conduct_Attr;
+    }
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;

@@ -26,7 +26,7 @@ void UDIY_ItemStateWidget::NativeOnInitialized()
         {
             InfoTextBlock->SetText(FText::FromString(TEXT("Initial Text")));
             FSlateFontInfo cur_font = InfoTextBlock->GetFont();
-            cur_font.Size = 30.0f;
+            cur_font.Size = 12.0f;
             InfoTextBlock->SetFont(cur_font);
             InfoTextBlock->SetColorAndOpacity(FLinearColor(1.0f, 1.0f, 1.0f, 1.0f));
             const auto RootTextSlot = infoPanel->AddChildToCanvas(InfoTextBlock);

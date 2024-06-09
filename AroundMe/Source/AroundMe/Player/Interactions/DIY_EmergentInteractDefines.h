@@ -52,11 +52,23 @@ struct FDIY_DamageInfo
 		float DamageAmount{0.f};
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         int32 BulkDamageFlags{ 0 };
+        
+        
+        
+        
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "duration length"))
+        float Damage_Float_0{ 0.0f };   
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-        float Damage_Float_0{ 0.0f };
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-        float Damage_Float_1{ 0.0f };
+        //temperature value
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "temperature value"))
+    float Damage_Float_1{ 0.0f };   
+        
+      //sphere ness or sth
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ToolTip = "sphere ness or sth"))
+        float Damage_Float_2{ 0.0f };    
+
+
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         AActor* DamageTaker 
     {

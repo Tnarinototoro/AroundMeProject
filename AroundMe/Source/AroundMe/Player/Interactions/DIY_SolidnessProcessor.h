@@ -30,16 +30,21 @@ public:
         return Final_Durability;
 
     }
- //Solidness data and functions start <--------------------------------------------------------------------------------------------------------------------
 
+    inline const FDIY_SolidnessAttr& GetSolidNessAttrs() const
+    {
+        return solidness_attr;
+    }
+ //Solidness data and functions start <--------------------------------------------------------------------------------------------------------------------
+     //those functions are only here for reference will be moved to actor level
+    void AcceptDamage(float inDamage, float inDamageSphereNess);
+    void GiveDamage(class AActor* inDamageTaker, float giveDamage);
 protected:
  
     UPROPERTY(BlueprintReadOnly)
         float Final_Durability{ 0.f };
 
-    //those functions are only here for reference will be moved to actor level
-    void AcceptDamage(float inDamage, float inDamageSphereNess);
-    void GiveDamage(class AActor* inDamageTaker, float giveDamage);
+   
 
 private:
 

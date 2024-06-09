@@ -17,14 +17,14 @@ public:
   UFUNCTION(BlueprintCallable, Category = "DIY_InteractionUtility")
   static bool IsFlagSet(const int32 &inOriginCombinedFlag, const uint8 &inFlag) 
   {
-    ensure(inOriginCombinedFlag>0);
+    ensure(inOriginCombinedFlag>=0);
     return inOriginCombinedFlag & GetRealValueFromFlag(inFlag);
   }
 
   UFUNCTION(BlueprintCallable, Category = "DIY_InteractionUtility")
   static void SetFlag(int32 &OutOriginCombinedFlag,const uint8 &inFlag) 
   {
-    ensure(OutOriginCombinedFlag>0);
+    ensure(OutOriginCombinedFlag>=0);
     OutOriginCombinedFlag |= GetRealValueFromFlag(inFlag);
   }
 
@@ -32,7 +32,7 @@ public:
   static void UnSetFlag(int32 &OutOriginCombinedFlag,const uint8 &inFlag) 
   {
     
-    ensure(OutOriginCombinedFlag>0);
+    ensure(OutOriginCombinedFlag>=0);
     OutOriginCombinedFlag &= (~GetRealValueFromFlag(inFlag));
   }
   UFUNCTION(BlueprintCallable, Category = "DIY_InteractionUtility")

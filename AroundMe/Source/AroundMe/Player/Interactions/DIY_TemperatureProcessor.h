@@ -64,7 +64,10 @@ public:
         Type_Count
     };
 
-
+    const FDIY_TemperatureAndMoistureAttr& GetTemperatureAndMoistAttrs() const
+    {
+        return copy_TemperatureAndMoistureAttr;
+    }
 
     void AddInstantTemperatureChange(float inChange);
 
