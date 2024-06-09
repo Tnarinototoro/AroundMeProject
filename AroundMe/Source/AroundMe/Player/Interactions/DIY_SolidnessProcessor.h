@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "DIY_InteractionCommonInterFace.h"
+#include "../Items/DIY_ItemDefines.h"
 #include "DIY_SolidnessProcessor.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
@@ -57,12 +58,9 @@ private:
 //Solidness Configs Start <--------------------------------------------------------------------------------------------------------------------
 
 private:
-    
-    float cutting_damage_susceptibility{ 2.0f };
 
-    float blunt_damage_susceptibility{ 0.1f };
 
-    float sphereness{ 0.6 };
+    FDIY_SolidnessAttr solidness_attr;
   //Solidness Configs  End -------------------------------------------------------------------------------------------------------------------->
 
 

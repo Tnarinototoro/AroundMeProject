@@ -228,13 +228,13 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
 
 	for (EDIY_InteractItemFlag cur_flag : config_copy.ConfiguredFlags)
 	{
-		UDIY_InteractionUtility::SetFlag(BulkInteractionFlags,cur_flag);
+		UDIY_InteractionUtility::SetFlag(BulkInteractionFlags, (uint8)cur_flag);
 		EASY_LOG_MAINPLAYER("Actor spawned with flag %d",BulkInteractionFlags);
 	}
 	
 
-	if (!UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Static) &&
-		UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Obey_Physics_Rules)
+	if (!UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Static) &&
+		UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Obey_Physics_Rules)
 		)
 	{
 		BasicStaticMeshComponent->SetCollisionProfileName(TEXT("DIY_Item_Pres"));
@@ -253,9 +253,9 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
 
 	checkf(BulkInteractionFlags >= 0,TEXT("flags are invalid"));
 
-	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Can_Be_Destroyed))
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Can_Be_Destroyed))
 	{
-		// 动态添加组件
+		// dynamically added components
 		Possible_Solidness_Processor = Cast<UDIY_SolidnessProcessor>(AddComponentByClass(UDIY_SolidnessProcessor::StaticClass(), false, FTransform(), false));
 
 		if (Possible_Solidness_Processor)
@@ -272,9 +272,9 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
 
 	}
 
-	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::React_To_Temperature))
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::React_To_Temperature))
 	{
-		// 动态添加组件
+		// dynamically added components
 		Possible_Temperature_Processor = Cast<UDIY_TemperatureProcessor>(AddComponentByClass(UDIY_TemperatureProcessor::StaticClass(), false, FTransform(), false));
 
 		if (Possible_Temperature_Processor)
@@ -290,9 +290,9 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig& inConfig)
 		}
 	}
 
-	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Has_Any_Conductivity))
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Has_Any_Conductivity))
 	{
-		// 动态添加组件
+		// dynamically added components
 		Possible_Conductivity_Processor = Cast<UDIY_ConductivityProcessor>(AddComponentByClass(UDIY_ConductivityProcessor::StaticClass(), false, FTransform(), false));
 
 		if (Possible_Conductivity_Processor)
@@ -393,18 +393,26 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 	
 	
 	FString updated_text{};
-	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::React_To_Temperature)&&nullptr!=Possible_Temperature_Processor)
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::React_To_Temperature)&&nullptr!=Possible_Temperature_Processor)
 	{
 		updated_text += FString::Printf(TEXT("Temp: temp %f, moist %f \n"), Possible_Temperature_Processor->GetFinalTemperatureValue(), Possible_Temperature_Processor->GetFinalMoistureValue());
 	}
 
-	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Has_Any_Conductivity)&&nullptr!=Possible_Conductivity_Processor)
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Has_Any_Conductivity)&&nullptr!=Possible_Conductivity_Processor)
 	{
-		updated_text += FString::Printf(TEXT("Conduc: AmpereInten %f \n"), Possible_Conductivity_Processor->GetFinal_ElectricityIntensityAmpere());
+		updated_text += FString::Printf(TEXT("Conduc: AmpereInten %f , State %s \n"), Possible_Conductivity_Processor->GetFinal_ElectricityIntensityAmpere(),
+			*UEnum::GetValueAsString(Possible_Conductivity_Processor->GetCurrentConductivityState()));
+
+
+		
+		
+		
+		
+		
 	}
 
 
-	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, EDIY_InteractItemFlag::Can_Be_Destroyed)&&nullptr!=Possible_Solidness_Processor)
+	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Can_Be_Destroyed)&&nullptr!=Possible_Solidness_Processor)
 	{
 		updated_text += FString::Printf(TEXT("Solid: Durab %f \n"), Possible_Solidness_Processor->GetFinal_Durability());
 	}

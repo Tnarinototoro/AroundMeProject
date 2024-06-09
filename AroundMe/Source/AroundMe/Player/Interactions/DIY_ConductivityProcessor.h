@@ -4,9 +4,16 @@
 #include "Components/ActorComponent.h"
 #include "../../GameUtilities/DIY_HelperMacros.h"
 #include "DIY_InteractionCommonInterFace.h"
+#include "../Items/DIY_ItemDefines.h"
 #include "DIY_ConductivityProcessor.generated.h"
 
-
+UENUM(BlueprintType)
+enum class ConductivityState
+{
+    CS_Normal,
+    CS_OnAmpere,
+    CS_Count
+};
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
 class AROUNDME_API UDIY_ConductivityProcessor : public UActorComponent, public IDIY_InteractionCommonInterFace
@@ -14,11 +21,18 @@ class AROUNDME_API UDIY_ConductivityProcessor : public UActorComponent, public I
     GENERATED_BODY()
 
 public:    
-   
+    
+
     UDIY_ConductivityProcessor();
     inline float GetFinal_ElectricityIntensityAmpere() const 
     {
         return Final_ElectricityIntensityAmpere;
+    }
+
+    inline ConductivityState GetCurrentConductivityState() const 
+    {
+        return CurrentConductivityState;
+
     }
 protected:
     // Called when the game starts
@@ -28,6 +42,9 @@ protected:
         float Final_ElectricityIntensityAmpere{ 0.f };
 
     void UpdateParams(float inDeltaTime);
+    void UpdateStateMachine(float inDeltaTime);
+
+    ConductivityState CurrentConductivityState{ ConductivityState::CS_Normal};
 public:    
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -37,18 +54,10 @@ public:
 
     void AddInstantElectricityAmpere(float inAmpere);
     //Conductivity data and functions start <--------------------------------------------------------------------------------------------------------------------
-    //weather, geoinfo, damage, item_impact
-    //0-1
-    float moist{0.1};
 
 
-    //0-1
-    float metal_self_conductivity{0.f};
 
-    float R_scale{ 10.0f };
-
-    //0-1
-    float metal_self_purity{0.f};
+  
 
  //Conductivity data and functions End -------------------------------------------------------------------------------------------------------------------->
 
@@ -58,6 +67,9 @@ public:
 private:
     float OuterWolrdGivenAmpere{ 0.0f };
     float CalculateGeneratedTemperature(float  inAmpere, float deltaTime);
-    DECLARE_GET_COMPONENT_HELPER(UDIY_TemperatureProcessor);
 
+    FDIY_ConductivityAttr copy_conduct_Attr;
+
+
+    DECLARE_GET_COMPONENT_HELPER(UDIY_TemperatureProcessor);
 };

@@ -39,7 +39,7 @@ void UDIY_ItemStateWidget::NativeOnInitialized()
             }
 
             WidgetTree->RootWidget = infoPanel;
-            EASY_LOG_MAINPLAYER("UDIY_ItemStateWidget finished creating! %d",InfoTextBlock->IsVisible());
+            EASY_LOG_MAINPLAYER("UDIY_ItemStateWidget finished creating! %d");
         }
        
     }

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "DIY_InteractionCommonInterFace.h"
+#include "DIY_EmergentInteractDefines.h"
 #include "DIY_TemperatureProcessor.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
@@ -47,6 +48,8 @@ protected:
 
 
 
+    void OverrideOuterTemperature(float inTemperature);
+
 
 
 
@@ -61,9 +64,11 @@ public:
         Type_Count
     };
 
+
+
     void AddInstantTemperatureChange(float inChange);
 
-    void OverrideOuterTemperature(float inTemperature);
+    
 
     void AddEndurateTemperatureHolder(ETemperatureHolderType inHolderType,float inEndurateTime, float inLastingTemperature);
 
@@ -107,8 +112,7 @@ private:
 
 //Moisture data and functions start <--------------------------------------------------------------------------------------------------------------------
 public:
-    //used for setting the environment moisture, influenced by river, geo  when such environment changes , this value will be reconfigured
-    void OverrideOuterMoisture(float inMoisture);
+   
 
     //used for outer impact such as pokemon damage, item effect
     void AddInstantMoistureChange(float inChange);
@@ -118,9 +122,12 @@ protected:
     UPROPERTY(BlueprintReadOnly)
     float Final_MoistureValue{ 0.f };
     
+    //used for setting the environment moisture, influenced by river, geo  when such environment changes , this value will be reconfigured
+    void OverrideOuterMoisture(float inMoisture);
 private:
     float OuterWolrdMoistureValue{ 0.2f };
 
+    //WorldSettings should be used for such purposes
     float MoistureChangeSpeedScale{ 1.0f };
 
 
@@ -130,27 +137,7 @@ private:
 
 
 
-    //attribute 
-    // wood ? burnable? plastic?
-    //int item_object_type{0}----->    abundant attribute   this can be represented by combustible_temperature etc
-
-
-
-   // int item_quality_type{0};   ------> abudant attribute  this also can be represented by combustible_temperature
-
-    //self emissive temperature , config type 
-    float self_emissive_AddonTemperature_config{ 0.0f };
-    //self emissive temperature , lasting duration config type
-    float self_emissive_AddonTemperature_LastingDuration_config{ 9999.0f };
-
-
-    float self_combustible_temperature{100.00};
-
-    float self_thaw_temparature{ 26.0f };
-
-    float self_frozen_temperature{-1.0f};
-
-
+    FDIY_TemperatureAndMoistureAttr copy_TemperatureAndMoistureAttr;
 
 
 

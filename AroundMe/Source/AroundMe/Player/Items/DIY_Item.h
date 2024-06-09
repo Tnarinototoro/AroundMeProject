@@ -14,8 +14,6 @@ UCLASS()
 class AROUNDME_API ADIY_ItemBase: public AActor
 {
 	GENERATED_BODY()
-
-
 private:
 	FTimerHandle TimerHandle_HighLight;
 	bool isEnabledHighLighting{false};

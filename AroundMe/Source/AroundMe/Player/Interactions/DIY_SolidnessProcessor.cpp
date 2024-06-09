@@ -28,12 +28,14 @@ void UDIY_SolidnessProcessor::TickComponent(float DeltaTime, ELevelTick TickType
 
 void UDIY_SolidnessProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig)
 {
+    solidness_attr = inConfig->PossibleSolidnessConfig;
+
 }
 
 void UDIY_SolidnessProcessor::AcceptDamage(float inDamage, float inDamageSphereNess)
 {
    
-    Final_Durability -= (inDamage * sphereness * blunt_damage_susceptibility + inDamage * (1 - sphereness) * cutting_damage_susceptibility);
+    Final_Durability -= (inDamage * solidness_attr.sphereness * solidness_attr.blunt_damage_susceptibility + inDamage * (1 - solidness_attr.sphereness) * solidness_attr.cutting_damage_susceptibility);
 
 
     if(Final_Durability<=0.f)

@@ -1,5 +1,5 @@
 #include "DIY_TemperatureProcessor.h"
-
+#include "../Items/DIY_ItemDefines.h"
 
 UDIY_TemperatureProcessor::UDIY_TemperatureProcessor()
 {
@@ -12,6 +12,7 @@ UDIY_TemperatureProcessor::UDIY_TemperatureProcessor()
 
 void UDIY_TemperatureProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig)
 {
+    copy_TemperatureAndMoistureAttr = inConfig->PossibleTempAndMoistConfig;
 }
 
 
@@ -35,7 +36,6 @@ void UDIY_TemperatureProcessor::BeginPlay()
     //need to get weathre temperature from world
 }
 
-// 每帧调用
 void UDIY_TemperatureProcessor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -82,7 +82,7 @@ void UDIY_TemperatureProcessor::AddEndurateTemperatureHolder(ETemperatureHolderT
     }
 
     LastDominant_TemperatureHolder_Type = inHolderType;
-    LastDominant_TemperatureHolder_RemainingTime = (inEndurateTime + LastDominant_TemperatureHolder_RemainingTime) / 2.0f;
+    LastDominant_TemperatureHolder_RemainingTime = inEndurateTime + LastDominant_TemperatureHolder_RemainingTime;
     LastDominant_TemperatureHolder_RealTemperature = (inLastingTemperature + LastDominant_TemperatureHolder_RealTemperature) / 2.0f;
     
 }
@@ -133,15 +133,15 @@ void UDIY_TemperatureProcessor::UpdateParams(float inDeltaTime)
 
 
 
-        if (Final_TemperatureValue >= self_combustible_temperature)
+        if (Final_TemperatureValue >= copy_TemperatureAndMoistureAttr.self_combustible_temperature)
         {
 
         }
-        else if (Final_TemperatureValue >= self_thaw_temparature)
+        else if (Final_TemperatureValue >= copy_TemperatureAndMoistureAttr.self_thaw_temparature)
         {
 
         }
-        else if (Final_TemperatureValue <= self_frozen_temperature)
+        else if (Final_TemperatureValue <= copy_TemperatureAndMoistureAttr.self_frozen_temperature)
         {
            
         }

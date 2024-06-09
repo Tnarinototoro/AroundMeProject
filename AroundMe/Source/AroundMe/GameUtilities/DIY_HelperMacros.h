@@ -38,5 +38,3 @@ if (AActor* OwnerActor = GetOwner())\
     ensure(mOwnerActorOwned_##TargetComponentName); \
     return mOwnerActorOwned_##TargetComponentName; \
 }
-
-

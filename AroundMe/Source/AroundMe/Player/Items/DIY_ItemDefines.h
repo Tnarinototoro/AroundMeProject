@@ -2,11 +2,10 @@
 
 #pragma once
 
-#include "../Interactions/DIY_EmergentInteractDefines.h"
+
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
-
-
+#include "../Interactions/DIY_EmergentInteractDefines.h"
 #include "DIY_ItemDefines.generated.h"
 
 
@@ -61,6 +60,17 @@ struct FDIY_ItemDefualtConfig
   {
       nullptr
   };
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+      FDIY_TemperatureAndMoistureAttr PossibleTempAndMoistConfig;
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+      FDIY_SolidnessAttr PossibleSolidnessConfig;
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite)
+      FDIY_ConductivityAttr PossibleConductivityConfig;
+
+
+
 
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
   TArray<EDIY_InteractItemFlag> ConfiguredFlags;

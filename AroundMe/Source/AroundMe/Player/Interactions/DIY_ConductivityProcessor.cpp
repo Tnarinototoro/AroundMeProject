@@ -24,7 +24,23 @@ void UDIY_ConductivityProcessor::UpdateParams(float inDeltaTime)
     if (OuterWolrdGivenAmpere > 0.f)
     {
         float temp_generated=CalculateGeneratedTemperature(OuterWolrdGivenAmpere, inDeltaTime);
-        AcquireOwnerActorOwnedUDIY_TemperatureProcessor()->OverrideOuterTemperature(temp_generated);
+        AcquireOwnerActorOwnedUDIY_TemperatureProcessor()->AddInstantTemperatureChange(temp_generated);
+    }
+}
+
+void UDIY_ConductivityProcessor::UpdateStateMachine(float inDeltaTime)
+{
+    switch (CurrentConductivityState)
+    {
+    case ConductivityState::CS_Normal:
+        break;
+    case ConductivityState::CS_OnAmpere:
+        
+        break;
+    case ConductivityState::CS_Count:
+        break;
+    default:
+        break;
     }
 }
 
@@ -38,6 +54,7 @@ void UDIY_ConductivityProcessor::TickComponent(float DeltaTime, ELevelTick TickT
 
 void UDIY_ConductivityProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig)
 {
+    copy_conduct_Attr = inConfig->PossibleConductivityConfig;
 }
 
 void UDIY_ConductivityProcessor::OnConnectedToElectricity(float inAmpere)
@@ -62,9 +79,9 @@ float UDIY_ConductivityProcessor::CalculateGeneratedTemperature(float inAmpere, 
     return 
         inAmpere * 
         inAmpere *
-        FMath::Clamp(metal_self_conductivity * metal_self_purity+
+        FMath::Clamp(copy_conduct_Attr.MetalSelf_Conductivity * copy_conduct_Attr.Metal_Self_Purity +
             AcquireOwnerActorOwnedUDIY_TemperatureProcessor()->GetFinalMoistureValue()*0.1f, 0.0f, 1.0f) * 
-        R_scale * 
+        copy_conduct_Attr.R_scale *
         deltaTime;
 }
 
