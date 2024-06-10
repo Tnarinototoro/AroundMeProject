@@ -6,6 +6,21 @@
 #include "../Items/DIY_ItemDefines.h"
 #include "DIY_SolidnessProcessor.generated.h"
 
+
+
+UENUM(BlueprintType)
+enum class ESolidnessState
+{
+    SS_Normal,
+    //use chaos to be make it pieces
+    SS_Pieces,
+    //totally destroyed already, which means that it should be recycled by item manager
+    SS_Destroyed,
+    SS_Count
+};
+
+
+
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
 class AROUNDME_API UDIY_SolidnessProcessor : public UActorComponent, public IDIY_InteractionCommonInterFace
 {
@@ -30,7 +45,11 @@ public:
         return Final_Durability;
 
     }
+    inline const ESolidnessState& GetCurrentState() const
+    {
+        return CurrentState;
 
+    }
     inline const FDIY_SolidnessAttr& GetSolidNessAttrs() const
     {
         return solidness_attr;
@@ -44,8 +63,8 @@ protected:
     UPROPERTY(BlueprintReadOnly)
         float Final_Durability{ 0.f };
 
-   
-
+    UPROPERTY(BlueprintReadOnly)
+    ESolidnessState CurrentState{ ESolidnessState::SS_Normal};
 private:
 
  

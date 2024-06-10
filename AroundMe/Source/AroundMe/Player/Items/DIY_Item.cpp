@@ -395,7 +395,8 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 	FString updated_text{};
 	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::React_To_Temperature)&&nullptr!=Possible_Temperature_Processor)
 	{
-		updated_text += FString::Printf(TEXT("Temp: temp %f,\n moist %f \n self_burn %f \n self_freeze %f,\n self_thaw %f\n"), 
+		updated_text += FString::Printf(TEXT("Temp: State %s \n temp %f \n moist %f \n self_burn %f \n self_freeze %f \n self_thaw %f \n"), 
+		    *UEnum::GetValueAsString(Possible_Temperature_Processor->GetCurrentState()),
 			Possible_Temperature_Processor->GetFinalTemperatureValue(), 
 			Possible_Temperature_Processor->GetFinalMoistureValue(), 
 			Possible_Temperature_Processor->GetTemperatureAndMoistAttrs().self_combustible_temperature,
@@ -405,9 +406,10 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 
 	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Has_Any_Conductivity)&&nullptr!=Possible_Conductivity_Processor)
 	{
-		updated_text += FString::Printf(TEXT("Conduc: AmpereInten %f , \n State %s \n Metalic %f \n Purity %f\n"), 
+		updated_text += FString::Printf(TEXT("Conduc: State %s \n  AmpereInten %f \n Metalic %f \n Purity %f \n"), 
+		*UEnum::GetValueAsString(Possible_Conductivity_Processor->GetCurrentConductivityState()),
 			Possible_Conductivity_Processor->GetFinal_ElectricityIntensityAmpere(),
-			*UEnum::GetValueAsString(Possible_Conductivity_Processor->GetCurrentConductivityState()),
+			
 			Possible_Conductivity_Processor->GetConductivityAttr().MetalSelf_Conductivity,
 			Possible_Conductivity_Processor->GetConductivityAttr().Metal_Self_Purity
 		
@@ -426,7 +428,9 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 
 	if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Can_Be_Destroyed)&&nullptr!=Possible_Solidness_Processor)
 	{
-		updated_text += FString::Printf(TEXT("Solid: Durab %f \n Sphereness %f, \n Solidness %f, \n Suscep_Cut %f, Suscep_Blunt %f \n"), 
+		updated_text += FString::Printf(TEXT("Solid: State %s \n Durab %f \n Sphereness %f \n Solidness %f \n Suscep_Cut %f Suscep_Blunt %f \n"), 
+			
+			* UEnum::GetValueAsString(Possible_Solidness_Processor->GetCurrentState()),
 			Possible_Solidness_Processor->GetFinal_Durability(),
 			Possible_Solidness_Processor->GetSolidNessAttrs().sphereness,
 			Possible_Solidness_Processor->GetSolidNessAttrs().fresh_born_solidness,

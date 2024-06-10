@@ -6,6 +6,20 @@
 #include "DIY_EmergentInteractDefines.h"
 #include "DIY_TemperatureProcessor.generated.h"
 
+
+
+UENUM(BlueprintType)
+enum class ETemperatureRelatedState
+{
+    TS_Normal,
+    TS_Burning,
+    TS_BurntOver,
+    TS_Frozen,
+    TS_Count
+};
+
+
+
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
 class AROUNDME_API UDIY_TemperatureProcessor : public UActorComponent, public IDIY_InteractionCommonInterFace
 {
@@ -36,7 +50,7 @@ public:
 protected:
 
     void UpdateParams(float inDeltaTime);
-
+    void UpdateStateMachine(float inDeltaTime);
 
 
 
@@ -48,6 +62,11 @@ protected:
 
 
 
+    ETemperatureRelatedState CurrentState{ETemperatureRelatedState::TS_Normal};
+    float CurrentStateElapedTime{ 0.0f };
+    bool CurrentStateFirstTimeSign{ false };
+    void SwitchToNextState(ETemperatureRelatedState inState);
+
     void OverrideOuterTemperature(float inTemperature);
 
 
@@ -56,14 +75,11 @@ protected:
     
 
 public:
-    enum ETemperatureHolderType
-    {
-        Self_burning,
-        Self_thunder_shock,
-        Outer_shock,
-        Type_Count
-    };
 
+    const ETemperatureRelatedState& GetCurrentState() const 
+    {
+        return CurrentState;
+    }
     const FDIY_TemperatureAndMoistureAttr& GetTemperatureAndMoistAttrs() const
     {
         return copy_TemperatureAndMoistureAttr;
@@ -73,7 +89,7 @@ public:
 
     
 
-    void AddEndurateTemperatureHolder(ETemperatureHolderType inHolderType,float inEndurateTime, float inLastingTemperature);
+    void AddEndurateTemperatureHolder(float inEndurateTime, float inLastingTemperature);
 
 
 private:
@@ -82,7 +98,7 @@ private:
     float TemperatureChangeSpeedScale{ 1.0f };
     
 
-    ETemperatureHolderType LastDominant_TemperatureHolder_Type{ ETemperatureHolderType::Outer_shock};
+   
     float LastDominant_TemperatureHolder_RemainingTime{0.f};
     float LastDominant_TemperatureHolder_RealTemperature{ 0.f };
 
@@ -119,6 +135,8 @@ public:
 
     //used for outer impact such as pokemon damage, item effect
     void AddInstantMoistureChange(float inChange);
+
+    void AddEndurateMoistureHolder(float inDuration, float inMoisture);
 protected:
 
     //0-> totally dry 1->water
@@ -129,7 +147,8 @@ protected:
     void OverrideOuterMoisture(float inMoisture);
 private:
     float OuterWolrdMoistureValue{ 0.2f };
-
+    float LastDominant_MoistHolder_RemainingTime{ 0.f };
+    float LastDominant_MoistHolder_RealMoist{ 0.f };
     //WorldSettings should be used for such purposes
     float MoistureChangeSpeedScale{ 1.0f };
 

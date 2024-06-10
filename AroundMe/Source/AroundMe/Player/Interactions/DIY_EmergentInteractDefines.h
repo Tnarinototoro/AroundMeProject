@@ -147,7 +147,7 @@ struct FDIY_SolidnessAttr
 
     GENERATED_BODY()
         //attribute 
-
+        
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         float fresh_born_solidness{ 50.0f };
     UPROPERTY(EditAnywhere, BlueprintReadWrite)

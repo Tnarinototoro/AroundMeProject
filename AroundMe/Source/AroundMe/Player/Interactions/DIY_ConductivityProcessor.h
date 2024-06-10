@@ -8,7 +8,7 @@
 #include "DIY_ConductivityProcessor.generated.h"
 
 UENUM(BlueprintType)
-enum class ConductivityState
+enum class EConductivityState
 {
     CS_Normal,
     CS_OnAmpere,
@@ -29,7 +29,7 @@ public:
         return Final_ElectricityIntensityAmpere;
     }
 
-    inline ConductivityState GetCurrentConductivityState() const 
+    inline EConductivityState GetCurrentConductivityState() const 
     {
         return CurrentConductivityState;
 
@@ -49,7 +49,7 @@ protected:
     void UpdateParams(float inDeltaTime);
     void UpdateStateMachine(float inDeltaTime);
 
-    ConductivityState CurrentConductivityState{ ConductivityState::CS_Normal};
+    EConductivityState CurrentConductivityState{ EConductivityState::CS_Normal};
 public:    
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

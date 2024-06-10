@@ -32,12 +32,12 @@ void UDIY_ConductivityProcessor::UpdateStateMachine(float inDeltaTime)
 {
     switch (CurrentConductivityState)
     {
-    case ConductivityState::CS_Normal:
+    case EConductivityState::CS_Normal:
         break;
-    case ConductivityState::CS_OnAmpere:
+    case EConductivityState::CS_OnAmpere:
         
         break;
-    case ConductivityState::CS_Count:
+    case EConductivityState::CS_Count:
         break;
     default:
         break;
@@ -65,7 +65,7 @@ void UDIY_ConductivityProcessor::OnConnectedToElectricity(float inAmpere)
 
 void UDIY_ConductivityProcessor::AddInstantElectricityAmpere(float inAmpere)
 {
-    AcquireOwnerActorOwnedUDIY_TemperatureProcessor()->AddEndurateTemperatureHolder(UDIY_TemperatureProcessor::ETemperatureHolderType::Self_thunder_shock,5.0f,CalculateGeneratedTemperature(inAmpere, 1.0f));
+    AcquireOwnerActorOwnedUDIY_TemperatureProcessor()->AddEndurateTemperatureHolder(5.0f,CalculateGeneratedTemperature(inAmpere, 1.0f));
     
 }
 

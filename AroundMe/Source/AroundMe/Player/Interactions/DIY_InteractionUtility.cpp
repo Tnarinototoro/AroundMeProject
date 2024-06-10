@@ -39,27 +39,25 @@ void UDIY_InteractionUtility::ApplyDamage(const FDIY_DamageInfo& inDamageInfo)
 					if (is_one_shot)
 					{
 						cur_actor_possible_temperature_processor->AddInstantTemperatureChange(inDamageInfo.DamageAmount);
-						return;
+						
 					}
 
 					if (is_persistent_with_duration)
 					{
 						cur_actor_possible_temperature_processor->AddEndurateTemperatureHolder(
-							UDIY_TemperatureProcessor::ETemperatureHolderType::Outer_shock,
 							inDamageInfo.Damage_Float_0,
 							inDamageInfo.Damage_Float_1);
 
 
-						return;
+						
 					}
 					if (is_persistent_with_infinite_time)
 					{
 						cur_actor_possible_temperature_processor->AddEndurateTemperatureHolder(
-							UDIY_TemperatureProcessor::ETemperatureHolderType::Outer_shock,
 							MAX_FLT - 1.0f,
 							inDamageInfo.Damage_Float_1);
 
-						return;
+						
 					}
 				}
 
