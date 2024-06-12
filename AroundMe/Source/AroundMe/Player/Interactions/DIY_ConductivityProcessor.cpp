@@ -1,6 +1,6 @@
 #include "DIY_ConductivityProcessor.h"
 #include "DIY_TemperatureProcessor.h"
-
+#include "../../DIY_ProjectConfig.h"
 
 UDIY_ConductivityProcessor::UDIY_ConductivityProcessor()
 {
@@ -80,8 +80,8 @@ float UDIY_ConductivityProcessor::CalculateGeneratedTemperature(float inAmpere, 
         inAmpere * 
         inAmpere *
         FMath::Clamp(copy_conduct_Attr.MetalSelf_Conductivity * copy_conduct_Attr.Metal_Self_Purity +
-            AcquireOwnerActorOwnedUDIY_TemperatureProcessor()->GetFinalMoistureValue()*0.1f, 0.0f, 1.0f) * 
-        copy_conduct_Attr.R_scale *
+            AcquireOwnerActorOwnedUDIY_TemperatureProcessor()->GetFinalMoistureValue()* UDIY_ProjectConfig::GetConfigInstance()->MoistAsBasicR_Scale_Coe, 0.0f, 1.0f) *
+        UDIY_ProjectConfig::GetConfigInstance()->Conductivity_R_Scale *
         deltaTime;
 }
 

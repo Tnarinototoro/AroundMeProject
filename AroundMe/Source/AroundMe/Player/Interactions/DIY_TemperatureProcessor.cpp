@@ -1,6 +1,8 @@
 #include "DIY_TemperatureProcessor.h"
 #include "../Items/DIY_ItemDefines.h"
-
+#include "../../GameUtilities/Logs/DIY_LogHelper.h"
+#include "../../DIY_ProjectConfig.h"
+#include "Kismet/KismetSystemLibrary.h"
 UDIY_TemperatureProcessor::UDIY_TemperatureProcessor()
 {
    
@@ -124,11 +126,7 @@ void UDIY_TemperatureProcessor::AddEndurateTemperatureHolder(float inEndurateTim
 void UDIY_TemperatureProcessor::UpdateParams(float inDeltaTime)
 {
 
-    
-
-
-
-
+    UPROPERTY(AdvancedDisplay)
     //moisture updates
     {
 
@@ -154,7 +152,11 @@ void UDIY_TemperatureProcessor::UpdateParams(float inDeltaTime)
         float moisture_change_speed = (clamped_temperature - 0.0f) / (5000.0f - 0.0f);
         moisture_change_speed = 0.0002f + (1.0f - 0.0002f) * moisture_change_speed;
 
-        Final_MoistureValue=FMath::FInterpTo<float>(Final_MoistureValue, OuterWolrdMoistureValue, inDeltaTime, moisture_change_speed* MoistureChangeSpeedScale);
+        if(!FMath::IsNearlyEqual(Final_MoistureValue,OuterWolrdMoistureValue,0.05f))
+        {
+            Final_MoistureValue=FMath::FInterpTo<float>(Final_MoistureValue, OuterWolrdMoistureValue, inDeltaTime, moisture_change_speed* MoistureChangeSpeedScale);
+        }
+        
         
         
     }
@@ -177,9 +179,12 @@ void UDIY_TemperatureProcessor::UpdateParams(float inDeltaTime)
             }
         }
 
-        
+        if(!FMath::IsNearlyEqual(Final_TemperatureValue,OuterWolrdTemperatureValue,0.1f))
+        {
+            Final_TemperatureValue=FMath::FInterpTo<float>(Final_TemperatureValue, OuterWolrdTemperatureValue, inDeltaTime, Final_MoistureValue * UDIY_ProjectConfig::GetConfigInstance()->TemperatureChangeSpeedScale_DueToMoist);
+        }
 
-        Final_TemperatureValue=FMath::FInterpTo<float>(Final_TemperatureValue, OuterWolrdTemperatureValue, inDeltaTime, Final_MoistureValue * TemperatureChangeSpeedScale);
+        
 
 
 
@@ -222,21 +227,29 @@ void UDIY_TemperatureProcessor::UpdateStateMachine(float inDeltaTime)
     case ETemperatureRelatedState::TS_Burning:
         if (CurrentStateFirstTimeSign)
         {
-            //@Todo Self Burning time
-            if (CurrentStateElapedTime > 10.0f)
-            {
-                SwitchToNextState(ETemperatureRelatedState::TS_BurntOver);
-                return;
-            }
+
+
+
+
+            SelfIgnite_AndAroundItems();
+
 
             break;
+        }
+        if (CurrentStateElapedTime > copy_TemperatureAndMoistureAttr.self_emissive_AddonTemperature_LastingDuration_config)
+        {
+            SwitchToNextState(ETemperatureRelatedState::TS_BurntOver);
+            return;
+        }
+        else
+        {
+            //EASY_LOG_MAINPLAYER("Cur burning time %f outerworld temperature %f",CurrentStateElapedTime,OuterWolrdTemperatureValue);
         }
         break;
     case ETemperatureRelatedState::TS_BurntOver:
         if (CurrentStateFirstTimeSign)
         {
-
-
+            this->GetOwner()->Destroy();
 
             break;
         }
@@ -269,3 +282,41 @@ void UDIY_TemperatureProcessor::UpdateStateMachine(float inDeltaTime)
     CurrentStateElapedTime += inDeltaTime;
 }
 
+void UDIY_TemperatureProcessor::SelfIgnite_AndAroundItems()
+{
+    AddEndurateTemperatureHolder(copy_TemperatureAndMoistureAttr.self_emissive_AddonTemperature_LastingDuration_config,copy_TemperatureAndMoistureAttr.self_emissive_AddonTemperature_config);
+
+    AActor* OwnerActor=GetOwner();
+
+
+    ensureMsgf(OwnerActor!=nullptr,TEXT("the owner actor is null weird!"));
+    FVector Origin = OwnerActor->GetActorLocation();
+    TArray<AActor*> OverlappedActors;
+    TArray<AActor*> IgnoreActors;
+    IgnoreActors.Add(OwnerActor);
+    FName CollisionProfileName=TEXT("DIY_Item_Pres");
+    float ExplosionRadius=3000.0f;
+    // debug
+    DrawDebugSphere(GetWorld(), Origin, ExplosionRadius, 32, FColor::Red, false, 2.0f);
+
+   
+    UKismetSystemLibrary::SphereOverlapActors(
+        GetWorld(),
+        Origin,
+        ExplosionRadius,
+        TArray<TEnumAsByte<EObjectTypeQuery>>(), 
+        AActor::StaticClass(),
+        IgnoreActors,
+        OverlappedActors
+    );
+
+   
+    for (AActor* Actor : OverlappedActors)
+    {
+        UDIY_TemperatureProcessor* poss_temp_compo=Actor->FindComponentByClass<UDIY_TemperatureProcessor>();
+        if(nullptr!=poss_temp_compo)
+        {
+            EASY_LOG_MAINPLAYER("Current actor with temperature compo is %s",*Actor->GetName());
+        }
+    }
+}

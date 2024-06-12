@@ -56,6 +56,7 @@ public:
     virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig) override;
    
     void OnConnectedToElectricity(float inAmpere);
+    void OnDisConnectedToElectricity(float inAmpere);
 
     void AddInstantElectricityAmpere(float inAmpere);
     //Conductivity data and functions start <--------------------------------------------------------------------------------------------------------------------
@@ -74,6 +75,10 @@ private:
     float CalculateGeneratedTemperature(float  inAmpere, float deltaTime);
 
     FDIY_ConductivityAttr copy_conduct_Attr;
+
+    uint8 connected_elec_source_num{0};
+
+
 
 
     DECLARE_GET_COMPONENT_HELPER(UDIY_TemperatureProcessor);

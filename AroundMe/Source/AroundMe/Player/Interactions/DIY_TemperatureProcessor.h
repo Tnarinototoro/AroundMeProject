@@ -29,7 +29,7 @@ public:
 
 
     //Todo enum Temperature
-   
+
     UDIY_TemperatureProcessor();
     virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig) override;
 protected:
@@ -95,7 +95,7 @@ public:
 private:
     float OuterWolrdTemperatureValue{ 0.2f };
 
-    float TemperatureChangeSpeedScale{ 1.0f };
+   
     
 
    
@@ -151,6 +151,10 @@ private:
     float LastDominant_MoistHolder_RealMoist{ 0.f };
     //WorldSettings should be used for such purposes
     float MoistureChangeSpeedScale{ 1.0f };
+
+
+    void SelfIgnite_AndAroundItems();
+
 
 
 //Moisture data and functions End -------------------------------------------------------------------------------------------------------------------->

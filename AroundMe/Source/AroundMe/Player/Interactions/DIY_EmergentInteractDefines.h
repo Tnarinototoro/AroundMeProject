@@ -130,9 +130,6 @@ struct FDIY_ConductivityAttr
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         float MetalSelf_Conductivity{ 0.f };
 
-    //this should go to world settings
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-        float R_scale{ 10.0f };
     //0-1
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         float Metal_Self_Purity{ 0.f };

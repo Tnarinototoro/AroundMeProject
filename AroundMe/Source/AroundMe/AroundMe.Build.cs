@@ -8,12 +8,24 @@ public class AroundMe : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core","UMG", "CoreUObject", "PhysicsCore", "Engine", "InputCore", "EnhancedInput", "DIYPlatformService", "AssetRegistry" });
+		PublicDependencyModuleNames.AddRange(new string[] { 
+			"Core",
+			"UMG", 
+			"CoreUObject", 
+			"PhysicsCore", 
+			"Engine", 
+			"InputCore", 
+			"EnhancedInput", 
+			"DIYPlatformService", 
+			"AssetRegistry", 
+			"DeveloperSettings" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
-		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+		PrivateDependencyModuleNames.AddRange(new string[] { 
+			"Slate", 
+			"SlateCore" });
 		
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");

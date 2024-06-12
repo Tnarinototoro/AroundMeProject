@@ -60,10 +60,11 @@ void UDIY_ItemDetector::ProcessBeginOverlapEvent(UPrimitiveComponent* Overlapped
         FDIY_DamageInfo temp_info;
         temp_info.DamageGiver = GetOwner();
         temp_info.DamageTaker = OtherActor;
-        temp_info.DamageAmount = 1000.0f;
+        temp_info.DamageAmount = 100.0f;
         UDIY_InteractionUtility::SetFlag(temp_info.BulkDamageFlags, (uint8)EDIY_DamageInfoFlag::Is_Fire_Damage);
         UDIY_InteractionUtility::SetFlag(temp_info.BulkDamageFlags, (uint8)EDIY_DamageInfoFlag::Is_One_Shot_Type);
-        UDIY_InteractionUtility::SetFlag(temp_info.BulkDamageFlags, (uint8)EDIY_DamageInfoFlag::Is_Solid_Damage);
+        //UDIY_InteractionUtility::SetFlag(temp_info.BulkDamageFlags, (uint8)EDIY_DamageInfoFlag::Is_Solid_Damage);
+        //speherness setup
         temp_info.Damage_Float_0 = 0.6f;
         UDIY_InteractionUtility::ApplyDamage(temp_info);
     }
