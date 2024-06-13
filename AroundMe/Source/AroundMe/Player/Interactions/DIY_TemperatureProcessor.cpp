@@ -3,6 +3,11 @@
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "../../DIY_ProjectConfig.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Engine/StreamableManager.h"
+#include "Engine/AssetManager.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 UDIY_TemperatureProcessor::UDIY_TemperatureProcessor()
 {
    
@@ -26,7 +31,8 @@ void UDIY_TemperatureProcessor::BeginPlay()
     //@Todo get init weater moisture
     Final_MoistureValue = OuterWolrdMoistureValue = 0.3f;
 
-
+    SpawnedEffectCompo={nullptr};
+    EffectResource={nullptr};
    
     // / target_moist= (moist_value_weather(moist_value_weather_geo));
    
@@ -126,7 +132,16 @@ void UDIY_TemperatureProcessor::AddEndurateTemperatureHolder(float inEndurateTim
 void UDIY_TemperatureProcessor::UpdateParams(float inDeltaTime)
 {
 
-    UPROPERTY(AdvancedDisplay)
+    {
+        if(SpawnedEffectCompo!=nullptr)
+        {
+            if(IsValid(SpawnedEffectCompo))
+            {
+                SpawnedEffectCompo->SetWorldLocation(GetOwner()->GetActorLocation());
+            }
+
+        }
+    }
     //moisture updates
     {
 
@@ -232,13 +247,16 @@ void UDIY_TemperatureProcessor::UpdateStateMachine(float inDeltaTime)
 
 
             SelfIgnite_AndAroundItems();
-
+            SpawnTemperatureEffectAttached(UDIY_ProjectConfig::GetConfigInstance()->BurningEffectPath);
 
             break;
         }
+      
         if (CurrentStateElapedTime > copy_TemperatureAndMoistureAttr.self_emissive_AddonTemperature_LastingDuration_config)
         {
             SwitchToNextState(ETemperatureRelatedState::TS_BurntOver);
+          
+          
             return;
         }
         else
@@ -249,9 +267,20 @@ void UDIY_TemperatureProcessor::UpdateStateMachine(float inDeltaTime)
     case ETemperatureRelatedState::TS_BurntOver:
         if (CurrentStateFirstTimeSign)
         {
-            this->GetOwner()->Destroy();
+            SpawnTemperatureEffectAttached(UDIY_ProjectConfig::GetConfigInstance()->BurntOverEffectPath);
+            
 
             break;
+        }
+
+        if(CurrentStateElapedTime>4.0f)
+        {
+            if(SpawnedEffectCompo!=nullptr&&IsValid(SpawnedEffectCompo))
+            {
+                SpawnedEffectCompo->DestroyComponent();
+                SpawnedEffectCompo=nullptr;
+            }
+            this->GetOwner()->Destroy();
         }
         break;
     case ETemperatureRelatedState::TS_Frozen:
@@ -317,6 +346,43 @@ void UDIY_TemperatureProcessor::SelfIgnite_AndAroundItems()
         if(nullptr!=poss_temp_compo)
         {
             EASY_LOG_MAINPLAYER("Current actor with temperature compo is %s",*Actor->GetName());
+            poss_temp_compo->AddEndurateTemperatureHolder(copy_TemperatureAndMoistureAttr.self_emissive_AddonTemperature_LastingDuration_config,copy_TemperatureAndMoistureAttr.self_emissive_AddonTemperature_config);
         }
     }
+}
+
+void UDIY_TemperatureProcessor:: SpawnTemperatureEffectAttached(const FSoftObjectPath& inEffectPath)
+{
+    if(SpawnedEffectCompo!=nullptr)
+    {
+        SpawnedEffectCompo->DestroyComponent();
+        SpawnedEffectCompo=nullptr;
+    }
+
+    LoadEffectResource(inEffectPath);
+}
+
+void UDIY_TemperatureProcessor::LoadEffectResource(const FSoftObjectPath& inEffectPath)
+{
+    
+    if (inEffectPath.IsValid())
+    {
+        
+        FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
+        StreamableManager.RequestAsyncLoad(inEffectPath,FStreamableDelegate::CreateUObject(this, &UDIY_TemperatureProcessor::OnEffectLoaded,inEffectPath));
+    }
+}
+
+void UDIY_TemperatureProcessor::OnEffectLoaded(FSoftObjectPath inEffectPath)
+{
+    FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
+    EffectResource = Cast<UParticleSystem>(StreamableManager.LoadSynchronous(inEffectPath));
+
+    ensureMsgf(EffectResource.IsValid(),TEXT("Effect resource is invalid"));
+    ensureMsgf(SpawnedEffectCompo==nullptr,TEXT("you have to destroy the previous particle instanece before spawning new one"));
+
+    
+    SpawnedEffectCompo=UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), EffectResource.Get(), GetOwner()->GetActorLocation());
+   
+    SpawnedEffectCompo->bAutoDestroy=false;
 }

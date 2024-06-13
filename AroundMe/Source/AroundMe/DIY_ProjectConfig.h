@@ -20,6 +20,12 @@ public:
         float MoistAsBasicR_Scale_Coe{ 1.0f };
     UPROPERTY(EditAnywhere, config, Category = "GameInteract_TemperaturAndMoist", meta = (DisplayName = "TemperatureChangeSpeedScale_DueToMoist", ToolTip = "descripts how fast temperature changes when mosit is 0 or 1 or inbetween"))
         float TemperatureChangeSpeedScale_DueToMoist{ 1.0f };
-   
+ 
+    UPROPERTY(EditAnywhere,config, Category = "GameInteract_TemperaturAndMoist", meta = (DisplayName = "BurningEffect", ToolTip = "simple burning effect"))
+    FSoftObjectPath BurningEffectPath;
+
+    UPROPERTY(EditAnywhere,config, Category = "GameInteract_TemperaturAndMoist", meta = (DisplayName = "BurntOverEffectPath", ToolTip = "simple BurntOverEffect smoking feel"))
+    FSoftObjectPath BurntOverEffectPath;
+
     static const UDIY_ProjectConfig* GetConfigInstance();
 };

@@ -10,7 +10,8 @@ public class AroundMe : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { 
 			"Core",
-			"UMG", 
+			"UMG",
+			"Niagara",
 			"CoreUObject", 
 			"PhysicsCore", 
 			"Engine", 

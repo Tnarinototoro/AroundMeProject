@@ -4,6 +4,8 @@
 #include "Components/ActorComponent.h"
 #include "DIY_InteractionCommonInterFace.h"
 #include "DIY_EmergentInteractDefines.h"
+#include "Particles/ParticleSystem.h"
+
 #include "DIY_TemperatureProcessor.generated.h"
 
 
@@ -155,8 +157,15 @@ private:
 
     void SelfIgnite_AndAroundItems();
 
+    void SpawnTemperatureEffectAttached(const FSoftObjectPath& inEffectPath);
 
+    void LoadEffectResource(const FSoftObjectPath& inEffectPath);
+    void OnEffectLoaded(FSoftObjectPath inEffectPath);
 
+    
+    TWeakObjectPtr<UParticleSystem> EffectResource{nullptr};
+  
+    class UParticleSystemComponent* SpawnedEffectCompo{nullptr};
 //Moisture data and functions End -------------------------------------------------------------------------------------------------------------------->
 
 
