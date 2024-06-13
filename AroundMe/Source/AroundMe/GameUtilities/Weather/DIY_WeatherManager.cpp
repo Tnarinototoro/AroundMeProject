@@ -1,0 +1,43 @@
+// All rights reserved to ShadowCandle Studio
+
+
+#include "DIY_WeatherManager.h"
+
+
+
+
+ADIY_WeatherManager*  ADIY_WeatherManager::gWeatherManagerInstance = nullptr;
+ADIY_WeatherManager::ADIY_WeatherManager()
+{
+    PrimaryActorTick.bCanEverTick = false;
+}
+
+ADIY_WeatherManager::~ADIY_WeatherManager()
+{
+
+}
+
+ADIY_WeatherManager* ADIY_WeatherManager::GetWeatherManager()
+{
+    checkf(nullptr != gWeatherManagerInstance, TEXT("gWeatherManagerInstance can not be inited her"));
+
+    return ADIY_WeatherManager::gWeatherManagerInstance;
+}
+
+void ADIY_WeatherManager::BeginPlay()
+{
+    Super::BeginPlay();
+    checkf(ADIY_WeatherManager::gWeatherManagerInstance == nullptr, TEXT("More than one WeatherManagerInstance is created now which is not allowed"));
+    ADIY_WeatherManager::gWeatherManagerInstance = this;
+    
+}
+
+void ADIY_WeatherManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+   
+    ADIY_WeatherManager::gWeatherManagerInstance = nullptr;
+
+}
+
+
+
