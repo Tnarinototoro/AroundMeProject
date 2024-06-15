@@ -9,7 +9,8 @@
 ADIY_WeatherManager*  ADIY_WeatherManager::gWeatherManagerInstance = nullptr;
 ADIY_WeatherManager::ADIY_WeatherManager()
 {
-    PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bCanEverTick = false; 
+    UE_LOG(LogTemp, Warning, TEXT("Hello, World!"));
 }
 
 ADIY_WeatherManager::~ADIY_WeatherManager()
