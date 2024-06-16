@@ -20,7 +20,7 @@ enum class ETemperatureRelatedState
     TS_Count
 };
 
-
+DECLARE_DYNAMIC_DELEGATE(FOnItemBurntOverFinished);
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
 class AROUNDME_API UDIY_TemperatureProcessor : public UActorComponent, public IDIY_InteractionCommonInterFace
@@ -28,7 +28,6 @@ class AROUNDME_API UDIY_TemperatureProcessor : public UActorComponent, public ID
     GENERATED_BODY()
 
 public:    
-
 
     //Todo enum Temperature
 

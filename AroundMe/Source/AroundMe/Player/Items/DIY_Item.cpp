@@ -65,8 +65,6 @@ ADIY_ItemBase::~ADIY_ItemBase()
 void ADIY_ItemBase::BeginPlay()
 {
     Super::BeginPlay();
-    InitWorldPosition = this->GetActorLocation();
-    InitRotator = this->GetActorRotation();
 
     GetWorld()->GetTimerManager().SetTimer(
         TimerHandle_HighLight,
@@ -83,88 +81,6 @@ void ADIY_ItemBase::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     UpdateStateWidgetInfo(DeltaTime);
-
-    if (HasImpulseTask && PossiblePicker == nullptr)
-    {
-        // HasImpulseTask = false;
-        // BasicStaticMeshComponent->AddImpulse(PulseVec, NAME_None, true);
-    }
-
-    if (TargetPhysicsState == 1)
-    {
-        BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-        BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
-        TargetPhysicsState = -1;
-    }
-
-    if (TargetPhysicsState == 0)
-    {
-        BasicStaticMeshComponent->SetSimulatePhysics(true);
-        BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
-        TargetPhysicsState = -1;
-    }
-}
-
-void ADIY_ItemBase::OnPickUp(AActor *Picker, FName SocketName)
-{
-
-    if (Picker)
-    {
-        PossiblePicker = Picker;
-        USkeletalMeshComponent *PickerMesh = Picker->FindComponentByClass<USkeletalMeshComponent>();
-        if (PickerMesh)
-        {
-
-            BasicStaticMeshComponent->SetSimulatePhysics(false);
-            // BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-            AttachToComponent(PickerMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName);
-            EASY_LOG_MAINPLAYER("attached to the actor successfully");
-
-            TargetPhysicsState = 1;
-        }
-    }
-}
-
-void ADIY_ItemBase::OnPlaced()
-{
-
-    checkf(PossiblePicker != nullptr, TEXT("Item is not attached to actor"));
-
-    FVector pulse_dir = PossiblePicker->GetActorForwardVector() + PossiblePicker->GetActorUpVector();
-
-    pulse_dir = pulse_dir.GetSafeNormal();
-
-    DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-
-    FVector StartLocation = GetActorLocation();
-    FVector EndLocation = StartLocation + pulse_dir * 1000.0f;
-
-    // 箭头颜色
-    FColor ArrowColor = FColor::Red;
-
-    // 箭头尺寸
-    float ArrowSize = 10.0f;
-
-    // 持续时间（秒），0 表示只在当前帧绘制
-    float Duration = 2.0f;
-
-    // 厚度
-    float Thickness = 2.0f;
-
-    // 绘制箭头
-    // DrawDebugLine(GetWorld(), StartLocation, EndLocation, ArrowColor, true, 2.0f, 0, Thickness);
-
-    HasImpulseTask = true;
-    PulseVec = pulse_dir * 2000;
-
-    EASY_LOG_MAINPLAYER("released to ground successfully");
-
-    PossiblePicker = nullptr;
-
-    BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-
-    TargetPhysicsState = 0;
 }
 
 void ADIY_ItemBase::ResumeTrinkling()
@@ -284,60 +200,6 @@ bool ADIY_ItemBase::SwitchCycleState(EItemLifeCycleState targetState, bool Force
 {
 
     return false;
-}
-
-void ADIY_ItemBase::SetCollisionProfileName_Recursively(USceneComponent *inFirstCompo, FName InCollisionProfileName)
-{
-    UStaticMeshComponent *cur_first_static_mesh_compo = Cast<UStaticMeshComponent>(inFirstCompo);
-
-    cur_first_static_mesh_compo->SetCollisionProfileName(InCollisionProfileName);
-    checkf(cur_first_static_mesh_compo, TEXT("first compo is not static mesh or anything"));
-
-    TArray<USceneComponent *> cur_all_children_compos;
-    cur_first_static_mesh_compo->GetChildrenComponents(true, cur_all_children_compos);
-    for (USceneComponent *cur_compo : cur_all_children_compos)
-    {
-        if (UStaticMeshComponent *cur_static = Cast<UStaticMeshComponent>(cur_compo))
-        {
-            cur_static->SetCollisionProfileName(InCollisionProfileName);
-        }
-    }
-}
-
-void ADIY_ItemBase::SetCollisionEnabled_Recursively(USceneComponent *inFirstCompo, ECollisionEnabled::Type NewType)
-{
-    UStaticMeshComponent *cur_first_static_mesh_compo = Cast<UStaticMeshComponent>(inFirstCompo);
-
-    cur_first_static_mesh_compo->SetCollisionEnabled(NewType);
-    checkf(cur_first_static_mesh_compo, TEXT("first compo is not static mesh or anything"));
-
-    TArray<USceneComponent *> cur_all_children_compos;
-    cur_first_static_mesh_compo->GetChildrenComponents(true, cur_all_children_compos);
-    for (USceneComponent *cur_compo : cur_all_children_compos)
-    {
-        if (UStaticMeshComponent *cur_static = Cast<UStaticMeshComponent>(cur_compo))
-        {
-            cur_static->SetCollisionEnabled(NewType);
-        }
-    }
-}
-
-void ADIY_ItemBase::SetSimulatePhysics_Recursively(USceneComponent *inFirstCompo, bool inEnable)
-{
-    UStaticMeshComponent *cur_first_static_mesh_compo = Cast<UStaticMeshComponent>(inFirstCompo);
-
-    cur_first_static_mesh_compo->SetSimulatePhysics(inEnable);
-    checkf(cur_first_static_mesh_compo, TEXT("first compo is not static mesh or anything"));
-
-    TArray<USceneComponent *> cur_all_children_compos;
-    cur_first_static_mesh_compo->GetChildrenComponents(true, cur_all_children_compos);
-    for (USceneComponent *cur_compo : cur_all_children_compos)
-    {
-        if (UStaticMeshComponent *cur_static = Cast<UStaticMeshComponent>(cur_compo))
-        {
-            cur_static->SetSimulatePhysics(inEnable);
-        }
-    }
 }
 
 void ADIY_ItemBase::UpdateWidgetText_Internal(const FString &NewText)
