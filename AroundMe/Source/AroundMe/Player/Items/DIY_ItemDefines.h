@@ -26,6 +26,8 @@ enum class EItemID : uint8
     EItemID_Count
 };
 
+
+
 UENUM(BlueprintType)
 enum class EItemPhysicsMaterialID : uint8
 {

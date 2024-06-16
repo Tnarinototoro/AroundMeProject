@@ -34,6 +34,7 @@ public:
 
     UDIY_TemperatureProcessor();
     virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig) override;
+    virtual void OnResetComponentValues() override;
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;

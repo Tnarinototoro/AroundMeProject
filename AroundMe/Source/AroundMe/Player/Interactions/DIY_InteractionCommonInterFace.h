@@ -20,7 +20,9 @@ class AROUNDME_API IDIY_InteractionCommonInterFace
     GENERATED_BODY()
 
 public:
-    // This function must be implemented by any class that implements this interface
-    virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig* inConfig) = 0;
-    
+    // initilization of component attrs
+    virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig *inConfig) = 0;
+
+    // Reset values of components
+    virtual void OnResetComponentValues() = 0;
 };

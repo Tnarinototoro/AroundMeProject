@@ -5,86 +5,90 @@
 #include "CoreMinimal.h"
 
 #include "DIY_ItemDefines.h"
+#include "DIY_ItemManagerDefines.h"
 #include "DIY_Item.generated.h"
 /**
- * 
+ *
  */
 
 UCLASS()
-class AROUNDME_API ADIY_ItemBase: public AActor
+class AROUNDME_API ADIY_ItemBase : public AActor
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 private:
-	FTimerHandle TimerHandle_HighLight;
-	bool isEnabledHighLighting{false};
+    FTimerHandle TimerHandle_HighLight;
+    bool isEnabledHighLighting{false};
+
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+    // Called when the game starts or when spawned
+    virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY_ItemBase")
-		class UStaticMeshComponent* BasicStaticMeshComponent; 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY_ItemBase")
+    class UStaticMeshComponent *BasicStaticMeshComponent;
 
+    void UpdateHighLight();
 
-	void UpdateHighLight();
 public:
-	ADIY_ItemBase();
-	~ADIY_ItemBase();
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	
-	UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
-		void OnPickUp(class AActor* Picker, FName SocketName);
-	UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
-		void OnPlaced();
+    ADIY_ItemBase();
+    ~ADIY_ItemBase();
+    // Called every frame
+    virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
-		void ResumeTrinkling();
-	UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
-		void PauseTrinkling();
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
+    void OnPickUp(class AActor *Picker, FName SocketName);
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
+    void OnPlaced();
 
-	UPROPERTY(BlueprintReadOnly)
-		FRotator InitRotator;
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
+    void ResumeTrinkling();
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
+    void PauseTrinkling();
 
-	UPROPERTY(BlueprintReadOnly)
-		FVector InitWorldPosition;
+    UPROPERTY(BlueprintReadOnly)
+    FRotator InitRotator;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemBase")
-		int32 HighLightColor {3};
+    UPROPERTY(BlueprintReadOnly)
+    FVector InitWorldPosition;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemBase")
-		float HighLightColorTranklingInterval{ 1.0f };
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemBase")
+    int32 HighLightColor{3};
 
-	void InitWithConfig(const FDIY_ItemDefualtConfig& inConfig);
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemBase")
+    float HighLightColorTranklingInterval{1.0f};
 
+    void InitWithConfig(const FDIY_ItemDefualtConfig &inConfig);
 
+    EItemID GetItemID() const { return config_copy.ItemID; }
 
-	
+    // force override means to force change to target state and execute the first execution event equal to current state
+    bool SwitchCycleState(EItemLifeCycleState targetState, bool ForceOverride = false);
 
 protected:
+    class AActor *PossiblePicker{nullptr};
+    bool HasImpulseTask{false};
+    FVector PulseVec{0.0f, 0.f, 0.f};
+    void SetCollisionProfileName_Recursively(class USceneComponent *inFirstCompo, FName InCollisionProfileName);
+    void SetCollisionEnabled_Recursively(class USceneComponent *inFirstCompo, ECollisionEnabled::Type NewType);
+    void SetSimulatePhysics_Recursively(class USceneComponent *inFirstCompo, bool inEnable);
 
-	class AActor* PossiblePicker{ nullptr };
-	bool HasImpulseTask{ false };
-	FVector PulseVec{ 0.0f,0.f,0.f };
-	void SetCollisionProfileName_Recursively(class USceneComponent* inFirstCompo, FName InCollisionProfileName);
-	void SetCollisionEnabled_Recursively(class USceneComponent* inFirstCompo, ECollisionEnabled::Type NewType);
-	void SetSimulatePhysics_Recursively(class USceneComponent* inFirstCompo, bool inEnable);
 private:
-	UPROPERTY(VisibleAnywhere, Category = "UI")
-		class UWidgetComponent* ItemStateWidgetComponent;
-	FDIY_ItemDefualtConfig config_copy;
-	int32 BulkInteractionFlags{ 0 };
-	
-	
-	void UpdateWidgetText_Internal(const FString& NewText);
-	
-	void UpdateStateWidgetInfo(float inDeltaTime);
+    UPROPERTY(VisibleAnywhere, Category = "UI")
+    class UWidgetComponent *ItemStateWidgetComponent;
+    FDIY_ItemDefualtConfig config_copy;
+    int32 BulkInteractionFlags{0};
 
-	class UDIY_ItemStateWidget* StateDisplayWidget{nullptr};
-	// 0--> physics   1---> pickup state no phy no collision  -1 no need to do any thing
-	int TargetPhysicsState{ -1 }; 
+    EItemLifeCycleState CurrentLifeState{EItemLifeCycleState::EItemState_SpanwedJustNow};
 
+    EItemID CurrentItemID{EItemID::EItemID_Count};
+    void UpdateWidgetText_Internal(const FString &NewText);
 
-	class UDIY_ConductivityProcessor* Possible_Conductivity_Processor{ nullptr };
-	class UDIY_SolidnessProcessor* Possible_Solidness_Processor{ nullptr };
-	class UDIY_TemperatureProcessor* Possible_Temperature_Processor{ nullptr };
+    void UpdateStateWidgetInfo(float inDeltaTime);
+
+    class UDIY_ItemStateWidget *StateDisplayWidget{nullptr};
+    // 0--> physics   1---> pickup state no phy no collision  -1 no need to do any thing
+    int TargetPhysicsState{-1};
+
+    class UDIY_ConductivityProcessor *Possible_Conductivity_Processor{nullptr};
+    class UDIY_SolidnessProcessor *Possible_Solidness_Processor{nullptr};
+    class UDIY_TemperatureProcessor *Possible_Temperature_Processor{nullptr};
 };
