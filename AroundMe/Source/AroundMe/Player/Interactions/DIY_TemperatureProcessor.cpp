@@ -7,6 +7,7 @@
 #include "Engine/AssetManager.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "../../GameUtilities/Weather/DIY_WeatherManager.h"
 
 UDIY_TemperatureProcessor::UDIY_TemperatureProcessor()
 {
@@ -22,14 +23,14 @@ void UDIY_TemperatureProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfi
 void UDIY_TemperatureProcessor::OnResetComponentValues()
 {
     //@Todo get init weater moisture
-    Final_MoistureValue = OuterWolrdMoistureValue = 0.3f;
+    Final_MoistureValue = OuterWolrdMoistureValue = ADIY_WeatherManager::GetWeatherManager()->InquireCurrentEnvMoist();
 
     SpawnedEffectCompo = {nullptr};
     EffectResource = {nullptr};
 
     // / target_moist= (moist_value_weather(moist_value_weather_geo));
 
-    Final_TemperatureValue = OuterWolrdTemperatureValue = 26.0f;
+    Final_TemperatureValue = OuterWolrdTemperatureValue = ADIY_WeatherManager::GetWeatherManager()->InquireCurrentEnvTemperature();
 
     // need to get weathre temperature from world
 }
@@ -140,7 +141,7 @@ void UDIY_TemperatureProcessor::UpdateParams(float inDeltaTime)
 
             if (LastDominant_TemperatureHolder_RemainingTime <= 0.f)
             {
-                OverrideOuterMoisture(0.3f);
+                OverrideOuterMoisture(ADIY_WeatherManager::GetWeatherManager()->InquireCurrentEnvMoist());
 
                 // reset to the weather temperature
             }
@@ -167,7 +168,7 @@ void UDIY_TemperatureProcessor::UpdateParams(float inDeltaTime)
 
             if (LastDominant_TemperatureHolder_RemainingTime <= 0.f)
             {
-                OverrideOuterTemperature(26.0f);
+                OverrideOuterTemperature(ADIY_WeatherManager::GetWeatherManager()->InquireCurrentEnvTemperature());
 
                 // reset to the weather temperature
             }
