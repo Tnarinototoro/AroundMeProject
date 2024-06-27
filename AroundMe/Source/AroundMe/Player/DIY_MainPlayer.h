@@ -112,4 +112,6 @@ private:
 	UFUNCTION()
     void DoJumpAction(const struct FInputActionValue& Value);
 	
+
+    class UDIY_ItemBackPackWidget* item_backpack_widget{nullptr};
 };
