@@ -15,7 +15,7 @@
 #include "Actions/DIY_MainPlayerActionController.h"
 #include "../GameUtilities/Logs/DIY_LogHelper.h"
 #include "Camera/DIY_MainPLayerCameraController.h"
-#include "../UIWidgets/DIY_ItemBackPackWidget.h"
+
 // Sets default values
 ADIY_MainPlayer::ADIY_MainPlayer()
 {
@@ -44,13 +44,7 @@ void ADIY_MainPlayer::BeginPlay()
 
     AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->TriggerProcessJumpInput.AddDynamic(this, &ADIY_MainPlayer::DoJumpAction);
 
-    item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(CreateWidget(GetWorld(), UDIY_ItemBackPackWidget::StaticClass()));
-    if (nullptr != item_backpack_widget)
-    {
-        EASY_LOG_MAINPLAYER("XXXXXXX backpack widget inited");
-        item_backpack_widget->AddToViewport(3);
-        item_backpack_widget->InitializeBackPack(3, 3); // 设置为3行3列的背包格子，可以根据需要调整
-    }
+   
 }
 
 void ADIY_MainPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -58,8 +52,7 @@ void ADIY_MainPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
     Super::EndPlay(EndPlayReason);
 
     AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->TriggerProcessJumpInput.RemoveDynamic(this, &ADIY_MainPlayer::DoJumpAction);
-    item_backpack_widget->RemoveFromParent();
-    item_backpack_widget = nullptr;
+    
 }
 
 void ADIY_MainPlayer::PawnClientRestart()

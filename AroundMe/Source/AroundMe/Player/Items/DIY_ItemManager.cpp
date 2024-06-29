@@ -99,6 +99,20 @@ void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
     Pool.Add(Item);
 }
 
+UTexture2D *ADIY_ItemManager::GetItemIconTexture(EItemID inItemID) const
+{
+    ensureMsgf(PlaceHoldItemIcon != nullptr, TEXT("please set up defualt icon for backup"));
+    if (inItemID >= EItemID::EItemID_Count)
+        return PlaceHoldItemIcon;
+
+    UTexture2D *icon = ItemIconsMap.FindRef(inItemID);
+
+    if (nullptr == icon)
+        return PlaceHoldItemIcon;
+
+    return icon;
+}
+
 ADIY_ItemManager *ADIY_ItemManager::GetManager()
 {
     return ManagerInstance;

@@ -20,7 +20,7 @@ public:
     void InitializeItemReferences();
 
     // Spawn an Item
-    //UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    // UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     void SpawnItemByID(EItemID ItemID, const FVector &Location, const FRotator &Rotation);
 
     // Called every frame
@@ -28,9 +28,11 @@ public:
     // Spawn an Item
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     void RequestSpawnItem(EItemID ItemID, const FVector &Location, const FRotator &Rotation);
-     // Spawn an Item
+    // Spawn an Item
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     void RequestRecycleItem(AActor *Item);
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    class UTexture2D *GetItemIconTexture(EItemID inItemID) const;
 
 protected:
     ADIY_ItemManager();
@@ -57,6 +59,10 @@ private:
     // TMap<EItemID, TSoftObjectPtr<UClass>> LoadedItemSoftAllClasses;
     TMap<EItemID, FSoftObjectPath> CachedPathObjects;
 
-    
     TMap<EItemID, TArray<AActor *>> ItemPools;
+
+    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
+    class UTexture2D *PlaceHoldItemIcon;
+    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
+    TMap<EItemID, class UTexture2D *> ItemIconsMap;
 };
