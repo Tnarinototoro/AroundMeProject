@@ -99,16 +99,16 @@ void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
     Pool.Add(Item);
 }
 
-UTexture2D *ADIY_ItemManager::GetItemIconTexture(EItemID inItemID) const
+UTexture2D *ADIY_ItemManager::GetItemIconTexture(int32 inITemID) const
 {
-    ensureMsgf(PlaceHoldItemIcon != nullptr, TEXT("please set up defualt icon for backup"));
-    if (inItemID >= EItemID::EItemID_Count)
-        return PlaceHoldItemIcon;
+    ensureMsgf(DefualtItemSlotIcon != nullptr && nullptr != EmptyItemSlotIcon, TEXT("please set up defualt and empty slot icon for backup"));
+    if (inITemID >= (int32)EItemID::EItemID_Count)
+        return DefualtItemSlotIcon;
+    if (inITemID < 0)
+        return EmptyItemSlotIcon;
+    UTexture2D *icon = ItemIconsMap.FindRef((EItemID)inITemID);
 
-    UTexture2D *icon = ItemIconsMap.FindRef(inItemID);
-
-    if (nullptr == icon)
-        return PlaceHoldItemIcon;
+    ensureMsgf(icon != nullptr, TEXT("icon must be fullfiled with valid path"));
 
     return icon;
 }

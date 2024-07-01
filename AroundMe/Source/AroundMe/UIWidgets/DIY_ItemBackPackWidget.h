@@ -11,7 +11,13 @@ class AROUNDME_API UDIY_ItemBackPackWidget : public UUserWidget
 
 public:
     UFUNCTION(BlueprintCallable, Category = "ItemBackPack")
-    void InitializeBackPack(int32 Rows, int32 Cols);
+    void InitializeBackPack(int32 Rows, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize);
+
+    bool RequestChangeSlotBorderColor(int32 row, int32 col, const FLinearColor &inColor);
+    bool RequestChangeSlotCountText(int32 row, int32 col, const FText &inText);
+    bool RequestChangeSlotImage(int32 row, int32 col, UTexture2D *Texture);
+    void RequestVisibility_BackpackUI(ESlateVisibility invisibility);
+    void RequestVisibility_BackpackUI_Slot_At(int32 row, int32 col, ESlateVisibility invisibility);
 
 protected:
     virtual void NativeConstruct() override;
@@ -26,6 +32,10 @@ private:
 
     int32 RowNum;
     int32 ColNum;
-
+    FVector2D IconImageSlotSize{0.0f, 0.0f};
+    float TextSlotFontSize{10.0f};
     void CreateGrid();
+    class UBorder *GetSlotBorder(int32 row, int32 col) const;
+    class UImage *GetSlotImage(int32 row, int32 col) const;
+    class UTextBlock *GetSlotCountText(int32 row, int32 col) const;
 };

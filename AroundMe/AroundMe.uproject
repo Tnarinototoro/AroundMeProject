@@ -1,47 +1,56 @@
 {
-	"FileVersion": 3,
-	"EngineAssociation": "{125B9AC3-4374-8A9A-C939-B1BAABBB38DF}",
-	"Category": "",
-	"Description": "",
-	"Modules": [
-		{
-			"Name": "AroundMe",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			]
-		}
-	],
-	"Plugins": [
-		{
-			"Name": "GeometryProcessing",
-			"Enabled": true
-		},
-		{
-			"Name": "GeometryScripting",
-			"Enabled": true
-		},
-		{
-			"Name": "CommonUI",
-			"Enabled": true
-		},
-		{
-			"Name": "AudioModulation",
-			"Enabled": true
-		},
-		{
-			"Name": "OptionalMobileFeaturesBPLibrary",
-			"Enabled": true
-		},
-		{
-			"Name": "AndroidCamera",
-			"Enabled": true
-		},
-		{
-			"Name": "AssetsCleaner",
-			"Enabled": false,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/3caab7c6e81f449296989122c043ae21"
-		}
-	]
+    "FileVersion": 3,
+    "EngineAssociation": "{125B9AC3-4374-8A9A-C939-B1BAABBB38DF}",
+    "Category": "",
+    "Description": "",
+    "Modules": [
+        {
+            "Name": "AroundMe",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "AdditionalDependencies": [
+                "Engine"
+            ]
+        },
+        {
+            "Name": "AroundMeEditor",
+            "Type": "Editor",
+            "LoadingPhase": "Default",
+            "AdditionalDependencies": [
+                "UnrealEd",
+                "LevelEditor"
+            ]
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "GeometryProcessing",
+            "Enabled": true
+        },
+        {
+            "Name": "GeometryScripting",
+            "Enabled": true
+        },
+        {
+            "Name": "CommonUI",
+            "Enabled": true
+        },
+        {
+            "Name": "AudioModulation",
+            "Enabled": true
+        },
+        {
+            "Name": "OptionalMobileFeaturesBPLibrary",
+            "Enabled": true
+        },
+        {
+            "Name": "AndroidCamera",
+            "Enabled": true
+        },
+        {
+            "Name": "AssetsCleaner",
+            "Enabled": false,
+            "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/3caab7c6e81f449296989122c043ae21"
+        }
+    ]
 }

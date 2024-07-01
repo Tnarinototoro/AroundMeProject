@@ -32,7 +32,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     void RequestRecycleItem(AActor *Item);
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    class UTexture2D *GetItemIconTexture(EItemID inItemID) const;
+    class UTexture2D *GetItemIconTexture(int32 inITemID) const;
 
 protected:
     ADIY_ItemManager();
@@ -62,7 +62,9 @@ private:
     TMap<EItemID, TArray<AActor *>> ItemPools;
 
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
-    class UTexture2D *PlaceHoldItemIcon;
+    class UTexture2D *DefualtItemSlotIcon;
+    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
+    class UTexture2D *EmptyItemSlotIcon;
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
     TMap<EItemID, class UTexture2D *> ItemIconsMap;
 };

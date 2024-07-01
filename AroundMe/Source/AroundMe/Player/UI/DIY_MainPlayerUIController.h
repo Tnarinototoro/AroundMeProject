@@ -13,19 +13,25 @@ class AROUNDME_API UDIY_MainPlayerUIController : public UActorComponent
 public:
     UDIY_MainPlayerUIController();
 
+    
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    uint8 BackPack_GridRowNum{3};
+    uint8 BackPack_GridRowNum{5};
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    uint8 BackPack_GridColNum{3};
+    uint8 BackPack_GridColNum{10};
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    FVector2D BackPack_Anchors_InViewPort{0.2f, 0.5f};
+    FVector2D BackPack_Anchors_InViewPort{0.5f, 0.f};
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    FVector2D BackPack_Align_InViewPort{0.5f, 0.5f};
+    FVector2D BackPack_Align_InViewPort{0.5f, 0.f};
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
+    FVector2D BackPack_SlotIconSize{100.0f, 100.0f};
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
+    float BackPack_TextSlotFontSize{20.0f};
 
 public:
     // Called every frame
@@ -33,6 +39,7 @@ public:
 
     void RequestChangeUISectionVisibility(ESlateVisibility invisibility, EMainPlayerUISectionID SectionID);
 
+    void RequestVisibility_BackPack(ESlateVisibility invisibility);
 private:
     TArray<class UUserWidget *> mAllWidgets;
 };
