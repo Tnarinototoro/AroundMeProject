@@ -31,7 +31,7 @@ void UDIY_MainPlayerUIController::BeginPlay()
             // item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
             item_backpack_widget->AddToViewport(0);
 
-            RequestChangeUISectionVisibility(ESlateVisibility::Visible, EMainPlayerUISectionID::BackPack);
+            RequestChangeUISectionVisibility(ESlateVisibility::Hidden, EMainPlayerUISectionID::BackPack);
 
             break;
         }
@@ -44,8 +44,6 @@ void UDIY_MainPlayerUIController::BeginPlay()
             break;
         }
     }
-    
-    
 }
 
 void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReason)

@@ -159,7 +159,7 @@ void UDIY_ItemBackPackWidget::CreateGrid()
                     //@TODO set icon image
                     IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(-1));
                     CountText->SetText(FText::AsNumber(0));
-
+                    CountText->SetVisibility(ESlateVisibility::Hidden);
                     Border->SetBrushColor(FLinearColor::Transparent);
                     Border->SetPadding(FMargin(1.0f));
 
