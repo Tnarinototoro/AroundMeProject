@@ -2,6 +2,9 @@
 #include "LevelEditor.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "Modules/ModuleManager.h"
+#include "../AroundMe/Player/Items/DIY_Item.h"
+
+// Static bool to hold the state of the checkbox
 
 void FAroundMeEditorModule::StartupModule()
 {
@@ -23,40 +26,39 @@ void FAroundMeEditorModule::StartupModule()
 void FAroundMeEditorModule::AddMenuEntry(FMenuBarBuilder &MenuBarBuilder)
 {
     MenuBarBuilder.AddPullDownMenu(
-        FText::FromString("Debug"),
-        FText::FromString("Open the debug menu"),
+        FText::FromString("DIY_DebugMenu"),
+        FText::FromString("Open the DIY_debug menu"),
         FNewMenuDelegate::CreateRaw(this, &FAroundMeEditorModule::FillDebugMenu),
-        "Debug");
+        "DIY_Debug");
 }
 
 void FAroundMeEditorModule::FillDebugMenu(FMenuBuilder &MenuBuilder)
 {
     MenuBuilder.AddMenuEntry(
-        FText::FromString("Debug Option 1"),
-        FText::FromString("Description for debug option 1"),
+        FText::FromString("Dbg_ItemStateInfo"),
+        FText::FromString("Enable Item Info Display or not"),
         FSlateIcon(),
-        FUIAction(FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::DebugOption1)));
-
-    MenuBuilder.AddMenuEntry(
-        FText::FromString("Debug Option 2"),
-        FText::FromString("Description for debug option 2"),
-        FSlateIcon(),
-        FUIAction(FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::DebugOption2)));
+        FUIAction(
+            FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::ToggleDbg_Enable_ItemInfo_Widget),
+            FCanExecuteAction(),
+            FIsActionChecked::CreateRaw(this, &FAroundMeEditorModule::GetDbg_Enable_ItemInfo_Widget)),
+        NAME_None,
+        EUserInterfaceActionType::ToggleButton);
 }
 
-void FAroundMeEditorModule::DebugOption1()
+void FAroundMeEditorModule::ToggleDbg_Enable_ItemInfo_Widget()
 {
-    // Implementation for Debug Option 1
+#if WITH_EDITOR
+    ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget = !ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget;
+#endif
 }
 
-void FAroundMeEditorModule::DebugOption2()
+bool FAroundMeEditorModule::GetDbg_Enable_ItemInfo_Widget() const
 {
-    // Implementation for Debug Option 2
+    return ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget;
 }
-
 void FAroundMeEditorModule::ShutdownModule()
 {
     // Cleanup if necessary
 }
-
-IMPLEMENT_MODULE(FAroundMeEditorModule, AroundMeEditor)
+IMPLEMENT_GAME_MODULE(FAroundMeEditorModule, AroundMeEditor)

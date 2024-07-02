@@ -14,7 +14,8 @@ public class AroundMeEditor : ModuleRules
             "Slate",
             "SlateCore",
             "EditorStyle",
-            "LevelEditor"
+            "LevelEditor",
+            "AroundMe"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });

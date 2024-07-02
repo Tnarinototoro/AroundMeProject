@@ -11,6 +11,7 @@
 #include "../Interactions/DIY_TemperatureProcessor.h"
 #include "../Interactions/DIY_ConductivityProcessor.h"
 
+bool ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget = false;
 void ADIY_ItemBase::UpdateHighLight()
 {
     if (BasicStaticMeshComponent)
@@ -45,13 +46,12 @@ ADIY_ItemBase::ADIY_ItemBase()
 
     }
     */
+
     ItemStateWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("ItemStateWidgetComponent"));
 
     ItemStateWidgetComponent->SetupAttachment(BasicStaticMeshComponent);
     ItemStateWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
     ItemStateWidgetComponent->SetDrawAtDesiredSize(false);
-    // here the widget is created
-    ItemStateWidgetComponent->SetWidgetClass(UDIY_ItemStateWidget::StaticClass());
 
     ItemStateWidgetComponent->SetPivot(FVector2D(0.5f, 0.5f));
     ItemStateWidgetComponent->SetVisibility(true);
@@ -65,7 +65,13 @@ ADIY_ItemBase::~ADIY_ItemBase()
 void ADIY_ItemBase::BeginPlay()
 {
     Super::BeginPlay();
+#if WITH_EDITOR
+    if (ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget)
+    {
 
+        ItemStateWidgetComponent->SetWidgetClass(UDIY_ItemStateWidget::StaticClass());
+    }
+#endif
     GetWorld()->GetTimerManager().SetTimer(
         TimerHandle_HighLight,
         this,

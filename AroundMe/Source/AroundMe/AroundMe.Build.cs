@@ -19,14 +19,15 @@ public class AroundMe : ModuleRules
             "EnhancedInput",
             "DIYPlatformService",
             "AssetRegistry",
-            "DeveloperSettings" });
+            "DeveloperSettings"});
 
-        PrivateDependencyModuleNames.AddRange(new string[] { });
+
 
         // Uncomment if you are using Slate UI
         PrivateDependencyModuleNames.AddRange(new string[] {
             "Slate",
-            "SlateCore" });
+            "SlateCore"
+             });
 
         // Uncomment if you are using online features
         // PrivateDependencyModuleNames.Add("OnlineSubsystem");

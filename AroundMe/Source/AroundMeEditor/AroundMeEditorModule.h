@@ -9,10 +9,11 @@ public:
     virtual void StartupModule() override;
     virtual void ShutdownModule() override;
 
-private:
-    void AddMenuEntry(FMenuBarBuilder& MenuBarBuilder);
-    void FillDebugMenu(FMenuBuilder& MenuBuilder);
+    void AddMenuEntry(FMenuBarBuilder &MenuBarBuilder);
+    void FillDebugMenu(FMenuBuilder &MenuBuilder);
+    void ToggleDbg_Enable_ItemInfo_Widget();
+    UFUNCTION()
+    bool GetDbg_Enable_ItemInfo_Widget() const;
 
-    void DebugOption1();
-    void DebugOption2();
+private:
 };

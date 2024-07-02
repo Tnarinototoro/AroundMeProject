@@ -25,7 +25,7 @@ void FDIYPlatformServiceModule::WorldTick(UWorld* world, ELevelTick tickType, fl
 FDIYPlatformServiceModule& FDIYPlatformServiceModule::Get()
 {
 	return FModuleManager::LoadModuleChecked<FDIYPlatformServiceModule>("DIYPlatformService");
-	// TODO: 在此处插入 return 语句
+
 }
 
 ADIYPlatformServiceProvider* FDIYPlatformServiceModule::GetPlatformProvider(UWorld* world=nullptr)
