@@ -7,7 +7,9 @@
 #include "../DIY_Utilities.h"
 
 ADIY_MusicPlayer *ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;
+#if WITH_EDITOR
 float ADIY_MusicPlayer::Dbg_Music_Hour = {9.0f};
+#endif
 ADIY_MusicPlayer::ADIY_MusicPlayer()
 {
     PrimaryActorTick.bCanEverTick = false;

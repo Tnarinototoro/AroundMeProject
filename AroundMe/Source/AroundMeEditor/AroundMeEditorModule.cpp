@@ -3,6 +3,7 @@
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "Modules/ModuleManager.h"
 #include "../AroundMe/Player/Items/DIY_Item.h"
+#include "../AroundMe/Player/DIY_MainPlayer.h"
 #include "Widgets/Input/SSlider.h"
 #include "../AroundMe/GameUtilities/MusicPlayer/DIY_MusicPlayer.h"
 
@@ -25,15 +26,40 @@ void FAroundMeEditorModule::StartupModule()
 
 void FAroundMeEditorModule::AddMenuEntry(FMenuBarBuilder &MenuBarBuilder)
 {
-    // Add DIY_Item_DebugMenu
+    // Add DIY_Debug
     MenuBarBuilder.AddPullDownMenu(
-        FText::FromString("DIY_Item_DebugMenu"),
+        FText::FromString("DIY_Debug"),
         FText::FromString("Open the DIY_Item_debug menu"),
-        FNewMenuDelegate::CreateRaw(this, &FAroundMeEditorModule::FillItemDebugMenu),
-        "DIY_Item_DebugMenu");
+        FNewMenuDelegate::CreateRaw(this, &FAroundMeEditorModule::FillDebugMenu_DIY),
+        "DIY_Debug");
 }
 
-void FAroundMeEditorModule::FillItemDebugMenu(FMenuBuilder &MenuBuilder)
+void FAroundMeEditorModule::FillDebugMenu_DIY(FMenuBuilder &MenuBuilder)
+{
+
+    MenuBuilder.AddSubMenu(
+        FText::FromString("Items"),
+        FText::FromString("Debug Items utility"),
+        FNewMenuDelegate::CreateRaw(this, &FAroundMeEditorModule::Fill_SubMenu_Item));
+
+    // Add DIY_MusicDebugMenu as a sub-menu under DIY_Item_DebugMenu
+    MenuBuilder.AddSubMenu(
+        FText::FromString("Sound"),
+        FText::FromString("Debug Music utility"),
+        FNewMenuDelegate::CreateRaw(this, &FAroundMeEditorModule::Fill_SubMenu_Music));
+}
+
+void FAroundMeEditorModule::Fill_SubMenu_Music(FMenuBuilder &MenuBuilder)
+{
+    MenuBuilder.AddWidget(
+        SNew(SVerticalBox) +
+            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(STextBlock).Text(FText::FromString("Music Hour Slider"))] +
+            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(SSlider).OnValueChanged_Raw(this, &FAroundMeEditorModule::OnMusicHourSliderValueChanged).Value_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValue).MinValue(0.0f).MaxValue(23.0f).StepSize(1.0f)] +
+            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(STextBlock).Text_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValueText)],
+        FText::FromString("Music Hour Debug Slider"));
+}
+
+void FAroundMeEditorModule::Fill_SubMenu_Item(FMenuBuilder &MenuBuilder)
 {
     MenuBuilder.AddMenuEntry(
         FText::FromString("Dbg_ItemStateInfo"),
@@ -46,21 +72,16 @@ void FAroundMeEditorModule::FillItemDebugMenu(FMenuBuilder &MenuBuilder)
         NAME_None,
         EUserInterfaceActionType::ToggleButton);
 
-    // Add DIY_MusicDebugMenu as a sub-menu under DIY_Item_DebugMenu
-    MenuBuilder.AddSubMenu(
-        FText::FromString("DIY_MusicDebugMenu"),
-        FText::FromString("Debug Music utility"),
-        FNewMenuDelegate::CreateRaw(this, &FAroundMeEditorModule::FillMusicDebugMenu));
-}
-
-void FAroundMeEditorModule::FillMusicDebugMenu(FMenuBuilder &MenuBuilder)
-{
-    MenuBuilder.AddWidget(
-        SNew(SVerticalBox) +
-            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(STextBlock).Text(FText::FromString("Music Hour Slider"))] +
-            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(SSlider).OnValueChanged_Raw(this, &FAroundMeEditorModule::OnMusicHourSliderValueChanged).Value_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValue).MinValue(0.0f).MaxValue(23.0f).StepSize(1.0f)] +
-            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(STextBlock).Text_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValueText)],
-        FText::FromString("Music Hour Debug Slider"));
+    MenuBuilder.AddMenuEntry(
+        FText::FromString("Dbg_PlayerStateInfo"),
+        FText::FromString("Enable Player Info Display or not"),
+        FSlateIcon(),
+        FUIAction(
+            FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::ToggleDbg_Enable_PlayerInfo_Widget),
+            FCanExecuteAction(),
+            FIsActionChecked::CreateRaw(this, &FAroundMeEditorModule::GetDbg_Enable_PlayerInfo_Widget)),
+        NAME_None,
+        EUserInterfaceActionType::ToggleButton);
 }
 
 void FAroundMeEditorModule::ToggleDbg_Enable_ItemInfo_Widget()
@@ -73,6 +94,22 @@ void FAroundMeEditorModule::ToggleDbg_Enable_ItemInfo_Widget()
 bool FAroundMeEditorModule::GetDbg_Enable_ItemInfo_Widget() const
 {
     return ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget;
+}
+
+bool FAroundMeEditorModule::GetDbg_Enable_PlayerInfo_Widget() const
+{
+#if WITH_EDITOR
+    return ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget;
+    // Handle slider value change
+#endif
+}
+
+void FAroundMeEditorModule::ToggleDbg_Enable_PlayerInfo_Widget()
+{
+#if WITH_EDITOR
+    ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget = !ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget;
+    // Handle slider value change
+#endif
 }
 
 void FAroundMeEditorModule::OnMusicHourSliderValueChanged(float NewValue)

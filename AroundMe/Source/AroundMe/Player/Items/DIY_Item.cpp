@@ -11,7 +11,10 @@
 #include "../Interactions/DIY_TemperatureProcessor.h"
 #include "../Interactions/DIY_ConductivityProcessor.h"
 
+#if WITH_EDITOR
 bool ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget = false;
+#endif
+
 void ADIY_ItemBase::UpdateHighLight()
 {
     if (BasicStaticMeshComponent)
