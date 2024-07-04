@@ -91,3 +91,22 @@ void UDIY_MainPlayerUIController::RequestChangeUISectionVisibility(ESlateVisibil
         cur_widget->SetVisibility(invisibility);
     }
 }
+
+void UDIY_MainPlayerUIController::RequestVisibility_BackPack(ESlateVisibility invisibility)
+{
+}
+
+bool UDIY_MainPlayerUIController::IsUISectionVisible(EMainPlayerUISectionID SectionID)
+{
+    return false;
+}
+
+bool UDIY_MainPlayerUIController::RequestMoveCurrentBackPackCursorOnSlot(int32 Row_delta, int32 Col_delta)
+{
+    return false;
+}
+
+bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(ADIY_ItemBase *inItem)
+{
+    return false;
+}

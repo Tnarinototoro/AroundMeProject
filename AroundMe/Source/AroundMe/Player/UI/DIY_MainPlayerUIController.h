@@ -13,7 +13,6 @@ class AROUNDME_API UDIY_MainPlayerUIController : public UActorComponent
 public:
     UDIY_MainPlayerUIController();
 
-    
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;
@@ -39,7 +38,19 @@ public:
 
     void RequestChangeUISectionVisibility(ESlateVisibility invisibility, EMainPlayerUISectionID SectionID);
 
+    //BackPack Funcs
     void RequestVisibility_BackPack(ESlateVisibility invisibility);
+
+    bool IsUISectionVisible(EMainPlayerUISectionID SectionID);
+    bool RequestAddItemToBackPack(class ADIY_ItemBase *inItem);
+
+    bool RequestMoveCurrentBackPackCursorOnSlot(int32 Row_delta, int32 Col_delta);
+
 private:
     TArray<class UUserWidget *> mAllWidgets;
+
+    uint32 BackPack_CurrentSelectedSlot_Row_index{0};
+    uint32 BackPack_CurrentSelectedSlot_Col_index{0};
+
+    bool KeepSelectedSlot_Coordinate{true};
 };

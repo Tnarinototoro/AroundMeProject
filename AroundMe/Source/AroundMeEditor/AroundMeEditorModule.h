@@ -10,8 +10,12 @@ public:
     virtual void ShutdownModule() override;
 
     void AddMenuEntry(FMenuBarBuilder &MenuBarBuilder);
-    void FillDebugMenu(FMenuBuilder &MenuBuilder);
+    void FillItemDebugMenu(FMenuBuilder &MenuBuilder);
+    void FillMusicDebugMenu(FMenuBuilder &MenuBuilder);
     void ToggleDbg_Enable_ItemInfo_Widget();
+    FText GetMusicHourSliderValueText() const;
+    float GetMusicHourSliderValue() const;
+    void OnMusicHourSliderValueChanged(float NewValue);
     UFUNCTION()
     bool GetDbg_Enable_ItemInfo_Widget() const;
 
