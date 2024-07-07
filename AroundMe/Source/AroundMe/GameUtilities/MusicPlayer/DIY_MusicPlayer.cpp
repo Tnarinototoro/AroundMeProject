@@ -11,7 +11,7 @@
 
 ADIY_MusicPlayer *ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;
 #if WITH_EDITOR
-float ADIY_MusicPlayer::Dbg_Music_Hour = {-1.0f};
+int ADIY_MusicPlayer::Dbg_Music_Hour = {-1};
 #endif
 ADIY_MusicPlayer::ADIY_MusicPlayer()
 {
@@ -36,11 +36,11 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
 #if WITH_EDITOR
     if (ADIY_MusicPlayer::Dbg_Music_Hour >= 0)
     {
-        new_hour = (uint8)ADIY_MusicPlayer::Dbg_Music_Hour;
+        new_hour = (int)ADIY_MusicPlayer::Dbg_Music_Hour;
     }
 
 #endif
-
+    EASY_LOG_MAINPLAYER("cur new hour is %d", new_hour);
     SetCurrentHour(new_hour);
 
     UDIY_MainPlayerUIController *cur_ui_controller = AcquireOwnerActorOwnedUDIY_MainPlayerUIController();
@@ -202,7 +202,7 @@ void ADIY_MusicPlayer::SetCurrentHour(uint8 inNewHour)
     if (inNewHour == HourOfToday)
         return;
     HourOfToday = inNewHour;
-    
+
     PlayMusicCorrespondingToTime();
 }
 UDIY_MainPlayerUIController *ADIY_MusicPlayer::AcquireOwnerActorOwnedUDIY_MainPlayerUIController()

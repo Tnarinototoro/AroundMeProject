@@ -54,7 +54,7 @@ void FAroundMeEditorModule::Fill_SubMenu_Music(FMenuBuilder &MenuBuilder)
     MenuBuilder.AddWidget(
         SNew(SVerticalBox) +
             SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(STextBlock).Text(FText::FromString("Music Hour Slider"))] +
-            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(SSlider).OnValueChanged_Raw(this, &FAroundMeEditorModule::OnMusicHourSliderValueChanged).Value_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValue).MinValue(-1.0f).MaxValue(23.0f).StepSize(1.0f)] +
+            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(SSlider).OnValueChanged_Raw(this, &FAroundMeEditorModule::OnMusicHourSliderValueChanged).Value_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValue).MinValue(-1).MaxValue(23).StepSize(1)] +
             SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(STextBlock).Text_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValueText)],
         FText::FromString("Music Hour Debug Slider"));
 }
@@ -128,8 +128,8 @@ float FAroundMeEditorModule::GetMusicHourSliderValue() const
 
 FText FAroundMeEditorModule::GetMusicHourSliderValueText() const
 {
-    float SliderValue = ADIY_MusicPlayer::Dbg_Music_Hour;
-    return FText::FromString(FString::Printf(TEXT("Current Value: %.0f"), SliderValue));
+    int SliderValue = ADIY_MusicPlayer::Dbg_Music_Hour;
+    return FText::FromString(FString::Printf(TEXT("Current Value: %d"), SliderValue));
 }
 
 void FAroundMeEditorModule::ShutdownModule()

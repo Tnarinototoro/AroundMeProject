@@ -41,7 +41,7 @@ protected:
 
 public:
 #if WITH_EDITOR
-    static float Dbg_Music_Hour;
+    static int Dbg_Music_Hour;
 #endif
     static ADIY_MusicPlayer *GetMusicPlayer();
     // 音乐资源数组
