@@ -5,14 +5,18 @@
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Misc/DateTime.h"
 #include "../DIY_Utilities.h"
+#include "Kismet/GameplayStatics.h"
+#include "../../Player/UI/DIY_MainPlayerUIController.h"
+#include "../Logs/DIY_LogHelper.h"
 
 ADIY_MusicPlayer *ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;
 #if WITH_EDITOR
-float ADIY_MusicPlayer::Dbg_Music_Hour = {9.0f};
+float ADIY_MusicPlayer::Dbg_Music_Hour = {-1.0f};
 #endif
 ADIY_MusicPlayer::ADIY_MusicPlayer()
 {
-    PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bCanEverTick = true;
+    PrimaryActorTick.TickInterval = 1.0f;
     AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
     AudioComponent->bAllowSpatialization = false; // 关闭空间化以实现2D音效
     AudioComponent->bIsUISound = true;            // 设置为UI声音，通常用于2D背景音乐
@@ -21,6 +25,39 @@ ADIY_MusicPlayer::ADIY_MusicPlayer()
 
 ADIY_MusicPlayer::~ADIY_MusicPlayer()
 {
+}
+
+void ADIY_MusicPlayer::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    FDateTime cur_date_time = FDateTime::Now();
+    uint8 new_hour = cur_date_time.GetHour();
+#if WITH_EDITOR
+    if (ADIY_MusicPlayer::Dbg_Music_Hour >= 0)
+    {
+        new_hour = (uint8)ADIY_MusicPlayer::Dbg_Music_Hour;
+    }
+
+#endif
+
+    SetCurrentHour(new_hour);
+
+    UDIY_MainPlayerUIController *cur_ui_controller = AcquireOwnerActorOwnedUDIY_MainPlayerUIController();
+    if (nullptr != cur_ui_controller)
+    {
+        cur_ui_controller->RequestUpdateStateInfoText_MusicPlayer(
+            FText::FromString(
+                FString::Printf(
+                    TEXT("%d/%d/%d \n %d:%d:%d \n Track: %s"),
+                    cur_date_time.GetYear(),
+                    cur_date_time.GetMonth(),
+                    cur_date_time.GetDay(),
+                    HourOfToday,
+                    cur_date_time.GetMinute(),
+                    cur_date_time.GetSecond(),
+                    *UEnum::GetValueAsString(GetCurrentMusicTrackID()))));
+    }
 }
 
 ADIY_MusicPlayer *ADIY_MusicPlayer::GetMusicPlayer()
@@ -65,8 +102,8 @@ uint32 ADIY_MusicPlayer::GenerateDateCorrespondingMusicIndex()
 {
     //@todo weather system needs to be implemented
     uint32 base_index = 0;
-    const FDateTime &now_time = FDateTime::Now();
-    return now_time.GetHour() + base_index;
+    // const FDateTime &now_time = FDateTime::Now();
+    return HourOfToday + base_index;
 }
 
 void ADIY_MusicPlayer::LoadMusicFromDirectory()
@@ -157,4 +194,28 @@ void ADIY_MusicPlayer::StopMusic()
 ESoundTrackID ADIY_MusicPlayer::GetCurrentMusicTrackID()
 {
     return (ESoundTrackID)mCurrentPlayingSoundTrack;
+}
+
+void ADIY_MusicPlayer::SetCurrentHour(uint8 inNewHour)
+{
+
+    if (inNewHour == HourOfToday)
+        return;
+    HourOfToday = inNewHour;
+    
+    PlayMusicCorrespondingToTime();
+}
+UDIY_MainPlayerUIController *ADIY_MusicPlayer::AcquireOwnerActorOwnedUDIY_MainPlayerUIController()
+{
+    if (mOwnerActorOwned_UDIY_MainPlayerUIController != nullptr)
+        return mOwnerActorOwned_UDIY_MainPlayerUIController;
+
+    AActor *cur_player = UGameplayStatics::GetPlayerController(this, 0)->GetPawn();
+
+    if (cur_player != nullptr && nullptr != (mOwnerActorOwned_UDIY_MainPlayerUIController = cur_player->FindComponentByClass<UDIY_MainPlayerUIController>()))
+    {
+        return mOwnerActorOwned_UDIY_MainPlayerUIController;
+    }
+
+    return nullptr;
 }

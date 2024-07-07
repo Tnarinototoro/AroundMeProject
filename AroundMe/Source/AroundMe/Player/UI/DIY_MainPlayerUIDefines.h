@@ -8,6 +8,8 @@ enum class EMainPlayerUISectionID : uint8
 {
     BackPack,
     DailyActivity,
+    PlatformService,
+    MusicPlayerState,
     EMainPlayerUISectionID_Count
 };
 

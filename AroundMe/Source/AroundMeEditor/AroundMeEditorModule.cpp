@@ -54,7 +54,7 @@ void FAroundMeEditorModule::Fill_SubMenu_Music(FMenuBuilder &MenuBuilder)
     MenuBuilder.AddWidget(
         SNew(SVerticalBox) +
             SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(STextBlock).Text(FText::FromString("Music Hour Slider"))] +
-            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(SSlider).OnValueChanged_Raw(this, &FAroundMeEditorModule::OnMusicHourSliderValueChanged).Value_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValue).MinValue(0.0f).MaxValue(23.0f).StepSize(1.0f)] +
+            SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(SSlider).OnValueChanged_Raw(this, &FAroundMeEditorModule::OnMusicHourSliderValueChanged).Value_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValue).MinValue(-1.0f).MaxValue(23.0f).StepSize(1.0f)] +
             SVerticalBox::Slot().AutoHeight().Padding(FMargin(5))[SNew(STextBlock).Text_Raw(this, &FAroundMeEditorModule::GetMusicHourSliderValueText)],
         FText::FromString("Music Hour Debug Slider"));
 }
