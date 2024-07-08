@@ -9,6 +9,7 @@
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/VerticalBoxSlot.h"
+#include "DIYBFL_PlatformService.h"
 
 void UDIY_PlatformServiceStateWidget::NativeConstruct()
 {
@@ -46,6 +47,7 @@ void UDIY_PlatformServiceStateWidget::NativeOnInitialized()
         if (StartServiceButton)
         {
             StartServiceButton->SetDisplayLabel("StartServiceButton");
+            StartServiceButton->OnClicked.AddDynamic(this, &UDIY_PlatformServiceStateWidget::StartServiceButtonClicked);
             UTextBlock *ButtonText = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass(), TEXT("StartServiceButtonText"));
             if (ButtonText)
             {
@@ -70,7 +72,8 @@ void UDIY_PlatformServiceStateWidget::NativeOnInitialized()
         if (StopServiceButton)
         {
             StopServiceButton->SetDisplayLabel("StopServiceButton");
-
+            StopServiceButton->OnClicked.AddDynamic(this, &UDIY_PlatformServiceStateWidget::StopServiceButtonClicked);
+            StopServiceButton->SetIsEnabled(false);
             UTextBlock *ButtonText = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass(), TEXT("StopServiceButtonText"));
             if (ButtonText)
             {
@@ -102,4 +105,22 @@ void UDIY_PlatformServiceStateWidget::UpdateText(const FString &NewText)
     {
         InfoTextBlock->SetText(FText::FromString(NewText));
     }
+}
+
+void UDIY_PlatformServiceStateWidget::StartServiceButtonClicked()
+{
+    ensureMsgf(StartServiceButton != nullptr && nullptr != StopServiceButton, TEXT("Buttons are not initialized well"));
+    StartServiceButton->SetIsEnabled(!StartServiceButton->GetIsEnabled());
+    StopServiceButton->SetIsEnabled(!StopServiceButton->GetIsEnabled());
+    UDIYBFL_PlatformService::StartPlatformService();
+    EASY_LOG_MAINPLAYER("StartServiceButtonClicked");
+}
+
+void UDIY_PlatformServiceStateWidget::StopServiceButtonClicked()
+{
+    ensureMsgf(StartServiceButton != nullptr && nullptr != StopServiceButton, TEXT("Buttons are not initialized well"));
+    StartServiceButton->SetIsEnabled(!StartServiceButton->GetIsEnabled());
+    StopServiceButton->SetIsEnabled(!StopServiceButton->GetIsEnabled());
+    UDIYBFL_PlatformService::StopPlatformService();
+    EASY_LOG_MAINPLAYER("StopServiceButtonClicked");
 }

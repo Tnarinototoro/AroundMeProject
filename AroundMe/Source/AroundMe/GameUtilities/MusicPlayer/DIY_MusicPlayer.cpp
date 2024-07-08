@@ -40,7 +40,7 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
     }
 
 #endif
-    EASY_LOG_MAINPLAYER("cur new hour is %d", new_hour);
+    // EASY_LOG_MAINPLAYER("cur new hour is %d", new_hour);
     SetCurrentHour(new_hour);
 
     UDIY_MainPlayerUIController *cur_ui_controller = AcquireOwnerActorOwnedUDIY_MainPlayerUIController();

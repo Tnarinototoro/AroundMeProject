@@ -4,7 +4,6 @@
 #include "Blueprint/UserWidget.h"
 #include "DIY_PlatformServiceStateWidget.generated.h"
 
-
 UCLASS()
 class AROUNDME_API UDIY_PlatformServiceStateWidget : public UUserWidget
 {
@@ -13,13 +12,19 @@ class AROUNDME_API UDIY_PlatformServiceStateWidget : public UUserWidget
 public:
     virtual void NativeConstruct() override;
     virtual void NativeOnInitialized() override;
-    void UpdateText(const FString& NewText);
+    void UpdateText(const FString &NewText);
+
+    UFUNCTION()
+    void StartServiceButtonClicked();
+
+    UFUNCTION()
+    void StopServiceButtonClicked();
 
 private:
     UPROPERTY()
-    class UTextBlock* InfoTextBlock;
-    class UCanvasPanel* infoPanel;
+    class UTextBlock *InfoTextBlock;
+    class UCanvasPanel *infoPanel;
     class UButton *StartServiceButton;
-    class UVerticalBox* VerticalBox;
+    class UVerticalBox *VerticalBox;
     class UButton *StopServiceButton;
 };
