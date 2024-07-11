@@ -67,7 +67,7 @@ public:
     void RequestVisibility_BackPack(ESlateVisibility invisibility);
 
     bool IsUISectionVisible(EMainPlayerUISectionID SectionID) const;
-    bool RequestAddItemToBackPack(class ADIY_ItemBase *inItem);
+    bool RequestAddItemToBackPack(class AActor *inItem);
     // must has been in backpack
     void RequestMoveCurrentSelectedCursor(int inDeltaX, int inDeltaY, uint32 inStride = 1);
     void ToggleBackPackUI(bool inIsOpen);
@@ -93,4 +93,10 @@ private:
         return (col_x >= 0 && col_x < BackPack_GridColNum) && (BackPack_GridRowNum > row_y && row_y >= 0);
     }
     bool isCurrentSlectedSlotInRange() const { return isBackPackPosInRange(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index); }
+
+    TArray<FDIY_BackPackItemSlotInfo> StoredBackPackSlotItemInfo;
+
+    TMap<int, int> ItemInfoHelperMap;
+
+    int QuicklyFindBackPackItemSlotIndex_FromItemID(EItemID inItemID);
 };

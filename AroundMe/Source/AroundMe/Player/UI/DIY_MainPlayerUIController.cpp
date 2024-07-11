@@ -4,6 +4,9 @@
 #include "../../UIWidgets/DIY_PlatformServiceStateWidget.h"
 #include "../../UIWidgets/DIY_MusicPlayerStateWidget.h"
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
+#include "../Items/DIY_Item.h"
+#include "../../GameUtilities/DIY_Utilities.h"
+#include "../Items/DIY_ItemManager.h"
 
 UDIY_MainPlayerUIController::UDIY_MainPlayerUIController()
 {
@@ -33,7 +36,7 @@ void UDIY_MainPlayerUIController::BeginPlay()
             // item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
             item_backpack_widget->AddToViewport(0);
 
-            ToggleBackPackUI(false);
+            RequestVisibility_BackPack(ESlateVisibility::Hidden);
 
             break;
         }
@@ -213,10 +216,69 @@ void UDIY_MainPlayerUIController::ToggleBackPackUI(bool inIsOpen)
     }
 }
 
-bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(ADIY_ItemBase *inItem)
+bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
 {
+    if (nullptr == inItem)
+        return false;
+
+    ADIY_ItemBase *current_item = Cast<ADIY_ItemBase>(inItem);
+
+    if (nullptr == current_item)
+        return false;
+    EItemID current_item_id = current_item->GetItemID();
+    int possible_already_existing_slot_index = QuicklyFindBackPackItemSlotIndex_FromItemID(current_item_id);
+
+    // not existing
+    if (possible_already_existing_slot_index < 0)
+    {
+
+        // less the max capacity so we can add it
+        if (StoredBackPackSlotItemInfo.Num() < BackPack_GridColNum * BackPack_GridColNum)
+        {
+            StoredBackPackSlotItemInfo.Add(FDIY_BackPackItemSlotInfo(current_item_id, 1));
+            int slot_index = StoredBackPackSlotItemInfo.Num() - 1;
+            ItemInfoHelperMap.Add((int)current_item_id, slot_index);
+            // change slot appearance
+            UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
+            int row_y = slot_index / BackPack_GridColNum;
+            int col_x = slot_index % BackPack_GridColNum;
+
+            item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(1));
+            item_backpack_widget->RequestChangeSlotImage(row_y, col_x, UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(int32(current_item_id)));
+            UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
+            return true;
+        }
+        else
+        {
+            // max can not add new items
+            return false;
+        }
+    }
+    else // already existing
+    {
+        int existing_row_y = possible_already_existing_slot_index / BackPack_GridColNum;
+        int existing_col_x = possible_already_existing_slot_index % BackPack_GridColNum;
+
+        UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
+        FDIY_BackPackItemSlotInfo &cur_item_info = StoredBackPackSlotItemInfo[possible_already_existing_slot_index];
+        ++cur_item_info.ItemCount;
+
+        item_backpack_widget->RequestChangeSlotCountText(existing_row_y, existing_col_x, FText::AsNumber(cur_item_info.ItemCount));
+        UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
+        return true;
+    }
 
     return false;
+}
+
+int UDIY_MainPlayerUIController::QuicklyFindBackPackItemSlotIndex_FromItemID(EItemID inItemID)
+{
+    int *slot_index = ItemInfoHelperMap.Find(int(inItemID));
+    if (nullptr != slot_index)
+    {
+        return *slot_index;
+    }
+    return -1;
 }
 void UDIY_MainPlayerUIController::SelectBackPackSlotOn(uint32 col_x, uint32 row_y, bool is_multi_selecting)
 {

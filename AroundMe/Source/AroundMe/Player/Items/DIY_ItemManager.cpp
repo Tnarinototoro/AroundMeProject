@@ -75,7 +75,7 @@ void ADIY_ItemManager::RequestSpawnItem(EItemID ItemID, const FVector &Location,
         }
     }
 
-    SpawnItemByID(ItemID, Location, Rotation);
+    SpawnItemByID_Internal(ItemID, Location, Rotation);
 }
 
 void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
@@ -122,7 +122,7 @@ void ADIY_ItemManager::InitializeItemReferences()
 {
 }
 
-void ADIY_ItemManager::SpawnItemByID(EItemID ItemID, const FVector &Location, const FRotator &Rotation)
+void ADIY_ItemManager::SpawnItemByID_Internal(EItemID ItemID, const FVector &Location, const FRotator &Rotation)
 {
 
     FSoftObjectPath *needed_pathobject = CachedPathObjects.Find(ItemID);

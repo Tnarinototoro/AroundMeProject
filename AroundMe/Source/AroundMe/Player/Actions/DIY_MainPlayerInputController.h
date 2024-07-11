@@ -60,6 +60,8 @@ public:
     void HandleBackPackUIMoveProcess(const FInputActionValue &Value);
     void HandleBackPackUIMoveProcess_Triggered(const FInputActionValue &Value);
 
+    void HandleKey_E_Input(const FInputActionValue &Value);
+
     //-----------------------------input finctions end
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "DIY_MainPlayerInputController")

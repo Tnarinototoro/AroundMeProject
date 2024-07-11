@@ -9,6 +9,7 @@
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "../Camera/DIY_MainPlayerCameraController.h"
 #include "../UI/DIY_MainPlayerUIController.h"
+#include "../Items/DIY_Item.h"
 
 UDIY_MainPlayerInputController::UDIY_MainPlayerInputController()
 {
@@ -82,6 +83,10 @@ void UDIY_MainPlayerInputController::SetupPlayerInputComponent(UInputComponent *
                     {
                         EnhancedInput->BindAction(cur_action, ETriggerEvent::Triggered, this, &UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Triggered);
                         EnhancedInput->BindAction(cur_action, ETriggerEvent::Completed, this, &UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess);
+                    }
+                    else if ("IA_DIY_E_Key" == Cur_Action_Name)
+                    {
+                        EnhancedInput->BindAction(cur_action, ETriggerEvent::Completed, this, &UDIY_MainPlayerInputController::HandleKey_E_Input);
                     }
                 }
             }
@@ -168,9 +173,9 @@ void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue &
     bool is_backpack_open = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsUISectionVisible(EMainPlayerUISectionID::BackPack);
     if (is_backpack_open)
     {
-        int delta_x = FMath::Clamp<int>((int)Axis2DValue.X,-1,1);
-        int delta_y =FMath::Clamp<int>((int)Axis2DValue.Y,-1,1); 
-    
+        int delta_x = FMath::Clamp<int>((int)Axis2DValue.X, -1, 1);
+        int delta_y = FMath::Clamp<int>((int)Axis2DValue.Y, -1, 1);
+
         AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor(delta_x, -delta_y);
     }
     else
@@ -229,6 +234,13 @@ void UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Triggered(const
     inPutBackPack_CursorMoveDir = Axis2DValue;
     EASY_LOG_MAINPLAYER("HandleBackPackUIMoveProcess Triggered %f, %f", Axis2DValue.X, Axis2DValue.Y);
 }
+void UDIY_MainPlayerInputController::HandleKey_E_Input(const FInputActionValue &Value)
+{
+    float Value_aixs = Value.Get<FInputActionValue::Axis1D>();
+    // EASY_LOG_MAINPLAYER("HandleKey_E_Input Triggered %f ", Value_aixs);
+    AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestAddItemToBackPack(AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor());
+}
+
 IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController, UDIY_MainPlayerCameraController)
 
 IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController, UDIY_MainPlayerActionController)

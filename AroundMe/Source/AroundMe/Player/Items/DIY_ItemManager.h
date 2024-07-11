@@ -21,7 +21,6 @@ public:
 
     // Spawn an Item
     // UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    void SpawnItemByID(EItemID ItemID, const FVector &Location, const FRotator &Rotation);
 
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -53,8 +52,10 @@ protected:
 
 private:
     static ADIY_ItemManager *ManagerInstance;
-    void SpawnActorFromClass(UClass *inClass, const FVector &Location, const FRotator &Rotation, const FDIY_ItemDefualtConfig &inConfig);
+    void SpawnItemByID_Internal(EItemID ItemID, const FVector &Location, const FRotator &Rotation);
+
     void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig);
+    void SpawnActorFromClass(UClass *inClass, const FVector &Location, const FRotator &Rotation, const FDIY_ItemDefualtConfig &inConfig);
 
     // TMap<EItemID, TSoftObjectPtr<UClass>> LoadedItemSoftAllClasses;
     TMap<EItemID, FSoftObjectPath> CachedPathObjects;

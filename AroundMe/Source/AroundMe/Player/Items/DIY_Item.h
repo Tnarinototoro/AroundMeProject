@@ -52,11 +52,9 @@ public:
     // force override means to force change to target state and execute the first execution event equal to current state
     bool SwitchCycleState(EItemLifeCycleState targetState, bool ForceOverride = false);
 
-
-
-    #if WITH_EDITOR
+#if WITH_EDITOR
     static bool Dbg_Enable_ItemInfo_Widget;
-    #endif
+#endif
 protected:
 private:
     UPROPERTY(VisibleAnywhere, Category = "UI")
@@ -66,7 +64,6 @@ private:
 
     EItemLifeCycleState CurrentLifeState{EItemLifeCycleState::EItemState_SpanwedJustNow};
 
-    EItemID CurrentItemID{EItemID::EItemID_Count};
     void UpdateWidgetText_Internal(const FString &NewText);
 
     void UpdateStateWidgetInfo(float inDeltaTime);
