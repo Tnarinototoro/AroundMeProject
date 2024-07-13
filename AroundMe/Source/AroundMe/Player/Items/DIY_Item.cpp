@@ -90,6 +90,7 @@ void ADIY_ItemBase::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     UpdateStateWidgetInfo(DeltaTime);
+    
 }
 
 void ADIY_ItemBase::ResumeTrinkling()
@@ -156,9 +157,11 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
             {
                 Possible_Solidness_Processor->RegisterComponent();
                 Possible_Solidness_Processor->OnInitWithConfigCopy(&config_copy);
+
                 AddInstanceComponent(Possible_Solidness_Processor);
             }
         }
+        Possible_Solidness_Processor->OnItemNeedToBeRecycled.BindUObject(this, &ADIY_ItemBase::OnRequestRecycleItem);
     }
 
     if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::React_To_Temperature))
@@ -180,6 +183,7 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
                 AddInstanceComponent(Possible_Temperature_Processor);
             }
         }
+        Possible_Temperature_Processor->OnItemNeedToBeRecycled.BindUObject(this, &ADIY_ItemBase::OnRequestRecycleItem);
     }
 
     if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Has_Any_Conductivity))
@@ -270,4 +274,9 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
     }
 
     UpdateWidgetText_Internal(updated_text);
+}
+
+void ADIY_ItemBase::OnRequestRecycleItem()
+{
+    OnItemNeedToBeRecycled.Execute(this);
 }

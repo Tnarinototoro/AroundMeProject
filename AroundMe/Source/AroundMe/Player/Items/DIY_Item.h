@@ -29,6 +29,7 @@ protected:
     void UpdateHighLight();
 
 public:
+    FOnItemToBeRecycled OnItemNeedToBeRecycled;
     ADIY_ItemBase();
     ~ADIY_ItemBase();
     // Called every frame
@@ -73,4 +74,6 @@ private:
     class UDIY_ConductivityProcessor *Possible_Conductivity_Processor{nullptr};
     class UDIY_SolidnessProcessor *Possible_Solidness_Processor{nullptr};
     class UDIY_TemperatureProcessor *Possible_Temperature_Processor{nullptr};
+
+    void OnRequestRecycleItem();
 };

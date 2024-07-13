@@ -241,7 +241,7 @@ void UDIY_TemperatureProcessor::UpdateStateMachine(float inDeltaTime)
                 SpawnedEffectCompo->DestroyComponent();
                 SpawnedEffectCompo = nullptr;
             }
-            this->GetOwner()->Destroy();
+            OnItemNeedToBeRecycled.Execute();
         }
         break;
     case ETemperatureRelatedState::TS_Frozen:

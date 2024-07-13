@@ -41,7 +41,7 @@ void UDIY_SolidnessProcessor::AcceptDamage(float inDamage, float inDamageSphereN
 
     if (Final_Durability <= 0.f)
     {
-        GetOwner()->Destroy();
+        OnItemNeedToBeRecycled.Execute();
     }
 }
 

@@ -70,6 +70,8 @@ void ADIY_ItemManager::RequestSpawnItem(EItemID ItemID, const FVector &Location,
             if (ItemBase)
             {
                 ItemBase->InitWithConfig(*cur_config);
+                ItemBase->SetActorTickEnabled(true);
+                ItemBase->OnItemNeedToBeRecycled.BindUObject(this, &ADIY_ItemManager::OnItemRequestRecycle);
                 return;
             }
         }
@@ -80,7 +82,6 @@ void ADIY_ItemManager::RequestSpawnItem(EItemID ItemID, const FVector &Location,
 
 void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
 {
-
     if (!Item)
     {
         return;
@@ -93,8 +94,23 @@ void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
     }
 
     EItemID ItemID = ItemBase->GetItemID();
-    Item->SetActorHiddenInGame(true);
-    Item->SetActorEnableCollision(false);
+
+    // Disable physics simulation
+    ItemBase->SetActorEnableCollision(false);
+    ItemBase->SetActorHiddenInGame(true);
+    ItemBase->SetActorTickEnabled(false);
+
+    UPrimitiveComponent *PrimitiveComponent = Cast<UPrimitiveComponent>(ItemBase->GetRootComponent());
+    if (PrimitiveComponent)
+    {
+        PrimitiveComponent->SetSimulatePhysics(false);
+        PrimitiveComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    }
+
+    // Move the actor to a safe location (e.g., far from any active area)
+    ItemBase->SetActorLocation(FVector(0.0f, 0.0f, 10000.0f));
+
+    // Add the actor to the pool
     TArray<AActor *> &Pool = ItemPools.FindOrAdd(ItemID);
     Pool.Add(Item);
 }
@@ -210,7 +226,8 @@ void ADIY_ItemManager::SpawnActorFromClass(UClass *ActorClass, const FVector &Lo
             if (nullptr != tmp_item)
             {
                 tmp_item->InitWithConfig(inConfig);
-
+                tmp_item->OnItemNeedToBeRecycled.BindUObject(this, &ADIY_ItemManager::OnItemRequestRecycle);
+                tmp_item->SetActorTickEnabled(true);
                 EASY_LOG_MAINPLAYER("Actor spawned successfully with config");
             }
         }
@@ -219,4 +236,9 @@ void ADIY_ItemManager::SpawnActorFromClass(UClass *ActorClass, const FVector &Lo
             EASY_LOG_MAINPLAYER("Failed to spawn actor from class.");
         }
     }
+}
+
+void ADIY_ItemManager::OnItemRequestRecycle(class AActor *inActor)
+{
+    RequestRecycleItem(inActor);
 }
