@@ -90,7 +90,6 @@ void ADIY_ItemBase::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     UpdateStateWidgetInfo(DeltaTime);
-    
 }
 
 void ADIY_ItemBase::ResumeTrinkling()
@@ -117,12 +116,19 @@ void ADIY_ItemBase::PauseTrinkling()
 void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
 {
     config_copy = inConfig;
-
+    BulkInteractionFlags = 0;
     for (EDIY_InteractItemFlag cur_flag : config_copy.ConfiguredFlags)
     {
+
         UDIY_InteractionUtility::SetFlag(BulkInteractionFlags, (uint8)cur_flag);
-        EASY_LOG_MAINPLAYER("Actor spawned with flag %d", BulkInteractionFlags);
+        EASY_LOG_MAINPLAYER("Actor spawned with flag %s", *UEnum::GetValueAsString(cur_flag));
     }
+    // for (EDIY_InteractItemFlag cur_flag : inConfig.ConfiguredFlags)
+    // {
+
+    //     UDIY_InteractionUtility::SetFlag(BulkInteractionFlags, (uint8)cur_flag);
+    //     EASY_LOG_MAINPLAYER("xxxx Actor spawned with flag %s", *UEnum::GetValueAsString(cur_flag));
+    // }
 
     if (!UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Static) &&
         UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Obey_Physics_Rules))
@@ -135,7 +141,7 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
 
         BasicStaticMeshComponent->SetLinearDamping(config_copy.LinearDamping);
         BasicStaticMeshComponent->SetAngularDamping(config_copy.AngualrDamping);
-        EASY_LOG_MAINPLAYER("Actor successgully spawned with configs adopted");
+        EASY_LOG_MAINPLAYER("Actor successgully spawned with physics configs adopted");
     }
 
     BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
@@ -161,7 +167,6 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
                 AddInstanceComponent(Possible_Solidness_Processor);
             }
         }
-        Possible_Solidness_Processor->OnItemNeedToBeRecycled.BindUObject(this, &ADIY_ItemBase::OnRequestRecycleItem);
     }
 
     if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::React_To_Temperature))
@@ -183,7 +188,6 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
                 AddInstanceComponent(Possible_Temperature_Processor);
             }
         }
-        Possible_Temperature_Processor->OnItemNeedToBeRecycled.BindUObject(this, &ADIY_ItemBase::OnRequestRecycleItem);
     }
 
     if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Has_Any_Conductivity))
@@ -272,11 +276,5 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
                                         Possible_Solidness_Processor->GetSolidNessAttrs().cutting_damage_susceptibility,
                                         Possible_Solidness_Processor->GetSolidNessAttrs().blunt_damage_susceptibility);
     }
-
     UpdateWidgetText_Internal(updated_text);
-}
-
-void ADIY_ItemBase::OnRequestRecycleItem()
-{
-    OnItemNeedToBeRecycled.Execute(this);
 }

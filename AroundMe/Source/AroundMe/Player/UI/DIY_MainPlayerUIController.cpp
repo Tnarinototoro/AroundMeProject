@@ -164,6 +164,7 @@ void UDIY_MainPlayerUIController::RequestMoveCurrentSelectedCursor(int inDeltaX,
 {
     ensureMsgf(isBackPackPosInRange(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index), TEXT("Current slot must be valid to move"));
 
+    EASY_LOG_MAINPLAYER("got in indelta x %d, y %d", inDeltaX, inDeltaY);
     SelectBackPackSlotOn(
         FMath::Clamp<int32>(BackPack_CurrentSelectedSlot_Col_index + inStride * inDeltaX, 0, BackPack_GridColNum - 1),
         FMath::Clamp<int32>(BackPack_CurrentSelectedSlot_Row_index + inStride * inDeltaY, 0, BackPack_GridRowNum - 1));
@@ -173,6 +174,12 @@ void UDIY_MainPlayerUIController::RequestUpdateStateInfoText_MusicPlayer(const F
 {
     UDIY_MusicPlayerStateWidget *music_player_widget = Cast<UDIY_MusicPlayerStateWidget>(mAllWidgets[(int)EMainPlayerUISectionID::MusicPlayerState]);
     music_player_widget->UpdateText(inText);
+}
+bool UDIY_MainPlayerUIController::IsItemSubMenuShown() const
+{
+    UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
+    ensureMsgf(nullptr != item_backpack_widget, TEXT("back_pack widget is not valid"));
+    return item_backpack_widget->IsItemSubMenuShown_Impl();
 }
 
 void UDIY_MainPlayerUIController::ToggleBackPackUI(bool inIsOpen)
@@ -212,6 +219,7 @@ void UDIY_MainPlayerUIController::ToggleBackPackUI(bool inIsOpen)
                 BackPack_CurrentSelectedSlot_Col_index = -1;
                 BackPack_CurrentSelectedSlot_Row_index = -1;
             }
+            RequestHideItemSubMenu();
         }
     }
 }
@@ -245,6 +253,7 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
 
             item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(1));
             item_backpack_widget->RequestChangeSlotImage(row_y, col_x, UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(int32(current_item_id)));
+            item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(row_y, col_x, ESlateVisibility::Visible);
             UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
             return true;
         }
@@ -264,6 +273,7 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
         ++cur_item_info.ItemCount;
 
         item_backpack_widget->RequestChangeSlotCountText(existing_row_y, existing_col_x, FText::AsNumber(cur_item_info.ItemCount));
+        item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(existing_row_y, existing_col_x, ESlateVisibility::Visible);
         UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
         return true;
     }
@@ -300,7 +310,7 @@ void UDIY_MainPlayerUIController::SelectBackPackSlotOn(uint32 col_x, uint32 row_
         ToggleBackPackSlotSelected(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index, false);
         ToggleBackPackSlotSelected(col_x, row_y, true);
     }
-
+    RequestHideItemSubMenu();
     BackPack_CurrentSelectedSlot_Col_index = col_x;
     BackPack_CurrentSelectedSlot_Row_index = row_y;
 }
@@ -311,9 +321,111 @@ void UDIY_MainPlayerUIController::ToggleBackPackSlotSelected(uint32 inCol_x, uin
     if (isSelected)
     {
         item_backpack_widget->RequestChangeSlotBorderColor(inRow_y, inCol_x, FColor::Cyan);
+        // item_backpack_widget->ShowSubMenuAt(inRow_y,inCol_x);
     }
     else
     {
         item_backpack_widget->RequestChangeSlotBorderColor(inRow_y, inCol_x, FLinearColor::Transparent);
+    }
+}
+int UDIY_MainPlayerUIController::GetBackPackItemCountAt(uint32 inCol_x, uint32 inRow_y)
+{
+    uint32 real_index = inRow_y * BackPack_GridColNum + inCol_x;
+
+    if (real_index >= (uint32)StoredBackPackSlotItemInfo.Num())
+        return 0;
+
+    return StoredBackPackSlotItemInfo[real_index].ItemCount;
+}
+const FDIY_BackPackItemSlotInfo *UDIY_MainPlayerUIController::GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y) const
+{
+    uint32 real_index = inRow_y * BackPack_GridColNum + inCol_x;
+
+    if (real_index >= (uint32)StoredBackPackSlotItemInfo.Num())
+        return nullptr;
+
+    return &StoredBackPackSlotItemInfo[real_index];
+}
+FDIY_BackPackItemSlotInfo *UDIY_MainPlayerUIController::GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y)
+{
+    uint32 real_index = inRow_y * BackPack_GridColNum + inCol_x;
+
+    if (real_index >= (uint32)StoredBackPackSlotItemInfo.Num())
+        return nullptr;
+
+    return &StoredBackPackSlotItemInfo[real_index];
+}
+bool UDIY_MainPlayerUIController::IsBackPackUiOpened() const
+{
+    return IsUISectionVisible(EMainPlayerUISectionID::BackPack);
+}
+void UDIY_MainPlayerUIController::RequestShowItemSubMenu_AtCurrentSelectedSlot()
+{
+    UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
+    ensureMsgf(item_backpack_widget != nullptr, TEXT("back_pack widget is not okay"));
+
+    item_backpack_widget->ShowSubMenuAt(BackPack_CurrentSelectedSlot_Row_index, BackPack_CurrentSelectedSlot_Col_index);
+    item_backpack_widget->RequestToggleSubMenuButtonAt(Item_Current_SubMenu_ChoosenIndex, false);
+    Item_Current_SubMenu_ChoosenIndex = 0;
+    item_backpack_widget->RequestToggleSubMenuButtonAt(Item_Current_SubMenu_ChoosenIndex, true);
+}
+void UDIY_MainPlayerUIController::RequestMoveSubMenuChoice(int MoveDelta, int inStride)
+{
+    if (!IsItemSubMenuShown())
+        return;
+    UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
+    ensureMsgf(item_backpack_widget != nullptr, TEXT("back_pack widget is not okay"));
+    int target_item_submenu_index = FMath::Clamp<int>(Item_Current_SubMenu_ChoosenIndex + (MoveDelta * inStride), 0, item_backpack_widget->GetItemSubMenuCommandsNum() - 1);
+    if (target_item_submenu_index != Item_Current_SubMenu_ChoosenIndex)
+    {
+        item_backpack_widget->RequestToggleSubMenuButtonAt(Item_Current_SubMenu_ChoosenIndex, false);
+        Item_Current_SubMenu_ChoosenIndex = target_item_submenu_index;
+        item_backpack_widget->RequestToggleSubMenuButtonAt(Item_Current_SubMenu_ChoosenIndex, true);
+    }
+}
+void UDIY_MainPlayerUIController::RequestHideItemSubMenu()
+{
+    UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
+    ensureMsgf(item_backpack_widget != nullptr, TEXT("back_pack widget is not okay"));
+    item_backpack_widget->HideSubMenu();
+    item_backpack_widget->RequestToggleSubMenuButtonAt(Item_Current_SubMenu_ChoosenIndex, false);
+}
+void UDIY_MainPlayerUIController::ToggleItemSubMenuAtCurrentSelectedSlot()
+{
+    UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
+    ensureMsgf(item_backpack_widget != nullptr, TEXT("back_pack widget is not okay"));
+
+    int cur_slot_count = GetBackPackItemCountAt(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index);
+    if (cur_slot_count > 0)
+    {
+        if (IsItemSubMenuShown())
+        {
+            RequestHideItemSubMenu();
+        }
+        else
+        {
+            RequestShowItemSubMenu_AtCurrentSelectedSlot();
+        }
+    }
+}
+
+void UDIY_MainPlayerUIController::ExecuteCurrentItemSubMenuCommand()
+{
+    UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
+    ensureMsgf(item_backpack_widget != nullptr, TEXT("back_pack widget is not okay"));
+    EASY_LOG_MAINPLAYER("Q command executed!!!!!!!! %s", *item_backpack_widget->GetItemSubMenuCommandStringAt(Item_Current_SubMenu_ChoosenIndex));
+
+    const FDIY_BackPackItemSlotInfo *cur_item_info = GetBackPackItemInfoAt(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index);
+
+    if (cur_item_info != nullptr && cur_item_info->ItemCount > 0)
+    {
+        AActor *player = GetOwner();
+
+        FVector spawned_loc = player->GetActorLocation();
+        //+ player->GetActorForwardVector().Normalize()*200.f;
+        spawned_loc.Z += 100.0f;
+
+        DrawDebugLine(GetWorld(), player->GetActorLocation(), spawned_loc, FColor::Red, true, 2.0f, 0, 1.0f);
+        UDIY_Utilities::DIY_GetItemManagerInstance()->RequestSpawnItem(cur_item_info->itemID, spawned_loc, {0.f, 0.f, 0.f});
     }
 }

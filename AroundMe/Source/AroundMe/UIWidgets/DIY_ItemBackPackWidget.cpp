@@ -11,6 +11,9 @@
 #include "../GameUtilities/Logs/DIY_LogHelper.h"
 #include "../Player/Items/DIY_ItemManager.h"
 #include "Components/Border.h"
+#include "DIY_ItemSubMenuWidget.h"
+#include "Blueprint/SlateBlueprintLibrary.h"
+
 void UDIY_ItemBackPackWidget::NativeConstruct()
 {
     Super::NativeConstruct();
@@ -32,10 +35,19 @@ void UDIY_ItemBackPackWidget::NativeOnInitialized()
         if (GridPanel)
         {
             UPanelSlot *grid_panel_slot = ScrollBox->AddChild(GridPanel);
-
-            // GridPanel->SetSize(FVector2D(600.0f, 400.0f)); // 手动设置GridPanel的大小
         }
-        // WidgetTree->RootWidget->SetRenderScale({6.0f, 6.0f});
+    }
+
+    ItemSubMenuWidget = Cast<UDIY_ItemSubMenuWidget>(CreateWidget(GetWorld(), UDIY_ItemSubMenuWidget::StaticClass()));
+
+    if (ItemSubMenuWidget)
+    {
+        ItemSubMenuWidget->AddToViewport(1);
+        // ItemSubMenuWidget->SetAnchorsInViewport({0.5f, 0.5f});
+        // ItemSubMenuWidget->SetAlignmentInViewport({0.f, 0.f});
+        ItemSubMenuWidget->SetPositionInViewport({600.f, 500.f});
+        ItemSubMenuWidget->SetVisibility(ESlateVisibility::Hidden);
+        ItemSubMenuWidget->InitializeSubMenu(5);
     }
 }
 
@@ -96,6 +108,12 @@ void UDIY_ItemBackPackWidget::RequestVisibility_BackpackUI_Slot_At(int32 row, in
     if (!SlotCanvas)
         return;
     SlotCanvas->SetVisibility(invisibility);
+}
+void UDIY_ItemBackPackWidget::RequestVisibility_BackpackUI_CountText_At_Slot(int32 row, int32 col, ESlateVisibility invisibility)
+{
+    if (!GridPanel || row >= RowNum || col >= ColNum)
+        return;
+    GetSlotCountText(row, col)->SetVisibility(invisibility);
 }
 UBorder *UDIY_ItemBackPackWidget::GetSlotBorder(int32 row, int32 col) const
 {
@@ -178,6 +196,7 @@ void UDIY_ItemBackPackWidget::CreateGrid()
                     FSlateFontInfo FontInfo = CountText->GetFont();
                     FontInfo.Size = TextSlotFontSize;
                     CountText->SetFont(FontInfo);
+                    CountText->SetVisibility(ESlateVisibility::Hidden);
 
                     if (TextSlot)
                     {
@@ -198,4 +217,67 @@ void UDIY_ItemBackPackWidget::CreateGrid()
             }
         }
     }
+}
+
+void UDIY_ItemBackPackWidget::ShowSubMenuAt(int32 Row, int32 Col)
+{
+    if (Row < 0 || Col < 0)
+        return;
+    if (!ItemSubMenuWidget || !GridPanel || Row >= RowNum || Col >= ColNum)
+        return;
+
+    UBorder *CurBorder = GetSlotBorder(Row, Col);
+    if (!CurBorder)
+        return;
+
+    // 获取CurBorder的屏幕位置
+    FGeometry BorderGeometry = CurBorder->GetCachedGeometry();
+    FVector2D PixelPosition, ViewportPosition;
+
+    // 将Local坐标转换为Viewport坐标
+    USlateBlueprintLibrary::LocalToViewport(GetWorld(), BorderGeometry, FVector2D(0.f, 0.f), PixelPosition, ViewportPosition);
+
+    // 日志输出以调试
+    //EASY_LOG_MAINPLAYER("Border screen position X: %f, Y: %f", ViewportPosition.X, ViewportPosition.Y);
+
+    ViewportPosition.X -= ItemSubMenuWidget->GetDesiredSize().X;
+
+    ItemSubMenuWidget->SetPositionInViewport(ViewportPosition, false);
+    ItemSubMenuWidget->SetVisibility(ESlateVisibility::Visible);
+   
+    
+}
+
+void UDIY_ItemBackPackWidget::HideSubMenu()
+{
+    if (ItemSubMenuWidget)
+    {
+        ItemSubMenuWidget->SetVisibility(ESlateVisibility::Hidden);
+    }
+}
+void UDIY_ItemBackPackWidget::RequestToggleSubMenuButtonAt(uint32 inIndex, bool inIsEnabled)
+{
+    ensureMsgf(ItemSubMenuWidget != nullptr, TEXT("Item Sub menu is not created properly! "));
+
+    if (!IsItemSubMenuShown_Impl())
+        return;
+
+    ItemSubMenuWidget->RequestToggleCommandEnabledAt_Impl(inIndex, inIsEnabled);
+}
+int32 UDIY_ItemBackPackWidget::GetItemSubMenuCommandsNum() const
+{
+    ensureMsgf(ItemSubMenuWidget != nullptr, TEXT("Item Sub menu is not created properly! "));
+    return ItemSubMenuWidget->GetCommandsNum();
+}
+FString UDIY_ItemBackPackWidget::GetItemSubMenuCommandStringAt(uint32 inIndex)
+{
+    ensureMsgf(ItemSubMenuWidget != nullptr, TEXT("Item Sub menu is not created properly! "));
+   
+    return ItemSubMenuWidget->GetCommandStringAt(inIndex);
+}
+bool UDIY_ItemBackPackWidget::IsItemSubMenuShown_Impl() const
+{
+    ensureMsgf(ItemSubMenuWidget!=nullptr,TEXT("Item Sub menu is not created properly! "));
+
+    return ItemSubMenuWidget->IsVisible();
 }

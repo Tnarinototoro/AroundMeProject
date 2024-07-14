@@ -53,9 +53,8 @@ void ADIY_ItemManager::RequestSpawnItem(EItemID ItemID, const FVector &Location,
     if (nullptr != Pool && Pool->Num() > 0)
     {
         AActor *Item = Pool->Pop();
-        Item->SetActorLocationAndRotation(Location, Rotation);
+        Item->SetActorLocationAndRotation(Location, Rotation, false, nullptr, ETeleportType::ResetPhysics);
         Item->SetActorHiddenInGame(false);
-        Item->SetActorEnableCollision(true);
 
         const FDIY_ItemDefualtConfig *cur_config{nullptr};
         int32 item_id = static_cast<int32>(ItemID);
@@ -71,7 +70,8 @@ void ADIY_ItemManager::RequestSpawnItem(EItemID ItemID, const FVector &Location,
             {
                 ItemBase->InitWithConfig(*cur_config);
                 ItemBase->SetActorTickEnabled(true);
-                ItemBase->OnItemNeedToBeRecycled.BindUObject(this, &ADIY_ItemManager::OnItemRequestRecycle);
+
+                EASY_LOG_MAINPLAYER("item %s successfully spawned from items pool", *UEnum::GetValueAsString(ItemID));
                 return;
             }
         }
@@ -95,10 +95,11 @@ void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
 
     EItemID ItemID = ItemBase->GetItemID();
 
-    // Disable physics simulation
-    ItemBase->SetActorEnableCollision(false);
+    // // Disable physics simulation
+    // ItemBase->SetActorEnableCollision(false);
     ItemBase->SetActorHiddenInGame(true);
     ItemBase->SetActorTickEnabled(false);
+    
 
     UPrimitiveComponent *PrimitiveComponent = Cast<UPrimitiveComponent>(ItemBase->GetRootComponent());
     if (PrimitiveComponent)
@@ -113,6 +114,7 @@ void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
     // Add the actor to the pool
     TArray<AActor *> &Pool = ItemPools.FindOrAdd(ItemID);
     Pool.Add(Item);
+    EASY_LOG_MAINPLAYER("item %s recycled to the objects pool", *UEnum::GetValueAsString(ItemID));
 }
 
 UTexture2D *ADIY_ItemManager::GetItemIconTexture(int32 inITemID) const
@@ -141,59 +143,52 @@ void ADIY_ItemManager::InitializeItemReferences()
 void ADIY_ItemManager::SpawnItemByID_Internal(EItemID ItemID, const FVector &Location, const FRotator &Rotation)
 {
 
-    FSoftObjectPath *needed_pathobject = CachedPathObjects.Find(ItemID);
     FSoftObjectPath ItemPath{nullptr};
     const FDIY_ItemDefualtConfig *cur_config{nullptr};
-    if (nullptr != needed_pathobject)
+
+    int32 item_id = static_cast<int32>(ItemID);
+
+    FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
+    const FDIY_ItemDataTableRow *Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
+
+    if (Row)
     {
-        ItemPath = *needed_pathobject;
-        EASY_LOG_MAINPLAYER("Path Got from cache");
+        FString PathString = Row->ItemPath.ToString();
+
+        cur_config = &(Row->ItemDefualtConfig);
+        if (!PathString.EndsWith(TEXT("_C")))
+        {
+            PathString.Append(TEXT("_C"));
+        }
+        ItemPath = FSoftObjectPath(PathString);
+        EASY_LOG_MAINPLAYER("Path Got from Looking Into the table");
     }
     else
     {
-        int32 item_id = static_cast<int32>(ItemID);
-
-        FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
-        const FDIY_ItemDataTableRow *Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
-
-        if (Row)
-        {
-            FString PathString = Row->ItemPath.ToString();
-
-            cur_config = &(Row->ItemDefualtConfig);
-            if (!PathString.EndsWith(TEXT("_C")))
-            {
-                PathString.Append(TEXT("_C"));
-            }
-            ItemPath = FSoftObjectPath(PathString);
-            EASY_LOG_MAINPLAYER("Path Got from Looking Into the table");
-        }
-        else
-        {
-            EASY_LOG_MAINPLAYER("Item ID not found in DataTable: %d", static_cast<int32>(ItemID));
-        }
+        EASY_LOG_MAINPLAYER("Item ID not found in DataTable: %d", static_cast<int32>(ItemID));
     }
 
-    if (ItemPath.IsValid() && cur_config != nullptr)
+    ensureMsgf(ItemPath.IsValid() && cur_config != nullptr, TEXT("item id %d config not found in item depot please check the csv/datatable"), static_cast<int32>(ItemID));
+    TSoftObjectPtr<UClass> ClassToLoad(ItemPath);
+    UClass *LoadedClass = ClassToLoad.Get();
+    if (LoadedClass)
     {
-        CachedPathObjects.FindOrAdd(ItemID, ItemPath);
-        TSoftObjectPtr<UClass> ClassToLoad(ItemPath);
-        UClass *LoadedClass = ClassToLoad.Get();
-        if (LoadedClass)
-        {
 
-            SpawnActorFromClass(LoadedClass, Location, Rotation, *cur_config);
-            EASY_LOG_MAINPLAYER("Spawned From Editor Cache");
+        SpawnActorFromClass(LoadedClass, Location, Rotation, *cur_config);
+        EASY_LOG_MAINPLAYER("Spawned From Editor Cache");
 
-            return;
-        }
-
-        UAssetManager::GetStreamableManager().RequestAsyncLoad(ItemPath, FStreamableDelegate::CreateUObject(this, &ADIY_ItemManager::OnItemClassLoaded, ItemID, ItemPath, Location, Rotation, *cur_config));
+        return;
     }
-    else
-    {
-        EASY_LOG_MAINPLAYER("Item path is invalid for ID: %d", static_cast<int32>(ItemID));
-    }
+
+    UAssetManager::GetStreamableManager().RequestAsyncLoad(
+        ItemPath,
+        FStreamableDelegate::CreateUObject(this,
+                                           &ADIY_ItemManager::OnItemClassLoaded,
+                                           ItemID,
+                                           ItemPath,
+                                           Location,
+                                           Rotation,
+                                           *cur_config));
 }
 
 void ADIY_ItemManager::OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig)
@@ -226,7 +221,7 @@ void ADIY_ItemManager::SpawnActorFromClass(UClass *ActorClass, const FVector &Lo
             if (nullptr != tmp_item)
             {
                 tmp_item->InitWithConfig(inConfig);
-                tmp_item->OnItemNeedToBeRecycled.BindUObject(this, &ADIY_ItemManager::OnItemRequestRecycle);
+
                 tmp_item->SetActorTickEnabled(true);
                 EASY_LOG_MAINPLAYER("Actor spawned successfully with config");
             }

@@ -58,23 +58,40 @@ public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
+
+    //common funcs
+
     void RequestChangeUISectionVisibility(ESlateVisibility invisibility, EMainPlayerUISectionID SectionID);
+    bool IsUISectionVisible(EMainPlayerUISectionID SectionID) const;
+
 
     // Music Player Funcs
     void RequestUpdateStateInfoText_MusicPlayer(const FText &inText);
 
+
+
+
     // BackPack Funcs
     void RequestVisibility_BackPack(ESlateVisibility invisibility);
-
-    bool IsUISectionVisible(EMainPlayerUISectionID SectionID) const;
     bool RequestAddItemToBackPack(class AActor *inItem);
     // must has been in backpack
     void RequestMoveCurrentSelectedCursor(int inDeltaX, int inDeltaY, uint32 inStride = 1);
     void ToggleBackPackUI(bool inIsOpen);
     void SetRememberLastSelectedSlotCursorPos_WhenClosed(bool inBool) { RememberLastSelectedSlotCursorPos_WhenClosed = inBool; }
     bool GetRememberLastSelectedSlotCursorPos_WhenClosed() const { return RememberLastSelectedSlotCursorPos_WhenClosed; }
-
+    bool IsBackPackUiOpened() const;
     void ToggleBackPackSlotSelected(uint32 inCol_x, uint32 inRow_y, bool isSelected);
+    int GetBackPackItemCountAt(uint32 inCol_x, uint32 inRow_y);
+    const FDIY_BackPackItemSlotInfo* GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y) const;
+    FDIY_BackPackItemSlotInfo* GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y);
+
+    //item sub menu funcs
+    void RequestShowItemSubMenu_AtCurrentSelectedSlot();
+    void RequestMoveSubMenuChoice(int MoveDelta, int inStride=1);
+    void RequestHideItemSubMenu();
+    bool IsItemSubMenuShown() const;
+    void ToggleItemSubMenuAtCurrentSelectedSlot();
+    void ExecuteCurrentItemSubMenuCommand();
 
 private:
     TArray<class UUserWidget *> mAllWidgets;
@@ -83,6 +100,9 @@ private:
     int32 BackPack_CurrentSelectedSlot_Row_index{-1};
     // pos X
     int32 BackPack_CurrentSelectedSlot_Col_index{-1};
+
+
+    uint32 Item_Current_SubMenu_ChoosenIndex{ 0 };
 
     // col_x and row_y must be in valid range
     void SelectBackPackSlotOn(uint32 col_x, uint32 row_y, bool is_multi_selecting = false);

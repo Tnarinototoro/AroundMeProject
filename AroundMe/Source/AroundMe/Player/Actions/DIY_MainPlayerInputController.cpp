@@ -82,7 +82,7 @@ void UDIY_MainPlayerInputController::SetupPlayerInputComponent(UInputComponent *
                     else if ("IA_DIY_BackPackMoveCursor" == Cur_Action_Name)
                     {
                         EnhancedInput->BindAction(cur_action, ETriggerEvent::Triggered, this, &UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Triggered);
-                        EnhancedInput->BindAction(cur_action, ETriggerEvent::Completed, this, &UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess);
+                        EnhancedInput->BindAction(cur_action, ETriggerEvent::Completed, this, &UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Completed);
                     }
                     else if ("IA_DIY_E_Key" == Cur_Action_Name)
                     {
@@ -116,33 +116,44 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
 {
     EASY_LOG_MAINPLAYER("onInteractPressed")
 
-    AActor *detected_actor = AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor();
-    static bool execute_pick_up{true};
-    if (execute_pick_up)
+    bool is_sub_menu_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsItemSubMenuShown();
+    bool is_backpack_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsBackPackUiOpened();
+
+    if (is_sub_menu_opened && is_backpack_opened)
     {
-        if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_Base_Motion)
-        {
-            if (nullptr != detected_actor)
-            {
-                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PicUpDetectedItem(detected_actor, "hand_rSocket");
-
-                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_PickingUp;
-                EASY_LOG_MAINPLAYER("Picked up the actor yyyyyyyy");
-            }
-        }
-
-        execute_pick_up = false;
+        AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ExecuteCurrentItemSubMenuCommand();
     }
-    else
-    {
-        if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_PickingUp)
-        {
-            AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PlacePickedUpItem();
-            AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_Base_Motion;
-            EASY_LOG_MAINPLAYER("PLaced the actorxxxxxxxx");
-        }
 
-        execute_pick_up = true;
+    if (!is_sub_menu_opened && !is_backpack_opened)
+    {
+        AActor *detected_actor = AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor();
+        static bool execute_pick_up{true};
+        if (execute_pick_up)
+        {
+            if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_Base_Motion)
+            {
+                if (nullptr != detected_actor)
+                {
+                    AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PicUpDetectedItem(detected_actor, "hand_rSocket");
+
+                    AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_PickingUp;
+                    EASY_LOG_MAINPLAYER("Picked up the actor yyyyyyyy");
+                }
+            }
+
+            execute_pick_up = false;
+        }
+        else
+        {
+            if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_PickingUp)
+            {
+                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PlacePickedUpItem();
+                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_Base_Motion;
+                EASY_LOG_MAINPLAYER("PLaced the actorxxxxxxxx");
+            }
+
+            execute_pick_up = true;
+        }
     }
 }
 
@@ -173,10 +184,18 @@ void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue &
     bool is_backpack_open = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsUISectionVisible(EMainPlayerUISectionID::BackPack);
     if (is_backpack_open)
     {
-        int delta_x = FMath::Clamp<int>((int)Axis2DValue.X, -1, 1);
-        int delta_y = FMath::Clamp<int>((int)Axis2DValue.Y, -1, 1);
+        if (AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsItemSubMenuShown())
+        {
+            int delta_move = FMath::Clamp<int>((int)Axis2DValue.Y, -1, 1);
+            AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveSubMenuChoice(-delta_move);
+        }
+        else
+        {
+            int delta_x = FMath::Clamp<int>((int)Axis2DValue.X, -1, 1);
+            int delta_y = FMath::Clamp<int>((int)Axis2DValue.Y, -1, 1);
 
-        AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor(delta_x, -delta_y);
+            AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor(delta_x, -delta_y);
+        }
     }
     else
     {
@@ -221,24 +240,41 @@ void UDIY_MainPlayerInputController::HandleTabKeyInputProcess(const FInputAction
     AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ToggleBackPackUI(!AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsUISectionVisible(EMainPlayerUISectionID::BackPack));
 }
 
-void UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess(const FInputActionValue &Value)
+void UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Completed(const FInputActionValue &Value)
 {
     FVector2D Axis2DValue = Value.Get<FVector2D>();
     AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor((int)(inPutBackPack_CursorMoveDir.X), -(int)(inPutBackPack_CursorMoveDir.Y));
+    inPutBackPack_CursorMoveDir = FVector2D::ZeroVector;
     EASY_LOG_MAINPLAYER("HandleBackPackUIMoveProcess completed %f, %f", Axis2DValue.X, Axis2DValue.Y);
 }
 
 void UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Triggered(const FInputActionValue &Value)
 {
     FVector2D Axis2DValue = Value.Get<FVector2D>();
-    inPutBackPack_CursorMoveDir = Axis2DValue;
+    inPutBackPack_CursorMoveDir.X = FMath::Clamp(Axis2DValue.X, -1.0f, 1.0f);
+    inPutBackPack_CursorMoveDir.Y = FMath::Clamp(Axis2DValue.Y, -1.0f, 1.0f);
     EASY_LOG_MAINPLAYER("HandleBackPackUIMoveProcess Triggered %f, %f", Axis2DValue.X, Axis2DValue.Y);
 }
 void UDIY_MainPlayerInputController::HandleKey_E_Input(const FInputActionValue &Value)
 {
     float Value_aixs = Value.Get<FInputActionValue::Axis1D>();
     // EASY_LOG_MAINPLAYER("HandleKey_E_Input Triggered %f ", Value_aixs);
-    AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestAddItemToBackPack(AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor());
+
+    bool is_sub_menu_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsItemSubMenuShown();
+    bool is_backpack_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsBackPackUiOpened();
+    AActor *detected_actor = AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor();
+
+    if (nullptr != detected_actor)
+    {
+        AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestAddItemToBackPack(detected_actor);
+    }
+    else
+    {
+        if (is_backpack_opened)
+        {
+            AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ToggleItemSubMenuAtCurrentSelectedSlot();
+        }
+    }
 }
 
 IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController, UDIY_MainPlayerCameraController)

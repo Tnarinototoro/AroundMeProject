@@ -26,7 +26,7 @@ class AROUNDME_API UDIY_TemperatureProcessor : public UActorComponent, public ID
     GENERATED_BODY()
 
 public:
-    FOnItemComponentNeedToBeRecycled OnItemNeedToBeRecycled;
+   
     // Todo enum Temperature
 
     UDIY_TemperatureProcessor();

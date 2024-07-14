@@ -30,7 +30,7 @@ protected:
     virtual void BeginPlay() override;
 
 public:
-    FOnItemComponentNeedToBeRecycled OnItemNeedToBeRecycled;
+  
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 

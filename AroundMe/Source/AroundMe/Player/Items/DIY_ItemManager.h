@@ -57,8 +57,7 @@ private:
     void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig);
     void SpawnActorFromClass(UClass *inClass, const FVector &Location, const FRotator &Rotation, const FDIY_ItemDefualtConfig &inConfig);
 
-    // TMap<EItemID, TSoftObjectPtr<UClass>> LoadedItemSoftAllClasses;
-    TMap<EItemID, FSoftObjectPath> CachedPathObjects;
+  
 
     TMap<EItemID, TArray<AActor *>> ItemPools;
 
