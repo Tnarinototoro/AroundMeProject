@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{125B9AC3-4374-8A9A-C939-B1BAABBB38DF}",
+	"EngineAssociation": "{57B07EC2-4F32-8082-F890-CF8DBC3F2953}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -10,6 +10,15 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine"
+			]
+		},
+		{
+			"Name": "AroundMeEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"AdditionalDependencies": [
+				"UnrealEd",
+				"LevelEditor"
 			]
 		}
 	],

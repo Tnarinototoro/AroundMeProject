@@ -11,6 +11,10 @@
 #include "../Interactions/DIY_TemperatureProcessor.h"
 #include "../Interactions/DIY_ConductivityProcessor.h"
 
+#if WITH_EDITOR
+bool ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget = false;
+#endif
+
 void ADIY_ItemBase::UpdateHighLight()
 {
     if (BasicStaticMeshComponent)
@@ -45,13 +49,12 @@ ADIY_ItemBase::ADIY_ItemBase()
 
     }
     */
+
     ItemStateWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("ItemStateWidgetComponent"));
 
     ItemStateWidgetComponent->SetupAttachment(BasicStaticMeshComponent);
     ItemStateWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
     ItemStateWidgetComponent->SetDrawAtDesiredSize(false);
-    // here the widget is created
-    ItemStateWidgetComponent->SetWidgetClass(UDIY_ItemStateWidget::StaticClass());
 
     ItemStateWidgetComponent->SetPivot(FVector2D(0.5f, 0.5f));
     ItemStateWidgetComponent->SetVisibility(true);
@@ -65,7 +68,13 @@ ADIY_ItemBase::~ADIY_ItemBase()
 void ADIY_ItemBase::BeginPlay()
 {
     Super::BeginPlay();
+#if WITH_EDITOR
+    if (ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget)
+    {
 
+        ItemStateWidgetComponent->SetWidgetClass(UDIY_ItemStateWidget::StaticClass());
+    }
+#endif
     GetWorld()->GetTimerManager().SetTimer(
         TimerHandle_HighLight,
         this,
@@ -107,12 +116,19 @@ void ADIY_ItemBase::PauseTrinkling()
 void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
 {
     config_copy = inConfig;
-
+    BulkInteractionFlags = 0;
     for (EDIY_InteractItemFlag cur_flag : config_copy.ConfiguredFlags)
     {
+
         UDIY_InteractionUtility::SetFlag(BulkInteractionFlags, (uint8)cur_flag);
-        EASY_LOG_MAINPLAYER("Actor spawned with flag %d", BulkInteractionFlags);
+        EASY_LOG_MAINPLAYER("Actor spawned with flag %s", *UEnum::GetValueAsString(cur_flag));
     }
+    // for (EDIY_InteractItemFlag cur_flag : inConfig.ConfiguredFlags)
+    // {
+
+    //     UDIY_InteractionUtility::SetFlag(BulkInteractionFlags, (uint8)cur_flag);
+    //     EASY_LOG_MAINPLAYER("xxxx Actor spawned with flag %s", *UEnum::GetValueAsString(cur_flag));
+    // }
 
     if (!UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Static) &&
         UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Obey_Physics_Rules))
@@ -125,7 +141,7 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
 
         BasicStaticMeshComponent->SetLinearDamping(config_copy.LinearDamping);
         BasicStaticMeshComponent->SetAngularDamping(config_copy.AngualrDamping);
-        EASY_LOG_MAINPLAYER("Actor successgully spawned with configs adopted");
+        EASY_LOG_MAINPLAYER("Actor successgully spawned with physics configs adopted");
     }
 
     BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
@@ -147,6 +163,7 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
             {
                 Possible_Solidness_Processor->RegisterComponent();
                 Possible_Solidness_Processor->OnInitWithConfigCopy(&config_copy);
+
                 AddInstanceComponent(Possible_Solidness_Processor);
             }
         }
@@ -259,6 +276,5 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
                                         Possible_Solidness_Processor->GetSolidNessAttrs().cutting_damage_susceptibility,
                                         Possible_Solidness_Processor->GetSolidNessAttrs().blunt_damage_susceptibility);
     }
-
     UpdateWidgetText_Internal(updated_text);
 }
