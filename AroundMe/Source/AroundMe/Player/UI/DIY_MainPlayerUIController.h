@@ -18,105 +18,21 @@ protected:
     virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    uint8 BackPack_GridRowNum{5};
+    uint8 BackPack_GridRowNum{3};
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    uint8 BackPack_GridColNum{10};
-
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    FVector2D BackPack_Anchors_InViewPort{0.5f, 0.f};
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    FVector2D BackPack_Align_InViewPort{0.5f, 0.f};
+    uint8 BackPack_GridColNum{3};
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    FVector2D BackPack_SlotIconSize{100.0f, 100.0f};
+    FVector2D BackPack_Anchors_InViewPort{0.2f, 0.5f};
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_BackPack")
-    float BackPack_TextSlotFontSize{20.0f};
-
-    // Music player
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_MusicPlayer")
-    FVector2D MusicPlayer_Anchors_InViewPort{0.5f, 0.f};
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_MusicPlayer")
-    FVector2D MusicPlayer_Align_InViewPort{0.5f, 0.f};
-
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_MusicPlayer")
-    FVector2D MusicPlayer_SlotIconSize{100.0f, 100.0f};
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_MusicPlayer")
-    float MusicPlayer_TextSlotFontSize{20.0f};
-
-    // PlatformService
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_PlatformService")
-    FVector2D PlatformService_Anchors_InViewPort{0.5f, 0.f};
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_PlatformService")
-    FVector2D PlatformService_Align_InViewPort{0.5f, 0.f};
-
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_PlatformService")
-    FVector2D PlatformService_SlotIconSize{100.0f, 100.0f};
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_PlatformService")
-    float PlatformService_TextSlotFontSize{20.0f};
+    FVector2D BackPack_Align_InViewPort{0.5f, 0.5f};
 
 public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
-
-    //common funcs
-
     void RequestChangeUISectionVisibility(ESlateVisibility invisibility, EMainPlayerUISectionID SectionID);
-    bool IsUISectionVisible(EMainPlayerUISectionID SectionID) const;
-
-
-    // Music Player Funcs
-    void RequestUpdateStateInfoText_MusicPlayer(const FText &inText);
-
-
-
-
-    // BackPack Funcs
-    void RequestVisibility_BackPack(ESlateVisibility invisibility);
-    bool RequestAddItemToBackPack(class AActor *inItem);
-    // must has been in backpack
-    void RequestMoveCurrentSelectedCursor(int inDeltaX, int inDeltaY, uint32 inStride = 1);
-    void ToggleBackPackUI(bool inIsOpen);
-    void SetRememberLastSelectedSlotCursorPos_WhenClosed(bool inBool) { RememberLastSelectedSlotCursorPos_WhenClosed = inBool; }
-    bool GetRememberLastSelectedSlotCursorPos_WhenClosed() const { return RememberLastSelectedSlotCursorPos_WhenClosed; }
-    bool IsBackPackUiOpened() const;
-    void ToggleBackPackSlotSelected(uint32 inCol_x, uint32 inRow_y, bool isSelected);
-    int GetBackPackItemCountAt(uint32 inCol_x, uint32 inRow_y);
-    const FDIY_BackPackItemSlotInfo* GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y) const;
-    FDIY_BackPackItemSlotInfo* GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y);
-
-    //item sub menu funcs
-    void RequestShowItemSubMenu_AtCurrentSelectedSlot();
-    void RequestMoveSubMenuChoice(int MoveDelta, int inStride=1);
-    void RequestHideItemSubMenu();
-    bool IsItemSubMenuShown() const;
-    void ToggleItemSubMenuAtCurrentSelectedSlot();
-    void ExecuteCurrentItemSubMenuCommand();
 
 private:
     TArray<class UUserWidget *> mAllWidgets;
-    bool RememberLastSelectedSlotCursorPos_WhenClosed{false};
-    // Pos Y
-    int32 BackPack_CurrentSelectedSlot_Row_index{-1};
-    // pos X
-    int32 BackPack_CurrentSelectedSlot_Col_index{-1};
-
-
-    uint32 Item_Current_SubMenu_ChoosenIndex{ 0 };
-
-    // col_x and row_y must be in valid range
-    void SelectBackPackSlotOn(uint32 col_x, uint32 row_y, bool is_multi_selecting = false);
-
-    bool isBackPackPosInRange(int32 col_x, int32 row_y) const
-    {
-
-        return (col_x >= 0 && col_x < BackPack_GridColNum) && (BackPack_GridRowNum > row_y && row_y >= 0);
-    }
-    bool isCurrentSlectedSlotInRange() const { return isBackPackPosInRange(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index); }
-
-    TArray<FDIY_BackPackItemSlotInfo> StoredBackPackSlotItemInfo;
-
-    TMap<int, int> ItemInfoHelperMap;
-
-    int QuicklyFindBackPackItemSlotIndex_FromItemID(EItemID inItemID);
 };

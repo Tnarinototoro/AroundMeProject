@@ -21,6 +21,7 @@ public:
 
     // Spawn an Item
     // UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    void SpawnItemByID(EItemID ItemID, const FVector &Location, const FRotator &Rotation);
 
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -31,7 +32,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     void RequestRecycleItem(AActor *Item);
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    class UTexture2D *GetItemIconTexture(int32 inITemID) const;
+    class UTexture2D *GetItemIconTexture(EItemID inItemID) const;
 
 protected:
     ADIY_ItemManager();
@@ -52,19 +53,16 @@ protected:
 
 private:
     static ADIY_ItemManager *ManagerInstance;
-    void SpawnItemByID_Internal(EItemID ItemID, const FVector &Location, const FRotator &Rotation);
-    void OnItemRequestRecycle(class AActor* inActor);
-    void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig);
     void SpawnActorFromClass(UClass *inClass, const FVector &Location, const FRotator &Rotation, const FDIY_ItemDefualtConfig &inConfig);
+    void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig);
 
-  
+    // TMap<EItemID, TSoftObjectPtr<UClass>> LoadedItemSoftAllClasses;
+    TMap<EItemID, FSoftObjectPath> CachedPathObjects;
 
     TMap<EItemID, TArray<AActor *>> ItemPools;
 
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
-    class UTexture2D *DefualtItemSlotIcon;
-    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
-    class UTexture2D *EmptyItemSlotIcon;
+    class UTexture2D *PlaceHoldItemIcon;
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
     TMap<EItemID, class UTexture2D *> ItemIconsMap;
 };

@@ -155,6 +155,3 @@ struct FDIY_SolidnessAttr
         float sphereness{ 0.6 };
 
 };
-
-DECLARE_DELEGATE(FOnItemComponentNeedToBeRecycled);
-DECLARE_DELEGATE_OneParam(FOnItemToBeRecycled,AActor *);

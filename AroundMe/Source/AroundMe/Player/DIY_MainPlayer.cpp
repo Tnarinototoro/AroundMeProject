@@ -15,12 +15,6 @@
 #include "Actions/DIY_MainPlayerActionController.h"
 #include "../GameUtilities/Logs/DIY_LogHelper.h"
 #include "Camera/DIY_MainPLayerCameraController.h"
-#include "Components/WidgetComponent.h"
-#include "../UIWidgets/DIY_PlayerStateWidget.h"
-
-#if WITH_EDITOR
-bool ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget = false;
-#endif
 
 // Sets default values
 ADIY_MainPlayer::ADIY_MainPlayer()
@@ -34,32 +28,13 @@ ADIY_MainPlayer::ADIY_MainPlayer()
     // HatComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HatComponent"));
 
     // HatComponent->SetupAttachment(GetMesh(),TEXT("headSocket"));
-
-    PlayerState_WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("PlayerStateInfo"));
-
-    PlayerState_WidgetComponent->SetupAttachment(this->GetCapsuleComponent());
-    PlayerState_WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-    PlayerState_WidgetComponent->SetDrawAtDesiredSize(false);
-    PlayerState_WidgetComponent->SetPivot(FVector2D(0.5f, 0.5f));
-    PlayerState_WidgetComponent->SetVisibility(true);
-    // relative location setup(X=20.000000,Y=0.000000,Z=-50.000000)
-    PlayerState_WidgetComponent->SetRelativeLocation({20.000000, 0.000000, -50.000000});
-
-    // relative rotation setup (Pitch=0.000000,Yaw=-179.999999,Roll=0.000000)
-    PlayerState_WidgetComponent->SetRelativeRotation({0.000000, -179.999999, 0.000000});
 }
+
 // Called when the game starts or when spawned
 void ADIY_MainPlayer::BeginPlay()
 {
     Super::BeginPlay();
-#if WITH_EDITOR
-    if (ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget)
-    {
 
-        ensureMsgf(PlayerState_WidgetComponent != nullptr, TEXT("player info widget is null"));
-        PlayerState_WidgetComponent->SetWidgetClass(UDIY_PlayerStateWidget::StaticClass());
-    }
-#endif
     APlayerController *PC = Cast<APlayerController>(GetController());
     if (PC)
     {
@@ -68,6 +43,8 @@ void ADIY_MainPlayer::BeginPlay()
     }
 
     AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->TriggerProcessJumpInput.AddDynamic(this, &ADIY_MainPlayer::DoJumpAction);
+
+   
 }
 
 void ADIY_MainPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -75,6 +52,7 @@ void ADIY_MainPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
     Super::EndPlay(EndPlayReason);
 
     AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->TriggerProcessJumpInput.RemoveDynamic(this, &ADIY_MainPlayer::DoJumpAction);
+    
 }
 
 void ADIY_MainPlayer::PawnClientRestart()
