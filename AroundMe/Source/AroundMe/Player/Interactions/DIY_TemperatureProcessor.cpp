@@ -8,7 +8,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "../../GameUtilities/Weather/DIY_WeatherManager.h"
-
+#include "../../GameUtilities/DIY_Utilities.h"
+#include "../Items/DIY_ItemManager.h"
 UDIY_TemperatureProcessor::UDIY_TemperatureProcessor()
 {
 
@@ -241,7 +242,9 @@ void UDIY_TemperatureProcessor::UpdateStateMachine(float inDeltaTime)
                 SpawnedEffectCompo->DestroyComponent();
                 SpawnedEffectCompo = nullptr;
             }
-            this->GetOwner()->Destroy();
+            UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(GetOwner());
+            SwitchToNextState(ETemperatureRelatedState::TS_Normal);
+            this->DestroyComponent();
         }
         break;
     case ETemperatureRelatedState::TS_Frozen:
@@ -280,7 +283,7 @@ void UDIY_TemperatureProcessor::SelfIgnite_AndAroundItems()
     TArray<AActor *> IgnoreActors;
     IgnoreActors.Add(OwnerActor);
     FName CollisionProfileName = TEXT("DIY_Item_Pres");
-    float ExplosionRadius = 3000.0f;
+    float ExplosionRadius = 300.0f;
     // debug
     DrawDebugSphere(GetWorld(), Origin, ExplosionRadius, 32, FColor::Red, false, 2.0f);
 

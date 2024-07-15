@@ -1,5 +1,7 @@
 #include "DIY_SolidnessProcessor.h"
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
+#include "../../GameUtilities/DIY_Utilities.h"
+#include "../Items/DIY_ItemManager.h"
 
 UDIY_SolidnessProcessor::UDIY_SolidnessProcessor()
 {
@@ -41,7 +43,8 @@ void UDIY_SolidnessProcessor::AcceptDamage(float inDamage, float inDamageSphereN
 
     if (Final_Durability <= 0.f)
     {
-        GetOwner()->Destroy();
+        UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(GetOwner());
+        this->DestroyComponent();
     }
 }
 

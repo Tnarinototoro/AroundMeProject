@@ -5,10 +5,11 @@ using System.Collections.Generic;
 
 public class AroundMeTarget : TargetRules
 {
-	public AroundMeTarget( TargetInfo Target) : base(Target)
-	{
-		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.AddRange( new string[] { "AroundMe" } );
-	}
+    public AroundMeTarget(TargetInfo Target) : base(Target)
+    {
+        Type = TargetType.Game;
+        DefaultBuildSettings = BuildSettingsVersion.V2;
+        ExtraModuleNames.AddRange(new string[] { "AroundMe" });
+
+    }
 }
