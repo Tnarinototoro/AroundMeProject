@@ -425,7 +425,7 @@ void UDIY_MainPlayerUIController::ExecuteCurrentItemSubMenuCommand()
         //+ player->GetActorForwardVector().Normalize()*200.f;
         spawned_loc.Z += 100.0f;
 
-        DrawDebugLine(GetWorld(), player->GetActorLocation(), spawned_loc, FColor::Red, true, 2.0f, 0, 1.0f);
+        // DrawDebugLine(GetWorld(), player->GetActorLocation(), spawned_loc, FColor::Red, true, 2.0f, 0, 1.0f);
         UDIY_Utilities::DIY_GetItemManagerInstance()->RequestSpawnItem(cur_item_info->itemID, spawned_loc, {0.f, 0.f, 0.f});
     }
 }

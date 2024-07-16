@@ -122,17 +122,28 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
     if (is_sub_menu_opened && is_backpack_opened)
     {
         AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ExecuteCurrentItemSubMenuCommand();
+
+        return;
     }
 
     if (!is_sub_menu_opened && !is_backpack_opened)
     {
         AActor *detected_actor = AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor();
+
+        ADIY_ItemBase *cur_item = Cast<ADIY_ItemBase>(detected_actor);
+
+        bool is_pickable = false;
+
+        if (cur_item != nullptr)
+        {
+            is_pickable = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Obey_Physics_Rules);
+        }
         static bool execute_pick_up{true};
         if (execute_pick_up)
         {
             if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_Base_Motion)
             {
-                if (nullptr != detected_actor)
+                if (nullptr != detected_actor && is_pickable)
                 {
                     AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PicUpDetectedItem(detected_actor, "hand_rSocket");
 
@@ -267,6 +278,7 @@ void UDIY_MainPlayerInputController::HandleKey_E_Input(const FInputActionValue &
     if (nullptr != detected_actor)
     {
         AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestAddItemToBackPack(detected_actor);
+        AcquireOwnerActorOwnedUDIY_ItemDetector()->ClearDetectedActor();
     }
     else
     {

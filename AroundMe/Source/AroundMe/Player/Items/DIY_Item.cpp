@@ -112,7 +112,10 @@ void ADIY_ItemBase::PauseTrinkling()
     BasicStaticMeshComponent->SetRenderCustomDepth(false);
     isEnabledHighLighting = false;
 }
-
+bool ADIY_ItemBase::CheckItemFlag(EDIY_InteractItemFlag inFlag)
+{
+    return UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)inFlag);
+}
 void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
 {
     config_copy = inConfig;
@@ -142,6 +145,18 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
         BasicStaticMeshComponent->SetLinearDamping(config_copy.LinearDamping);
         BasicStaticMeshComponent->SetAngularDamping(config_copy.AngualrDamping);
         EASY_LOG_MAINPLAYER("Actor successgully spawned with physics configs adopted");
+    }
+
+    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Static))
+    {
+        BasicStaticMeshComponent->SetCollisionProfileName(TEXT("DIY_Item_Pres"));
+        BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+        BasicStaticMeshComponent->SetSimulatePhysics(false);
+        // BasicStaticMeshComponent->SetMassOverrideInKg(NAME_None, config_copy.ItemMass, true);
+        // BasicStaticMeshComponent->SetPhysMaterialOverride(config_copy.ItemPhysicsMtl);
+
+        // BasicStaticMeshComponent->SetLinearDamping(config_copy.LinearDamping);
+        // BasicStaticMeshComponent->SetAngularDamping(config_copy.AngualrDamping);
     }
 
     BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);

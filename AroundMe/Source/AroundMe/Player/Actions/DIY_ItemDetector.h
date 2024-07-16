@@ -31,7 +31,10 @@ public:
     UFUNCTION(BlueprintCallable)
     class AActor* GetDetectedActor() const;
 
-
+    void ClearDetectedActor()
+    {
+        mDetectedActor=nullptr;
+    }
    
 
 

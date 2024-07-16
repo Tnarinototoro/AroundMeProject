@@ -52,6 +52,9 @@ public:
     // force override means to force change to target state and execute the first execution event equal to current state
     bool SwitchCycleState(EItemLifeCycleState targetState, bool ForceOverride = false);
 
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
+    bool CheckItemFlag(EDIY_InteractItemFlag inFlag);
+
 #if WITH_EDITOR
     static bool Dbg_Enable_ItemInfo_Widget;
 #endif
