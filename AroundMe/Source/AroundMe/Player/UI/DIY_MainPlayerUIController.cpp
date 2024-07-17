@@ -3,6 +3,7 @@
 #include "../../UIWidgets/DIY_ItemBackPackWidget.h"
 #include "../../UIWidgets/DIY_PlatformServiceStateWidget.h"
 #include "../../UIWidgets/DIY_MusicPlayerStateWidget.h"
+#include "../../UIWidgets/DIY_CraftingPlatformWidget.h"
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "../Items/DIY_Item.h"
 #include "../../GameUtilities/DIY_Utilities.h"
@@ -77,6 +78,23 @@ void UDIY_MainPlayerUIController::BeginPlay()
             RequestChangeUISectionVisibility(ESlateVisibility::Visible, EMainPlayerUISectionID::MusicPlayerState);
             break;
         }
+        case (int)EMainPlayerUISectionID::ItemCraftingPlatform:
+        {
+            ensureMsgf(mAllWidgets[type] == nullptr, TEXT("ItemCraftingPlatform widget has to be null firstly"));
+            mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_CraftingPlatformWidget::StaticClass());
+            UDIY_CraftingPlatformWidget *item_crafting_platform_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[type]);
+            ensureMsgf(item_crafting_platform_widget != nullptr, TEXT("UDIY_PlatformServiceStateWidget null"));
+            item_crafting_platform_widget->InitializeBackPack(BackPack_GridRowNum, BackPack_GridColNum, BackPack_SlotIconSize, BackPack_TextSlotFontSize);
+
+            item_crafting_platform_widget->SetAnchorsInViewport(FAnchors(BackPack_Anchors_InViewPort.X, BackPack_Anchors_InViewPort.Y));
+            item_crafting_platform_widget->SetAlignmentInViewport(BackPack_Align_InViewPort);
+
+            // item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
+            item_crafting_platform_widget->AddToViewport(0);
+
+            RequestChangeUISectionVisibility(ESlateVisibility::Hidden, EMainPlayerUISectionID::PlatformService);
+            break;
+        }
 
         default:
             break;
@@ -114,6 +132,14 @@ void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReas
             break;
         }
         case (int)EMainPlayerUISectionID::MusicPlayerState:
+        {
+
+            mAllWidgets[type]->RemoveFromParent();
+            mAllWidgets[type]->MarkAsGarbage();
+            mAllWidgets[type] = nullptr;
+            break;
+        }
+        case (int)EMainPlayerUISectionID::ItemCraftingPlatform:
         {
 
             mAllWidgets[type]->RemoveFromParent();

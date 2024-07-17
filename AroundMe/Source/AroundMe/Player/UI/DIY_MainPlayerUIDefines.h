@@ -10,6 +10,7 @@ enum class EMainPlayerUISectionID : uint8
     DailyActivity,
     PlatformService,
     MusicPlayerState,
+    ItemCraftingPlatform,
     EMainPlayerUISectionID_Count
 };
 
