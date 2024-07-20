@@ -84,15 +84,15 @@ void UDIY_MainPlayerUIController::BeginPlay()
             mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_CraftingPlatformWidget::StaticClass());
             UDIY_CraftingPlatformWidget *item_crafting_platform_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[type]);
             ensureMsgf(item_crafting_platform_widget != nullptr, TEXT("UDIY_PlatformServiceStateWidget null"));
-            item_crafting_platform_widget->InitializeBackPack(BackPack_GridRowNum, BackPack_GridColNum, BackPack_SlotIconSize, BackPack_TextSlotFontSize);
+            item_crafting_platform_widget->InitializeItemCraftingPlatformWidget(ItemCraftingPlatform_GridRowMax_DisplayedNum, ItemCraftingPlatform_GridColNum, ItemCraftingPlatform_SlotIconSize, ItemCraftingPlatform_TextSlotFontSize);
 
-            item_crafting_platform_widget->SetAnchorsInViewport(FAnchors(BackPack_Anchors_InViewPort.X, BackPack_Anchors_InViewPort.Y));
-            item_crafting_platform_widget->SetAlignmentInViewport(BackPack_Align_InViewPort);
+            item_crafting_platform_widget->SetAnchorsInViewport(FAnchors(ItemCraftingPlatform_Anchors_InViewPort.X, ItemCraftingPlatform_Anchors_InViewPort.Y));
+            item_crafting_platform_widget->SetAlignmentInViewport(ItemCraftingPlatform_Align_InViewPort);
 
             // item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
             item_crafting_platform_widget->AddToViewport(0);
 
-            RequestChangeUISectionVisibility(ESlateVisibility::Hidden, EMainPlayerUISectionID::PlatformService);
+            RequestChangeUISectionVisibility(ESlateVisibility::Hidden, EMainPlayerUISectionID::ItemCraftingPlatform);
             break;
         }
 

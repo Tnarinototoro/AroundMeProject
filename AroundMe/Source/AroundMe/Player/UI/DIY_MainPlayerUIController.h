@@ -54,22 +54,35 @@ protected:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_PlatformService")
     float PlatformService_TextSlotFontSize{20.0f};
 
+    // ItemCraftingPlatform
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
+    uint8 ItemCraftingPlatform_GridColNum{10};
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
+    uint8 ItemCraftingPlatform_GridRowMax_DisplayedNum{5};
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
+    FVector2D ItemCraftingPlatform_Anchors_InViewPort{0.5f, 0.f};
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
+    FVector2D ItemCraftingPlatform_Align_InViewPort{0.5f, 0.f};
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
+    FVector2D ItemCraftingPlatform_SlotIconSize{100.0f, 100.0f};
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
+    float ItemCraftingPlatform_TextSlotFontSize{20.0f};
+
 public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
-
-    //common funcs
+    // common funcs
 
     void RequestChangeUISectionVisibility(ESlateVisibility invisibility, EMainPlayerUISectionID SectionID);
     bool IsUISectionVisible(EMainPlayerUISectionID SectionID) const;
 
-
     // Music Player Funcs
     void RequestUpdateStateInfoText_MusicPlayer(const FText &inText);
-
-
-
 
     // BackPack Funcs
     void RequestVisibility_BackPack(ESlateVisibility invisibility);
@@ -82,12 +95,12 @@ public:
     bool IsBackPackUiOpened() const;
     void ToggleBackPackSlotSelected(uint32 inCol_x, uint32 inRow_y, bool isSelected);
     int GetBackPackItemCountAt(uint32 inCol_x, uint32 inRow_y);
-    const FDIY_BackPackItemSlotInfo* GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y) const;
-    FDIY_BackPackItemSlotInfo* GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y);
+    const FDIY_BackPackItemSlotInfo *GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y) const;
+    FDIY_BackPackItemSlotInfo *GetBackPackItemInfoAt(uint32 inCol_x, uint32 inRow_y);
 
-    //item sub menu funcs
+    // item sub menu funcs
     void RequestShowItemSubMenu_AtCurrentSelectedSlot();
-    void RequestMoveSubMenuChoice(int MoveDelta, int inStride=1);
+    void RequestMoveSubMenuChoice(int MoveDelta, int inStride = 1);
     void RequestHideItemSubMenu();
     bool IsItemSubMenuShown() const;
     void ToggleItemSubMenuAtCurrentSelectedSlot();
@@ -101,8 +114,7 @@ private:
     // pos X
     int32 BackPack_CurrentSelectedSlot_Col_index{-1};
 
-
-    uint32 Item_Current_SubMenu_ChoosenIndex{ 0 };
+    uint32 Item_Current_SubMenu_ChoosenIndex{0};
 
     // col_x and row_y must be in valid range
     void SelectBackPackSlotOn(uint32 col_x, uint32 row_y, bool is_multi_selecting = false);

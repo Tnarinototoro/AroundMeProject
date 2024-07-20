@@ -5,15 +5,16 @@
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "DIY_ItemBackPackWidget.h"
+#include "Components/SizeBox.h"
 #include "Components/ScrollBox.h"
-#include "Components/GridPanel.h"
-#include "Components/GridSlot.h"
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Image.h"
 #include "../GameUtilities/DIY_Utilities.h"
 #include "../Player/Items/DIY_ItemManager.h"
 #include "Components/Border.h"
+#include "DIY_CraftReceiptRowWidget.h"
+
 void UDIY_CraftingPlatformWidget::NativeConstruct()
 {
     Super::NativeConstruct();
@@ -23,90 +24,51 @@ void UDIY_CraftingPlatformWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
 
-    // Create ScrollBox
-    ScrollBox = WidgetTree->ConstructWidget<UScrollBox>(UScrollBox::StaticClass(), TEXT("ScrollBox"));
-    if (ScrollBox)
+    // Create SizeBox
+    SizeBox = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass(), TEXT("SizeBox"));
+    if (SizeBox)
     {
-        WidgetTree->RootWidget = ScrollBox;
-        // Create GridPanel
-        GridPanel = WidgetTree->ConstructWidget<UGridPanel>(UGridPanel::StaticClass(), TEXT("GridPanel"));
+        WidgetTree->RootWidget = SizeBox;
 
-        if (GridPanel)
+        // Create ScrollBox
+        ScrollBox = WidgetTree->ConstructWidget<UScrollBox>(UScrollBox::StaticClass(), TEXT("ScrollBox"));
+        if (ScrollBox)
         {
-            UPanelSlot *grid_panel_slot = ScrollBox->AddChild(GridPanel);
+            ScrollBox->SetAlwaysShowScrollbar(true);
+            SizeBox->AddChild(ScrollBox);
         }
     }
 }
 
-void UDIY_CraftingPlatformWidget::InitializeBackPack(int32 Rows, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize)
+void UDIY_CraftingPlatformWidget::InitializeItemCraftingPlatformWidget(int32 Rows_Max, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize)
 {
-    RowNum = Rows;
+    RowNum_Displayed = Rows_Max;
     ColNum = Cols;
     IconImageSlotSize = inImageIconSlotSize;
     TextSlotFontSize = inTextSlotFontSize;
-    CreateGrid();
+    CreateAllReceipts();
 }
-void UDIY_CraftingPlatformWidget::CreateGrid()
+
+void UDIY_CraftingPlatformWidget::CreateAllReceipts()
 {
-    if (!GridPanel)
+    if (!ScrollBox)
         return;
 
-    GridPanel->ClearChildren();
-
-    for (int32 Row = 0; Row < RowNum; ++Row)
+    ScrollBox->ClearChildren();
+    SizeBox->SetMaxDesiredHeight(RowNum_Displayed * IconImageSlotSize.Y);
+    // Initialize grid with empty rows
+    for (int32 Row = 0; Row < RowNum_Displayed * 10; ++Row)
     {
-        for (int32 Col = 0; Col < ColNum; ++Col)
-        {
-            UCanvasPanel *SlotCanvas = WidgetTree->ConstructWidget<UCanvasPanel>();
-            if (SlotCanvas)
-            {
-                UBorder *Border = WidgetTree->ConstructWidget<UBorder>();
-                UImage *IconImage = WidgetTree->ConstructWidget<UImage>();
-                UTextBlock *CountText = WidgetTree->ConstructWidget<UTextBlock>();
+        AddReceiptRow(Row);
+    }
+}
 
-                if (Border && IconImage && CountText)
-                {
-                    //@TODO set icon image
-                    IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(0));
-                    CountText->SetText(FText::AsNumber(0));
-                    // CountText->SetVisibility(ESlateVisibility::Hidden);
-                    Border->SetBrushColor(FLinearColor::Transparent);
-                    Border->SetPadding(FMargin(1.0f));
-
-                    UCanvasPanelSlot *BorderSlot = SlotCanvas->AddChildToCanvas(Border);
-                    if (BorderSlot)
-                    {
-                        BorderSlot->SetSize(IconImageSlotSize);
-                    }
-
-                    Border->AddChild(IconImage);
-                    Border->SetHorizontalAlignment(HAlign_Fill);
-                    Border->SetVerticalAlignment(VAlign_Fill);
-
-                    UCanvasPanelSlot *TextSlot = SlotCanvas->AddChildToCanvas(CountText);
-
-                    FSlateFontInfo FontInfo = CountText->GetFont();
-                    FontInfo.Size = TextSlotFontSize;
-                    CountText->SetFont(FontInfo);
-                    CountText->SetVisibility(ESlateVisibility::Hidden);
-
-                    if (TextSlot)
-                    {
-                        TextSlot->SetAnchors(FAnchors(1, 1));
-
-                        TextSlot->SetOffsets(FMargin(-30, -30, 0, 0));
-                        TextSlot->SetAlignment(FVector2D(1.0f, 1.0f));
-                    }
-
-                    UGridSlot *GridSlot = GridPanel->AddChildToGrid(SlotCanvas, Row, Col);
-                    if (GridSlot)
-                    {
-                        GridSlot->SetPadding(FMargin(1.0f));
-                        GridSlot->SetHorizontalAlignment(HAlign_Fill);
-                        GridSlot->SetVerticalAlignment(VAlign_Fill);
-                    }
-                }
-            }
-        }
+void UDIY_CraftingPlatformWidget::AddReceiptRow(int32 RowIndex)
+{
+    UDIY_CraftReceiptRowWidget *ReceiptRow = CreateWidget<UDIY_CraftReceiptRowWidget>(this, UDIY_CraftReceiptRowWidget::StaticClass());
+    if (ReceiptRow)
+    {
+        ReceiptRow->InitializeReceipt(ColNum, IconImageSlotSize, TextSlotFontSize);
+        ScrollBox->AddChild(ReceiptRow);
     }
 }
