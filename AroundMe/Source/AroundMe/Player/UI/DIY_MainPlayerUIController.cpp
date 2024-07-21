@@ -84,7 +84,7 @@ void UDIY_MainPlayerUIController::BeginPlay()
             mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_CraftingPlatformWidget::StaticClass());
             UDIY_CraftingPlatformWidget *item_crafting_platform_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[type]);
             ensureMsgf(item_crafting_platform_widget != nullptr, TEXT("UDIY_PlatformServiceStateWidget null"));
-            item_crafting_platform_widget->InitializeItemCraftingPlatformWidget(ItemCraftingPlatform_GridRowMax_DisplayedNum, ItemCraftingPlatform_GridColNum, ItemCraftingPlatform_SlotIconSize, ItemCraftingPlatform_TextSlotFontSize);
+            item_crafting_platform_widget->InitializeItemCraftingPlatformWidget(ItemCraftingPlatform_GridRowMax_DisplayedNumLimit, ItemCraftingPlatform_GridRowNum, ItemCraftingPlatform_GridColNum, ItemCraftingPlatform_SlotIconSize, ItemCraftingPlatform_TextSlotFontSize);
 
             item_crafting_platform_widget->SetAnchorsInViewport(FAnchors(ItemCraftingPlatform_Anchors_InViewPort.X, ItemCraftingPlatform_Anchors_InViewPort.Y));
             item_crafting_platform_widget->SetAlignmentInViewport(ItemCraftingPlatform_Align_InViewPort);
@@ -93,6 +93,8 @@ void UDIY_MainPlayerUIController::BeginPlay()
             item_crafting_platform_widget->AddToViewport(0);
 
             RequestChangeUISectionVisibility(ESlateVisibility::Hidden, EMainPlayerUISectionID::ItemCraftingPlatform);
+
+            // ToggleCraftingPlatformUi(true);
             break;
         }
 
@@ -180,7 +182,15 @@ void UDIY_MainPlayerUIController::RequestVisibility_BackPack(ESlateVisibility in
         cur_widget->SetVisibility(invisibility);
     }
 }
-
+void UDIY_MainPlayerUIController::RequestVisibility_CraftingPlatform(ESlateVisibility invisibility)
+{
+    UUserWidget *cur_widget = mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform];
+    ensureMsgf(nullptr != cur_widget, TEXT("ItemCraftingPlatform widget is not valid"));
+    if (invisibility != cur_widget->GetVisibility())
+    {
+        cur_widget->SetVisibility(invisibility);
+    }
+}
 bool UDIY_MainPlayerUIController::IsUISectionVisible(EMainPlayerUISectionID SectionID) const
 {
     return mAllWidgets[int(SectionID)]->IsVisible();
@@ -278,6 +288,7 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
             int col_x = slot_index % BackPack_GridColNum;
 
             item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(1));
+            EASY_LOG_MAINPLAYER("current item id %d added", current_item_id);
             item_backpack_widget->RequestChangeSlotImage(row_y, col_x, UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(int32(current_item_id)));
             item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(row_y, col_x, ESlateVisibility::Visible);
             UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
@@ -300,6 +311,7 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
 
         item_backpack_widget->RequestChangeSlotCountText(existing_row_y, existing_col_x, FText::AsNumber(cur_item_info.ItemCount));
         item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(existing_row_y, existing_col_x, ESlateVisibility::Visible);
+        item_backpack_widget->RequestChangeSlotImage(existing_row_y, existing_col_x, UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(int32(current_item_id)));
         UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
         return true;
     }
@@ -454,4 +466,124 @@ void UDIY_MainPlayerUIController::ExecuteCurrentItemSubMenuCommand()
         // DrawDebugLine(GetWorld(), player->GetActorLocation(), spawned_loc, FColor::Red, true, 2.0f, 0, 1.0f);
         UDIY_Utilities::DIY_GetItemManagerInstance()->RequestSpawnItem(cur_item_info->itemID, spawned_loc, {0.f, 0.f, 0.f});
     }
+}
+
+void UDIY_MainPlayerUIController::RequestMoveCurrentSelectedCursor_CraftingPlatform(int32 inDeltaX, int32 inDeltaY, uint32 inStride)
+{
+    ensureMsgf(isCraftingPlatformPosInValidRange(CraftingPlatform_CurrentSelectedCol, CraftingPlatform_CurrentSelectedRow), TEXT("Current slot must be valid to move"));
+
+    EASY_LOG_MAINPLAYER(" RequestMoveCurrentSelectedCursor_CraftingPlatform got in indelta x %d, y %d", inDeltaX, inDeltaY);
+    SelectCraftingPlatformSlotOn(
+        FMath::Clamp<int32>(CraftingPlatform_CurrentSelectedCol + inStride * inDeltaX, 0, ItemCraftingPlatform_GridColNum - 1),
+        FMath::Clamp<int32>(CraftingPlatform_CurrentSelectedRow + inStride * inDeltaY, 0, ItemCraftingPlatform_GridRowNum - 1));
+}
+void UDIY_MainPlayerUIController::UpdateScrollOffset_CraftingPlatform()
+{
+    UDIY_CraftingPlatformWidget *cur_crafting_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform]);
+    if (cur_crafting_widget != nullptr)
+    {
+
+        cur_crafting_widget->RequestScrollOffset(CraftingPlatform_CurrentSelectedRow * ItemCraftingPlatform_SlotIconSize.Y);
+    }
+}
+void UDIY_MainPlayerUIController::UpdateSelectionVisuals_CraftingPlatform()
+{
+}
+
+void UDIY_MainPlayerUIController::ToggleCraftingPlatformSlotSelected(uint32 inCol_x, uint32 inRow_y, bool isSelected)
+{
+    UDIY_CraftingPlatformWidget *item_crafting_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform]);
+    ensureMsgf(item_crafting_widget != nullptr, TEXT("item_crafting_widget is not okay"));
+    if (isSelected)
+    {
+        item_crafting_widget->RequestChangeSlotBorderColor(inRow_y, inCol_x, FColor::Cyan);
+        // item_backpack_widget->ShowSubMenuAt(inRow_y,inCol_x);
+    }
+    else
+    {
+        item_crafting_widget->RequestChangeSlotBorderColor(inRow_y, inCol_x, FLinearColor::Transparent);
+    }
+}
+
+void UDIY_MainPlayerUIController::ToggleCraftingPlatformUi(bool inIsOpen)
+{
+    bool is_crafting_platform_ui_opened = IsCraftingPlatformUiOpened();
+
+    if (is_crafting_platform_ui_opened != inIsOpen)
+    {
+        if (inIsOpen)
+        {
+            RequestVisibility_CraftingPlatform(ESlateVisibility::Visible);
+#if 0
+ if (RememberLastSelectedSlotCursorPos_WhenClosed)
+            {
+                if (isCurrentSlectedSlotInRange_ItemCraftingPlatform())
+                {
+                    SelectBackPackSlotOn(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index);
+                }
+                else
+                {
+                    SelectBackPackSlotOn(0, 0);
+                }
+            }
+            else
+            {
+                SelectBackPackSlotOn(0, 0);
+            }
+#endif
+
+            SelectCraftingPlatformSlotOn(0, 0);
+        }
+        else
+        {
+            RequestVisibility_CraftingPlatform(ESlateVisibility::Hidden);
+            ensureMsgf(isCurrentSlectedSlotInRange_ItemCraftingPlatform(), TEXT("is strange the slot invalid when closing crafting item platform ui"));
+
+            ToggleCraftingPlatformSlotSelected(CraftingPlatform_CurrentSelectedCol, CraftingPlatform_CurrentSelectedRow, false);
+            CraftingPlatform_CurrentSelectedRow = -1;
+            CraftingPlatform_CurrentSelectedCol = -1;
+#if 0
+ ensureMsgf(isCurrentSlectedSlotInRange(), TEXT("is strange the slot invalid when closing backpack ui"));
+            ToggleBackPackSlotSelected(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index, false);
+            if (!RememberLastSelectedSlotCursorPos_WhenClosed)
+            {
+                BackPack_CurrentSelectedSlot_Col_index = -1;
+                BackPack_CurrentSelectedSlot_Row_index = -1;
+            }
+            RequestHideItemSubMenu();
+#endif
+        }
+    }
+}
+bool UDIY_MainPlayerUIController::IsCraftingPlatformUiOpened() const
+{
+    return IsUISectionVisible(EMainPlayerUISectionID::ItemCraftingPlatform);
+}
+
+void UDIY_MainPlayerUIController::SelectCraftingPlatformSlotOn(uint32 col_x, uint32 row_y, bool is_multi_selecting)
+{
+    // not/no need to be implemented yet
+    if (is_multi_selecting)
+        return;
+
+    ensureMsgf(isCraftingPlatformPosInValidRange(col_x, row_y) && IsUISectionVisible(EMainPlayerUISectionID::ItemCraftingPlatform), TEXT("Selected slot is not in rang or ItemCraftingPlatform not opended"));
+    if (col_x == CraftingPlatform_CurrentSelectedCol && CraftingPlatform_CurrentSelectedRow == row_y)
+        return;
+
+    // first selecting first oepning the backpack ui
+    if (!isCraftingPlatformPosInValidRange(CraftingPlatform_CurrentSelectedCol, CraftingPlatform_CurrentSelectedRow))
+    {
+        ToggleCraftingPlatformSlotSelected(col_x, row_y, true);
+    }
+    else
+    {
+
+        ToggleCraftingPlatformSlotSelected(CraftingPlatform_CurrentSelectedCol, CraftingPlatform_CurrentSelectedRow, false);
+        ToggleCraftingPlatformSlotSelected(col_x, row_y, true);
+    }
+    // RequestHideItemSubMenu();
+    CraftingPlatform_CurrentSelectedCol = col_x;
+    CraftingPlatform_CurrentSelectedRow = row_y;
+
+    UpdateScrollOffset_CraftingPlatform();
 }

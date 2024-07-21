@@ -13,6 +13,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Receipt")
     void InitializeReceipt(int32 ColNum, const FVector2D &IconImageSlotSize, float TextSlotFontSize);
 
+    class UHorizontalBox *GetBoxContainer() const { return HorizontalBox; }
+    class UBorder *GetSlotBorder(int32 col) const;
+    class UImage *GetSlotImage(int32 col) const;
+    class UTextBlock *GetSlotCountText(int32 col) const;
+    class UCanvasPanel *GetSlotCanvas(int32 col) const;
+
 private:
     UPROPERTY()
     class UHorizontalBox *HorizontalBox;

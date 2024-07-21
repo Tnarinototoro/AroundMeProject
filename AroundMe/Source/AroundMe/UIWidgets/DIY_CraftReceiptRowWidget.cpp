@@ -74,3 +74,20 @@ void UDIY_CraftReceiptRowWidget::AddSlot(int32 SlotIndex, const FVector2D &IconI
         }
     }
 }
+
+class UBorder *UDIY_CraftReceiptRowWidget::GetSlotBorder(int32 col) const
+{
+    return Cast<UBorder>(GetSlotCanvas(col)->GetChildAt(0));
+}
+class UImage *UDIY_CraftReceiptRowWidget::GetSlotImage(int32 col) const
+{
+    return Cast<UImage>(GetSlotBorder(col)-> GetChildAt(0));
+}
+class UTextBlock *UDIY_CraftReceiptRowWidget::GetSlotCountText(int32 col) const
+{
+    return Cast<UTextBlock>(GetSlotCanvas(col)->GetChildAt(1));
+}
+class UCanvasPanel *UDIY_CraftReceiptRowWidget::GetSlotCanvas(int32 col) const
+{
+    return Cast<UCanvasPanel>(HorizontalBox->GetChildAt(col));
+}

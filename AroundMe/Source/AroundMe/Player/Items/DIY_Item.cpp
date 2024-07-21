@@ -257,6 +257,9 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 {
 
     FString updated_text{};
+
+    updated_text += FString::Printf(TEXT("ItemID: %s \n"),
+                                    *UEnum::GetValueAsString(config_copy.ItemID));
     if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::React_To_Temperature) && nullptr != Possible_Temperature_Processor)
     {
         updated_text += FString::Printf(TEXT("Temp: State %s \n temp %f \n moist %f \n self_burn %f \n self_freeze %f \n self_thaw %f \n"),

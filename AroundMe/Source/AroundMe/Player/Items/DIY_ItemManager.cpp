@@ -8,6 +8,7 @@
 #include "Engine/AssetManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "DIY_Item.h"
+
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "../../GameUtilities/DIY_Utilities.h"
 
@@ -99,7 +100,6 @@ void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
     // ItemBase->SetActorEnableCollision(false);
     ItemBase->SetActorHiddenInGame(true);
     ItemBase->SetActorTickEnabled(false);
-    
 
     UPrimitiveComponent *PrimitiveComponent = Cast<UPrimitiveComponent>(ItemBase->GetRootComponent());
     if (PrimitiveComponent)
@@ -119,15 +119,27 @@ void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
 
 UTexture2D *ADIY_ItemManager::GetItemIconTexture(int32 inITemID) const
 {
+
     ensureMsgf(DefualtItemSlotIcon != nullptr && nullptr != EmptyItemSlotIcon, TEXT("please set up defualt and empty slot icon for backup"));
     if (inITemID >= (int32)EItemID::EItemID_Count)
+    {
+        EASY_LOG_MAINPLAYER("GetItemIconTexture item id %d added inITemID >= (int32)EItemID::EItemID_Count", inITemID);
         return DefualtItemSlotIcon;
+    }
     if (inITemID < 0)
+    {
+        EASY_LOG_MAINPLAYER("GetItemIconTexture item id %d added inITemID < 0", inITemID);
         return EmptyItemSlotIcon;
-    UTexture2D *icon = ItemIconsMap.FindRef((EItemID)inITemID);
+    }
 
-    ensureMsgf(icon != nullptr, TEXT("icon must be fullfiled with valid path"));
+    if (inITemID >= ItemIcons.Num())
+    {
+        EASY_LOG_MAINPLAYER("GetItemIconTexture item id %d inITemID >= ItemIcons.Num() execeeding array size", inITemID);
+    }
+    UTexture2D *icon = ItemIcons[inITemID];
 
+    ensureMsgf(nullptr != icon, TEXT("Icon setup is not well done"));
+    EASY_LOG_MAINPLAYER("GetItemIconTexture item id %d  Image Path is %s", inITemID, *icon->GetFullName());
     return icon;
 }
 

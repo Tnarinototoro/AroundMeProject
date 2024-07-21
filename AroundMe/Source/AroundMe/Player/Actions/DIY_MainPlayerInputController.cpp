@@ -192,7 +192,8 @@ void UDIY_MainPlayerInputController::HandleXYPlayerMoveInputFinished(const FInpu
 void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue &Value)
 {
     FVector2D Axis2DValue = Value.Get<FVector2D>();
-    bool is_backpack_open = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsUISectionVisible(EMainPlayerUISectionID::BackPack);
+    bool is_backpack_open = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsBackPackUiOpened();
+    bool is_crafting_platform_open = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsCraftingPlatformUiOpened();
     if (is_backpack_open)
     {
         if (AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsItemSubMenuShown())
@@ -207,11 +208,19 @@ void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue &
 
             AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor(delta_x, -delta_y);
         }
+        return;
     }
-    else
+
+    if (is_crafting_platform_open)
     {
-        AcquireOwnerActorOwnedUDIY_MainPlayerCameraController()->HandleMouseMoveForUpDownCam(Axis2DValue);
+        int delta_x = FMath::Clamp<int>((int)Axis2DValue.X, -1, 1);
+        int delta_y = FMath::Clamp<int>((int)Axis2DValue.Y, -1, 1);
+
+        AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor_CraftingPlatform(delta_x, -delta_y);
+
+        return;
     }
+    AcquireOwnerActorOwnedUDIY_MainPlayerCameraController()->HandleMouseMoveForUpDownCam(Axis2DValue);
 }
 
 void UDIY_MainPlayerInputController::RegisterInputMappings(APlayerController *PC)
@@ -254,7 +263,20 @@ void UDIY_MainPlayerInputController::HandleTabKeyInputProcess(const FInputAction
 void UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Completed(const FInputActionValue &Value)
 {
     FVector2D Axis2DValue = Value.Get<FVector2D>();
-    AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor((int)(inPutBackPack_CursorMoveDir.X), -(int)(inPutBackPack_CursorMoveDir.Y));
+    bool is_backpack_open = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsBackPackUiOpened();
+    bool is_crafting_platform_open = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsCraftingPlatformUiOpened();
+
+    if (is_backpack_open)
+    {
+        AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor((int)(inPutBackPack_CursorMoveDir.X), -(int)(inPutBackPack_CursorMoveDir.Y));
+        return;
+    }
+    if (is_crafting_platform_open)
+    {
+        AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor_CraftingPlatform((int)(inPutBackPack_CursorMoveDir.X), -(int)(inPutBackPack_CursorMoveDir.Y));
+        return;
+    }
+
     inPutBackPack_CursorMoveDir = FVector2D::ZeroVector;
     EASY_LOG_MAINPLAYER("HandleBackPackUIMoveProcess completed %f, %f", Axis2DValue.X, Axis2DValue.Y);
 }

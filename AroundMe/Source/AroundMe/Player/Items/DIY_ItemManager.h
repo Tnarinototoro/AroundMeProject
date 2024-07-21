@@ -53,11 +53,9 @@ protected:
 private:
     static ADIY_ItemManager *ManagerInstance;
     void SpawnItemByID_Internal(EItemID ItemID, const FVector &Location, const FRotator &Rotation);
-    void OnItemRequestRecycle(class AActor* inActor);
+    void OnItemRequestRecycle(class AActor *inActor);
     void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig);
     void SpawnActorFromClass(UClass *inClass, const FVector &Location, const FRotator &Rotation, const FDIY_ItemDefualtConfig &inConfig);
-
-  
 
     TMap<EItemID, TArray<AActor *>> ItemPools;
 
@@ -66,5 +64,5 @@ private:
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
     class UTexture2D *EmptyItemSlotIcon;
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
-    TMap<EItemID, class UTexture2D *> ItemIconsMap;
+    TArray<class UTexture2D *> ItemIcons;
 };

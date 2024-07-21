@@ -58,9 +58,11 @@ protected:
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
     uint8 ItemCraftingPlatform_GridColNum{10};
-
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
-    uint8 ItemCraftingPlatform_GridRowMax_DisplayedNum{5};
+    uint8 ItemCraftingPlatform_GridRowNum{20};
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
+    uint8 ItemCraftingPlatform_GridRowMax_DisplayedNumLimit{5};
+
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
     FVector2D ItemCraftingPlatform_Anchors_InViewPort{0.5f, 0.f};
@@ -106,6 +108,15 @@ public:
     void ToggleItemSubMenuAtCurrentSelectedSlot();
     void ExecuteCurrentItemSubMenuCommand();
 
+    // crafting platform ui funcs
+    void RequestMoveCurrentSelectedCursor_CraftingPlatform(int32 DeltaX, int32 DeltaY, uint32 Stride = 1);
+    void UpdateScrollOffset_CraftingPlatform();
+    void UpdateSelectionVisuals_CraftingPlatform();
+    void ToggleCraftingPlatformUi(bool inIsOpen);
+    void ToggleCraftingPlatformSlotSelected(uint32 inCol_x, uint32 inRow_y, bool isSelected);
+    bool IsCraftingPlatformUiOpened() const;
+    void RequestVisibility_CraftingPlatform(ESlateVisibility invisibility);
+
 private:
     TArray<class UUserWidget *> mAllWidgets;
     bool RememberLastSelectedSlotCursorPos_WhenClosed{false};
@@ -118,17 +129,27 @@ private:
 
     // col_x and row_y must be in valid range
     void SelectBackPackSlotOn(uint32 col_x, uint32 row_y, bool is_multi_selecting = false);
+    void SelectCraftingPlatformSlotOn(uint32 col_x, uint32 row_y, bool is_multi_selecting = false);
 
     bool isBackPackPosInRange(int32 col_x, int32 row_y) const
     {
 
         return (col_x >= 0 && col_x < BackPack_GridColNum) && (BackPack_GridRowNum > row_y && row_y >= 0);
     }
+
+    bool isCraftingPlatformPosInValidRange(int32 col_x, int32 row_y) const
+    {
+        return (col_x >= 0 && col_x < ItemCraftingPlatform_GridColNum) && (ItemCraftingPlatform_GridRowNum > row_y && row_y >= 0);
+    }
     bool isCurrentSlectedSlotInRange() const { return isBackPackPosInRange(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index); }
 
+    bool isCurrentSlectedSlotInRange_ItemCraftingPlatform() const { return isCraftingPlatformPosInValidRange(CraftingPlatform_CurrentSelectedCol, CraftingPlatform_CurrentSelectedRow); }
     TArray<FDIY_BackPackItemSlotInfo> StoredBackPackSlotItemInfo;
 
     TMap<int, int> ItemInfoHelperMap;
 
     int QuicklyFindBackPackItemSlotIndex_FromItemID(EItemID inItemID);
+
+    int32 CraftingPlatform_CurrentSelectedRow{-1};
+    int32 CraftingPlatform_CurrentSelectedCol{-1};
 };
