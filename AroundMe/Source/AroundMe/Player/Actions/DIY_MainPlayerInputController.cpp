@@ -81,8 +81,8 @@ void UDIY_MainPlayerInputController::SetupPlayerInputComponent(UInputComponent *
                     }
                     else if ("IA_DIY_BackPackMoveCursor" == Cur_Action_Name)
                     {
-                        EnhancedInput->BindAction(cur_action, ETriggerEvent::Triggered, this, &UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Triggered);
-                        EnhancedInput->BindAction(cur_action, ETriggerEvent::Completed, this, &UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Completed);
+                        EnhancedInput->BindAction(cur_action, ETriggerEvent::Triggered, this, &UDIY_MainPlayerInputController::HandleUIMoveProcess_Triggered);
+                        EnhancedInput->BindAction(cur_action, ETriggerEvent::Completed, this, &UDIY_MainPlayerInputController::HandleUIMoveProcess_Completed);
                     }
                     else if ("IA_DIY_E_Key" == Cur_Action_Name)
                     {
@@ -118,6 +118,7 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
 
     bool is_sub_menu_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsItemSubMenuShown();
     bool is_backpack_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsBackPackUiOpened();
+    bool is_crafting_platform_opned = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsCraftingPlatformUiOpened();
 
     if (is_sub_menu_opened && is_backpack_opened)
     {
@@ -133,6 +134,19 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
         ADIY_ItemBase *cur_item = Cast<ADIY_ItemBase>(detected_actor);
 
         bool is_pickable = false;
+
+        bool is_crafting_item_pltform = false;
+
+        if (nullptr != cur_item)
+        {
+            is_crafting_item_pltform = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Has_CraftingPlatform_Function);
+        }
+
+        if (is_crafting_item_pltform)
+        {
+            AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ToggleCraftingPlatformUi(!AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsCraftingPlatformUiOpened());
+            return;
+        }
 
         if (cur_item != nullptr)
         {
@@ -260,7 +274,7 @@ void UDIY_MainPlayerInputController::HandleTabKeyInputProcess(const FInputAction
     AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ToggleBackPackUI(!AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsUISectionVisible(EMainPlayerUISectionID::BackPack));
 }
 
-void UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Completed(const FInputActionValue &Value)
+void UDIY_MainPlayerInputController::HandleUIMoveProcess_Completed(const FInputActionValue &Value)
 {
     FVector2D Axis2DValue = Value.Get<FVector2D>();
     bool is_backpack_open = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsBackPackUiOpened();
@@ -281,7 +295,7 @@ void UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Completed(const
     EASY_LOG_MAINPLAYER("HandleBackPackUIMoveProcess completed %f, %f", Axis2DValue.X, Axis2DValue.Y);
 }
 
-void UDIY_MainPlayerInputController::HandleBackPackUIMoveProcess_Triggered(const FInputActionValue &Value)
+void UDIY_MainPlayerInputController::HandleUIMoveProcess_Triggered(const FInputActionValue &Value)
 {
     FVector2D Axis2DValue = Value.Get<FVector2D>();
     inPutBackPack_CursorMoveDir.X = FMath::Clamp(Axis2DValue.X, -1.0f, 1.0f);

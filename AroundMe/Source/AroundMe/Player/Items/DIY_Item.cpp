@@ -133,8 +133,7 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
     //     EASY_LOG_MAINPLAYER("xxxx Actor spawned with flag %s", *UEnum::GetValueAsString(cur_flag));
     // }
 
-    if (!UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Static) &&
-        UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Obey_Physics_Rules))
+    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Obey_Physics_Rules))
     {
         BasicStaticMeshComponent->SetCollisionProfileName(TEXT("DIY_Item_Pres"));
         BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);

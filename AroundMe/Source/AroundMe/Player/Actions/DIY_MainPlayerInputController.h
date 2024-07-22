@@ -57,8 +57,8 @@ public:
     void HandleTabKeyInputProcess(const FInputActionValue &Value);
 
     UFUNCTION()
-    void HandleBackPackUIMoveProcess_Completed(const FInputActionValue &Value);
-    void HandleBackPackUIMoveProcess_Triggered(const FInputActionValue &Value);
+    void HandleUIMoveProcess_Completed(const FInputActionValue &Value);
+    void HandleUIMoveProcess_Triggered(const FInputActionValue &Value);
 
     void HandleKey_E_Input(const FInputActionValue &Value);
 

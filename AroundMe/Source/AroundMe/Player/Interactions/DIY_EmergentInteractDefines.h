@@ -13,7 +13,8 @@ enum class EDIY_InteractItemFlag : uint8
     Living_Thing UMETA(Description = "Whether this is a living thing? including animals plants"),
     Can_Be_Destroyed UMETA(Description = "Obeys physical rules ? solidness related"),
     React_To_Temperature UMETA(Description = "React to temperature?"),
-    Has_Any_Conductivity UMETA(Description = "conductivity good then electricity comes in")
+    Has_Any_Conductivity UMETA(Description = "conductivity good then electricity comes in"),
+    Has_CraftingPlatform_Function UMETA(Description = "item crafting platform type")
 
 };
 

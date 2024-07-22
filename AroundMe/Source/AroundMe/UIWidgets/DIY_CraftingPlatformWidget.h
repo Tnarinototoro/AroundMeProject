@@ -14,7 +14,7 @@ public:
     void InitializeItemCraftingPlatformWidget(int32 RowsDisplayed_Limit,int32 Rows, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize);
 
     int32 GetTotalRows() const { return RowNum; }
-
+    int32 GetDisplayedRowsLimit_Num() const {return RowNum_Displayed_Limit;}
     void RequestScrollOffset(float inOffset);
 
     bool RequestChangeSlotBorderColor(int32 row, int32 col, const FLinearColor &inColor);
