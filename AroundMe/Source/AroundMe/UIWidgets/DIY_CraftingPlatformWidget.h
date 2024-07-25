@@ -11,10 +11,10 @@ class AROUNDME_API UDIY_CraftingPlatformWidget : public UUserWidget
 
 public:
     UFUNCTION(BlueprintCallable, Category = "UI_ItemCraftingPlatform")
-    void InitializeItemCraftingPlatformWidget(int32 RowsDisplayed_Limit,int32 Rows, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize);
+    void InitializeItemCraftingPlatformWidget(int32 RowsDisplayed_Limit, int32 Rows, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize);
 
     int32 GetTotalRows() const { return RowNum; }
-    int32 GetDisplayedRowsLimit_Num() const {return RowNum_Displayed_Limit;}
+    int32 GetDisplayedRowsLimit_Num() const { return RowNum_Displayed_Limit; }
     void RequestScrollOffset(float inOffset);
 
     bool RequestChangeSlotBorderColor(int32 row, int32 col, const FLinearColor &inColor);
@@ -24,13 +24,17 @@ public:
     void RequestVisibility_ItemCraftingPlatformUI_Slot_At(int32 row, int32 col, ESlateVisibility invisibility);
     void RequestVisibility_ItemCraftingPlatformUI_CountText_At_Slot(int32 row, int32 col, ESlateVisibility invisibility);
 
+
+    void RequestUpdateShowConsoleWidget(bool inBool);
+
+    void RequestChangeConsoleWidgetImage(UTexture2D *Texture);
 protected:
     virtual void NativeConstruct() override;
     virtual void NativeOnInitialized() override;
     class UBorder *GetSlotBorder(int32 row, int32 col) const;
     class UImage *GetSlotImage(int32 row, int32 col) const;
     class UTextBlock *GetSlotCountText(int32 row, int32 col) const;
-    class UDIY_CraftReceiptRowWidget* GetRowWidgetAt(int32 row) const;
+    class UDIY_CraftReceiptRowWidget *GetRowWidgetAt(int32 row) const;
 
 private:
     UPROPERTY()
@@ -42,9 +46,13 @@ private:
     int32 RowNum_Displayed_Limit;
     int32 RowNum;
     int32 ColNum;
+
     FVector2D IconImageSlotSize{0.0f, 0.0f};
     float TextSlotFontSize{10.0f};
 
     void CreateAllReceipts();
-    void AddReceiptRow(int32 RowIndex);
+    void AddReceiptRow(int32 RowIndex, int32 actual_num);
+
+    UPROPERTY()
+    class UDIY_CraftingPlatformConsoleWidget *CraftConsoleWidget;
 };

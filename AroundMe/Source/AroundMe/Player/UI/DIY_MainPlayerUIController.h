@@ -63,7 +63,6 @@ protected:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
     uint8 ItemCraftingPlatform_GridRowMax_DisplayedNumLimit{5};
 
-
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
     FVector2D ItemCraftingPlatform_Anchors_InViewPort{0.5f, 0.f};
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
@@ -73,6 +72,11 @@ protected:
     FVector2D ItemCraftingPlatform_SlotIconSize{100.0f, 100.0f};
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
     float ItemCraftingPlatform_TextSlotFontSize{20.0f};
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
+    FVector2D ItemCraftingPlatform_Console_IconSize{100.0f, 300.0f};
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI_ItemCraftingPlatform")
+    float ItemCraftingPlatform_Console_TextSlotFontSize{20.0f};
 
 public:
     // Called every frame
@@ -111,7 +115,7 @@ public:
     // crafting platform ui funcs
     void RequestMoveCurrentSelectedCursor_CraftingPlatform(int32 DeltaX, int32 DeltaY, uint32 Stride = 1);
     void UpdateScrollOffset_CraftingPlatform();
-    void UpdateSelectionVisuals_CraftingPlatform();
+    void UpdateSelectionInfo_CraftingPlatform();
     void ToggleCraftingPlatformUi(bool inIsOpen);
     void ToggleCraftingPlatformSlotSelected(uint32 inCol_x, uint32 inRow_y, bool isSelected);
     bool IsCraftingPlatformUiOpened() const;
@@ -139,8 +143,12 @@ private:
 
     bool isCraftingPlatformPosInValidRange(int32 col_x, int32 row_y) const
     {
-        return (col_x >= 0 && col_x < ItemCraftingPlatform_GridColNum) && (ItemCraftingPlatform_GridRowNum > row_y && row_y >= 0);
+        if (col_x < 0 || row_y < 0)
+            return false;
+        return ItemCraftingPlatform_GridColNum * row_y + col_x < (int32)EItemID::EItemID_Count;
     }
+
+    void ClampPlatformPoseToValid(int32 &col_x, int32 &row_y);
     bool isCurrentSlectedSlotInRange() const { return isBackPackPosInRange(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index); }
 
     bool isCurrentSlectedSlotInRange_ItemCraftingPlatform() const { return isCraftingPlatformPosInValidRange(CraftingPlatform_CurrentSelectedCol, CraftingPlatform_CurrentSelectedRow); }
@@ -152,4 +160,6 @@ private:
 
     int32 CraftingPlatform_CurrentSelectedRow{-1};
     int32 CraftingPlatform_CurrentSelectedCol{-1};
+
+    bool need_change_crafting_item_info{false};
 };

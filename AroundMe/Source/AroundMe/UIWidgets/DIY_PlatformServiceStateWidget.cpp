@@ -95,7 +95,6 @@ void UDIY_PlatformServiceStateWidget::NativeOnInitialized()
             }
         }
 
-        EASY_LOG_MAINPLAYER("UDIY_PlatformServiceStateWidget finished creating!");
     }
 }
 

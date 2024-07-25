@@ -9,10 +9,12 @@
 #include "../GameUtilities/DIY_Utilities.h"
 #include "../Player/Items/DIY_ItemManager.h"
 #include "Components/HorizontalBoxSlot.h"
-
-void UDIY_CraftReceiptRowWidget::InitializeReceipt(int32 ColNum, const FVector2D &IconImageSlotSize, float TextSlotFontSize)
+#include "../GameUtilities/Logs/DIY_LogHelper.h"
+int32 UDIY_CraftReceiptRowWidget::col_num_setup = -1;
+void UDIY_CraftReceiptRowWidget::InitializeReceipt(int32 cur_row_index, int32 ColNum, const FVector2D &IconImageSlotSize, float TextSlotFontSize)
 {
     HorizontalBox = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass(), TEXT("HorizontalBox"));
+    saved_cur_row_index = cur_row_index;
     if (HorizontalBox)
     {
         WidgetTree->RootWidget = HorizontalBox;
@@ -35,7 +37,9 @@ void UDIY_CraftReceiptRowWidget::AddSlot(int32 SlotIndex, const FVector2D &IconI
 
         if (Border && IconImage && CountText)
         {
-            IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(SlotIndex));
+
+            IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(SlotIndex + UDIY_CraftReceiptRowWidget::col_num_setup * saved_cur_row_index));
+
             CountText->SetText(FText::AsNumber(SlotIndex));
             Border->SetBrushColor(FLinearColor::Transparent);
             Border->SetPadding(FMargin(1.0f));
@@ -81,7 +85,7 @@ class UBorder *UDIY_CraftReceiptRowWidget::GetSlotBorder(int32 col) const
 }
 class UImage *UDIY_CraftReceiptRowWidget::GetSlotImage(int32 col) const
 {
-    return Cast<UImage>(GetSlotBorder(col)-> GetChildAt(0));
+    return Cast<UImage>(GetSlotBorder(col)->GetChildAt(0));
 }
 class UTextBlock *UDIY_CraftReceiptRowWidget::GetSlotCountText(int32 col) const
 {

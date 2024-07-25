@@ -15,7 +15,8 @@
 #include "Components/Border.h"
 #include "DIY_CraftReceiptRowWidget.h"
 #include "Components/HorizontalBox.h"
-
+#include "DIY_CraftingPlatformConsoleWidget.h"
+#include "Blueprint/SlateBlueprintLibrary.h"
 void UDIY_CraftingPlatformWidget::NativeConstruct()
 {
     Super::NativeConstruct();
@@ -39,13 +40,21 @@ void UDIY_CraftingPlatformWidget::NativeOnInitialized()
             SizeBox->AddChild(ScrollBox);
         }
     }
+
+    CraftConsoleWidget = Cast<UDIY_CraftingPlatformConsoleWidget>(CreateWidget(GetWorld(), UDIY_CraftingPlatformConsoleWidget::StaticClass(), TEXT("CraftConsoleWidget")));
+    ensureMsgf(nullptr != CraftConsoleWidget, TEXT("CraftConsoleWidget not created failed"));
+    CraftConsoleWidget->InitializeCraftingPlatformConsole();
+
+    CraftConsoleWidget->SetPositionInViewport({0.f, 0.f}, false);
+    CraftConsoleWidget->SetVisibility(ESlateVisibility::Hidden);
+    CraftConsoleWidget->AddToViewport(1);
 }
 
 void UDIY_CraftingPlatformWidget::InitializeItemCraftingPlatformWidget(int32 RowsDisplayed_Limit, int32 Rows, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize)
 {
     RowNum_Displayed_Limit = RowsDisplayed_Limit;
     ColNum = Cols;
-    RowNum = Rows;
+    RowNum = FMath::CeilToInt32(((float)EItemID::EItemID_Count) / ColNum);
     IconImageSlotSize = inImageIconSlotSize;
     TextSlotFontSize = inTextSlotFontSize;
 
@@ -59,19 +68,24 @@ void UDIY_CraftingPlatformWidget::CreateAllReceipts()
 
     ScrollBox->ClearChildren();
     SizeBox->SetMaxDesiredHeight(RowNum_Displayed_Limit * IconImageSlotSize.Y);
+    UDIY_CraftReceiptRowWidget::col_num_setup = ColNum;
     // Initialize grid with empty rows
-    for (int32 Row = 0; Row < RowNum; ++Row)
+    for (int32 Row = 0; Row < RowNum - 1; ++Row)
     {
-        AddReceiptRow(Row);
+
+        AddReceiptRow(Row, ColNum);
     }
+
+    // final row
+    AddReceiptRow(RowNum - 1, (int32)EItemID::EItemID_Count % ColNum);
 }
 
-void UDIY_CraftingPlatformWidget::AddReceiptRow(int32 RowIndex)
+void UDIY_CraftingPlatformWidget::AddReceiptRow(int32 RowIndex, int32 actual_num)
 {
     UDIY_CraftReceiptRowWidget *ReceiptRow = CreateWidget<UDIY_CraftReceiptRowWidget>(this, UDIY_CraftReceiptRowWidget::StaticClass());
     if (ReceiptRow)
     {
-        ReceiptRow->InitializeReceipt(ColNum, IconImageSlotSize, TextSlotFontSize);
+        ReceiptRow->InitializeReceipt(RowIndex, actual_num, IconImageSlotSize, TextSlotFontSize);
         ScrollBox->AddChild(ReceiptRow);
     }
 }
@@ -173,4 +187,33 @@ UTextBlock *UDIY_CraftingPlatformWidget::GetSlotCountText(int32 row, int32 col) 
 UDIY_CraftReceiptRowWidget *UDIY_CraftingPlatformWidget::GetRowWidgetAt(int32 row) const
 {
     return Cast<UDIY_CraftReceiptRowWidget>(ScrollBox->GetChildAt(row));
+}
+
+void UDIY_CraftingPlatformWidget::RequestUpdateShowConsoleWidget(bool inBool)
+{
+    if (inBool)
+    {
+
+        // ItemSubMenuWidget->SetAnchorsInViewport({0.5f, 0.5f});
+        // ItemSubMenuWidget->SetAlignmentInViewport({0.f, 0.f});
+
+        FGeometry SlotBorderGeometry = GetSlotBorder(0, ColNum - 1)->GetCachedGeometry();
+        FVector2D PixelPosition, ViewportPosition;
+
+        // 将Local坐标转换为Viewport坐标
+        USlateBlueprintLibrary::LocalToViewport(GetWorld(), SlotBorderGeometry, FVector2D(1.f, 0.f), PixelPosition, ViewportPosition);
+
+        ViewportPosition.X += CraftConsoleWidget->GetDesiredSize().X / 2.0f;
+        CraftConsoleWidget->SetPositionInViewport(ViewportPosition, false);
+        CraftConsoleWidget->SetVisibility(ESlateVisibility::Visible);
+       
+    }
+    else
+    {
+        CraftConsoleWidget->SetVisibility(ESlateVisibility::Hidden);
+    }
+}
+void UDIY_CraftingPlatformWidget::RequestChangeConsoleWidgetImage(UTexture2D *Texture)
+{
+    CraftConsoleWidget->RequestChangeConsolWidgetImage(Texture);
 }

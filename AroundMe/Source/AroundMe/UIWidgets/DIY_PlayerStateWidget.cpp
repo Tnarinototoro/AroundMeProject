@@ -36,7 +36,7 @@ void UDIY_PlayerStateWidget::NativeOnInitialized()
             }
 
             WidgetTree->RootWidget = infoPanel;
-            EASY_LOG_MAINPLAYER("UDIY_PlayerStateWidget finished creating! %d");
+           
         }
     }
 }

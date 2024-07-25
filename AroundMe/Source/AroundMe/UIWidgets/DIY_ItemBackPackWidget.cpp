@@ -237,7 +237,6 @@ void UDIY_ItemBackPackWidget::ShowSubMenuAt(int32 Row, int32 Col)
     // 将Local坐标转换为Viewport坐标
     USlateBlueprintLibrary::LocalToViewport(GetWorld(), BorderGeometry, FVector2D(0.f, 0.f), PixelPosition, ViewportPosition);
 
-    // 日志输出以调试
     //EASY_LOG_MAINPLAYER("Border screen position X: %f, Y: %f", ViewportPosition.X, ViewportPosition.Y);
 
     ViewportPosition.X -= ItemSubMenuWidget->GetDesiredSize().X;

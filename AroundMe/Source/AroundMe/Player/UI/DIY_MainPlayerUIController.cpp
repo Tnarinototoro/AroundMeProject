@@ -200,7 +200,7 @@ void UDIY_MainPlayerUIController::RequestMoveCurrentSelectedCursor(int inDeltaX,
 {
     ensureMsgf(isBackPackPosInRange(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index), TEXT("Current slot must be valid to move"));
 
-    EASY_LOG_MAINPLAYER("got in indelta x %d, y %d", inDeltaX, inDeltaY);
+   
     SelectBackPackSlotOn(
         FMath::Clamp<int32>(BackPack_CurrentSelectedSlot_Col_index + inStride * inDeltaX, 0, BackPack_GridColNum - 1),
         FMath::Clamp<int32>(BackPack_CurrentSelectedSlot_Row_index + inStride * inDeltaY, 0, BackPack_GridRowNum - 1));
@@ -472,10 +472,28 @@ void UDIY_MainPlayerUIController::RequestMoveCurrentSelectedCursor_CraftingPlatf
 {
     ensureMsgf(isCraftingPlatformPosInValidRange(CraftingPlatform_CurrentSelectedCol, CraftingPlatform_CurrentSelectedRow), TEXT("Current slot must be valid to move"));
 
-    EASY_LOG_MAINPLAYER(" RequestMoveCurrentSelectedCursor_CraftingPlatform got in indelta x %d, y %d", inDeltaX, inDeltaY);
+   
+
+    int32 final_col_x = CraftingPlatform_CurrentSelectedCol + inStride * inDeltaX;
+    int32 final_row_y = CraftingPlatform_CurrentSelectedRow + inStride * inDeltaY;
+    ClampPlatformPoseToValid(final_col_x, final_row_y);
     SelectCraftingPlatformSlotOn(
-        FMath::Clamp<int32>(CraftingPlatform_CurrentSelectedCol + inStride * inDeltaX, 0, ItemCraftingPlatform_GridColNum - 1),
-        FMath::Clamp<int32>(CraftingPlatform_CurrentSelectedRow + inStride * inDeltaY, 0, ItemCraftingPlatform_GridRowNum - 1));
+        final_col_x,
+        final_row_y);
+}
+
+void UDIY_MainPlayerUIController::ClampPlatformPoseToValid(int32 &col_x, int32 &row_y)
+{
+    int32 item_count = (int32)EItemID::EItemID_Count;
+
+    int32 row_num = FMath::CeilToInt32(((float)EItemID::EItemID_Count) / ItemCraftingPlatform_GridColNum);
+    col_x = FMath::Clamp<int32>(col_x, 0, ItemCraftingPlatform_GridColNum - 1);
+    row_y = FMath::Clamp<int32>(row_y, 0, row_num - 1);
+
+    if (row_y == row_num - 1)
+    {
+        col_x = FMath::Clamp<int32>(col_x, 0, (int32)EItemID::EItemID_Count % ItemCraftingPlatform_GridColNum - 1);
+    }
 }
 void UDIY_MainPlayerUIController::UpdateScrollOffset_CraftingPlatform()
 {
@@ -486,7 +504,7 @@ void UDIY_MainPlayerUIController::UpdateScrollOffset_CraftingPlatform()
         cur_crafting_widget->RequestScrollOffset(CraftingPlatform_CurrentSelectedRow * ItemCraftingPlatform_SlotIconSize.Y);
     }
 }
-void UDIY_MainPlayerUIController::UpdateSelectionVisuals_CraftingPlatform()
+void UDIY_MainPlayerUIController::UpdateSelectionInfo_CraftingPlatform()
 {
 }
 
@@ -552,6 +570,7 @@ void UDIY_MainPlayerUIController::ToggleCraftingPlatformUi(bool inIsOpen)
             }
             RequestHideItemSubMenu();
 #endif
+            Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform])->RequestUpdateShowConsoleWidget(false);
         }
     }
 }
@@ -586,4 +605,9 @@ void UDIY_MainPlayerUIController::SelectCraftingPlatformSlotOn(uint32 col_x, uin
     CraftingPlatform_CurrentSelectedRow = row_y;
 
     UpdateScrollOffset_CraftingPlatform();
+
+    {
+        Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform])->RequestUpdateShowConsoleWidget(true);
+        Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform])->RequestChangeConsoleWidgetImage(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(row_y*ItemCraftingPlatform_GridColNum+col_x));
+    }
 }
