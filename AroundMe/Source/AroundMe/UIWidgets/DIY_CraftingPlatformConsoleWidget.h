@@ -19,6 +19,7 @@ public:
 
     void RequestChangeConsolWidgetImage(UTexture2D *Texture);
 
+    void RquestToggleCraftButtonEnable(bool inEnable);
 protected:
     virtual void NativeConstruct() override;
     virtual void NativeOnInitialized() override;

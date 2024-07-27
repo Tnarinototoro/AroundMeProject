@@ -24,10 +24,12 @@ public:
     void RequestVisibility_ItemCraftingPlatformUI_Slot_At(int32 row, int32 col, ESlateVisibility invisibility);
     void RequestVisibility_ItemCraftingPlatformUI_CountText_At_Slot(int32 row, int32 col, ESlateVisibility invisibility);
 
+    void RequestUpdateConsoleWidgetReceiptText(const FString &inString);
 
     void RequestUpdateShowConsoleWidget(bool inBool);
-
     void RequestChangeConsoleWidgetImage(UTexture2D *Texture);
+    void RquestToggleCraftButtonEnable(bool inBool);
+
 protected:
     virtual void NativeConstruct() override;
     virtual void NativeOnInitialized() override;

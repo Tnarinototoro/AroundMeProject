@@ -33,6 +33,23 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     class UTexture2D *GetItemIconTexture(int32 inITemID) const;
 
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    void RequestChange_ItemNumInBackPack_Statistics(EItemID inItemID, int32 inDeltaNum);
+
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    int32 Get_ItemNumInBackPack_Statistics(EItemID inItemID);
+
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    const FDIY_CraftingReceipt &GetReceiptFromItemID(EItemID inItemID);
+
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    const FDIY_ItemDefualtConfig &GetConfigFromItemID(EItemID inItemID);
+
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    bool TryRequestSpawningItem_CraftPlatform(EItemID inItemID, FVector inLocation, FRotator inRotator);
+
+    static FOnItemsNumInBackPack_Changed OnItemsNumInBackPack_Changed;
+
 protected:
     ADIY_ItemManager();
     ~ADIY_ItemManager();
@@ -65,4 +82,6 @@ private:
     class UTexture2D *EmptyItemSlotIcon;
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
     TArray<class UTexture2D *> ItemIcons;
+
+    TArray<FDIY_ItemStatisticInfo> ItemStatistics;
 };

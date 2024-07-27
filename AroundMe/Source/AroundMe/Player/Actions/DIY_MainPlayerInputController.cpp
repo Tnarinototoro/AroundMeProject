@@ -10,6 +10,8 @@
 #include "../Camera/DIY_MainPlayerCameraController.h"
 #include "../UI/DIY_MainPlayerUIController.h"
 #include "../Items/DIY_Item.h"
+#include "../../GameUtilities/DIY_Utilities.h"
+#include "../Items/DIY_ItemManager.h"
 
 UDIY_MainPlayerInputController::UDIY_MainPlayerInputController()
 {
@@ -309,12 +311,30 @@ void UDIY_MainPlayerInputController::HandleKey_E_Input(const FInputActionValue &
 
     bool is_sub_menu_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsItemSubMenuShown();
     bool is_backpack_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsBackPackUiOpened();
+    bool is_crafting_platform_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsCraftingPlatformUiOpened();
     AActor *detected_actor = AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor();
 
     if (nullptr != detected_actor)
     {
-        AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestAddItemToBackPack(detected_actor);
-        AcquireOwnerActorOwnedUDIY_ItemDetector()->ClearDetectedActor();
+        if (is_crafting_platform_opened)
+        {
+
+            AActor *player = GetOwner();
+            if (player != nullptr)
+            {
+                FVector spawned_loc = player->GetActorLocation();
+                //+ player->GetActorForwardVector().Normalize()*200.f;
+                spawned_loc.Z += 100.0f;
+
+                // DrawDebugLine(GetWorld(), player->GetActorLocation(), spawned_loc, FColor::Red, true, 2.0f, 0, 1.0f);
+                UDIY_Utilities::DIY_GetItemManagerInstance()->TryRequestSpawningItem_CraftPlatform(AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->GetCurrentTargetCraftingItemID(), spawned_loc, {0.f, 0.f, 0.f});
+            }
+        }
+        else
+        {
+            AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestAddItemToBackPack(detected_actor);
+            AcquireOwnerActorOwnedUDIY_ItemDetector()->ClearDetectedActor();
+        }
     }
     else
     {

@@ -102,6 +102,8 @@ void UDIY_MainPlayerUIController::BeginPlay()
             break;
         }
     }
+
+    ADIY_ItemManager::OnItemsNumInBackPack_Changed.AddUObject(this, &UDIY_MainPlayerUIController::OnItemBackPackNumChanged);
 }
 
 void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -153,8 +155,24 @@ void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReas
             break;
         }
     }
+    ADIY_ItemManager::OnItemsNumInBackPack_Changed.RemoveAll(this);
 }
+void UDIY_MainPlayerUIController::OnItemBackPackNumChanged(int32 itemID)
+{
 
+    int slot_index = *(ItemInfoHelperMap.Find((int)itemID));
+    if (slot_index < 0)
+        return;
+    // change slot appearance
+    UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
+    int row_y = slot_index / BackPack_GridColNum;
+    int col_x = slot_index % BackPack_GridColNum;
+
+    item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(UDIY_Utilities::DIY_GetItemManagerInstance()->Get_ItemNumInBackPack_Statistics((EItemID)itemID)));
+
+    item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(row_y, col_x, ESlateVisibility::Visible);
+    EASY_LOG_MAINPLAYER("OnItemBackPackNumChanged %d", itemID);
+}
 void UDIY_MainPlayerUIController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -200,7 +218,6 @@ void UDIY_MainPlayerUIController::RequestMoveCurrentSelectedCursor(int inDeltaX,
 {
     ensureMsgf(isBackPackPosInRange(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index), TEXT("Current slot must be valid to move"));
 
-   
     SelectBackPackSlotOn(
         FMath::Clamp<int32>(BackPack_CurrentSelectedSlot_Col_index + inStride * inDeltaX, 0, BackPack_GridColNum - 1),
         FMath::Clamp<int32>(BackPack_CurrentSelectedSlot_Row_index + inStride * inDeltaY, 0, BackPack_GridRowNum - 1));
@@ -287,11 +304,12 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
             int row_y = slot_index / BackPack_GridColNum;
             int col_x = slot_index % BackPack_GridColNum;
 
-            item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(1));
+            // item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(1));
             EASY_LOG_MAINPLAYER("current item id %d added", current_item_id);
             item_backpack_widget->RequestChangeSlotImage(row_y, col_x, UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(int32(current_item_id)));
-            item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(row_y, col_x, ESlateVisibility::Visible);
+            // item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(row_y, col_x, ESlateVisibility::Visible);
             UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
+            UDIY_Utilities::DIY_GetItemManagerInstance()->RequestChange_ItemNumInBackPack_Statistics(current_item_id, 1);
             return true;
         }
         else
@@ -309,10 +327,11 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
         FDIY_BackPackItemSlotInfo &cur_item_info = StoredBackPackSlotItemInfo[possible_already_existing_slot_index];
         ++cur_item_info.ItemCount;
 
-        item_backpack_widget->RequestChangeSlotCountText(existing_row_y, existing_col_x, FText::AsNumber(cur_item_info.ItemCount));
-        item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(existing_row_y, existing_col_x, ESlateVisibility::Visible);
+        // item_backpack_widget->RequestChangeSlotCountText(existing_row_y, existing_col_x, FText::AsNumber(cur_item_info.ItemCount));
+        // item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(existing_row_y, existing_col_x, ESlateVisibility::Visible);
         item_backpack_widget->RequestChangeSlotImage(existing_row_y, existing_col_x, UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(int32(current_item_id)));
         UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
+        UDIY_Utilities::DIY_GetItemManagerInstance()->RequestChange_ItemNumInBackPack_Statistics(current_item_id, 1);
         return true;
     }
 
@@ -472,8 +491,6 @@ void UDIY_MainPlayerUIController::RequestMoveCurrentSelectedCursor_CraftingPlatf
 {
     ensureMsgf(isCraftingPlatformPosInValidRange(CraftingPlatform_CurrentSelectedCol, CraftingPlatform_CurrentSelectedRow), TEXT("Current slot must be valid to move"));
 
-   
-
     int32 final_col_x = CraftingPlatform_CurrentSelectedCol + inStride * inDeltaX;
     int32 final_row_y = CraftingPlatform_CurrentSelectedRow + inStride * inDeltaY;
     ClampPlatformPoseToValid(final_col_x, final_row_y);
@@ -606,8 +623,44 @@ void UDIY_MainPlayerUIController::SelectCraftingPlatformSlotOn(uint32 col_x, uin
 
     UpdateScrollOffset_CraftingPlatform();
 
+    // platform process
     {
-        Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform])->RequestUpdateShowConsoleWidget(true);
-        Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform])->RequestChangeConsoleWidgetImage(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(row_y*ItemCraftingPlatform_GridColNum+col_x));
+        UDIY_CraftingPlatformWidget *cur_crafting_platform_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform]);
+        ensureMsgf(nullptr != cur_crafting_platform_widget, TEXT("cur_crafting_platform_widget is null"));
+        cur_crafting_platform_widget->RequestUpdateShowConsoleWidget(true);
+
+        cur_crafting_platform_widget->RequestChangeConsoleWidgetImage(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(row_y * ItemCraftingPlatform_GridColNum + col_x));
+        FString final_Receipt_String{};
+        int32 cur_item_id = row_y * ItemCraftingPlatform_GridColNum + col_x;
+
+        FDIY_CraftingReceipt cur_receipt = UDIY_Utilities::DIY_GetItemManagerInstance()->GetReceiptFromItemID((EItemID)cur_item_id);
+        final_Receipt_String += FString::Printf(TEXT("Target:%s \n"), *UEnum::GetValueAsString((EItemID)cur_item_id));
+
+        bool okay_to_craft = true;
+        for (const FDIY_CraftingReceipt_Element &cur_element : cur_receipt.InputElements)
+        {
+            int32 cur_element_req_num = cur_element.CurrentItemNumReq;
+            int32 cur_element_existing_num = UDIY_Utilities::DIY_GetItemManagerInstance()->Get_ItemNumInBackPack_Statistics(cur_element.ItemID);
+            final_Receipt_String += FString::Printf(TEXT("%s:(%d/%d)\n"), *UEnum::GetValueAsString(cur_element.ItemID), cur_element_existing_num, cur_element_req_num);
+
+            if (cur_element_existing_num < cur_element_req_num)
+                okay_to_craft = false;
+        }
+        if (cur_receipt.InputElements.Num() > 0)
+        {
+            final_Receipt_String += FString::Printf(TEXT("Coins:%d \n"), cur_receipt.ReqEtherEnergyCoinNum);
+        }
+        else
+        {
+            okay_to_craft = false;
+        }
+
+        cur_crafting_platform_widget->RequestUpdateConsoleWidgetReceiptText(final_Receipt_String);
+        cur_crafting_platform_widget->RquestToggleCraftButtonEnable(okay_to_craft);
     }
+}
+
+EItemID UDIY_MainPlayerUIController::GetCurrentTargetCraftingItemID() const
+{
+    return (EItemID)(ItemCraftingPlatform_GridColNum * CraftingPlatform_CurrentSelectedRow + CraftingPlatform_CurrentSelectedCol);
 }

@@ -120,6 +120,7 @@ public:
     void ToggleCraftingPlatformSlotSelected(uint32 inCol_x, uint32 inRow_y, bool isSelected);
     bool IsCraftingPlatformUiOpened() const;
     void RequestVisibility_CraftingPlatform(ESlateVisibility invisibility);
+    EItemID GetCurrentTargetCraftingItemID() const;
 
 private:
     TArray<class UUserWidget *> mAllWidgets;
@@ -162,4 +163,6 @@ private:
     int32 CraftingPlatform_CurrentSelectedCol{-1};
 
     bool need_change_crafting_item_info{false};
+
+    void OnItemBackPackNumChanged(int32 itemID);
 };

@@ -200,13 +200,15 @@ void UDIY_CraftingPlatformWidget::RequestUpdateShowConsoleWidget(bool inBool)
         FGeometry SlotBorderGeometry = GetSlotBorder(0, ColNum - 1)->GetCachedGeometry();
         FVector2D PixelPosition, ViewportPosition;
 
+        FVector2D desired_slot_size = GetSlotBorder(0, ColNum - 1)->GetParent()->GetDesiredSize();
         // 将Local坐标转换为Viewport坐标
-        USlateBlueprintLibrary::LocalToViewport(GetWorld(), SlotBorderGeometry, FVector2D(1.f, 0.f), PixelPosition, ViewportPosition);
+        USlateBlueprintLibrary::LocalToViewport(GetWorld(), SlotBorderGeometry, FVector2D(0., 0.f), PixelPosition, ViewportPosition);
 
-        ViewportPosition.X += CraftConsoleWidget->GetDesiredSize().X / 2.0f;
+        ViewportPosition.X += desired_slot_size.X;
+        ViewportPosition.X += ScrollBox->GetScrollbarThickness().X;
+        // CraftConsoleWidget->GetDesiredSize().X / 3.0f;
         CraftConsoleWidget->SetPositionInViewport(ViewportPosition, false);
         CraftConsoleWidget->SetVisibility(ESlateVisibility::Visible);
-       
     }
     else
     {
@@ -215,5 +217,21 @@ void UDIY_CraftingPlatformWidget::RequestUpdateShowConsoleWidget(bool inBool)
 }
 void UDIY_CraftingPlatformWidget::RequestChangeConsoleWidgetImage(UTexture2D *Texture)
 {
+    if (nullptr == CraftConsoleWidget)
+        return;
     CraftConsoleWidget->RequestChangeConsolWidgetImage(Texture);
+}
+
+void UDIY_CraftingPlatformWidget::RequestUpdateConsoleWidgetReceiptText(const FString &inString)
+{
+    if (nullptr == CraftConsoleWidget)
+        return;
+    CraftConsoleWidget->UpdateConsoleReceiptText(inString);
+}
+
+void UDIY_CraftingPlatformWidget::RquestToggleCraftButtonEnable(bool inBool)
+{
+    if (nullptr == CraftConsoleWidget)
+        return;
+    CraftConsoleWidget->RquestToggleCraftButtonEnable(inBool);
 }

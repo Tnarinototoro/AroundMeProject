@@ -14,6 +14,7 @@
 
 ADIY_ItemManager *ADIY_ItemManager::ManagerInstance = nullptr;
 
+FOnItemsNumInBackPack_Changed ADIY_ItemManager::OnItemsNumInBackPack_Changed = {};
 ADIY_ItemManager::ADIY_ItemManager()
 {
 
@@ -35,6 +36,19 @@ void ADIY_ItemManager::BeginPlay()
     else
     {
         UDIY_Utilities::DIY_PrintLogToScreen(1.0f, FString{"MAnager Instance Failed Creating!"}, FColor::Red);
+    }
+
+    // init current statistics
+    {
+        ItemStatistics.Reset((int32)EItemID::EItemID_Count);
+        FDIY_ItemStatisticInfo tmp_item{};
+        for (uint32 id = 0; id < (uint32)EItemID::EItemID_Count; ++id)
+        {
+
+            tmp_item.ItemID = (EItemID)id;
+            tmp_item.ItemNumInBackPack = 0;
+            ItemStatistics.Add(tmp_item);
+        }
     }
 }
 
@@ -123,18 +137,17 @@ UTexture2D *ADIY_ItemManager::GetItemIconTexture(int32 inITemID) const
     ensureMsgf(DefualtItemSlotIcon != nullptr && nullptr != EmptyItemSlotIcon, TEXT("please set up defualt and empty slot icon for backup"));
     if (inITemID >= (int32)EItemID::EItemID_Count)
     {
-        EASY_LOG_MAINPLAYER("GetItemIconTexture item id %d added inITemID >= (int32)EItemID::EItemID_Count", inITemID);
+
         return DefualtItemSlotIcon;
     }
     if (inITemID < 0)
     {
-        EASY_LOG_MAINPLAYER("GetItemIconTexture item id %d added inITemID < 0", inITemID);
+
         return EmptyItemSlotIcon;
     }
 
     if (inITemID >= ItemIcons.Num())
     {
-        EASY_LOG_MAINPLAYER("GetItemIconTexture item id %d inITemID >= ItemIcons.Num() execeeding array size", inITemID);
     }
     UTexture2D *icon = ItemIcons[inITemID];
 
@@ -159,7 +172,6 @@ void ADIY_ItemManager::SpawnItemByID_Internal(EItemID ItemID, const FVector &Loc
     const FDIY_ItemDefualtConfig *cur_config{nullptr};
 
     int32 item_id = static_cast<int32>(ItemID);
-
     FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
     const FDIY_ItemDataTableRow *Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
 
@@ -248,4 +260,67 @@ void ADIY_ItemManager::SpawnActorFromClass(UClass *ActorClass, const FVector &Lo
 void ADIY_ItemManager::OnItemRequestRecycle(class AActor *inActor)
 {
     RequestRecycleItem(inActor);
+}
+
+void ADIY_ItemManager::RequestChange_ItemNumInBackPack_Statistics(EItemID inItemID, int32 inDeltaNum)
+{
+    if ((int32)inItemID >= (int32)EItemID::EItemID_Count)
+        return;
+
+    if (inDeltaNum == 0)
+        return;
+    ensureMsgf(inItemID == ItemStatistics[(int32)inItemID].ItemID, TEXT("add item to different depo statistics"));
+
+    ItemStatistics[(int32)inItemID].ItemNumInBackPack += inDeltaNum;
+    OnItemsNumInBackPack_Changed.Broadcast((int32)inItemID);
+}
+
+const FDIY_CraftingReceipt &ADIY_ItemManager::GetReceiptFromItemID(EItemID inItemID)
+{
+    ensureMsgf((int32)inItemID < (int32)EItemID::EItemID_Count, TEXT("item id exceeding boundary"));
+    int32 item_id = static_cast<int32>(inItemID);
+    FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
+    const FDIY_ItemDataTableRow *Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
+
+    return Row->CurrentItemReceipt;
+}
+
+const FDIY_ItemDefualtConfig &ADIY_ItemManager::GetConfigFromItemID(EItemID inItemID)
+{
+    ensureMsgf((int32)inItemID < (int32)EItemID::EItemID_Count, TEXT("item id exceeding boundary"));
+    int32 item_id = static_cast<int32>(inItemID);
+    FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
+    const FDIY_ItemDataTableRow *Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
+
+    return Row->ItemDefualtConfig;
+}
+
+int32 ADIY_ItemManager::Get_ItemNumInBackPack_Statistics(EItemID inItemID)
+{
+    ensureMsgf(inItemID == ItemStatistics[(int32)inItemID].ItemID, TEXT("add item to different depo statistics"));
+    return ItemStatistics[(int32)inItemID].ItemNumInBackPack;
+}
+
+bool ADIY_ItemManager::TryRequestSpawningItem_CraftPlatform(EItemID inItemID, FVector inLocation, FRotator inRotator = {0.f, 0.f, 0.f})
+{
+
+    FDIY_CraftingReceipt cur_receipt = GetReceiptFromItemID(inItemID);
+
+    for (const FDIY_CraftingReceipt_Element &cur_ele : cur_receipt.InputElements)
+    {
+        int32 cur_ele_req_num = cur_ele.CurrentItemNumReq;
+        int32 cur_ele_num_in_backpack = Get_ItemNumInBackPack_Statistics(cur_ele.ItemID);
+
+        if (cur_ele_req_num > cur_ele_num_in_backpack)
+            return false;
+    }
+
+    RequestSpawnItem(inItemID, inLocation, inRotator);
+
+    for (const FDIY_CraftingReceipt_Element &cur_ele : cur_receipt.InputElements)
+    {
+        RequestChange_ItemNumInBackPack_Statistics(cur_ele.ItemID, -cur_ele.CurrentItemNumReq);
+    }
+
+    return true;
 }

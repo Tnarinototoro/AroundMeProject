@@ -100,3 +100,21 @@ struct FDIY_ItemDataTableRow : public FTableRowBase
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FDIY_CraftingReceipt CurrentItemReceipt;
 };
+
+USTRUCT(BlueprintType)
+struct FDIY_ItemStatisticInfo
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    EItemID ItemID{EItemID::EItemID_Count};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int64 ItemNumInBackPack{0};
+
+
+
+
+    
+};
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnItemsNumInBackPack_Changed,int32);

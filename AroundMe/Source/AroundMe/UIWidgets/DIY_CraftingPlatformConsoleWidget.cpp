@@ -24,6 +24,9 @@ void UDIY_CraftingPlatformConsoleWidget::InitializeCraftingPlatformConsole()
 
 void UDIY_CraftingPlatformConsoleWidget::UpdateConsoleReceiptText(const FString &inString)
 {
+    if (nullptr == ReceiptText)
+        return;
+    ReceiptText->SetText(FText::FromString(inString));
 }
 
 void UDIY_CraftingPlatformConsoleWidget::RequestToggleExecuteCraftingEnabled(bool inIsEnabled)
@@ -50,6 +53,14 @@ void UDIY_CraftingPlatformConsoleWidget::RequestChangeConsolWidgetImage(UTexture
     FSlateBrush tmp_brush = ReceiptImage->GetBrush();
     tmp_brush.SetImageSize({200.f, 200.f});
     ReceiptImage->SetBrush(tmp_brush);
+}
+
+void UDIY_CraftingPlatformConsoleWidget::RquestToggleCraftButtonEnable(bool inEnable)
+{
+    if (ExecuteCraftingButton->GetIsEnabled() != inEnable)
+    {
+        ExecuteCraftingButton->SetIsEnabled(inEnable);
+    }
 }
 void UDIY_CraftingPlatformConsoleWidget::CreateConsoleWidget()
 {
@@ -87,7 +98,8 @@ void UDIY_CraftingPlatformConsoleWidget::CreateConsoleWidget()
     UTextBlock *button_text = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass(), TEXT("CraftButton"));
     button_text->SetText(FText::FromString(TEXT("Craft")));
     FSlateFontInfo FontInfo = button_text->GetFont();
-    FontInfo.Size = 30.0f;
+
+    FontInfo.Size = 18.0f;
     button_text->SetFont(FontInfo);
     ExecuteCraftingButton->AddChild(button_text);
 
