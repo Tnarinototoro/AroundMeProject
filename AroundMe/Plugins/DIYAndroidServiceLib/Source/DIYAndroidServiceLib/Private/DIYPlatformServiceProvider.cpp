@@ -1,72 +1,68 @@
 #include "DIYPlatformServiceProvider.h"
 #include "DIYPlatformService.h"
 
-//ADIYPlatformServiceProvider::FOnDeviceDetectedDelegate_GarbageName ADIYPlatformServiceProvider::Garbage_Test;
-//ADIYPlatformServiceProvider::FOnDeviceDetectedDelegate_WithName ADIYPlatformServiceProvider::With_Test;
+// ADIYPlatformServiceProvider::FOnDeviceDetectedDelegate_GarbageName ADIYPlatformServiceProvider::Garbage_Test;
+// ADIYPlatformServiceProvider::FOnDeviceDetectedDelegate_WithName ADIYPlatformServiceProvider::With_Test;
 ADIYPlatformServiceProvider::ADIYPlatformServiceProvider()
 {
-
 }
-
 
 ADIYPlatformServiceProvider::~ADIYPlatformServiceProvider()
 {
-
 }
 #if PLATFORM_ANDROID
 extern "C"
 {
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewLogGenerated(JNIEnv* jenv, jclass clazz, jstring MyString)
+    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewLogGenerated(JNIEnv *jenv, jclass clazz, jstring MyString)
     {
-        // ½« jstring ×ª»»Îª UTF-8 ±àÂëµÄ const char*
-        const char* chars = jenv->GetStringUTFChars(MyString, 0);
+        // ï¿½ï¿½ jstring ×ªï¿½ï¿½Îª UTF-8 ï¿½ï¿½ï¿½ï¿½ï¿½ const char*
+        const char *chars = jenv->GetStringUTFChars(MyString, 0);
 
-        // Ê¹ÓÃ UTF-8 ±àÂëµÄ const char* À´¹¹Ôì FString
+        // Ê¹ï¿½ï¿½ UTF-8 ï¿½ï¿½ï¿½ï¿½ï¿½ const char* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ FString
         FString ConvertedStr(UTF8_TO_TCHAR(chars));
 
-        // ÊÍ·ÅÓÉ GetStringUTFChars ·ÖÅäµÄÄÚ´æ
+        // ï¿½Í·ï¿½ï¿½ï¿½ GetStringUTFChars ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½
         jenv->ReleaseStringUTFChars(MyString, chars);
 
-        // ½«×Ö·û´®´òÓ¡µ½ÆÁÄ»ÉÏ
+        // ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½
         if (GEngine)
         {
             GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, ConvertedStr);
         }
     }
-    
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewRandomDeviceEncountered_1GarbageName(JNIEnv* jenv, jclass clazz)
+
+    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewRandomDeviceEncountered_1GarbageName(JNIEnv *jenv, jclass clazz)
     {
-        // ¾ÙÀý£ºÔÚÆÁÄ»ÉÏÏÔÊ¾Ò»¸öµ÷ÊÔÏûÏ¢
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
         if (GEngine)
         {
-           
-            AsyncTask(ENamedThreads::GameThread, [=]()
-                {
-                    FDIYPlatformServiceModule::Get().GetPlatformProvider(nullptr)->DeviceDetectedDelegate_GarbageName.Broadcast();
-                    //ADIYPlatformServiceProvider::Garbage_Test.Broadcast();
-                });
-        }
-        
-    }
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewRandomDeviceEncountered_1WithName(JNIEnv* jenv, jclass clazz, jstring MyString)
-    {
-        // ½« jstring ×ª»»Îª UTF-8 ±àÂëµÄ const char*
-        const char* chars = jenv->GetStringUTFChars(MyString, 0);
 
-        // Ê¹ÓÃ UTF-8 ±àÂëµÄ const char* À´¹¹Ôì FString
+            AsyncTask(ENamedThreads::GameThread, [=]()
+                      {
+                          FDIYPlatformServiceModule::Get().GetPlatformProvider(nullptr)->DeviceDetectedDelegate_GarbageName.Broadcast();
+                          // ADIYPlatformServiceProvider::Garbage_Test.Broadcast();
+                      });
+        }
+    }
+    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewRandomDeviceEncountered_1WithName(JNIEnv *jenv, jclass clazz, jstring MyString)
+    {
+        // ï¿½ï¿½ jstring ×ªï¿½ï¿½Îª UTF-8 ï¿½ï¿½ï¿½ï¿½ï¿½ const char*
+        const char *chars = jenv->GetStringUTFChars(MyString, 0);
+
+        // Ê¹ï¿½ï¿½ UTF-8 ï¿½ï¿½ï¿½ï¿½ï¿½ const char* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ FString
         FString ConvertedStr(UTF8_TO_TCHAR(chars));
 
-        // ÊÍ·ÅÓÉ GetStringUTFChars ·ÖÅäµÄÄÚ´æ
+        // ï¿½Í·ï¿½ï¿½ï¿½ GetStringUTFChars ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½
         jenv->ReleaseStringUTFChars(MyString, chars);
 
-        // ½«×Ö·û´®´òÓ¡µ½ÆÁÄ»ÉÏ
+        // ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½
         if (GEngine)
         {
             AsyncTask(ENamedThreads::GameThread, [=]()
-                {
-                    FDIYPlatformServiceModule::Get().GetPlatformProvider(nullptr)->DeviceDetectedDelegate_WithName.Broadcast(ConvertedStr);
-                   // ADIYPlatformServiceProvider::With_Test.Broadcast(ConvertedStr);
-                });
+                      {
+                          FDIYPlatformServiceModule::Get().GetPlatformProvider(nullptr)->DeviceDetectedDelegate_WithName.Broadcast(ConvertedStr);
+                          // ADIYPlatformServiceProvider::With_Test.Broadcast(ConvertedStr);
+                      });
         }
     }
 }
@@ -76,36 +72,27 @@ extern "C"
 void ADIYPlatformServiceProvider::StartProvidingService()
 {
 #if PLATFORM_ANDROID
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
     {
         static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StartAroundMeService", "()V", false);
-        FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID); 
+        FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
     }
 #endif
-    
 }
 
 void ADIYPlatformServiceProvider::StopProvidingService()
 {
 
 #if PLATFORM_ANDROID
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
     {
         static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StopAroundMeService", "()V", false);
         FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
-
     }
 #endif
-
 }
 
-void ADIYPlatformServiceProvider::Setup(UWorld* validWorld)
+void ADIYPlatformServiceProvider::Setup(UWorld *validWorld)
 {
     this->world = validWorld;
 }
-
-
-
-
-
-

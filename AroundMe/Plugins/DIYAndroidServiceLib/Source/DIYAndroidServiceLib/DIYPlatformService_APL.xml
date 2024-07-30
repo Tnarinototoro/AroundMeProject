@@ -168,7 +168,6 @@
         public BluetoothGatt mDeviceGatt=null;
         public String mDeviceName=null;
         public String mRegisteredPlayerDeviceMacAddr=null;
-
         public boolean misRandomDeivce=true;
         public double mDistance=-1.0f;
         public int mIndex=0;
@@ -267,17 +266,7 @@
     }
 
 
-public void showToast(String message) 
-{
-    runOnUiThread(new Runnable() 
-	{
-        @Override
-        public void run() 
-		{
-            Toast.makeText(GameActivity.this, message, Toast.LENGTH_SHORT).show();
-        }
-    });
-}
+
 
     public void appendToLog(String text)
     {
@@ -768,35 +757,7 @@ runOnUiThread(new Runnable()
         @Override
         public void run()
         {
-            /*for(String device_mac:mDeviceConnections.keySet())
-            {
-                BluetoothGatt cur_gatt=mDeviceConnections.get(device_mac).mDeviceGatt;
-                if (cur_gatt != null)
-                {
-                    BluetoothGattService cur_service=cur_gatt.getService(mAroundMeIdentify_UUID);
-
-                    if(cur_service!=null)
-                    {
-                        BluetoothGattCharacteristic characteristic =
-                                cur_service.getCharacteristic(mAroundMe_CONNECT_CHARACTERISTIC_UUID);
-
-                        if(characteristic!=null)
-                        {
-                            String messageToSend = device_mac;
-                            characteristic.setValue(messageToSend.getBytes(StandardCharsets.UTF_8));
-                            cur_gatt.writeCharacteristic(characteristic);
-                            appendToLog("msg sent to p device :"+cur_gatt.getDevice().getName());
-
-                        }
-                    }
-
-
-
-                }
-            }*/
-
-
-
+           
             if (mBluetoothGattServer != null)
             {
                 // Here, we simulate sending data as peripheral every 2 seconds.
