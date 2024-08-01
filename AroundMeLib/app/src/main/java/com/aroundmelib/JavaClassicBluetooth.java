@@ -1,3 +1,5 @@
+
+/*
 package com.aroundmelib;
 
 import android.Manifest;
@@ -57,62 +59,48 @@ import java.util.UUID;
 import com.example.com.aroundmelib.R;
 
 @SuppressLint("MissingPermission")
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
+    // Debug ui part
+    private View mLog_button_divider;
 
+    private View mUtility_DeviceList_divider;
+    private LinearLayout mbuttonPanel;
+    private LinearLayout mlogPanel;
 
-    public class DIY_DebugUIUtility
-    {
-        // Debug ui part
-        public View mLog_button_divider= null;
+    private LinearLayout mUtilityPanel;
+    private LinearLayout mDeviceListPanel;
+    private static final boolean mDebug_With_UI = true;
 
-        public View mUtility_DeviceList_divider= null;
-        public LinearLayout mbuttonPanel= null;
-        public LinearLayout mlogPanel= null;
+    private EditText mInputMessage;
+    private Button mButton_StartScan;
+    private Button mButton_CancelScan;
+    private boolean mLogViewautoScroll = true;
+    private ListView mSp_Device_listView;
+    private ListView mRandom_Device_listView;
+    private TextView mLogTextView;
 
-        public LinearLayout mUtilityPanel= null;
-        public LinearLayout mDeviceListPanel= null;
-        public static final boolean mDebug_With_UI = true;
+    private TextView mMacAddrCountView;
+    private ScrollView mLogScrollView;
+    private ArrayAdapter<String> mSp_deviceArrayAdapter;
+    private ArrayAdapter<String> mRandom_deviceArrayAdapter;
 
-        public EditText mInputMessage= null;
-        public Button mButton_StartScan= null;
-        public Button mButton_CancelScan= null;
-        public boolean mLogViewautoScroll = true;
-        public ListView mSp_Device_listView= null;
-        public ListView mRandom_Device_listView= null;
-        public TextView mLogTextView= null;
+    private void ToggleButtons() {
+        if (mButton_CancelScan != null && mButton_StartScan != null) {
 
-        public TextView mMacAddrCountView= null;
-        public ScrollView mLogScrollView= null;
-        public ArrayAdapter<String> mSp_deviceArrayAdapter= null;
-        public ArrayAdapter<String> mRandom_deviceArrayAdapter= null;
-
-        public void ToggleButtons() {
-            if (mButton_CancelScan != null && mButton_StartScan != null) {
-
-                mButton_StartScan.setEnabled(!mButton_StartScan.isEnabled());
-                mButton_CancelScan.setEnabled(!mButton_CancelScan.isEnabled());
-            }
+            mButton_StartScan.setEnabled(!mButton_StartScan.isEnabled());
+            mButton_CancelScan.setEnabled(!mButton_CancelScan.isEnabled());
         }
+    }
 
-        public void scrollToBottom() {
-            mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
-        }
+    private void scrollToBottom() {
+        mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
+    }
 
-
-    };
 
 
     // Debug ui part
-    public class DIY_GameUtility
-    {
 
-
-
-
-
-    };
     public class PlayerDeviceInfo {
         public BluetoothGatt mDeviceGatt = null;
         public String mDeviceName = null;
@@ -403,16 +391,16 @@ public class MainActivity extends AppCompatActivity
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED
                     || ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED
+                    Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED
                     ||
                     ContextCompat.checkSelfPermission(this,
                             Manifest.permission.BLUETOOTH_ADVERTISE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[] {
-                        Manifest.permission.BLUETOOTH_SCAN,
-                        Manifest.permission.BLUETOOTH_CONNECT,
+                                Manifest.permission.BLUETOOTH_SCAN,
+                                Manifest.permission.BLUETOOTH_CONNECT,
 
-                        Manifest.permission.BLUETOOTH_ADVERTISE
-                },
+                                Manifest.permission.BLUETOOTH_ADVERTISE
+                        },
                         PERMISSION_REQUEST_BLUETOOTH);
                 return false;
             }
@@ -428,7 +416,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
-            appendToLog("BLE Scan Result Got XXXXXXXXXX" );
+
             BluetoothDevice result_device = result.getDevice();
 
             String result_device_mac_addr = result_device.getAddress();
@@ -443,17 +431,17 @@ public class MainActivity extends AppCompatActivity
                         int rssi = result.getRssi();
                         // TODO: Replace with the actual TX Power value for your beacon or BLE device
                         int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
-                                           // results
+                        // results
 
                         double estimatedDistance_new = calculateDistance(rssi, txPower);
 
-                       /* cur_player_info.mDistance = estimatedDistance_new;
+                        cur_player_info.mDistance = estimatedDistance_new;
 
                         mSp_deviceDisplayArrayList.set(cur_player_info.mIndex, cur_player_info.GenerateDisplayString());
 
                         if (mDebug_With_UI) {
                             mSp_deviceArrayAdapter.notifyDataSetChanged();
-                        }*/
+                        }
 
                     }
 
@@ -472,11 +460,11 @@ public class MainActivity extends AppCompatActivity
                     int rssi = result.getRssi();
                     // TODO: Replace with the actual TX Power value for your beacon or BLE device
                     int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
-                                       // results
+                    // results
 
                     double estimatedDistance = calculateDistance(rssi, txPower);
 
-                  /*  PlayerDeviceInfo player_info = new PlayerDeviceInfo();
+                    PlayerDeviceInfo player_info = new PlayerDeviceInfo();
                     player_info.mDeviceGatt = got_gatt;
                     player_info.mDeviceName = result_device.getName();
                     player_info.misRandomDeivce = false;
@@ -494,15 +482,15 @@ public class MainActivity extends AppCompatActivity
 
                     } else {
                         OnNewRandomDeviceEncountered_WithName(player_info.GenerateDisplayString());
-                    }*/
+                    }
 
                 }
             } else {
-               /* mDeviceCountEncountered_WithGarbageName++;
+                mDeviceCountEncountered_WithGarbageName++;
 
                 if (!mDebug_With_UI) {
                     OnNewRandomDeviceEncountered_GarbageName();
-                }*/
+                }
             }
 
         }
@@ -597,8 +585,8 @@ public class MainActivity extends AppCompatActivity
         // receive msg from c device
         @Override
         public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId,
-                BluetoothGattCharacteristic characteristic, boolean preparedWrite, boolean responseNeeded, int offset,
-                byte[] value) {
+                                                 BluetoothGattCharacteristic characteristic, boolean preparedWrite, boolean responseNeeded, int offset,
+                                                 byte[] value) {
             super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset,
                     value);
 
@@ -614,7 +602,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         public void onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset,
-                BluetoothGattCharacteristic characteristic) {
+                                                BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicReadRequest(device, requestId, offset, characteristic);
             mBluetoothGattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset,
                     characteristic.getValue());
@@ -941,11 +929,6 @@ public class MainActivity extends AppCompatActivity
                 appendToLog("硬件不支持 BLE 广播");
 
             }
-
-            if(mBluetoothLeScanner==null)
-            {
-                appendToLog("硬件不支持 BLE Scanner");
-            }
             if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
                 appendToLog("硬件不支持 BLE机能");
 
@@ -1023,3 +1006,4 @@ public class MainActivity extends AppCompatActivity
     }
     // activity events end
 }
+*/
