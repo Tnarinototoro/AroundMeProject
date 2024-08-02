@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity
 
     public class DIY_DebugUIUtility
     {
+        public static final boolean mDebug_With_UI = true;
         // Debug ui part
         public View mLog_button_divider= null;
 
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         public LinearLayout mUtilityPanel= null;
         public LinearLayout mDeviceListPanel= null;
-        public static final boolean mDebug_With_UI = true;
+
 
         public EditText mInputMessage= null;
         public Button mButton_StartScan= null;
@@ -88,31 +89,63 @@ public class MainActivity extends AppCompatActivity
         public ArrayAdapter<String> mSp_deviceArrayAdapter= null;
         public ArrayAdapter<String> mRandom_deviceArrayAdapter= null;
 
-        public void ToggleButtons() {
-            if (mButton_CancelScan != null && mButton_StartScan != null) {
+        public void ToggleButtons()
+        {
+            if (mButton_CancelScan != null && mButton_StartScan != null)
+            {
 
                 mButton_StartScan.setEnabled(!mButton_StartScan.isEnabled());
                 mButton_CancelScan.setEnabled(!mButton_CancelScan.isEnabled());
             }
         }
 
-        public void scrollToBottom() {
+        public void scrollToBottom()
+        {
             mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
         }
 
 
+
+
+
+
     };
 
-
+    DIY_DebugUIUtility gDIY_DebugUIUtility=new DIY_DebugUIUtility();
     // Debug ui part
     public class DIY_GameUtility
     {
 
+        public double calculateDistance(double rssi)
+        {
 
+            double RSSI_BASE = -69.0;
+            double ENVIRONMENT_FACTOR = 2.0;
+            return Math.pow(10, (RSSI_BASE - rssi) / (10 * ENVIRONMENT_FACTOR));
+        }
+
+        public double calculateDistance(int rssi, int txPower)
+        {
+
+            if (rssi == 0)
+            {
+                return -1.0; // if we cannot determine accuracy, return -1.
+            }
+            double ratio = rssi * 1.0 / txPower;
+            if (ratio < 1.0)
+            {
+                return Math.pow(ratio, 10);
+            } else
+            {
+                double distance = 0.89976 * Math.pow(ratio, 7.7095) + 0.111;
+                return distance;
+            }
+        }
 
 
 
     };
+    DIY_GameUtility gDIY_GameUtility=new DIY_GameUtility();
     public class PlayerDeviceInfo {
         public BluetoothGatt mDeviceGatt = null;
         public String mDeviceName = null;
@@ -127,24 +160,7 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    private double calculateDistance(double rssi) {
-        double RSSI_BASE = -69.0;
-        double ENVIRONMENT_FACTOR = 2.0;
-        return Math.pow(10, (RSSI_BASE - rssi) / (10 * ENVIRONMENT_FACTOR));
-    }
 
-    private double calculateDistance(int rssi, int txPower) {
-        if (rssi == 0) {
-            return -1.0; // if we cannot determine accuracy, return -1.
-        }
-        double ratio = rssi * 1.0 / txPower;
-        if (ratio < 1.0) {
-            return Math.pow(ratio, 10);
-        } else {
-            double distance = 0.89976 * Math.pow(ratio, 7.7095) + 0.111;
-            return distance;
-        }
-    }
 
     private String GetCurrentNumStatus() {
         return String.format("Lv1:%d, Lv0:%d", mDeviceCountEncountered_WithName,
@@ -214,19 +230,19 @@ public class MainActivity extends AppCompatActivity
 
     protected void NotifyLeScanStopped() {
         appendToLog("BLE搜索结束...");
-        if (mDebug_With_UI) {
-            ToggleButtons();
+        if (gDIY_DebugUIUtility.mDebug_With_UI) {
+            gDIY_DebugUIUtility.ToggleButtons();
         }
 
     }
 
     public void appendToLog(String text) {
-        if (mDebug_With_UI) {
+        if (gDIY_DebugUIUtility.mDebug_With_UI) {
             runOnUiThread(() -> {
-                mLogTextView.append(text + "\n");
+                gDIY_DebugUIUtility.mLogTextView.append(text + "\n");
                 // 自动滚动到底部
-                if (mLogViewautoScroll) {
-                    scrollToBottom();
+                if (gDIY_DebugUIUtility.mLogViewautoScroll) {
+                    gDIY_DebugUIUtility.scrollToBottom();
                 }
             });
         } else {
@@ -267,9 +283,9 @@ public class MainActivity extends AppCompatActivity
                 mBluetoothGattServer.close();
                 mSp_deviceDisplayArrayList.clear();
                 mRandom_deviceDisplayArrayList.clear();
-                if (mDebug_With_UI) {
-                    mRandom_deviceArrayAdapter.notifyDataSetChanged();
-                    mSp_deviceArrayAdapter.notifyDataSetChanged();
+                if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                    gDIY_DebugUIUtility.mRandom_deviceArrayAdapter.notifyDataSetChanged();
+                    gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
                 }
 
                 if (mDeviceInfoAll != null) {
@@ -316,8 +332,8 @@ public class MainActivity extends AppCompatActivity
 
             StartAdvertising();
 
-            if (mDebug_With_UI) {
-                ToggleButtons();
+            if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                gDIY_DebugUIUtility.ToggleButtons();
             }
 
             mHandler.post(communicationRunnable);
@@ -445,7 +461,7 @@ public class MainActivity extends AppCompatActivity
                         int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
                                            // results
 
-                        double estimatedDistance_new = calculateDistance(rssi, txPower);
+                        double estimatedDistance_new = gDIY_GameUtility.calculateDistance(rssi, txPower);
 
                        /* cur_player_info.mDistance = estimatedDistance_new;
 
@@ -474,7 +490,7 @@ public class MainActivity extends AppCompatActivity
                     int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
                                        // results
 
-                    double estimatedDistance = calculateDistance(rssi, txPower);
+                    double estimatedDistance = gDIY_GameUtility.calculateDistance(rssi, txPower);
 
                   /*  PlayerDeviceInfo player_info = new PlayerDeviceInfo();
                     player_info.mDeviceGatt = got_gatt;
@@ -653,8 +669,8 @@ public class MainActivity extends AppCompatActivity
 
                     if (true) {
                         String messageToSend = "TestString";
-                        if (mDebug_With_UI) {
-                            messageToSend = mInputMessage.getText().toString();
+                        if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                            messageToSend = gDIY_DebugUIUtility.mInputMessage.getText().toString();
                         }
 
                         BluetoothGattCharacteristic characteristic = mBluetoothGattServer
@@ -677,7 +693,8 @@ public class MainActivity extends AppCompatActivity
             }
 
             mHandler.postDelayed(communicationRunnable, 2000); // Schedule the next message in 2 seconds
-            mMacAddrCountView.setText(GetCurrentNumStatus());
+            if(gDIY_DebugUIUtility.mDebug_With_UI)
+            gDIY_DebugUIUtility.mMacAddrCountView.setText(GetCurrentNumStatus());
         }
     };
 
@@ -693,7 +710,7 @@ public class MainActivity extends AppCompatActivity
                     if (!mDeviceInfoAll.containsKey(deviceAddress)) {
 
                         short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                        double estimatedDistance = calculateDistance(rssi);
+                        double estimatedDistance = gDIY_GameUtility.calculateDistance(rssi);
                         PlayerDeviceInfo player_info = new PlayerDeviceInfo();
                         player_info.mDeviceGatt = null;
                         player_info.mDeviceName = deviceName;
@@ -706,8 +723,8 @@ public class MainActivity extends AppCompatActivity
                         mDeviceCountEncountered_WithName++;
 
                         // OnNewMacAddressEncountered();
-                        if (mDebug_With_UI) {
-                            mRandom_deviceArrayAdapter.notifyDataSetChanged();
+                        if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                            gDIY_DebugUIUtility.mRandom_deviceArrayAdapter.notifyDataSetChanged();
 
                         } else {
                             OnNewRandomDeviceEncountered_WithName(player_info.GenerateDisplayString());
@@ -718,20 +735,20 @@ public class MainActivity extends AppCompatActivity
 
                         if (null != cur_player_info && cur_player_info.misRandomDeivce) {
                             short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                            double estimatedDistance_new = calculateDistance(rssi);
+                            double estimatedDistance_new = gDIY_GameUtility.calculateDistance(rssi);
                             cur_player_info.mDistance = estimatedDistance_new;
                             mRandom_deviceDisplayArrayList.set(cur_player_info.mIndex,
                                     cur_player_info.GenerateDisplayString());
 
-                            if (mDebug_With_UI) {
-                                mRandom_deviceArrayAdapter.notifyDataSetChanged();
+                            if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                                gDIY_DebugUIUtility.mRandom_deviceArrayAdapter.notifyDataSetChanged();
                             }
 
                         }
                     }
                 } else {
                     mDeviceCountEncountered_WithGarbageName++;
-                    if (!mDebug_With_UI) {
+                    if (!gDIY_DebugUIUtility.mDebug_With_UI) {
                         OnNewRandomDeviceEncountered_GarbageName();
                     }
                 }
@@ -751,7 +768,7 @@ public class MainActivity extends AppCompatActivity
         // UI gadgets fixing
         {
 
-            if (mDebug_With_UI) {
+            if (gDIY_DebugUIUtility.mDebug_With_UI) {
                 // layout setting
                 setContentView(R.layout.activity_main);
             }
@@ -761,13 +778,13 @@ public class MainActivity extends AppCompatActivity
                 // device array list\adaptor init
                 mSp_deviceDisplayArrayList = new ArrayList<>();
 
-                if (mDebug_With_UI) {
-                    mSp_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
+                if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                    gDIY_DebugUIUtility.mSp_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
                             mSp_deviceDisplayArrayList);
 
                     // list view set the adaptor and view
-                    mSp_Device_listView = findViewById(R.id.sp_device_list);
-                    mSp_Device_listView.setAdapter(mSp_deviceArrayAdapter);
+                    gDIY_DebugUIUtility.mSp_Device_listView = findViewById(R.id.sp_device_list);
+                    gDIY_DebugUIUtility.mSp_Device_listView.setAdapter(gDIY_DebugUIUtility.mSp_deviceArrayAdapter);
                 }
 
             }
@@ -777,36 +794,36 @@ public class MainActivity extends AppCompatActivity
                 // device array list\adaptor init
                 mRandom_deviceDisplayArrayList = new ArrayList<>();
 
-                if (mDebug_With_UI) {
-                    mRandom_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
+                if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                    gDIY_DebugUIUtility.mRandom_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
                             mRandom_deviceDisplayArrayList);
                     // list view set the adaptor and view
-                    mRandom_Device_listView = findViewById(R.id.random_device_list);
-                    mRandom_Device_listView.setAdapter(mRandom_deviceArrayAdapter);
+                    gDIY_DebugUIUtility.mRandom_Device_listView = findViewById(R.id.random_device_list);
+                    gDIY_DebugUIUtility.mRandom_Device_listView.setAdapter(gDIY_DebugUIUtility.mRandom_deviceArrayAdapter);
                 }
 
             }
 
-            if (mDebug_With_UI) {
+            if (gDIY_DebugUIUtility.mDebug_With_UI) {
                 // text and button binding
-                mButton_StartScan = this.findViewById(R.id.button_start);
-                mButton_CancelScan = this.findViewById(R.id.button_stop);
+                gDIY_DebugUIUtility.mButton_StartScan = this.findViewById(R.id.button_start);
+                gDIY_DebugUIUtility.mButton_CancelScan = this.findViewById(R.id.button_stop);
 
-                mButton_StartScan.setEnabled(true);
-                mButton_CancelScan.setEnabled(false);
+                gDIY_DebugUIUtility.mButton_StartScan.setEnabled(true);
+                gDIY_DebugUIUtility.mButton_CancelScan.setEnabled(false);
 
-                mLogTextView = findViewById(R.id.log_text_view);
-                mLogScrollView = findViewById(R.id.log_scroll_view);
-                mInputMessage = findViewById(R.id.input_message);
-                mMacAddrCountView = findViewById(R.id.Mac_Addr_Count);
-                mLog_button_divider = findViewById(R.id.divider);
-                mUtility_DeviceList_divider = findViewById(R.id.divider_y);
-                mbuttonPanel = findViewById(R.id.button_panel);
-                mlogPanel = findViewById(R.id.log_panel);
+                gDIY_DebugUIUtility.mLogTextView = findViewById(R.id.log_text_view);
+                gDIY_DebugUIUtility.mLogScrollView = findViewById(R.id.log_scroll_view);
+                gDIY_DebugUIUtility.mInputMessage = findViewById(R.id.input_message);
+                gDIY_DebugUIUtility.mMacAddrCountView = findViewById(R.id.Mac_Addr_Count);
+                gDIY_DebugUIUtility. mLog_button_divider = findViewById(R.id.divider);
+                gDIY_DebugUIUtility.mUtility_DeviceList_divider = findViewById(R.id.divider_y);
+                gDIY_DebugUIUtility.mbuttonPanel = findViewById(R.id.button_panel);
+                gDIY_DebugUIUtility.mlogPanel = findViewById(R.id.log_panel);
 
-                mUtilityPanel = findViewById(R.id.utility_panel);
-                mDeviceListPanel = findViewById(R.id.Device_list_panel);
-                mLog_button_divider.setOnTouchListener(new View.OnTouchListener() {
+                gDIY_DebugUIUtility.mUtilityPanel = findViewById(R.id.utility_panel);
+                gDIY_DebugUIUtility.mDeviceListPanel = findViewById(R.id.Device_list_panel);
+                gDIY_DebugUIUtility.mLog_button_divider.setOnTouchListener(new View.OnTouchListener() {
                     private float initialX;
                     private int initialButtonPanelWidth;
 
@@ -815,27 +832,27 @@ public class MainActivity extends AppCompatActivity
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
                                 initialX = event.getX();
-                                initialButtonPanelWidth = mbuttonPanel.getWidth();
+                                initialButtonPanelWidth = gDIY_DebugUIUtility.mbuttonPanel.getWidth();
                                 return true;
                             case MotionEvent.ACTION_MOVE:
                                 float deltaX = event.getX() - initialX;
                                 int newButtonPanelWidth = initialButtonPanelWidth + (int) deltaX;
 
-                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mbuttonPanel
+                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) gDIY_DebugUIUtility.mbuttonPanel
                                         .getLayoutParams();
                                 params.width = newButtonPanelWidth;
-                                mbuttonPanel.setLayoutParams(params);
+                                gDIY_DebugUIUtility.mbuttonPanel.setLayoutParams(params);
 
-                                params = (LinearLayout.LayoutParams) mlogPanel.getLayoutParams();
-                                params.width = mlogPanel.getWidth() - (int) deltaX;
-                                mlogPanel.setLayoutParams(params);
+                                params = (LinearLayout.LayoutParams) gDIY_DebugUIUtility.mlogPanel.getLayoutParams();
+                                params.width = gDIY_DebugUIUtility.mlogPanel.getWidth() - (int) deltaX;
+                                gDIY_DebugUIUtility.mlogPanel.setLayoutParams(params);
                                 return true;
                         }
                         return false;
                     }
                 });
 
-                mUtility_DeviceList_divider.setOnTouchListener(new View.OnTouchListener() {
+                gDIY_DebugUIUtility.mUtility_DeviceList_divider.setOnTouchListener(new View.OnTouchListener() {
                     private float initialY;
                     private int initialTopPanelHeight, initialBottomPanelHeight;
 
@@ -844,22 +861,22 @@ public class MainActivity extends AppCompatActivity
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
                                 initialY = event.getY();
-                                initialTopPanelHeight = mUtilityPanel.getHeight();
-                                initialBottomPanelHeight = mDeviceListPanel.getHeight();
+                                initialTopPanelHeight = gDIY_DebugUIUtility.mUtilityPanel.getHeight();
+                                initialBottomPanelHeight = gDIY_DebugUIUtility.mDeviceListPanel.getHeight();
                                 return true;
                             case MotionEvent.ACTION_MOVE:
                                 float deltaY = event.getY() - initialY;
                                 int newTopPanelHeight = initialTopPanelHeight + (int) deltaY;
                                 int newBottomPanelHeight = initialBottomPanelHeight - (int) deltaY;
 
-                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mUtilityPanel
+                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) gDIY_DebugUIUtility.mUtilityPanel
                                         .getLayoutParams();
                                 params.height = newTopPanelHeight;
-                                mUtilityPanel.setLayoutParams(params);
+                                gDIY_DebugUIUtility.mUtilityPanel.setLayoutParams(params);
 
-                                params = (LinearLayout.LayoutParams) mDeviceListPanel.getLayoutParams();
+                                params = (LinearLayout.LayoutParams) gDIY_DebugUIUtility.mDeviceListPanel.getLayoutParams();
                                 params.height = newBottomPanelHeight;
-                                mDeviceListPanel.setLayoutParams(params);
+                                gDIY_DebugUIUtility.mDeviceListPanel.setLayoutParams(params);
                                 return true;
                         }
                         return false;
@@ -877,29 +894,29 @@ public class MainActivity extends AppCompatActivity
                 registerReceiver(mClassicBluetoothReceiver, filter2);
             }
 
-            if (mDebug_With_UI) {
-                mLogScrollView.setOnTouchListener(new View.OnTouchListener() {
+            if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                gDIY_DebugUIUtility.mLogScrollView.setOnTouchListener(new View.OnTouchListener() {
 
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
                                 // 用户开始触摸，暂停自动滚动
-                                mLogViewautoScroll = false;
+                                gDIY_DebugUIUtility.mLogViewautoScroll = false;
                                 break;
                             case MotionEvent.ACTION_UP:
                                 break;
                             case MotionEvent.ACTION_CANCEL:
                                 // 用户停止触摸，开始自动滚动
-                                mLogViewautoScroll = true;
-                                scrollToBottom(); // 立即滚动到底部
+                                gDIY_DebugUIUtility.mLogViewautoScroll = true;
+                                gDIY_DebugUIUtility.scrollToBottom(); // 立即滚动到底部
                                 break;
                         }
                         return false; // 这里返回 false 以允许 ScrollView 的默认滚动行为
                     }
                 });
 
-                mButton_StartScan.setOnClickListener(new View.OnClickListener() {
+                gDIY_DebugUIUtility.mButton_StartScan.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View arg0) {
@@ -909,7 +926,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-                mButton_CancelScan.setOnClickListener(new View.OnClickListener() {
+                gDIY_DebugUIUtility.mButton_CancelScan.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View arg0) {
