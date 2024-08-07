@@ -2,8 +2,22 @@ package com.aroundmelib;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.IBinder;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -41,11 +55,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -54,100 +70,85 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import com.example.com.aroundmelib.R;
 
 @SuppressLint("MissingPermission")
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
 
-
-    public class DIY_DebugUIUtility
-    {
+    //Class Definitions
+    public class DIY_DebugUIUtility {
         public static final boolean mDebug_With_UI = true;
-        // Debug ui part
-        public View mLog_button_divider= null;
+        public View mLog_button_divider = null;
 
-        public View mUtility_DeviceList_divider= null;
-        public LinearLayout mbuttonPanel= null;
-        public LinearLayout mlogPanel= null;
+        public View mUtility_DeviceList_divider = null;
+        public LinearLayout mbuttonPanel = null;
+        public LinearLayout mlogPanel = null;
 
-        public LinearLayout mUtilityPanel= null;
-        public LinearLayout mDeviceListPanel= null;
+        public LinearLayout mUtilityPanel = null;
+        public LinearLayout mDeviceListPanel = null;
 
 
-        public EditText mInputMessage= null;
-        public Button mButton_StartScan= null;
-        public Button mButton_CancelScan= null;
+        public EditText mInputMessage = null;
+        public Button mButton_StartScan = null;
+        public Button mButton_CancelScan = null;
         public boolean mLogViewautoScroll = true;
-        public ListView mSp_Device_listView= null;
-        public ListView mRandom_Device_listView= null;
-        public TextView mLogTextView= null;
+        public ListView mSp_Device_listView = null;
+        public ListView mRandom_Device_listView = null;
+        public TextView mLogTextView = null;
 
-        public TextView mMacAddrCountView= null;
-        public ScrollView mLogScrollView= null;
-        public ArrayAdapter<String> mSp_deviceArrayAdapter= null;
-        public ArrayAdapter<String> mRandom_deviceArrayAdapter= null;
+        public TextView mMacAddrCountView = null;
+        public ScrollView mLogScrollView = null;
+        public ArrayAdapter<String> mSp_deviceArrayAdapter = null;
+        public ArrayAdapter<String> mRandom_deviceArrayAdapter = null;
 
-        public void ToggleButtons()
-        {
-            if (mButton_CancelScan != null && mButton_StartScan != null)
-            {
+        public void ToggleButtons() {
+            if (mButton_CancelScan != null && mButton_StartScan != null) {
 
                 mButton_StartScan.setEnabled(!mButton_StartScan.isEnabled());
                 mButton_CancelScan.setEnabled(!mButton_CancelScan.isEnabled());
             }
         }
 
-        public void scrollToBottom()
-        {
+        public void scrollToBottom() {
             mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
         }
 
 
+    }
 
+    ;
 
+    public class DIY_GameUtility {
 
-
-    };
-
-    DIY_DebugUIUtility gDIY_DebugUIUtility=new DIY_DebugUIUtility();
-    // Debug ui part
-    public class DIY_GameUtility
-    {
-
-        public double calculateDistance(double rssi)
-        {
+        public double calculateDistance(double rssi) {
 
             double RSSI_BASE = -69.0;
             double ENVIRONMENT_FACTOR = 2.0;
             return Math.pow(10, (RSSI_BASE - rssi) / (10 * ENVIRONMENT_FACTOR));
         }
 
-        public double calculateDistance(int rssi, int txPower)
-        {
+        public double calculateDistance(int rssi, int txPower) {
 
-            if (rssi == 0)
-            {
+            if (rssi == 0) {
                 return -1.0; // if we cannot determine accuracy, return -1.
             }
             double ratio = rssi * 1.0 / txPower;
-            if (ratio < 1.0)
-            {
+            if (ratio < 1.0) {
                 return Math.pow(ratio, 10);
-            } else
-            {
+            } else {
                 double distance = 0.89976 * Math.pow(ratio, 7.7095) + 0.111;
                 return distance;
             }
         }
 
 
+    }
 
-    };
-    DIY_GameUtility gDIY_GameUtility=new DIY_GameUtility();
-    public class PlayerDeviceInfo
-    {
+    ;
+
+    public class PlayerDeviceInfo {
         public String mDeviceName = null;
         public String mRegisteredPlayerDeviceMacAddr = null;
 
@@ -158,30 +159,117 @@ public class MainActivity extends AppCompatActivity
         public String GenerateDisplayString() {
             return mDeviceName + "@Mac:" + mRegisteredPlayerDeviceMacAddr + "@Dist:" + String.format("%.2f", mDistance);
         }
-    };
+    }
 
+    ;
 
-
-    private String GetCurrentNumStatus()
+    public static class AroundMeService extends Service
     {
-        return String.format("Lv1:%d, Lv0:%d", mDeviceCountEncountered_WithName,
-                mDeviceCountEncountered_WithGarbageName);
+
+        private static final String CHANNEL_ID = "ForegroundServiceChannel";
+
+        @Override
+        public void onCreate()
+        {
+            super.onCreate();
+
+
+
+            MainActivity.appendToLog("AroundMeService Created YYYYYYYYYY");
+            createNotificationChannel();
+            startForegroundService();
+        }
+
+        @Override
+        public int onStartCommand(Intent intent, int flags, int startId) {
+            // 执行你的功能
+
+            MainActivity.appendToLog("XXXXXXXXXX Service is started...");
+            new Thread(() -> {
+                // 模拟长时间运行的任务
+                while (true) {
+                    MainActivity.appendToLog("XXXXXXXXXX Service is running...");
+
+                    try {
+                        Thread.sleep(5000); // 每5秒执行一次
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+            return START_STICKY;
+        }
+
+        @Override
+        public void onTaskRemoved(Intent rootIntent) {
+            // 重新启动服务
+            Intent restartServiceIntent = new Intent(getApplicationContext(), AroundMeService.class);
+            restartServiceIntent.setPackage(getPackageName());
+            startService(restartServiceIntent);
+            super.onTaskRemoved(rootIntent);
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            // 清理操作
+
+        }
+
+        @Nullable
+        @Override
+        public IBinder onBind(Intent intent) {
+
+
+            MainActivity.appendToLog("serviced bind to mainthread");
+            return null;
+        }
+
+        private void createNotificationChannel()
+        {
+            MainActivity.appendToLog("createNotificationChannel      ");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel serviceChannel = new NotificationChannel(
+                        CHANNEL_ID,
+                        "Foreground Service Channel",
+                        NotificationManager.IMPORTANCE_DEFAULT
+                );
+                NotificationManager manager = getSystemService(NotificationManager.class);
+                if (manager != null) {
+                    manager.createNotificationChannel(serviceChannel);
+                }
+            }
+
+
+        }
+
+        private void startForegroundService()
+        {
+
+            MainActivity.appendToLog("createNotificationChannel      ");
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("Foreground Service")
+                    .setContentText("Service is running in the background")
+                    .setSmallIcon(com.tonyodev.fetch2.R.drawable.notification_template_icon_bg)
+                    .build();
+            startForeground(1, notification);
+        }
+
+
     }
 
-    // call from java implemented in UE5
-    public static void OnNewLogGenerated(String in_string) {
-        ;
-    }
 
-    // call from java implemented in UE5
-    public static native void OnNewRandomDeviceEncountered_WithName(String in_string);
 
-    public static native void OnNewRandomDeviceEncountered_GarbageName();
 
-    WifiP2pManager manager;
-    WifiP2pManager.Channel channel;
 
-    // 定义
+
+
+
+
+
+
+    //Simple Variables
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BLUETOOTH = 2;
 
@@ -191,13 +279,13 @@ public class MainActivity extends AppCompatActivity
     private static final UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = UUID
             .fromString("00002902-0000-1000-8000-00805f9b34fb");
     public final UUID mAroundMe_CONNECT_CHARACTERISTIC_UUID = UUID.fromString("0C136FCC-3381-4F1E-9602-E2A3F8B70CEB");
-    // public static final String mAroundMe_READ_CHARACTERISTIC_UUID =
-    // "1BE31CB9-9E07-4892-AA26-30E87ABE9F70";
+    /**
+     * public static final String mAroundMe_READ_CHARACTERISTIC_UUID =
+     * "1BE31CB9-9E07-4892-AA26-30E87ABE9F70";
+     */
     private BluetoothAdapter mBluetoothAdapter;
 
     private BluetoothLeScanner mBluetoothLeScanner;
-
-    //private BluetoothLeAdvertiser mBluetoothLeAdvertiser;
 
     private BluetoothGattServer mBluetoothGattServer;
     private Handler mHandler = new Handler();
@@ -213,47 +301,155 @@ public class MainActivity extends AppCompatActivity
     private int mDeviceCountEncountered_WithGarbageName = 0;
 
     private boolean mIsAroundMeServiceRunning = false;
+    public static DIY_DebugUIUtility gDIY_DebugUIUtility=null;
+    DIY_GameUtility gDIY_GameUtility = new DIY_GameUtility();
+    WifiP2pManager manager;
+    WifiP2pManager.Channel channel;
 
-    private void stopClassicBluetoothDiscovery() {
-        if (mBluetoothAdapter.isDiscovering()) {
-            mBluetoothAdapter.cancelDiscovery();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Complicated variable or callbacks
+    private ScanCallback mBLEScanCallback = new ScanCallback() {
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+            super.onScanResult(callbackType, result);
+
+            BluetoothDevice result_device = result.getDevice();
+
+            String result_device_mac_addr = result_device.getAddress();
+
+            if (result_device.getName() != null && !result_device.getName().equals("null")) {
+
+                if (mDeviceInfoAll.containsKey(result_device_mac_addr)) {
+
+                    PlayerDeviceInfo cur_player_info = mDeviceInfoAll.get(result_device_mac_addr);
+
+                    if (null != cur_player_info && !cur_player_info.misRandomDeivce) {
+                        int rssi = result.getRssi();
+                        // TODO: Replace with the actual TX Power value for your beacon or BLE device
+                        int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
+                        // results
+
+                        double estimatedDistance_new = gDIY_GameUtility.calculateDistance(rssi, txPower);
+
+                        cur_player_info.mDistance = estimatedDistance_new;
+
+                        mSp_deviceDisplayArrayList.set(cur_player_info.mIndex, cur_player_info.GenerateDisplayString());
+
+                        if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                            gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+
+                } else {
+
+                    int rssi = result.getRssi();
+                    // TODO: Replace with the actual TX Power value for your beacon or BLE device
+                    int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
+                    // results
+
+                    double estimatedDistance = gDIY_GameUtility.calculateDistance(rssi, txPower);
+
+                    PlayerDeviceInfo player_info = new PlayerDeviceInfo();
+                    // player_info.mDeviceGatt = got_gatt;
+                    player_info.mDeviceName = result_device.getName();
+                    player_info.misRandomDeivce = false;
+                    player_info.mDistance = estimatedDistance;
+                    player_info.mRegisteredPlayerDeviceMacAddr = result_device_mac_addr;
+                    player_info.mIndex = mSp_deviceDisplayArrayList.size();
+                    mDeviceInfoAll.put(result_device_mac_addr, player_info);
+
+                    mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
+                    mDeviceCountEncountered_WithName++;
+
+                    // OnNewMacAddressEncountered();
+                    if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                        gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
+
+                    } else {
+                        OnNewRandomDeviceEncountered_WithName(player_info.GenerateDisplayString());
+                    }
+
+                }
+            } else {
+                mDeviceCountEncountered_WithGarbageName++;
+
+                if (!gDIY_DebugUIUtility.mDebug_With_UI) {
+                    OnNewRandomDeviceEncountered_GarbageName();
+                }
+            }
+
         }
 
-    }
+        @Override
+        public void onScanFailed(int errorCode) {
+            super.onScanFailed(errorCode);
+            appendToLog("BLE Scan Started Failed! with error code: " + errorCode);
 
-    private void startClassicBluetoothDiscovery() {
-        if (!mBluetoothAdapter.isDiscovering()) {
-            mBluetoothAdapter.startDiscovery();
-            appendToLog("经典蓝牙 搜索 开始~");
+            // Scanning failed. Handle error.
         }
 
-    }
+        // 其他回调方法，如onBatchScanResults, onScanFailed等
+    };
+
+
+
+    private Runnable UpdatesBTScanning_Runnable = new Runnable() {
+
+        @Override
+        public void run() {
+
+            if (mBluetoothAdapter.isEnabled()) {
+                if (mBluetoothAdapter.isDiscovering())
+                {
+                    appendToLog("经典蓝牙搜索设备ing");
+                }
+            }
+
+            mHandler.postDelayed(UpdatesBTScanning_Runnable, 2000); // Schedule the next message in 2 seconds
+            if (gDIY_DebugUIUtility.mDebug_With_UI)
+                gDIY_DebugUIUtility.mMacAddrCountView.setText(GetCurrentNumStatus());
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     protected void NotifyLeScanStopped() {
         appendToLog("BLE搜索结束...");
         if (gDIY_DebugUIUtility.mDebug_With_UI) {
             gDIY_DebugUIUtility.ToggleButtons();
-        }
-
-    }
-
-    public void appendToLog(String text) {
-        if (gDIY_DebugUIUtility.mDebug_With_UI) {
-            runOnUiThread(() -> {
-                gDIY_DebugUIUtility.mLogTextView.append(text + "\n");
-                // 自动滚动到底部
-                if (gDIY_DebugUIUtility.mLogViewautoScroll) {
-                    gDIY_DebugUIUtility.scrollToBottom();
-                }
-            });
-        } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    OnNewLogGenerated(text);
-                    // Toast.makeText(GameActivity.this, message, Toast.LENGTH_SHORT).show();
-                }
-            });
         }
 
     }
@@ -284,18 +480,12 @@ public class MainActivity extends AppCompatActivity
                     gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
                 }
 
-                if (mDeviceInfoAll != null)
-                {
+                if (mDeviceInfoAll != null) {
                     mDeviceInfoAll.clear();
                 }
             }
 
-            // classic bluetooth process
-            {
 
-                stopClassicBluetoothDiscovery();
-
-            }
 
         }
         mRandom_deviceDisplayArrayList.clear();
@@ -304,27 +494,28 @@ public class MainActivity extends AppCompatActivity
         mIsAroundMeServiceRunning = false;
     }
 
-    private void StartAroundMeService()
-    {
-        if (!mBluetoothAdapter.isEnabled())
-        {
+    private void StartAroundMeService() {
+        if (!mBluetoothAdapter.isEnabled()) {
 
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 
-        } else {
+        } else
+        {
             mDeviceCountEncountered_WithName = 0;
             mDeviceCountEncountered_WithGarbageName = 0;
 
-            startClassicBluetoothDiscovery();
 
 
+           StartScanning();
 
-            StartScanning();
-
-
-            if (gDIY_DebugUIUtility.mDebug_With_UI)
             {
+
+                startService(new Intent(this, AroundMeService.class));
+                appendToLog("Tried to start serviec");
+
+            }
+            if (gDIY_DebugUIUtility.mDebug_With_UI) {
                 gDIY_DebugUIUtility.ToggleButtons();
             }
 
@@ -346,264 +537,41 @@ public class MainActivity extends AppCompatActivity
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                 .build();
 
-        //mBluetoothLeScanner.startScan(Arrays.asList(scanFilter), scanSettings, mBLEScanCallback);
-        //appendToLog("BLE Scanning started!");
+        mBluetoothLeScanner.startScan(Arrays.asList(scanFilter), scanSettings, mBLEScanCallback);
+        appendToLog("BLE Scanning started!");
     }
 
 
 
-    private boolean checkLocationPermission()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
-                        PERMISSION_REQUEST_FINE_LOCATION);
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean checkBluetoothPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED
-                    ||
-                    ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.BLUETOOTH_ADVERTISE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[] {
-                        Manifest.permission.BLUETOOTH_SCAN,
-                        Manifest.permission.BLUETOOTH_CONNECT,
-
-                        Manifest.permission.BLUETOOTH_ADVERTISE
-                },
-                        PERMISSION_REQUEST_BLUETOOTH);
-                return false;
-            }
-
-        }
-
-        return true;
-    }
-
-    // 定义广播接
-
-    private ScanCallback mBLEScanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
-
-            BluetoothDevice result_device = result.getDevice();
-
-            String result_device_mac_addr = result_device.getAddress();
-
-            if (result_device.getName() != null && !result_device.getName().equals("null"))
-            {
-                // 处理带有特定服务UUID的设备
-                if (mDeviceInfoAll.containsKey(result_device_mac_addr))
-                {
-
-                    PlayerDeviceInfo cur_player_info = mDeviceInfoAll.get(result_device_mac_addr);
-
-                    if (null != cur_player_info && !cur_player_info.misRandomDeivce) {
-                        int rssi = result.getRssi();
-                        // TODO: Replace with the actual TX Power value for your beacon or BLE device
-                        int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
-                                           // results
-
-                        double estimatedDistance_new = gDIY_GameUtility.calculateDistance(rssi, txPower);
-
-                       cur_player_info.mDistance = estimatedDistance_new;
-
-                        mSp_deviceDisplayArrayList.set(cur_player_info.mIndex, cur_player_info.GenerateDisplayString());
-
-                        if (gDIY_DebugUIUtility.mDebug_With_UI)
-                        {
-                            gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
-                        }
-
-                    }
-
-                }
-                else
-                {
-
-                    int rssi = result.getRssi();
-                    // TODO: Replace with the actual TX Power value for your beacon or BLE device
-                    int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
-                                       // results
-
-                    double estimatedDistance = gDIY_GameUtility.calculateDistance(rssi, txPower);
-
-                    PlayerDeviceInfo player_info = new PlayerDeviceInfo();
-                   // player_info.mDeviceGatt = got_gatt;
-                    player_info.mDeviceName = result_device.getName();
-                    player_info.misRandomDeivce = false;
-                    player_info.mDistance = estimatedDistance;
-                    player_info.mRegisteredPlayerDeviceMacAddr = result_device_mac_addr;
-                    player_info.mIndex = mSp_deviceDisplayArrayList.size();
-                    mDeviceInfoAll.put(result_device_mac_addr, player_info);
-
-                    mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
-                    mDeviceCountEncountered_WithName++;
-
-                    // OnNewMacAddressEncountered();
-                    if (gDIY_DebugUIUtility.mDebug_With_UI)
-                    {
-                        gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
-
-                    }
-                    else
-                    {
-                        OnNewRandomDeviceEncountered_WithName(player_info.GenerateDisplayString());
-                    }
-
-                }
-            }
-            else
-            {
-               mDeviceCountEncountered_WithGarbageName++;
-
-                if (!gDIY_DebugUIUtility.mDebug_With_UI)
-                {
-                    OnNewRandomDeviceEncountered_GarbageName();
-                }
-            }
-
-        }
-
-        @Override
-        public void onScanFailed(int errorCode) {
-            super.onScanFailed(errorCode);
-            appendToLog("BLE Scan Started Failed! with error code: " + errorCode);
-
-            // Scanning failed. Handle error.
-        }
-
-        // 其他回调方法，如onBatchScanResults, onScanFailed等
-    };
 
 
 
-    private Runnable UpdatesBTScanning_Runnable = new Runnable() {
 
-        @Override
-        public void run()
-        {
 
-            if (mBluetoothAdapter.isEnabled())
-            {
-                startClassicBluetoothDiscovery();
 
-                if (mBluetoothAdapter.isDiscovering())
-                {
-                    appendToLog("经典蓝牙搜索设备ing");
-                }
-            }
 
-            mHandler.postDelayed(UpdatesBTScanning_Runnable, 2000); // Schedule the next message in 2 seconds
-            if(gDIY_DebugUIUtility.mDebug_With_UI)
-            gDIY_DebugUIUtility.mMacAddrCountView.setText(GetCurrentNumStatus());
-        }
-    };
 
-    private final BroadcastReceiver mClassicBluetoothReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                String deviceName = device.getName();
-                String deviceAddress = device.getAddress();
-                int device_type=device.getType();
-                if (deviceName != null && !deviceName.equals("null"))
-                {
-                    if (device_type == BluetoothDevice.DEVICE_TYPE_CLASSIC)
-                    {
-                        appendToLog("DEVICE_TYPE_CLASSIC found");
 
-                    } else if (device_type == BluetoothDevice.DEVICE_TYPE_LE) {
-                        appendToLog("DEVICE_TYPE_LE found");
 
-                    } else if (device_type == BluetoothDevice.DEVICE_TYPE_DUAL) {
-                        appendToLog("DEVICE_TYPE_DUAL");
 
-                    } else if (device_type == BluetoothDevice.DEVICE_TYPE_UNKNOWN) {
-                        appendToLog("DEVICE_TYPE_UNKNOWN");
 
-                    }
-                    if (!mDeviceInfoAll.containsKey(deviceAddress))
-                    {
 
-                        short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                        double estimatedDistance = gDIY_GameUtility.calculateDistance(rssi);
-                        PlayerDeviceInfo player_info = new PlayerDeviceInfo();
 
-                        player_info.mDeviceName = deviceName;
-                        player_info.mRegisteredPlayerDeviceMacAddr = deviceAddress;
-                        player_info.misRandomDeivce = true;
-                        player_info.mIndex = mRandom_deviceDisplayArrayList.size();
-                        player_info.mDistance = estimatedDistance;
-                        mDeviceInfoAll.put(deviceAddress, player_info);
-                        mRandom_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
-                        mDeviceCountEncountered_WithName++;
 
-                        // OnNewMacAddressEncountered();
-                        if (gDIY_DebugUIUtility.mDebug_With_UI)
-                        {
-                            gDIY_DebugUIUtility.mRandom_deviceArrayAdapter.notifyDataSetChanged();
 
-                        } else
-                        {
-                            OnNewRandomDeviceEncountered_WithName(player_info.GenerateDisplayString());
-                        }
 
-                    } else
-                    {
-                        PlayerDeviceInfo cur_player_info = mDeviceInfoAll.get(deviceAddress);
 
-                        if (null != cur_player_info && cur_player_info.misRandomDeivce)
-                        {
-                            short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                            double estimatedDistance_new = gDIY_GameUtility.calculateDistance(rssi);
-                            cur_player_info.mDistance = estimatedDistance_new;
-                            mRandom_deviceDisplayArrayList.set(cur_player_info.mIndex,
-                                    cur_player_info.GenerateDisplayString());
 
-                            if (gDIY_DebugUIUtility.mDebug_With_UI)
-                            {
-                                gDIY_DebugUIUtility.mRandom_deviceArrayAdapter.notifyDataSetChanged();
-                            }
 
-                        }
-                    }
-                } else {
-                    mDeviceCountEncountered_WithGarbageName++;
-                    if (!gDIY_DebugUIUtility.mDebug_With_UI)
-                    {
-                        OnNewRandomDeviceEncountered_GarbageName();
-                    }
-                }
 
-            } else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
-                appendToLog("经典蓝牙 搜索结束");
-            }
-
-        }
-    };
-
-    // activity events start
+    //Activity events
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // UI gadgets fixing
         {
+            MainActivity.gDIY_DebugUIUtility= new DIY_DebugUIUtility();
 
             if (gDIY_DebugUIUtility.mDebug_With_UI) {
                 // layout setting
@@ -653,7 +621,7 @@ public class MainActivity extends AppCompatActivity
                 gDIY_DebugUIUtility.mLogScrollView = findViewById(R.id.log_scroll_view);
                 gDIY_DebugUIUtility.mInputMessage = findViewById(R.id.input_message);
                 gDIY_DebugUIUtility.mMacAddrCountView = findViewById(R.id.Mac_Addr_Count);
-                gDIY_DebugUIUtility. mLog_button_divider = findViewById(R.id.divider);
+                gDIY_DebugUIUtility.mLog_button_divider = findViewById(R.id.divider);
                 gDIY_DebugUIUtility.mUtility_DeviceList_divider = findViewById(R.id.divider_y);
                 gDIY_DebugUIUtility.mbuttonPanel = findViewById(R.id.button_panel);
                 gDIY_DebugUIUtility.mlogPanel = findViewById(R.id.log_panel);
@@ -722,14 +690,7 @@ public class MainActivity extends AppCompatActivity
 
             }
 
-            // classic bluetooth device finder intent setting
-            {
-                IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-                registerReceiver(mClassicBluetoothReceiver, filter);
 
-                IntentFilter filter2 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-                registerReceiver(mClassicBluetoothReceiver, filter2);
-            }
 
             if (gDIY_DebugUIUtility.mDebug_With_UI) {
                 gDIY_DebugUIUtility.mLogScrollView.setOnTouchListener(new View.OnTouchListener() {
@@ -791,10 +752,7 @@ public class MainActivity extends AppCompatActivity
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
 
 
-
-
-            if(mBluetoothLeScanner==null)
-            {
+            if (mBluetoothLeScanner == null) {
                 appendToLog("硬件不支持 BLE Scanner");
             }
             if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -804,16 +762,14 @@ public class MainActivity extends AppCompatActivity
         }
 
         // wifi direct is not in use now, we are still discussing the usability of it
-        {
 
-        }
 
     }
 
     public void onDestroy() {
 
         super.onDestroy();
-        unregisterReceiver(mClassicBluetoothReceiver);
+
     }
 
     protected void onResume() {
@@ -853,7 +809,8 @@ public class MainActivity extends AppCompatActivity
             if (grantResults.length > 1
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                    && grantResults[2] == PackageManager.PERMISSION_GRANTED)
+            {
                 appendToLog("Bluetooth permissions granted");
 
             } else {
@@ -872,5 +829,106 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-    // activity events end
+
+    private boolean checkLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        PERMISSION_REQUEST_FINE_LOCATION);
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean checkBluetoothPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED
+                    ||
+                    ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.BLUETOOTH_ADVERTISE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{
+                                Manifest.permission.BLUETOOTH_SCAN,
+                                Manifest.permission.BLUETOOTH_CONNECT,
+
+                                Manifest.permission.BLUETOOTH_ADVERTISE
+                        },
+                        PERMISSION_REQUEST_BLUETOOTH);
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //Utilities for developing this app
+    private String GetCurrentNumStatus() {
+        return String.format("Lv1:%d, Lv0:%d", mDeviceCountEncountered_WithName,
+                mDeviceCountEncountered_WithGarbageName);
+    }
+
+    public static void appendToLog(String text)
+    {
+
+
+        if (gDIY_DebugUIUtility.mDebug_With_UI)
+        {
+            gDIY_DebugUIUtility.mLogTextView.append(text + "\n");
+            // 自动滚动到底部
+            if (gDIY_DebugUIUtility.mLogViewautoScroll)
+            {
+                gDIY_DebugUIUtility.scrollToBottom();
+            }
+        }
+        else
+        {
+            OnNewLogGenerated(text);
+            // Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //UE5 cross-platform API
+    public static void OnNewLogGenerated(String in_string) {
+        ;
+    }
+    public static native void OnNewRandomDeviceEncountered_WithName(String in_string);
+
+    public static native void OnNewRandomDeviceEncountered_GarbageName();
+
 }
