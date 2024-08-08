@@ -74,12 +74,14 @@ import java.util.UUID;
 import com.example.com.aroundmelib.R;
 
 @SuppressLint("MissingPermission")
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
 
 
     //Class Definitions
     public class DIY_DebugUIUtility {
         public static final boolean mDebug_With_UI = true;
+
         public View mLog_button_divider = null;
 
         public View mUtility_DeviceList_divider = null;
@@ -103,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
         public ArrayAdapter<String> mSp_deviceArrayAdapter = null;
         public ArrayAdapter<String> mRandom_deviceArrayAdapter = null;
 
-        public void ToggleButtons() {
+        public void ToggleButtons()
+        {
             if (mButton_CancelScan != null && mButton_StartScan != null) {
 
                 mButton_StartScan.setEnabled(!mButton_StartScan.isEnabled());
@@ -111,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        public void scrollToBottom() {
+        public void scrollToBottom()
+        {
             mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
         }
 
@@ -120,24 +124,30 @@ public class MainActivity extends AppCompatActivity {
 
     ;
 
-    public class DIY_GameUtility {
+    public class DIY_GameUtility
+    {
 
-        public double calculateDistance(double rssi) {
+        public double calculateDistance(double rssi)
+        {
 
             double RSSI_BASE = -69.0;
             double ENVIRONMENT_FACTOR = 2.0;
             return Math.pow(10, (RSSI_BASE - rssi) / (10 * ENVIRONMENT_FACTOR));
         }
 
-        public double calculateDistance(int rssi, int txPower) {
+        public double calculateDistance(int rssi, int txPower)
+        {
 
-            if (rssi == 0) {
+            if (rssi == 0)
+            {
                 return -1.0; // if we cannot determine accuracy, return -1.
             }
             double ratio = rssi * 1.0 / txPower;
-            if (ratio < 1.0) {
+            if (ratio < 1.0)
+            {
                 return Math.pow(ratio, 10);
-            } else {
+            } else
+            {
                 double distance = 0.89976 * Math.pow(ratio, 7.7095) + 0.111;
                 return distance;
             }
@@ -148,117 +158,20 @@ public class MainActivity extends AppCompatActivity {
 
     ;
 
-    public class PlayerDeviceInfo {
+    public class PlayerDeviceInfo
+    {
         public String mDeviceName = null;
         public String mRegisteredPlayerDeviceMacAddr = null;
 
-        public boolean misRandomDeivce = true;
+        public int mDeviceType = 0;
         public double mDistance = -1.0f;
         public int mIndex = 0;
 
-        public String GenerateDisplayString() {
+        public String GenerateDisplayString()
+        {
             return mDeviceName + "@Mac:" + mRegisteredPlayerDeviceMacAddr + "@Dist:" + String.format("%.2f", mDistance);
         }
-    }
-
-    ;
-
-    public static class AroundMeService extends Service
-    {
-
-        private static final String CHANNEL_ID = "ForegroundServiceChannel";
-
-        @Override
-        public void onCreate()
-        {
-            super.onCreate();
-
-
-
-            MainActivity.appendToLog("AroundMeService Created YYYYYYYYYY");
-            createNotificationChannel();
-            startForegroundService();
-        }
-
-        @Override
-        public int onStartCommand(Intent intent, int flags, int startId) {
-            // 执行你的功能
-
-            MainActivity.appendToLog("XXXXXXXXXX Service is started...");
-            new Thread(() -> {
-                // 模拟长时间运行的任务
-                while (true) {
-                    MainActivity.appendToLog("XXXXXXXXXX Service is running...");
-
-                    try {
-                        Thread.sleep(5000); // 每5秒执行一次
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-
-            return START_STICKY;
-        }
-
-        @Override
-        public void onTaskRemoved(Intent rootIntent) {
-            // 重新启动服务
-            Intent restartServiceIntent = new Intent(getApplicationContext(), AroundMeService.class);
-            restartServiceIntent.setPackage(getPackageName());
-            startService(restartServiceIntent);
-            super.onTaskRemoved(rootIntent);
-        }
-
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-            // 清理操作
-
-        }
-
-        @Nullable
-        @Override
-        public IBinder onBind(Intent intent) {
-
-
-            MainActivity.appendToLog("serviced bind to mainthread");
-            return null;
-        }
-
-        private void createNotificationChannel()
-        {
-            MainActivity.appendToLog("createNotificationChannel      ");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel serviceChannel = new NotificationChannel(
-                        CHANNEL_ID,
-                        "Foreground Service Channel",
-                        NotificationManager.IMPORTANCE_DEFAULT
-                );
-                NotificationManager manager = getSystemService(NotificationManager.class);
-                if (manager != null) {
-                    manager.createNotificationChannel(serviceChannel);
-                }
-            }
-
-
-        }
-
-        private void startForegroundService()
-        {
-
-            MainActivity.appendToLog("createNotificationChannel      ");
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("Foreground Service")
-                    .setContentText("Service is running in the background")
-                    .setSmallIcon(com.tonyodev.fetch2.R.drawable.notification_template_icon_bg)
-                    .build();
-            startForeground(1, notification);
-        }
-
-
-    }
-
+    };
 
 
 
@@ -296,17 +209,19 @@ public class MainActivity extends AppCompatActivity {
 
     private Map<String, PlayerDeviceInfo> mDeviceInfoAll = new HashMap<>();
 
-    private int mDeviceCountEncountered_WithName = 0;
 
-    private int mDeviceCountEncountered_WithGarbageName = 0;
+
+    private float mDeviceEmergingSpeed=0.f;
 
     private boolean mIsAroundMeServiceRunning = false;
-    public static DIY_DebugUIUtility gDIY_DebugUIUtility=null;
-    DIY_GameUtility gDIY_GameUtility = new DIY_GameUtility();
+
+
+
+    public DIY_DebugUIUtility gDIY_DebugUIUtility=new DIY_DebugUIUtility();
+    public DIY_GameUtility gDIY_GameUtility = new DIY_GameUtility();
     WifiP2pManager manager;
     WifiP2pManager.Channel channel;
-
-
+    public static final long mTimeIntervalToSendLastDeviceEmergingSpeed=5000;
 
 
 
@@ -322,22 +237,28 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Complicated variable or callbacks
-    private ScanCallback mBLEScanCallback = new ScanCallback() {
+    private ScanCallback mBLEScanCallback = new ScanCallback()
+    {
         @Override
-        public void onScanResult(int callbackType, ScanResult result) {
+        public void onScanResult(int callbackType, ScanResult result)
+        {
             super.onScanResult(callbackType, result);
 
             BluetoothDevice result_device = result.getDevice();
-
+            result_device.getType();
             String result_device_mac_addr = result_device.getAddress();
 
-            if (result_device.getName() != null && !result_device.getName().equals("null")) {
+            if (result_device.getName() != null && !result_device.getName().equals("null"))
+            {
 
-                if (mDeviceInfoAll.containsKey(result_device_mac_addr)) {
+                if (mDeviceInfoAll.containsKey(result_device.getName()))
+                {
 
-                    PlayerDeviceInfo cur_player_info = mDeviceInfoAll.get(result_device_mac_addr);
 
-                    if (null != cur_player_info && !cur_player_info.misRandomDeivce) {
+                    PlayerDeviceInfo cur_player_info = mDeviceInfoAll.get(result_device.getName());
+
+                    if (null != cur_player_info)
+                    {
                         int rssi = result.getRssi();
                         // TODO: Replace with the actual TX Power value for your beacon or BLE device
                         int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
@@ -345,17 +266,22 @@ public class MainActivity extends AppCompatActivity {
 
                         double estimatedDistance_new = gDIY_GameUtility.calculateDistance(rssi, txPower);
 
-                        cur_player_info.mDistance = estimatedDistance_new;
 
+                        cur_player_info.mDistance = (estimatedDistance_new+cur_player_info.mDistance)/2.0f;
+                        cur_player_info.mRegisteredPlayerDeviceMacAddr=result_device_mac_addr;
                         mSp_deviceDisplayArrayList.set(cur_player_info.mIndex, cur_player_info.GenerateDisplayString());
 
-                        if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                        if (gDIY_DebugUIUtility.mDebug_With_UI)
+                        {
                             gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
                         }
 
                     }
 
-                } else {
+                }
+                else
+                {
+
 
                     int rssi = result.getRssi();
                     // TODO: Replace with the actual TX Power value for your beacon or BLE device
@@ -365,33 +291,30 @@ public class MainActivity extends AppCompatActivity {
                     double estimatedDistance = gDIY_GameUtility.calculateDistance(rssi, txPower);
 
                     PlayerDeviceInfo player_info = new PlayerDeviceInfo();
-                    // player_info.mDeviceGatt = got_gatt;
+
                     player_info.mDeviceName = result_device.getName();
-                    player_info.misRandomDeivce = false;
+                    player_info.mDeviceType = result_device.getType();
                     player_info.mDistance = estimatedDistance;
                     player_info.mRegisteredPlayerDeviceMacAddr = result_device_mac_addr;
                     player_info.mIndex = mSp_deviceDisplayArrayList.size();
-                    mDeviceInfoAll.put(result_device_mac_addr, player_info);
+                    mDeviceInfoAll.put(player_info.mDeviceName, player_info);
+
 
                     mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
-                    mDeviceCountEncountered_WithName++;
 
                     // OnNewMacAddressEncountered();
-                    if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                    if (gDIY_DebugUIUtility.mDebug_With_UI)
+                    {
                         gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
 
-                    } else {
+                    } else
+                    {
                         OnNewRandomDeviceEncountered_WithName(player_info.GenerateDisplayString());
                     }
 
                 }
-            } else {
-                mDeviceCountEncountered_WithGarbageName++;
-
-                if (!gDIY_DebugUIUtility.mDebug_With_UI) {
-                    OnNewRandomDeviceEncountered_GarbageName();
-                }
             }
+
 
         }
 
@@ -408,27 +331,55 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private Runnable UpdatesBTScanning_Runnable = new Runnable() {
+    private Runnable UpdatesBTScanning_Runnable_UI = new Runnable()
+    {
 
         @Override
-        public void run() {
+        public void run()
+        {
 
-            if (mBluetoothAdapter.isEnabled()) {
-                if (mBluetoothAdapter.isDiscovering())
-                {
-                    appendToLog("经典蓝牙搜索设备ing");
-                }
-            }
 
-            mHandler.postDelayed(UpdatesBTScanning_Runnable, 2000); // Schedule the next message in 2 seconds
+            //@TODO change interval
+            mHandler.postDelayed(UpdatesBTScanning_Runnable_UI, 2000); // Schedule the next message in 2 seconds
             if (gDIY_DebugUIUtility.mDebug_With_UI)
                 gDIY_DebugUIUtility.mMacAddrCountView.setText(GetCurrentNumStatus());
+        }
+    };
+    private Runnable MonitorDeviceEmergingSpeed = new Runnable()
+    {
+
+        @Override
+        public void run()
+        {
+            appendToLog("running MonitorDeviceEmergingSpeed");
+            //@TODO change interval
+            mHandler.postDelayed(MonitorDeviceEmergingSpeed, mTimeIntervalToSendLastDeviceEmergingSpeed); // Schedule the next message in 2 seconds
+            mDeviceEmergingSpeed=(float)mDeviceInfoAll.size()/((float)mTimeIntervalToSendLastDeviceEmergingSpeed/1000);
+            mDeviceInfoAll.clear();
+            mSp_deviceDisplayArrayList.clear();
+            gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
+            if(!gDIY_DebugUIUtility.mDebug_With_UI)
+            {
+                OnUploadNewDeviceEmergingSpeed(mDeviceEmergingSpeed);
+            }
+
         }
     };
 
 
 
+public void PostAllUpdatings()
+{
+    mHandler.post(UpdatesBTScanning_Runnable_UI);
+    mHandler.post(MonitorDeviceEmergingSpeed);
+}
 
+
+public void RemoveAllUpdatings()
+{
+    mHandler.removeCallbacks(UpdatesBTScanning_Runnable_UI);
+    mHandler.removeCallbacks(MonitorDeviceEmergingSpeed);
+}
 
 
 
@@ -454,43 +405,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void StopAroundMeService() {
-        if (!mBluetoothAdapter.isEnabled()) {
+    private void StopAroundMeService()
+    {
+        if (!mBluetoothAdapter.isEnabled())
+        {
 
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        } else {
+        } else
+        {
 
-            // BLE process
+
+
+
+            if (mBluetoothLeScanner != null && mBLEScanCallback != null) {
+                mBluetoothLeScanner.stopScan(mBLEScanCallback);
+            }
+
+            NotifyLeScanStopped();
+
+
+            mSp_deviceDisplayArrayList.clear();
+            mRandom_deviceDisplayArrayList.clear();
+            if (gDIY_DebugUIUtility.mDebug_With_UI)
             {
-                mDeviceCountEncountered_WithName = 0;
-                mDeviceCountEncountered_WithGarbageName = 0;
+                gDIY_DebugUIUtility.mRandom_deviceArrayAdapter.notifyDataSetChanged();
+                gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
+            }
 
-                if (mBluetoothLeScanner != null && mBLEScanCallback != null) {
-                    mBluetoothLeScanner.stopScan(mBLEScanCallback);
-                }
-
-                NotifyLeScanStopped();
-
-                mBluetoothGattServer.close();
-                mSp_deviceDisplayArrayList.clear();
-                mRandom_deviceDisplayArrayList.clear();
-                if (gDIY_DebugUIUtility.mDebug_With_UI) {
-                    gDIY_DebugUIUtility.mRandom_deviceArrayAdapter.notifyDataSetChanged();
-                    gDIY_DebugUIUtility.mSp_deviceArrayAdapter.notifyDataSetChanged();
-                }
-
-                if (mDeviceInfoAll != null) {
-                    mDeviceInfoAll.clear();
-                }
+            if (mDeviceInfoAll != null)
+            {
+                mDeviceInfoAll.clear();
             }
 
 
 
         }
         mRandom_deviceDisplayArrayList.clear();
-        mHandler.removeCallbacks(UpdatesBTScanning_Runnable);
 
+        RemoveAllUpdatings();
         mIsAroundMeServiceRunning = false;
     }
 
@@ -502,32 +455,27 @@ public class MainActivity extends AppCompatActivity {
 
         } else
         {
-            mDeviceCountEncountered_WithName = 0;
-            mDeviceCountEncountered_WithGarbageName = 0;
+
+
 
 
 
            StartScanning();
 
+            if (gDIY_DebugUIUtility.mDebug_With_UI)
             {
-
-                startService(new Intent(this, AroundMeService.class));
-                appendToLog("Tried to start serviec");
-
-            }
-            if (gDIY_DebugUIUtility.mDebug_With_UI) {
                 gDIY_DebugUIUtility.ToggleButtons();
             }
 
-            mHandler.post(UpdatesBTScanning_Runnable);
-
+            PostAllUpdatings();
             mIsAroundMeServiceRunning = true;
 
         }
     }
 
 
-    private void StartScanning() {
+    private void StartScanning()
+    {
         ScanFilter scanFilter = new ScanFilter.Builder().build();
 //                .Builder()
 //                .setServiceUuid(new ParcelUuid(mAroundMeIdentify_UUID))
@@ -566,14 +514,16 @@ public class MainActivity extends AppCompatActivity {
 
     //Activity events
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         // UI gadgets fixing
         {
-            MainActivity.gDIY_DebugUIUtility= new DIY_DebugUIUtility();
 
-            if (gDIY_DebugUIUtility.mDebug_With_UI) {
+
+            if (gDIY_DebugUIUtility.mDebug_With_UI)
+            {
                 // layout setting
                 setContentView(R.layout.activity_main);
             }
@@ -583,7 +533,8 @@ public class MainActivity extends AppCompatActivity {
                 // device array list\adaptor init
                 mSp_deviceDisplayArrayList = new ArrayList<>();
 
-                if (gDIY_DebugUIUtility.mDebug_With_UI) {
+                if (gDIY_DebugUIUtility.mDebug_With_UI)
+                {
                     gDIY_DebugUIUtility.mSp_deviceArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
                             mSp_deviceDisplayArrayList);
 
@@ -657,13 +608,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                gDIY_DebugUIUtility.mUtility_DeviceList_divider.setOnTouchListener(new View.OnTouchListener() {
+                gDIY_DebugUIUtility.mUtility_DeviceList_divider.setOnTouchListener(new View.OnTouchListener()
+                {
                     private float initialY;
                     private int initialTopPanelHeight, initialBottomPanelHeight;
 
                     @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        switch (event.getAction()) {
+                    public boolean onTouch(View v, MotionEvent event)
+                    {
+                        switch (event.getAction())
+                        {
                             case MotionEvent.ACTION_DOWN:
                                 initialY = event.getY();
                                 initialTopPanelHeight = gDIY_DebugUIUtility.mUtilityPanel.getHeight();
@@ -692,12 +646,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            if (gDIY_DebugUIUtility.mDebug_With_UI) {
-                gDIY_DebugUIUtility.mLogScrollView.setOnTouchListener(new View.OnTouchListener() {
+            if (gDIY_DebugUIUtility.mDebug_With_UI)
+            {
+                gDIY_DebugUIUtility.mLogScrollView.setOnTouchListener(new View.OnTouchListener()
+                {
 
                     @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        switch (event.getAction()) {
+                    public boolean onTouch(View v, MotionEvent event)
+                    {
+                        switch (event.getAction())
+                        {
                             case MotionEvent.ACTION_DOWN:
                                 // 用户开始触摸，暂停自动滚动
                                 gDIY_DebugUIUtility.mLogViewautoScroll = false;
@@ -714,23 +672,27 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                gDIY_DebugUIUtility.mButton_StartScan.setOnClickListener(new View.OnClickListener() {
+                gDIY_DebugUIUtility.mButton_StartScan.setOnClickListener(new View.OnClickListener()
+                {
 
                     @Override
-                    public void onClick(View arg0) {
+                    public void onClick(View arg0)
+                    {
                         StartAroundMeService();
-                        mDeviceCountEncountered_WithName = 0;
-                        mDeviceCountEncountered_WithGarbageName = 0;
+
+
                     }
                 });
 
-                gDIY_DebugUIUtility.mButton_CancelScan.setOnClickListener(new View.OnClickListener() {
+                gDIY_DebugUIUtility.mButton_CancelScan.setOnClickListener(new View.OnClickListener()
+                {
 
                     @Override
-                    public void onClick(View arg0) {
+                    public void onClick(View arg0)
+                    {
                         StopAroundMeService();
-                        mDeviceCountEncountered_WithName = 0;
-                        mDeviceCountEncountered_WithGarbageName = 0;
+
+
                     }
 
                 });
@@ -752,10 +714,12 @@ public class MainActivity extends AppCompatActivity {
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
 
 
-            if (mBluetoothLeScanner == null) {
+            if (mBluetoothLeScanner == null)
+            {
                 appendToLog("硬件不支持 BLE Scanner");
             }
-            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
+            {
                 appendToLog("硬件不支持 BLE机能");
 
             }
@@ -766,26 +730,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onDestroy() {
+    public void onDestroy()
+    {
 
         super.onDestroy();
 
     }
 
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
-        if (mIsAroundMeServiceRunning) {
-            mHandler.post(UpdatesBTScanning_Runnable); // Start sending messages
+        if (mIsAroundMeServiceRunning)
+        {
+            PostAllUpdatings();
         }
 
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
 
-        if (mIsAroundMeServiceRunning) {
-            mHandler.removeCallbacks(UpdatesBTScanning_Runnable); // Stop sending messages
+        if (mIsAroundMeServiceRunning)
+        {
+            RemoveAllUpdatings();
         }
 
     }
@@ -888,31 +857,34 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Utilities for developing this app
-    private String GetCurrentNumStatus() {
-        return String.format("Lv1:%d, Lv0:%d", mDeviceCountEncountered_WithName,
-                mDeviceCountEncountered_WithGarbageName);
+    private String GetCurrentNumStatus()
+    {
+        return String.format("byPassert:%d, DeviceEmergingSpeed:%f", mDeviceInfoAll.size(),
+                mDeviceEmergingSpeed);
     }
 
-    public static void appendToLog(String text)
+    public void appendToLog(String text)
     {
 
+        if (gDIY_DebugUIUtility.mDebug_With_UI) {
+            runOnUiThread(() -> {
+                gDIY_DebugUIUtility.mLogTextView.append(text + "\n");
+                // 自动滚动到底部
+                if (gDIY_DebugUIUtility.mLogViewautoScroll) {
+                    gDIY_DebugUIUtility.scrollToBottom();
+                }
+            });
+        } else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    OnNewLogGenerated(text);
+                    // Toast.makeText(GameActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
-        if (gDIY_DebugUIUtility.mDebug_With_UI)
-        {
-            gDIY_DebugUIUtility.mLogTextView.append(text + "\n");
-            // 自动滚动到底部
-            if (gDIY_DebugUIUtility.mLogViewautoScroll)
-            {
-                gDIY_DebugUIUtility.scrollToBottom();
-            }
-        }
-        else
-        {
-            OnNewLogGenerated(text);
-            // Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-        }
     }
-
 
 
 
@@ -924,11 +896,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     //UE5 cross-platform API
-    public static void OnNewLogGenerated(String in_string) {
-        ;
-    }
+    public static native void OnNewLogGenerated(String in_string);
     public static native void OnNewRandomDeviceEncountered_WithName(String in_string);
 
-    public static native void OnNewRandomDeviceEncountered_GarbageName();
+    public static native void OnUploadNewDeviceEmergingSpeed(float inSpeed);
 
 }
