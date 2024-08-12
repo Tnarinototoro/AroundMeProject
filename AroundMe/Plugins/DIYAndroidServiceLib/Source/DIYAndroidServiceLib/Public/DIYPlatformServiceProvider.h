@@ -9,46 +9,52 @@
 #include "Runtime/Launch/Public/Android/AndroidJNI.h"
 #include "Runtime/ApplicationCore/Public/Android/AndroidApplication.h"
 #endif
+
 #include "DIYPlatformServiceProvider.generated.h"
-
-
-
 
 UCLASS()
 class DIYPLATFORMSERVICE_API ADIYPlatformServiceProvider : public AActor
 {
 
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-
-	
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeviceDetectedDelegate_GarbageName);
-
-
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeviceDetectedDelegate_WithName, const FString&, inDeviceInfo);
 public:
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAroundMeService_SimpleTrigger);
 
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAroundMeService_WithStringMsg, const FString &, inMsg);
 
-	ADIYPlatformServiceProvider();
-	~ADIYPlatformServiceProvider();
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAroundMeService_WithIntMsg, int, inIntMsg);
+    ADIYPlatformServiceProvider();
+    ~ADIYPlatformServiceProvider();
 
-	static void StartProvidingService();
-	static void StopProvidingService();
-	UFUNCTION()
-	virtual void Setup(UWorld* validWorld);
-	
-	UPROPERTY()
-	FOnDeviceDetectedDelegate_GarbageName DeviceDetectedDelegate_GarbageName;
+    static void StartProvidingService();
+    static void StopProvidingService();
 
-	UPROPERTY()
-	FOnDeviceDetectedDelegate_WithName DeviceDetectedDelegate_WithName;
+    static void RequestAddGiveTask(int item_id);
+    UFUNCTION()
+    virtual void Setup(UWorld *validWorld);
 
+    UPROPERTY()
+    FOnAroundMeService_SimpleTrigger OnDeviceDetected_Delegate_GarbageName_Provider;
+    UPROPERTY()
+    FOnAroundMeService_WithStringMsg OnDeviceDetected_Delegate_WithName_Provider;
 
+    UPROPERTY()
+    FOnAroundMeService_WithStringMsg OnMessageReceivedFromOtherPDevices_Delegate_Provider;
 
-	/*static FOnDeviceDetectedDelegate_GarbageName Garbage_Test;
+    UPROPERTY()
+    FOnAroundMeService_WithIntMsg OnSubmittingBaypassData_GarbageNamesCount_Delegate_Provider;
 
-	static FOnDeviceDetectedDelegate_WithName With_Test;*/
-	/* UWorld reference */
-	UPROPERTY()
-	UWorld* world;
+    UPROPERTY()
+    FOnAroundMeService_WithIntMsg OnSubmittingBaypassData_WithNamesCount_Delegate_Provider;
+
+    UPROPERTY()
+    FOnAroundMeService_WithIntMsg OnSubmittingBaypassData_GameUserCount_Delegate_Provider;
+
+    UPROPERTY()
+    FOnAroundMeService_WithIntMsg OnItemGiftReceived_Delegate_Provider;
+
+    /* UWorld reference */
+    UPROPERTY()
+    UWorld *world;
 };

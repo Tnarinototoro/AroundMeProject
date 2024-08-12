@@ -8,15 +8,18 @@
 #include "DIYBFL_PlatformService.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class DIYPLATFORMSERVICE_API UDIYBFL_PlatformService : public UBlueprintFunctionLibrary
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 public:
-	UFUNCTION(BlueprintCallable, Category = "PlatFormService")
-		static void StartPlatformService();
-	UFUNCTION(BlueprintCallable, Category = "PlatFormService")
-		static void StopPlatformService();
+    UFUNCTION(BlueprintCallable, Category = "PlatFormService")
+    static void StartPlatformService();
+    UFUNCTION(BlueprintCallable, Category = "PlatFormService")
+    static void StopPlatformService();
+
+    UFUNCTION(BlueprintCallable, Category = "PlatFormService")
+    static void RequestAddGiveTask(int item_id);
 };

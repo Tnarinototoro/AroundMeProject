@@ -21,9 +21,9 @@ void UDIY_ItemSubMenuWidget::RequestToggleCommandEnabledAt_Impl(uint32 inIndex, 
         return;
     if (nullptr != CommandList)
     {
-        UButton* cur_button= Cast<UButton>(CommandList->GetChildAt(inIndex));
+        UButton *cur_button = Cast<UButton>(CommandList->GetChildAt(inIndex));
 
-        if (nullptr != cur_button&&cur_button->GetIsEnabled()!=inIsEnabled)
+        if (nullptr != cur_button && cur_button->GetIsEnabled() != inIsEnabled)
         {
             cur_button->SetIsEnabled(inIsEnabled);
         }
@@ -51,17 +51,15 @@ void UDIY_ItemSubMenuWidget::CreateCommandButtons(int32 NumCommands)
     {
         UButton *CommandButton = WidgetTree->ConstructWidget<UButton>();
 
-        
-        
         if (CommandButton)
         {
-            CommandButton->SetDisplayLabel(FString::Printf(TEXT("Cmd_Discard_%d"),i));
+            // CommandButton->SetDisplayLabel(FString::Printf(TEXT("Cmd_Discard_%d"),i));
             CommandButton->SetIsEnabled(false);
             UTextBlock *ButtonText = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass(), TEXT("DiscardButttonText"));
             if (ButtonText)
             {
                 ButtonText->SetText(FText::FromString(TEXT("Discard")));
-                ButtonText->SetColorAndOpacity(FLinearColor::White);
+                ButtonText->SetColorAndOpacity(FLinearColor::Red);
                 ButtonText->SetFont(FSlateFontInfo(FPaths::EngineContentDir() / TEXT("Slate/Fonts/Roboto-Regular.ttf"), 24));
 
                 CommandButton->AddChild(ButtonText);
@@ -69,15 +67,19 @@ void UDIY_ItemSubMenuWidget::CreateCommandButtons(int32 NumCommands)
             CommandList->AddChild(CommandButton);
         }
     }
-   
 }
 
 FString UDIY_ItemSubMenuWidget::GetCommandStringAt(uint32 inIndex)
 {
     ensureMsgf(inIndex < (uint32)GetCommandsNum(), TEXT("GetCommand string at invalid index"));
 
-    UButton* cur_button = Cast<UButton>(CommandList->GetChildAt(inIndex));
+    UButton *cur_button = Cast<UButton>(CommandList->GetChildAt(inIndex));
 
     ensureMsgf(nullptr != cur_button, TEXT("cur button is nullptr"));
-    return cur_button->GetDisplayLabel();
+
+    UTextBlock* cur_text_block = Cast<UTextBlock>(cur_button->GetChildAt(0));
+
+    ensureMsgf(nullptr != cur_text_block, TEXT("cur button is nullptr"));
+
+    return cur_text_block->GetText().ToString();
 }

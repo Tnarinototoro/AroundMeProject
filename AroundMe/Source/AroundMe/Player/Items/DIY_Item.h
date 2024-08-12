@@ -47,6 +47,7 @@ public:
 
     void InitWithConfig(const FDIY_ItemDefualtConfig &inConfig);
 
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
     EItemID GetItemID() const { return config_copy.ItemID; }
 
     // force override means to force change to target state and execute the first execution event equal to current state

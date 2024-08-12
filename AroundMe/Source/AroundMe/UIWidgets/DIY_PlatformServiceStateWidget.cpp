@@ -46,7 +46,7 @@ void UDIY_PlatformServiceStateWidget::NativeOnInitialized()
         StartServiceButton = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), TEXT("StartServiceButton"));
         if (StartServiceButton)
         {
-            StartServiceButton->SetDisplayLabel("StartServiceButton");
+            
             StartServiceButton->OnClicked.AddDynamic(this, &UDIY_PlatformServiceStateWidget::StartServiceButtonClicked);
             UTextBlock *ButtonText = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass(), TEXT("StartServiceButtonText"));
             if (ButtonText)
@@ -71,7 +71,7 @@ void UDIY_PlatformServiceStateWidget::NativeOnInitialized()
         StopServiceButton = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), TEXT("StopServiceButton"));
         if (StopServiceButton)
         {
-            StopServiceButton->SetDisplayLabel("StopServiceButton");
+            
             StopServiceButton->OnClicked.AddDynamic(this, &UDIY_PlatformServiceStateWidget::StopServiceButtonClicked);
             StopServiceButton->SetIsEnabled(false);
             UTextBlock *ButtonText = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass(), TEXT("StopServiceButtonText"));

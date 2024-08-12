@@ -4,12 +4,15 @@
 
 void UDIYBFL_PlatformService::StartPlatformService()
 {
-	ADIYPlatformServiceProvider::StartProvidingService();
+    ADIYPlatformServiceProvider::StartProvidingService();
 }
 
 void UDIYBFL_PlatformService::StopPlatformService()
 {
-	ADIYPlatformServiceProvider::StopProvidingService();
+    ADIYPlatformServiceProvider::StopProvidingService();
 }
 
-
+void UDIYBFL_PlatformService::RequestAddGiveTask(int item_id)
+{
+    ADIYPlatformServiceProvider::RequestAddGiveTask(item_id);
+}
