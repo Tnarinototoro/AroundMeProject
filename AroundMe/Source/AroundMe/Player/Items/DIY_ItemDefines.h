@@ -63,7 +63,7 @@ struct FDIY_ItemDefualtConfig
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    EItemID ItemID;
+    EItemID ItemID{EItemID::EItemID_Count};
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float ItemMass{1.0f};
@@ -111,10 +111,5 @@ struct FDIY_ItemStatisticInfo
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     int64 ItemNumInBackPack{0};
-
-
-
-
-    
 };
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnItemsNumInBackPack_Changed,int32);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnItemsNumInBackPack_Changed, int32);

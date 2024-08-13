@@ -332,8 +332,12 @@ void UDIY_MainPlayerInputController::HandleKey_E_Input(const FInputActionValue &
         }
         else
         {
-            AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestAddItemToBackPack(detected_actor);
-            AcquireOwnerActorOwnedUDIY_ItemDetector()->ClearDetectedActor();
+            ADIY_ItemBase *cur_detected_item = Cast<ADIY_ItemBase>(detected_actor);
+            if (cur_detected_item != nullptr && cur_detected_item->GetItemID() != EItemID::EItemID_Count)
+            {
+                AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestAddItemToBackPack(detected_actor);
+                AcquireOwnerActorOwnedUDIY_ItemDetector()->ClearDetectedActor();
+            }
         }
     }
     else

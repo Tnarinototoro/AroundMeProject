@@ -746,6 +746,8 @@ public class MainActivity extends AppCompatActivity {
                         {
                             messageToSend=String.format("%d",mRequestedToGiveItems.get(mRequestedToGiveItems.size()-1));
                             mRequestedToGiveItems.remove(mRequestedToGiveItems.size()-1);
+
+                            appendToLog(String.format("XXXXXXXX left gifts to give %d",mRequestedToGiveItems.size()));
                         }
                         BluetoothGattCharacteristic characteristic = mBluetoothGattServer
                                 .getService(mAroundMeIdentify_UUID)
@@ -754,6 +756,7 @@ public class MainActivity extends AppCompatActivity {
                         mBluetoothGattServer.notifyCharacteristicChanged(device, characteristic, false);
 
                         appendToLog("msg sent to c device :" + device.getName() + "@" + device.getAddress()+"msg: "+messageToSend);
+
 
                     }
 
