@@ -116,6 +116,10 @@ bool ADIY_ItemBase::CheckItemFlag(EDIY_InteractItemFlag inFlag)
 {
     return UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)inFlag);
 }
+const FDIY_ItemDefualtConfig &ADIY_ItemBase::GetItemDefualtConfig()
+{
+    return this->config_copy;
+}
 void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
 {
     config_copy = inConfig;

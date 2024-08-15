@@ -75,15 +75,21 @@ void UDIY_MainPlayerActionController::UpdateStateMachine(float inDelta)
 
 void UDIY_MainPlayerActionController::UpdateParams(float inDelta)
 {
-    if (HasImpulseTask)
-    {
-        // HasImpulseTask = false;
-        // BasicStaticMeshComponent->AddImpulse(PulseVec, NAME_None, true);
-    }
 
     if (nullptr != PickUpedActor)
     {
+
         UStaticMeshComponent *BasicStaticMeshComponent = Cast<UStaticMeshComponent>(PickUpedActor->GetRootComponent());
+
+        if (nullptr != BasicStaticMeshComponent && HasImpulseTask && BasicStaticMeshComponent->IsSimulatingPhysics())
+        {
+            HasImpulseTask = false;
+            EASY_LOG_MAINPLAYER("YYYYYYYYYYYY item launched!!!!");
+            // BasicStaticMeshComponent->AddImpulse(PulseVec, NAME_None, true);
+
+            BasicStaticMeshComponent->SetPhysicsLinearVelocity(PulseVec * mPickActionVelocityCoe);
+            PickUpedActor = nullptr;
+        }
         if (nullptr != BasicStaticMeshComponent)
         {
             if (TargetPhysicsState == 1)
@@ -98,7 +104,6 @@ void UDIY_MainPlayerActionController::UpdateParams(float inDelta)
                 BasicStaticMeshComponent->SetSimulatePhysics(true);
                 BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
                 TargetPhysicsState = -1;
-                PickUpedActor = nullptr;
             }
         }
     }
@@ -179,10 +184,11 @@ void UDIY_MainPlayerActionController::PlacePickedUpItem()
             float Thickness = 2.0f;
 
             // 绘制箭头
-            // DrawDebugLine(GetWorld(), StartLocation, EndLocation, ArrowColor, true, 2.0f, 0, Thickness);
+            DrawDebugLine(GetWorld(), StartLocation, EndLocation, ArrowColor, true, 2.0f, 0, Thickness);
 
             HasImpulseTask = true;
-            PulseVec = pulse_dir * 2000;
+            PulseVec = pulse_dir;
+            // ItemBase->GetItemDefualtConfig().ItemMass * mPickActionVelocityCoe;
 
             EASY_LOG_MAINPLAYER("released to ground successfully");
 

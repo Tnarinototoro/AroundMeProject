@@ -46,8 +46,12 @@ AActor *UDIY_ItemDetector::GetDetectedActor() const
 void UDIY_ItemDetector::ProcessBeginOverlapEvent(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
     EASY_LOG_MAINPLAYER("ProcessBeginOverlapEvent");
-
-    if (!mDetectedActor && OtherActor)
+    ADIY_ItemBase *possible_item = Cast<ADIY_ItemBase>(OtherActor);
+    if (!mDetectedActor &&
+        OtherActor &&
+        nullptr != possible_item &&
+        IsValid(possible_item) &&
+        possible_item->GetItemID() != EItemID::EItemID_Count)
     {
         mDetectedActor = OtherActor;
         // FDIY_DamageInfo temp_info;
@@ -62,8 +66,7 @@ void UDIY_ItemDetector::ProcessBeginOverlapEvent(UPrimitiveComponent *Overlapped
         // UDIY_InteractionUtility::ApplyDamage(temp_info);
     }
 
-    ADIY_ItemBase *possible_item = Cast<ADIY_ItemBase>(OtherActor);
-    if (IsValid(possible_item))
+    if (IsValid(possible_item) && possible_item->GetItemID() != EItemID::EItemID_Count)
     {
         possible_item->ResumeTrinkling();
     }
@@ -86,7 +89,7 @@ void UDIY_ItemDetector::ProcessEndOverlapEvent(UPrimitiveComponent *OverlappedCo
     }
 
     ADIY_ItemBase *possible_item = Cast<ADIY_ItemBase>(OtherActor);
-    if (IsValid(possible_item))
+    if (IsValid(possible_item) && possible_item->GetItemID() != EItemID::EItemID_Count)
     {
         possible_item->PauseTrinkling();
     }

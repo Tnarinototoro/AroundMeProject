@@ -56,6 +56,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
     bool CheckItemFlag(EDIY_InteractItemFlag inFlag);
 
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
+    const FDIY_ItemDefualtConfig& GetItemDefualtConfig();
+
 #if WITH_EDITOR
     static bool Dbg_Enable_ItemInfo_Widget;
 #endif

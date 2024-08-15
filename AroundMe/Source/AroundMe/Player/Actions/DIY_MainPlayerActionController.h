@@ -58,6 +58,9 @@ public:
     UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
     FDIY_ItemDataTableRow mCurrentReceipt;
 
+    UPROPERTY(BlueprintReadWrite,EditDefaultsOnly, Category = "DIY_MainPlayerActionController")
+    float mPickActionVelocityCoe{10.0f};
+
 private:
     // 0--> physics   1---> pickup state no phy no collision  -1 no need to do any thing
     int TargetPhysicsState{-1};
