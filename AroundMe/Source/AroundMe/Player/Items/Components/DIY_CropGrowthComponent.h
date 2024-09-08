@@ -4,30 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+
 #include "DIY_CropGrowthComponent.generated.h"
 
-
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class AROUNDME_API UDIY_CropGrowthComponent : public UActorComponent
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UDIY_CropGrowthComponent();
+public:
+    // Sets default values for this component's properties
+    UDIY_CropGrowthComponent();
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+    // Called when the game starts
+    virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable, Category = "DIY_CropGrowthComponen")
-		bool GrowWithSteps(int DeltaSteps); // async load  mesh and set it
+    UFUNCTION(BlueprintCallable, Category = "DIY_CropGrowthComponen")
+    bool GrowWithSteps(int DeltaSteps); // async load  mesh and set it
 
-	
+public:
+    // Called every frame
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 private:
-	class UDIY_ChangeStaticMeshComponent* CropChangeStaticMeshCompo{ nullptr };
+    class UDIY_ChangeStaticMeshComponent *CropChangeStaticMeshCompo{nullptr};
 };
