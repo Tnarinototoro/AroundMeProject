@@ -7,7 +7,7 @@
 #include "DIY_DynamicMeshPaintComponent.generated.h"
 
 UCLASS(ClassGroup = (Player), meta = (BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_DynamicMeshPaintComponent : public UActorComponent, public IDIY_DynamicMeshPaintCommonInterFace
+class AROUNDME_API UDIY_DynamicMeshPaintComponent : public USceneComponent, public IDIY_DynamicMeshPaintCommonInterFace
 {
     GENERATED_BODY()
 
@@ -30,7 +30,7 @@ public:
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
     UFUNCTION(BlueprintCallable, Category = "DIY_Paint")
-    void AddStainAt(const FVector2D &HitLocationUV);
+    void AddStainAt(const FVector &WorldPosition, float BrushRadius);
 
 protected:
     // Temperature data and functions start <--------------------------------------------------------------------------------------------------------------------
@@ -46,13 +46,29 @@ private:
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stain")
     class UMaterial *ClearMaterial; // Or UMaterialInstance if using instance
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stain")
+    class UMaterialInterface *UnwrapMaterial{nullptr};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stain")
+    FLinearColor UnwrapPosition{0.f, 0.f, 0.f, 0.f}; // Or UMaterialInstance if using instance
 protected:
-    // 0-> totally dry 1->water
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stain")
+    class UStaticMeshComponent *BackgroundPlane{nullptr};
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stain")
+    class USceneCaptureComponent2D *SceneCaptureCompo{nullptr};
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stain")
+    class UMaterialParameterCollection *Global_DynamicPaintMaterialCollection;
 
 private:
     UPROPERTY()
-    class UMaterialInstanceDynamic *DynamicMaterialInstance;
+    class UMaterialInstanceDynamic *OriginalDynamicMaterialInstance;
 
     UPROPERTY()
-    class UTextureRenderTarget2D *StainRenderTarget;
+    class UMaterialInstanceDynamic *DynamicMaterialInstance_forCapturing;
+
+    UPROPERTY()
+    class UStaticMeshComponent *OwnerMeshCompo{nullptr};
 };
