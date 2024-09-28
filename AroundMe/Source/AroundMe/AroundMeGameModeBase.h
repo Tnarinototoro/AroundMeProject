@@ -7,11 +7,16 @@
 #include "AroundMeGameModeBase.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class AROUNDME_API AAroundMeGameModeBase : public AGameModeBase
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY()
+public:
+    AAroundMeGameModeBase();
+
+protected:
+
+    virtual void BeginPlay() override;
 };

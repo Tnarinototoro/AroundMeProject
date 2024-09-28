@@ -49,7 +49,10 @@ void UDIY_MainPlayerCameraController::BeginPlay()
 
         cur_controller->SetControlRotation(NewRotator);
     }
-    // FollowCamera->AspectRatio = 9.0f / 16.0f;
+#if 0
+    FollowCamera->SetConstraintAspectRatio(true);
+    FollowCamera->SetAspectRatio(9.0f / 16.0f);
+#endif
 }
 
 void UDIY_MainPlayerCameraController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)

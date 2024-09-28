@@ -47,10 +47,10 @@ public:
 
 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY_MainPlayerCameraController")
+	UPROPERTY( BlueprintReadOnly, EditDefaultsOnly, Category = "DIY_MainPlayerCameraController")
 	class USpringArmComponent* CameraBoom;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY_MainPlayerCameraController")
+	UPROPERTY(BlueprintReadOnly,EditDefaultsOnly, Category = "DIY_MainPlayerCameraController")
 	class UCameraComponent* FollowCamera;
 
 	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
