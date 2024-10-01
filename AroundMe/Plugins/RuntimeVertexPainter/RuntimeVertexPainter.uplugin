@@ -1,0 +1,26 @@
+{
+	"FileVersion": 3,
+	"Version": 0,
+	"VersionName": "1.1",
+	"FriendlyName": "RuntimeVertexPainter",
+	"Description": "Paint vertex color of StaticMeshComponent or SkeletalMeshComponent in runtime",
+	"Category": "Other",
+	"CreatedBy": "SunBoHeng",
+	"CreatedByURL": "https://space.bilibili.com/168173226?spm_id_from=333.1007.0.0",
+	"DocsURL": "https://docs.google.com/document/d/1e_qHYzD7De_0sIzdyC2vZJWuCqNuKB1SCoSFsjfXbhM/edit?usp=sharing",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/f3e65cdfddaa4ebba225638b0c93b314",
+	"SupportURL": "",
+	"EngineVersion": "5.3",
+	"CanContainContent": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "RuntimeVertexPainter",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		}
+	]
+}
