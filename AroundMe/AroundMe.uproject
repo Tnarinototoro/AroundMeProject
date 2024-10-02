@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{57B07EC2-4F32-8082-F890-CF8DBC3F2953}",
+	"EngineAssociation": "{56F5CFA7-4ECE-8684-B905-A5BD90E7ACAE}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -51,6 +51,11 @@
 			"Name": "AssetsCleaner",
 			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/3caab7c6e81f449296989122c043ae21"
+		},
+		{
+			"Name": "RuntimeVertexPainter",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/f3e65cdfddaa4ebba225638b0c93b314"
 		}
 	]
 }
