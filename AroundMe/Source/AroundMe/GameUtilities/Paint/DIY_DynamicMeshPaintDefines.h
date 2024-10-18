@@ -3,12 +3,14 @@
 #include "CoreMinimal.h"
 #include "DIY_DynamicMeshPaintDefines.generated.h"
 
-UENUM(BlueprintType)
-enum class EDIY_PaintType : uint8
-{
-    Sphere UMETA(Description = "Sphere type surrounding object"),
-    Square UMETA(Description = "Square type surrounding object"),
 
-    Plane UMETA(Description = "Plane type with directive impacting on object"),
+
+UENUM(BlueprintType)
+enum class EDIY_StainType : uint8
+{
+    Mud UMETA(Description = "mud stains"),
+    Blood UMETA(Description = "blood stains"),
+    MicroPlants UMETA(Description = "micro plants basically means those stains generated from plants"),
+    Metals UMETA(Description = "metal ruast or something"),
 
 };

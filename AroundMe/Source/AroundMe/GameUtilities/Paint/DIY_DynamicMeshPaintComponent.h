@@ -32,35 +32,19 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_Paint")
     void AddStainAt(const FVector &WorldPosition, float BrushRadius);
 
-protected:
-    // Temperature data and functions start <--------------------------------------------------------------------------------------------------------------------
-protected:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stain")
-    class UTextureRenderTarget2D *StainRenderTargetTest;
-
+    void ClearAllPaint();
 public:
 private:
     // Temperature data and functions End -------------------------------------------------------------------------------------------------------------------->
 
     // Moisture data and functions start <--------------------------------------------------------------------------------------------------------------------
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stain")
-    class UMaterial *ClearMaterial; // Or UMaterialInstance if using instance
+  
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stain")
     class UMaterialInterface *UnwrapMaterial{nullptr};
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stain")
-    FLinearColor UnwrapPosition{0.f, 0.f, 0.f, 0.f}; // Or UMaterialInstance if using instance
-protected:
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stain")
-    class UStaticMeshComponent *BackgroundPlane{nullptr};
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stain")
-    class USceneCaptureComponent2D *SceneCaptureCompo{nullptr};
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Stain")
-    class UMaterialParameterCollection *Global_DynamicPaintMaterialCollection;
+  
 
 private:
     UPROPERTY()

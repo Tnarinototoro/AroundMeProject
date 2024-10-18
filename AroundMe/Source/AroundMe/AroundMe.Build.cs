@@ -19,7 +19,9 @@ public class AroundMe : ModuleRules
             "EnhancedInput",
             "DIYPlatformService",
             "AssetRegistry",
-            "DeveloperSettings"});
+            "DeveloperSettings",
+            "RuntimeVertexPainter"
+        });
 
 
 
