@@ -166,36 +166,93 @@ void URuntimeVertexPainterBPLibrary::ContextPaintVertexColorInShape_SM(
                 }
 
                 FLinearColor BaseColor = VertexColorsArray.VertexColors[VertexIndex];
+
                 FLinearColor FinalColor;
 
                 // Switch PaintChannel,different PaintChannel value needs different ways to mix color
                 switch (static_cast<int32>(Context.Channel))
                 {
                 case 0:
-                    FinalColor = UKismetMathLibrary::LinearColorLerp(BaseColor, Color, alpha);
+                    FinalColor = UKismetMathLibrary::LinearColorLerp(FLinearColor::Black, Color, Opacity);
                     break;
 
                 case 1:
-                    FinalColor = UKismetMathLibrary::MakeColor(UKismetMathLibrary::Lerp(BaseColor.R, Color.R, alpha), BaseColor.G, BaseColor.B, BaseColor.A);
+                    FinalColor = UKismetMathLibrary::MakeColor(UKismetMathLibrary::Lerp(0, Color.R, Opacity), 0, 0, 0);
                     break;
 
                 case 2:
-                    FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, UKismetMathLibrary::Lerp(BaseColor.R, Color.G, alpha), BaseColor.B, BaseColor.A);
+                    FinalColor = UKismetMathLibrary::MakeColor(0, UKismetMathLibrary::Lerp(0, Color.G, Opacity), 0, 0);
                     break;
 
                 case 3:
-                    FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, BaseColor.G, UKismetMathLibrary::Lerp(BaseColor.R, Color.B, alpha), BaseColor.A);
+                    FinalColor = UKismetMathLibrary::MakeColor(0, 0, UKismetMathLibrary::Lerp(0, Color.B, Opacity), 0);
                     break;
 
                 case 4:
-                    FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, BaseColor.G, BaseColor.B, UKismetMathLibrary::Lerp(BaseColor.R, Color.A, alpha));
+                    FinalColor = UKismetMathLibrary::MakeColor(0, 0, 0, UKismetMathLibrary::Lerp(0, Color.A, Opacity));
                     break;
 
                 default:
+                    checkf(false, TEXT("Invalid channel choice given"));
                     FinalColor = FLinearColor::Black;
                 }
 
-                VertexColorsArray.VertexColors[VertexIndex] = FinalColor.ToFColor(bConvertToSRGB);
+                {
+                    int32 Final_R = VertexColorsArray.VertexColors[VertexIndex].R;
+                    int32 Final_G = VertexColorsArray.VertexColors[VertexIndex].G;
+                    int32 Final_B = VertexColorsArray.VertexColors[VertexIndex].B;
+                    int32 Final_A = VertexColorsArray.VertexColors[VertexIndex].A;
+                    switch (inMode)
+                    {
+                    case EPaintMode::EPM_SET:
+                    {
+
+                        Final_R = FMath::Clamp(FinalColor.ToFColor(bConvertToSRGB).R, 0, 255);
+                        Final_G = FMath::Clamp(FinalColor.ToFColor(bConvertToSRGB).G, 0, 255);
+                        Final_B = FMath::Clamp(FinalColor.ToFColor(bConvertToSRGB).B, 0, 255);
+                        Final_A = FMath::Clamp(FinalColor.ToFColor(bConvertToSRGB).A, 0, 255);
+
+                        break;
+                    }
+                    case EPaintMode::EPM_ADD:
+                    {
+                        Final_R = FMath::Clamp(Final_R + (FinalColor.ToFColor(bConvertToSRGB)).R, 0, 255);
+                        Final_G = FMath::Clamp(Final_G + (FinalColor.ToFColor(bConvertToSRGB)).G, 0, 255);
+                        Final_B = FMath::Clamp(Final_B + (FinalColor.ToFColor(bConvertToSRGB)).B, 0, 255);
+                        Final_A = FMath::Clamp(Final_A + (FinalColor.ToFColor(bConvertToSRGB)).A, 0, 255);
+
+                        break;
+                    }
+
+                    case EPaintMode::EPM_SUB:
+                    {
+                        Final_R = FMath::Clamp(Final_R - (FinalColor.ToFColor(bConvertToSRGB)).R, 0, 255);
+                        Final_G = FMath::Clamp(Final_G - (FinalColor.ToFColor(bConvertToSRGB)).G, 0, 255);
+                        Final_B = FMath::Clamp(Final_B - (FinalColor.ToFColor(bConvertToSRGB)).B, 0, 255);
+                        Final_A = FMath::Clamp(Final_A - (FinalColor.ToFColor(bConvertToSRGB)).A, 0, 255);
+
+                        break;
+                    }
+                    case EPaintMode::EPM_MUL:
+                    {
+                        Final_R = FMath::Clamp(Final_R * (FinalColor.ToFColor(bConvertToSRGB)).R, 0, 255);
+                        Final_G = FMath::Clamp(Final_G * (FinalColor.ToFColor(bConvertToSRGB)).G, 0, 255);
+                        Final_B = FMath::Clamp(Final_B * (FinalColor.ToFColor(bConvertToSRGB)).B, 0, 255);
+                        Final_A = FMath::Clamp(Final_A * (FinalColor.ToFColor(bConvertToSRGB)).A, 0, 255);
+                        break;
+                    }
+                    default:
+                    {
+                        checkf(false, TEXT("invalid paint mode given"));
+                        break;
+                    }
+                    }
+
+                    VertexColorsArray.VertexColors[VertexIndex].R = Final_R;
+                    VertexColorsArray.VertexColors[VertexIndex].G = Final_G;
+                    VertexColorsArray.VertexColors[VertexIndex].B = Final_B;
+                    VertexColorsArray.VertexColors[VertexIndex].A = Final_A;
+                }
             }
         }
         LODIndex++;
@@ -224,39 +281,37 @@ void URuntimeVertexPainterBPLibrary::ContextPaintAllVerticesColor_SM(FRVPContext
         {
 
             FLinearColor BaseColor = VertexColorsArray.VertexColors[VertexIndex];
+
             FLinearColor FinalColor;
 
-            
             // Switch PaintChannel,different PaintChannel value needs different ways to mix color
             switch (static_cast<int32>(Context.Channel))
             {
             case 0:
-                FinalColor = UKismetMathLibrary::LinearColorLerp(BaseColor, Color, Opacity);
+                FinalColor = UKismetMathLibrary::LinearColorLerp(FLinearColor::Black, Color, Opacity);
                 break;
 
             case 1:
-                FinalColor = UKismetMathLibrary::MakeColor(UKismetMathLibrary::Lerp(BaseColor.R, Color.R, Opacity), BaseColor.G, BaseColor.B, BaseColor.A);
+                FinalColor = UKismetMathLibrary::MakeColor(UKismetMathLibrary::Lerp(0, Color.R, Opacity), 0, 0, 0);
                 break;
 
             case 2:
-                FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, UKismetMathLibrary::Lerp(BaseColor.R, Color.G, Opacity), BaseColor.B, BaseColor.A);
+                FinalColor = UKismetMathLibrary::MakeColor(0, UKismetMathLibrary::Lerp(0, Color.G, Opacity), 0, 0);
                 break;
 
             case 3:
-                FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, BaseColor.G, UKismetMathLibrary::Lerp(BaseColor.R, Color.B, Opacity), BaseColor.A);
+                FinalColor = UKismetMathLibrary::MakeColor(0, 0, UKismetMathLibrary::Lerp(0, Color.B, Opacity), 0);
                 break;
 
             case 4:
-                FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, BaseColor.G, BaseColor.B, UKismetMathLibrary::Lerp(BaseColor.R, Color.A, Opacity));
+                FinalColor = UKismetMathLibrary::MakeColor(0, 0, 0, UKismetMathLibrary::Lerp(0, Color.A, Opacity));
                 break;
 
             default:
+                checkf(false, TEXT("Invalid channel choice given"));
                 FinalColor = FLinearColor::Black;
             }
 
-
-
-            //update cur vertex color
             {
                 int32 Final_R = VertexColorsArray.VertexColors[VertexIndex].R;
                 int32 Final_G = VertexColorsArray.VertexColors[VertexIndex].G;
@@ -291,8 +346,6 @@ void URuntimeVertexPainterBPLibrary::ContextPaintAllVerticesColor_SM(FRVPContext
                     Final_B = FMath::Clamp(Final_B - (FinalColor.ToFColor(bConvertToSRGB)).B, 0, 255);
                     Final_A = FMath::Clamp(Final_A - (FinalColor.ToFColor(bConvertToSRGB)).A, 0, 255);
 
-
-
                     break;
                 }
                 case EPaintMode::EPM_MUL:
@@ -310,16 +363,11 @@ void URuntimeVertexPainterBPLibrary::ContextPaintAllVerticesColor_SM(FRVPContext
                 }
                 }
 
-
                 VertexColorsArray.VertexColors[VertexIndex].R = Final_R;
                 VertexColorsArray.VertexColors[VertexIndex].G = Final_G;
                 VertexColorsArray.VertexColors[VertexIndex].B = Final_B;
                 VertexColorsArray.VertexColors[VertexIndex].A = Final_A;
             }
-           
-
-            
-           
         }
         LODIndex++;
     }
@@ -456,36 +504,37 @@ void URuntimeVertexPainterBPLibrary::ContextPaintVertexColorInShape_SKM(
                 }
 
                 FLinearColor BaseColor = VertexColorsArray.VertexColors[VertexIndex];
+
                 FLinearColor FinalColor;
 
                 // Switch PaintChannel,different PaintChannel value needs different ways to mix color
                 switch (static_cast<int32>(ContextSK.Channel))
                 {
                 case 0:
-                    FinalColor = UKismetMathLibrary::LinearColorLerp(BaseColor, Color, alpha);
+                    FinalColor = UKismetMathLibrary::LinearColorLerp(FLinearColor::Black, Color, Opacity);
                     break;
 
                 case 1:
-                    FinalColor = UKismetMathLibrary::MakeColor(UKismetMathLibrary::Lerp(BaseColor.R, Color.R, alpha), BaseColor.G, BaseColor.B, BaseColor.A);
+                    FinalColor = UKismetMathLibrary::MakeColor(UKismetMathLibrary::Lerp(0, Color.R, Opacity), 0, 0, 0);
                     break;
 
                 case 2:
-                    FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, UKismetMathLibrary::Lerp(BaseColor.R, Color.G, alpha), BaseColor.B, BaseColor.A);
+                    FinalColor = UKismetMathLibrary::MakeColor(0, UKismetMathLibrary::Lerp(0, Color.G, Opacity), 0, 0);
                     break;
 
                 case 3:
-                    FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, BaseColor.G, UKismetMathLibrary::Lerp(BaseColor.R, Color.B, alpha), BaseColor.A);
+                    FinalColor = UKismetMathLibrary::MakeColor(0, 0, UKismetMathLibrary::Lerp(0, Color.B, Opacity), 0);
                     break;
 
                 case 4:
-                    FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, BaseColor.G, BaseColor.B, UKismetMathLibrary::Lerp(BaseColor.R, Color.A, alpha));
+                    FinalColor = UKismetMathLibrary::MakeColor(0, 0, 0, UKismetMathLibrary::Lerp(0, Color.A, Opacity));
                     break;
 
                 default:
+                    checkf(false, TEXT("Invalid channel choice given"));
                     FinalColor = FLinearColor::Black;
                 }
 
-                //update cur vertex color
                 {
                     int32 Final_R = VertexColorsArray.VertexColors[VertexIndex].R;
                     int32 Final_G = VertexColorsArray.VertexColors[VertexIndex].G;
@@ -520,8 +569,6 @@ void URuntimeVertexPainterBPLibrary::ContextPaintVertexColorInShape_SKM(
                         Final_B = FMath::Clamp(Final_B - (FinalColor.ToFColor(bConvertToSRGB)).B, 0, 255);
                         Final_A = FMath::Clamp(Final_A - (FinalColor.ToFColor(bConvertToSRGB)).A, 0, 255);
 
-
-
                         break;
                     }
                     case EPaintMode::EPM_MUL:
@@ -539,15 +586,11 @@ void URuntimeVertexPainterBPLibrary::ContextPaintVertexColorInShape_SKM(
                     }
                     }
 
-
                     VertexColorsArray.VertexColors[VertexIndex].R = Final_R;
                     VertexColorsArray.VertexColors[VertexIndex].G = Final_G;
                     VertexColorsArray.VertexColors[VertexIndex].B = Final_B;
                     VertexColorsArray.VertexColors[VertexIndex].A = Final_A;
                 }
-
-
-               
             }
         }
         LODIndex++;
@@ -575,36 +618,93 @@ void URuntimeVertexPainterBPLibrary::ContextPaintAllVerticesColor_SKM(FRVPContex
         {
 
             FLinearColor BaseColor = VertexColorsArray.VertexColors[VertexIndex];
+
             FLinearColor FinalColor;
 
             // Switch PaintChannel,different PaintChannel value needs different ways to mix color
             switch (static_cast<int32>(ContextSK.Channel))
             {
             case 0:
-                FinalColor = UKismetMathLibrary::LinearColorLerp(BaseColor, Color, Opacity);
+                FinalColor = UKismetMathLibrary::LinearColorLerp(FLinearColor::Black, Color, Opacity);
                 break;
 
             case 1:
-                FinalColor = UKismetMathLibrary::MakeColor(UKismetMathLibrary::Lerp(BaseColor.R, Color.R, Opacity), BaseColor.G, BaseColor.B, BaseColor.A);
+                FinalColor = UKismetMathLibrary::MakeColor(UKismetMathLibrary::Lerp(0, Color.R, Opacity), 0, 0, 0);
                 break;
 
             case 2:
-                FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, UKismetMathLibrary::Lerp(BaseColor.R, Color.G, Opacity), BaseColor.B, BaseColor.A);
+                FinalColor = UKismetMathLibrary::MakeColor(0, UKismetMathLibrary::Lerp(0, Color.G, Opacity), 0, 0);
                 break;
 
             case 3:
-                FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, BaseColor.G, UKismetMathLibrary::Lerp(BaseColor.R, Color.B, Opacity), BaseColor.A);
+                FinalColor = UKismetMathLibrary::MakeColor(0, 0, UKismetMathLibrary::Lerp(0, Color.B, Opacity), 0);
                 break;
 
             case 4:
-                FinalColor = UKismetMathLibrary::MakeColor(BaseColor.R, BaseColor.G, BaseColor.B, UKismetMathLibrary::Lerp(BaseColor.R, Color.A, Opacity));
+                FinalColor = UKismetMathLibrary::MakeColor(0, 0, 0, UKismetMathLibrary::Lerp(0, Color.A, Opacity));
                 break;
 
             default:
+                checkf(false, TEXT("Invalid channel choice given"));
                 FinalColor = FLinearColor::Black;
             }
 
-            VertexColorsArray.VertexColors[VertexIndex] = FinalColor.ToFColor(bConvertToSRGB);
+            {
+                int32 Final_R = VertexColorsArray.VertexColors[VertexIndex].R;
+                int32 Final_G = VertexColorsArray.VertexColors[VertexIndex].G;
+                int32 Final_B = VertexColorsArray.VertexColors[VertexIndex].B;
+                int32 Final_A = VertexColorsArray.VertexColors[VertexIndex].A;
+                switch (inMode)
+                {
+                case EPaintMode::EPM_SET:
+                {
+
+                    Final_R = FMath::Clamp(FinalColor.ToFColor(bConvertToSRGB).R, 0, 255);
+                    Final_G = FMath::Clamp(FinalColor.ToFColor(bConvertToSRGB).G, 0, 255);
+                    Final_B = FMath::Clamp(FinalColor.ToFColor(bConvertToSRGB).B, 0, 255);
+                    Final_A = FMath::Clamp(FinalColor.ToFColor(bConvertToSRGB).A, 0, 255);
+
+                    break;
+                }
+                case EPaintMode::EPM_ADD:
+                {
+                    Final_R = FMath::Clamp(Final_R + (FinalColor.ToFColor(bConvertToSRGB)).R, 0, 255);
+                    Final_G = FMath::Clamp(Final_G + (FinalColor.ToFColor(bConvertToSRGB)).G, 0, 255);
+                    Final_B = FMath::Clamp(Final_B + (FinalColor.ToFColor(bConvertToSRGB)).B, 0, 255);
+                    Final_A = FMath::Clamp(Final_A + (FinalColor.ToFColor(bConvertToSRGB)).A, 0, 255);
+
+                    break;
+                }
+
+                case EPaintMode::EPM_SUB:
+                {
+                    Final_R = FMath::Clamp(Final_R - (FinalColor.ToFColor(bConvertToSRGB)).R, 0, 255);
+                    Final_G = FMath::Clamp(Final_G - (FinalColor.ToFColor(bConvertToSRGB)).G, 0, 255);
+                    Final_B = FMath::Clamp(Final_B - (FinalColor.ToFColor(bConvertToSRGB)).B, 0, 255);
+                    Final_A = FMath::Clamp(Final_A - (FinalColor.ToFColor(bConvertToSRGB)).A, 0, 255);
+
+                    break;
+                }
+                case EPaintMode::EPM_MUL:
+                {
+                    Final_R = FMath::Clamp(Final_R * (FinalColor.ToFColor(bConvertToSRGB)).R, 0, 255);
+                    Final_G = FMath::Clamp(Final_G * (FinalColor.ToFColor(bConvertToSRGB)).G, 0, 255);
+                    Final_B = FMath::Clamp(Final_B * (FinalColor.ToFColor(bConvertToSRGB)).B, 0, 255);
+                    Final_A = FMath::Clamp(Final_A * (FinalColor.ToFColor(bConvertToSRGB)).A, 0, 255);
+                    break;
+                }
+                default:
+                {
+                    checkf(false, TEXT("invalid paint mode given"));
+                    break;
+                }
+                }
+
+                VertexColorsArray.VertexColors[VertexIndex].R = Final_R;
+                VertexColorsArray.VertexColors[VertexIndex].G = Final_G;
+                VertexColorsArray.VertexColors[VertexIndex].B = Final_B;
+                VertexColorsArray.VertexColors[VertexIndex].A = Final_A;
+            }
         }
         LODIndex++;
     }

@@ -31,6 +31,7 @@ enum class EPaintShape : uint8
 UENUM(BlueprintType)
 enum class EPaintMode : uint8
 {
+    // only for debug not really use it
     EPM_SET,
     EPM_ADD,
     EPM_SUB,
@@ -93,7 +94,7 @@ struct FRVPContextSK
 };
 
 UCLASS()
-class URuntimeVertexPainterBPLibrary : public UBlueprintFunctionLibrary
+class RUNTIMEVERTEXPAINTER_API URuntimeVertexPainterBPLibrary : public UBlueprintFunctionLibrary
 {
     GENERATED_UCLASS_BODY()
 
