@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{631672BD-431A-5056-44EF-2D9319C975F6}",
+	"EngineAssociation": "{56F5CFA7-4ECE-8684-B905-A5BD90E7ACAE}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -56,6 +56,22 @@
 			"Name": "RuntimeVertexPainter",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/f3e65cdfddaa4ebba225638b0c93b314"
+		},
+		{
+			"Name": "PerformanceMonitor",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayStateTree",
+			"Enabled": true
+		},
+		{
+			"Name": "StateTree",
+			"Enabled": true
+		},
+		{
+			"Name": "NaniteDisplacedMesh",
+			"Enabled": true
 		}
 	]
 }
