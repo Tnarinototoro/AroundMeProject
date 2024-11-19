@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "2024-04-22",
+	"VersionName": "2024-04-23",
 	"FriendlyName": "Voxel Plugin Pro Legacy",
 	"Description": "Create fully volumetric, entirely destructible & infinite worlds",
 	"Category": "Terrain",
@@ -10,7 +10,7 @@
 	"DocsURL": "https://wiki.voxelplugin.com/",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/b08e5581837e4bbca486b61cdf2751bb",
 	"SupportURL": "https://discord.voxelplugin.com",
-	"EngineVersion": "5.3.0",
+	"EngineVersion": "5.4.0",
 	"CanContainContent": true,
 	"Installed": true,
 	"Modules": [

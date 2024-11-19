@@ -9,7 +9,7 @@
 #include "DIY_TemperatureProcessor.generated.h"
 
 UENUM(BlueprintType)
-enum class ETemperatureRelatedState
+enum class ETemperatureRelatedState:uint8
 {
     TS_Normal,
     TS_Burning,

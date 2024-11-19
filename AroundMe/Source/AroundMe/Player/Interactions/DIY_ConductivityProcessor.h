@@ -8,7 +8,7 @@
 #include "DIY_ConductivityProcessor.generated.h"
 
 UENUM(BlueprintType)
-enum class EConductivityState
+enum class EConductivityState:uint8
 {
     CS_Normal,
     CS_OnAmpere,

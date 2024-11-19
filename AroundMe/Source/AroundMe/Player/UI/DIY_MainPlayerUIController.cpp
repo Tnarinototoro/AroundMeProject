@@ -334,8 +334,6 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
         UDIY_Utilities::DIY_GetItemManagerInstance()->RequestChange_ItemNumInBackPack_Statistics(current_item_id, 1);
         return true;
     }
-
-    return false;
 }
 
 int UDIY_MainPlayerUIController::QuicklyFindBackPackItemSlotIndex_FromItemID(EItemID inItemID)
