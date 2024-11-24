@@ -39,7 +39,7 @@ void UDIY_MusicPlayerStateWidget::NativeOnInitialized()
             }
 
             WidgetTree->RootWidget = infoPanel;
-            EASY_LOG_MAINPLAYER("UDIY_MusicPlayerStateWidget finished creating! %d");
+            
         }
        
     }

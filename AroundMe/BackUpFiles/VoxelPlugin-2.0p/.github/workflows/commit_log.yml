@@ -1,0 +1,19 @@
+name: CommitLog
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    runs-on: main
+
+    steps:
+      - name: Execute script
+        env:
+            SLACK_COMMIT_LOG_URL: ${{ secrets.SLACK_COMMIT_LOG_URL }}
+        run: |
+          cd D:\BUILD\VoxelPlugin_CommitLog
+          git pull
+          python .github/scripts/commit_log.py

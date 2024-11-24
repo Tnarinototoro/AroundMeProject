@@ -8,7 +8,8 @@ public class AroundMeTarget : TargetRules
     public AroundMeTarget(TargetInfo Target) : base(Target)
     {
         Type = TargetType.Game;
-        DefaultBuildSettings = BuildSettingsVersion.V2;
+        DefaultBuildSettings = BuildSettingsVersion.V5;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
         ExtraModuleNames.AddRange(new string[] { "AroundMe" });
 
     }

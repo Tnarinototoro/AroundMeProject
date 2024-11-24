@@ -7,7 +7,7 @@
 #include "DIY_SolidnessProcessor.generated.h"
 
 UENUM(BlueprintType)
-enum class ESolidnessState
+enum class ESolidnessState:uint8
 {
     SS_Normal,
     // use chaos to be make it pieces
