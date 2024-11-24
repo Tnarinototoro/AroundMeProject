@@ -81,6 +81,10 @@
 		{
 			"Name": "SkeletalMeshModelingTools",
 			"Enabled": true
+		},
+		{
+			"Name": "LightWeightInstancesEditor",
+			"Enabled": true
 		}
 	]
 }
