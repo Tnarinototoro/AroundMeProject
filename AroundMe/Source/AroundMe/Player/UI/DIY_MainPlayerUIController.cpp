@@ -160,7 +160,13 @@ void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReas
 void UDIY_MainPlayerUIController::OnItemBackPackNumChanged(int32 itemID)
 {
 
-    int slot_index = *(ItemInfoHelperMap.Find((int)itemID));
+    
+    int* slot_index_possible = ItemInfoHelperMap.Find((int)itemID);
+
+    if(nullptr==slot_index_possible)
+    return;
+    int slot_index=*slot_index_possible;
+   
     if (slot_index < 0)
         return;
     // change slot appearance
