@@ -7,7 +7,7 @@
 
 #include "CoreMinimal.h"
 
-#include "Equipments/DIYEquipmentEnums.h"
+#include "Equipments/DIY_EquipmentDefines.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Pawn.h"
 #include "UObject/SoftObjectPath.h"

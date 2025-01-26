@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
+#include "DIY_RobotHand_Head_Defines.h"
 #include "DIY_RobotHand_HeadController.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
@@ -12,6 +13,8 @@ class AROUNDME_API UDIY_RobotHand_HeadController : public USceneComponent
 public:    
    
     UDIY_RobotHand_HeadController();
+	
+	
 
 protected:
     // Called when the game starts
@@ -28,21 +31,21 @@ public:
 
 
 
-	UPROPERTY( BlueprintReadOnly, EditDefaultsOnly, Category = "DIY_RobotHand_HeadController")
-	class USpringArmComponent* CameraBoom;
+	
 
-	UPROPERTY(BlueprintReadOnly,EditDefaultsOnly, Category = "DIY_RobotHand_HeadController")
-	class UCameraComponent* FollowCamera;
 
-	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
-		EditDefaultsOnly,
-		Category = "DIY_RobotHand_HeadController")
-		float UpDownCameraLerpSpeed{ 2.0f };
+	protected:
+	void UpdateHandHeadStateMachine(float inDeltatime);
+
+	void SwitchToNextState(EDIY_RobotHand_Head_State_Type inNextState);
 
     private:
 
 
+	EDIY_RobotHand_Head_State_Type mCurrentState{EDIY_RobotHand_Head_State_Type::Idle};
 
-
-
+	float mCurrentStateElapsedTime{0.f};
+	bool mEnteredNewStateSign{false};
+	EDIY_RobotHand_HeadType mCurrentHeadType{EDIY_RobotHand_HeadType::Count};
+    class USkeletonMeshComponent* mHand_Head_SKM{nullptr};
 };

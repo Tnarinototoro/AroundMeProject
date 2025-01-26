@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
+#include "DIY_RobotHand_Defines.h"
 #include "DIY_RobotHandController.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
@@ -28,21 +29,24 @@ public:
 
 
 
-	UPROPERTY( BlueprintReadOnly, EditDefaultsOnly, Category = "DIY_RobotHandController")
-	class USpringArmComponent* CameraBoom;
+	
 
-	UPROPERTY(BlueprintReadOnly,EditDefaultsOnly, Category = "DIY_RobotHandController")
-	class UCameraComponent* FollowCamera;
 
-	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
-		EditDefaultsOnly,
-		Category = "DIY_RobotHandController")
-		float UpDownCameraLerpSpeed{ 2.0f };
+
+protected:
+	void UpdateHandHeadStateMachine(float inDeltatime);
+
+	void SwitchToNextState(EDIY_RobotHand_State_Type inNextState);
 
     private:
 
 
+	EDIY_RobotHand_State_Type mCurrentState{EDIY_RobotHand_State_Type::Idle};
 
+	float mCurrentStateElapsedTime{0.f};
+	bool mEnteredNewStateSign{false};
 
-
+    private:
+	
+	class USkeletonMeshComponent* mHand_SKM{nullptr};
 };

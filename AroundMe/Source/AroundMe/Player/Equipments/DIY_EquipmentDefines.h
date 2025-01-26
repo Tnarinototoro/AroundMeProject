@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DIYEquipmentEnums.generated.h"
+#include "DIY_EquipmentDefines.generated.h"
 
 UENUM(BlueprintType)
 enum class EHairType : uint8
