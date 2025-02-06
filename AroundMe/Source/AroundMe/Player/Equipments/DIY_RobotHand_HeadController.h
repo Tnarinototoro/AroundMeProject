@@ -3,10 +3,11 @@
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
 #include "DIY_RobotHand_Head_Defines.h"
+#include "DIY_EquipmentBase.h"
 #include "DIY_RobotHand_HeadController.generated.h"
 
-UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_RobotHand_HeadController : public USceneComponent
+UCLASS(ClassGroup=(Equipment), meta=(BlueprintSpawnableComponent))
+class AROUNDME_API UDIY_RobotHand_HeadController :  public UDIY_EquipmentBase
 {
     GENERATED_BODY()
 
@@ -46,6 +47,7 @@ public:
 
 	float mCurrentStateElapsedTime{0.f};
 	bool mEnteredNewStateSign{false};
-	EDIY_RobotHand_HeadType mCurrentHeadType{EDIY_RobotHand_HeadType::Count};
-    class USkeletonMeshComponent* mHand_Head_SKM{nullptr};
+	EDIY_RobotHand_HeadType mCurrentHeadType{ EDIY_RobotHand_HeadType::Count };
+
+ 
 };

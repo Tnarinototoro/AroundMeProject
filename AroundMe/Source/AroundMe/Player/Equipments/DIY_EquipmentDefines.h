@@ -31,3 +31,21 @@ enum class EHatType : uint8
    
 
 };
+
+
+
+UENUM(BlueprintType)
+enum class EEquipmentsIndex : uint8
+{
+    Bag UMETA(DisplayName = "Bag"),
+    Left_Hand UMETA(DisplayName = "Left_Hand"),
+    Right_Hand UMETA(DisplayName = "Right_Hand"),
+    Left_Hand_Head UMETA(DisplayName = "Left_Hand_Head"),
+    Right_Hand_Head UMETA(DisplayName = "Right_Hand_Head"),
+    Kago UMETA(DisplayName="Kago"),
+
+
+    Equip_Count
+
+
+};

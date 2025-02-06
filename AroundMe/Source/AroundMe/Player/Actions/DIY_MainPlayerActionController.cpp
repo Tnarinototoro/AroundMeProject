@@ -11,7 +11,7 @@ UDIY_MainPlayerActionController::UDIY_MainPlayerActionController()
 void UDIY_MainPlayerActionController::BeginPlay()
 {
     Super::BeginPlay();
-
+    
     InitWorldPosition = this->GetOwner()->GetActorLocation();
     InitRotator = this->GetOwner()->GetActorRotation();
 }

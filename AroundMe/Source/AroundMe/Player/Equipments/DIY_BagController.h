@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
 #include "DIY_BagDefines.h"
+#include "DIY_EquipmentBase.h"
 #include "DIY_BagController.generated.h"
 
 UCLASS(ClassGroup = (Player), meta = (BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_BagController : public USceneComponent
+class AROUNDME_API UDIY_BagController : public UDIY_EquipmentBase
 {
 	GENERATED_BODY()
 
@@ -48,7 +49,7 @@ private:
 	float mCurrentStateElapsedTime{ 0.f };
 	bool mEnteredNewStateSign{ false };
 
-	class USkeletonMeshComponent* mBag_SKM{nullptr};
+	class USkeletalMeshComponent* mBag_SKM{nullptr};
 
 private:
 

@@ -1,7 +1,17 @@
 #include "DIY_RobotHandController.h"
+#include "Components/SkeletalMeshComponent.h"
+
 
 UDIY_RobotHandController::UDIY_RobotHandController()
 {
+     PrimaryComponentTick.bCanEverTick = true;
+
+     Target_Point=CreateDefaultSubobject<USceneComponent>(TEXT("Target_Point"));
+     
+     
+     
+
+   
 }
 
 void UDIY_RobotHandController::BeginPlay()

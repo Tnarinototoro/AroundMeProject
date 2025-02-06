@@ -2,18 +2,18 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
-#include "DIY_RobotHand_Defines.h"
+#include "DIY_KagoDefines.h"
 #include "DIY_EquipmentBase.h"
-#include "DIY_RobotHandController.generated.h"
+#include "DIY_KagoController.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_RobotHandController : public UDIY_EquipmentBase
+class AROUNDME_API UDIY_KagoController : public UDIY_EquipmentBase
 {
     GENERATED_BODY()
 
 public:    
    
-    UDIY_RobotHandController();
+    UDIY_KagoController();
 
 protected:
     // Called when the game starts
@@ -22,8 +22,7 @@ protected:
 public:    
 
 
-    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")
-    class USceneComponent* Target_Point{nullptr};
+    
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -37,14 +36,14 @@ public:
 
 
 protected:
-	void UpdateHandHeadStateMachine(float inDeltatime);
+	void UpdateKagoStateMachine(float inDeltatime);
 
-	void SwitchToNextState(EDIY_RobotHand_State_Type inNextState);
+	void SwitchToNextState(EDIY_KagoState_Type inNextState);
 
     private:
 
 
-	EDIY_RobotHand_State_Type mCurrentState{EDIY_RobotHand_State_Type::Idle};
+	EDIY_KagoState_Type mCurrentState{EDIY_KagoState_Type::Idle};
 
 	float mCurrentStateElapsedTime{0.f};
 	bool mEnteredNewStateSign{false};

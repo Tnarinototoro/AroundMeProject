@@ -1,12 +1,21 @@
 // All rights reserved to ShadowCandle Studio
 
 #include "DIY_BagController.h"
-
+#include "Components/SkeletalMeshComponent.h"
 
 
 UDIY_BagController::UDIY_BagController()
 {
+    PrimaryComponentTick.bCanEverTick = true;
+
+   
+   
+    mEquipName=FName(TEXT("EquipBag"));
+    mEquipIndex=EEquipmentsIndex::Bag;
     
+    
+    //defualt
+    mEquipModelType=0;
 }
 
 void UDIY_BagController::BeginPlay()

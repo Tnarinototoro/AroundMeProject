@@ -17,6 +17,7 @@ UDIY_MainPlayerCameraController::UDIY_MainPlayerCameraController()
     // Create CameraBoom (Spring Arm component)
     CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 
+
     CameraBoom->SetupAttachment(this);
     CameraBoom->TargetArmLength = 1300.f;
     CameraBoom->bUsePawnControlRotation = true; // Rotate arm based on controller

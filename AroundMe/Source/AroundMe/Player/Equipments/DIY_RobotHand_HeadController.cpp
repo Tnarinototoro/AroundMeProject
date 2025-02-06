@@ -1,7 +1,11 @@
 #include "DIY_RobotHand_HeadController.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "DIY_EquipmentCommonLib.h"
 
 UDIY_RobotHand_HeadController::UDIY_RobotHand_HeadController()
 {
+    PrimaryComponentTick.bCanEverTick = true;
+    
 }
 
 
