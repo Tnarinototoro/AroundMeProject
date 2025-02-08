@@ -5,17 +5,23 @@
 UDIY_KagoController::UDIY_KagoController()
 {
     PrimaryComponentTick.bCanEverTick = true;
+    HandHead_Releasing_Point=CreateDefaultSubobject<USceneComponent>(TEXT("HandHead_Releasing_Point"));
 
+    ensureMsgf(mEquipMentMesh!=nullptr,TEXT("mEquipMentMesh shall never be null"));
+    HandHead_Releasing_Point->SetupAttachment(mEquipMentMesh);
+    HandHead_Releasing_Point->SetRelativeLocation({0.f,0.f,0.f});
 
 }
 
 void UDIY_KagoController::BeginPlay()
 {
-
+    Super::BeginPlay();
 }
 
 void UDIY_KagoController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
+    Super::TickComponent(DeltaTime,TickType,ThisTickFunction);
+
     
 }
 

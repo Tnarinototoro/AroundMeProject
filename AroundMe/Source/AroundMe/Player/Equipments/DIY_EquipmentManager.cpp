@@ -3,6 +3,8 @@
 #include "DIY_RobotHand_HeadController.h"
 #include "DIY_BagController.h"
 #include "DIY_KagoController.h"
+#include "DIY_ChestController.h"
+#include "DIY_CapController.h"
 #include "GameFramework/Character.h"
 #include "DIY_EquipmentCommonLib.h"
 
@@ -53,6 +55,9 @@ void UDIY_EquipmentManager::BeginPlay()
 	checkf((int32)EDIY_RobotHand_HeadType::Count == SKMDepot_Hand_Heads.Num(), TEXT("RobotHand num is invalid"));
 	checkf((int32)EDIY_BagType::Count == SKMDepot_Bags.Num(), TEXT("RobotHand num is invalid"));
 	checkf((int32)EDIY_KagoType::Count == SKMDepot_Kagos.Num(), TEXT("Kago num is invalid"));
+
+	checkf((int32)EDIY_ChestType::Count == SKMDepot_Chests.Num(), TEXT("Chest num is invalid"));
+	checkf((int32)EDIY_CapType::Count == SKMDepot_Caps.Num(), TEXT("Cap num is invalid"));
 	RealizeAllEquipmentModels();
 }
 
@@ -92,7 +97,10 @@ void UDIY_EquipmentManager::InitAllEquipments()
 			// FAttachmentTransformRules rule(EAttachmentRule::KeepRelative,false);
 			// AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh->AttachToComponent(this,rule);
 			AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh->SetupAttachment(this);
-			AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh->SetRelativeLocation({0.f,0.f,0.f});
+			//(X=-28.690009,Y=-3.189239,Z=-40.898868)
+			//(Pitch=-0.883222,Yaw=-85.507022,Roll=-2.330402)
+			AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh->SetRelativeLocation({-28.690009,-3.189239,-40.898868});
+			AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh->SetRelativeRotation({-0.883222,-85.507022,-2.330402});
 			
 			AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipIndex=EEquipmentsIndex::Bag;
 			AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipName=TEXT("Bag");
@@ -210,6 +218,36 @@ void UDIY_EquipmentManager::InitAllEquipments()
 			
 			break;
 		}
+		case (int)EEquipmentsIndex::Chest:
+		{
+
+			AllEquipments[(int)EEquipmentsIndex::Chest] = CreateDefaultSubobject<UDIY_ChestController>(TEXT("Chest"));
+			
+			
+			AllEquipments[(int)EEquipmentsIndex::Chest]->mEquipMentMesh->SetupAttachment(this);
+
+			AllEquipments[(int)EEquipmentsIndex::Chest]->mEquipIndex=EEquipmentsIndex::Chest;
+			AllEquipments[(int)EEquipmentsIndex::Chest]->mEquipName=TEXT("Chest");
+			AllEquipments[(int)EEquipmentsIndex::Chest]->mEquipModelType=(uint8)EDIY_ChestType::Original_Type;
+
+			
+			break;
+		}
+		case (int)EEquipmentsIndex::Cap:
+		{
+
+			AllEquipments[(int)EEquipmentsIndex::Cap] = CreateDefaultSubobject<UDIY_CapController>(TEXT("Cap"));
+			
+			
+			AllEquipments[(int)EEquipmentsIndex::Cap]->mEquipMentMesh->SetupAttachment(this);
+
+			AllEquipments[(int)EEquipmentsIndex::Cap]->mEquipIndex=EEquipmentsIndex::Cap;
+			AllEquipments[(int)EEquipmentsIndex::Cap]->mEquipName=TEXT("Cap");
+			AllEquipments[(int)EEquipmentsIndex::Cap]->mEquipModelType=(uint8)EDIY_CapType::Original_Type;
+
+			
+			break;
+		}
 		default:
 			break;
 		}
@@ -224,4 +262,7 @@ void UDIY_EquipmentManager::RealizeAllEquipmentModels()
 	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Right_Hand]->mEquipMentMesh,  SKMDepot_Hands[0]);
 	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->mEquipMentMesh, SKMDepot_Hand_Heads[1]);
 	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Kago]->mEquipMentMesh, SKMDepot_Kagos[0]);
+
+	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Chest]->mEquipMentMesh, SKMDepot_Chests[0]);
+	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Cap]->mEquipMentMesh, SKMDepot_Caps[0]);
 }

@@ -2,18 +2,18 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
-#include "DIY_KagoDefines.h"
+#include "DIY_ChestDefines.h"
 #include "DIY_EquipmentBase.h"
-#include "DIY_KagoController.generated.h"
+#include "DIY_ChestController.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_KagoController : public UDIY_EquipmentBase
+class AROUNDME_API UDIY_ChestController : public UDIY_EquipmentBase
 {
     GENERATED_BODY()
 
 public:    
    
-    UDIY_KagoController();
+    UDIY_ChestController();
 
 protected:
     // Called when the game starts
@@ -23,7 +23,7 @@ public:
 
 
 
-    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_KagoController")
+    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_ChestController")
     class USceneComponent* HandHead_Releasing_Point{nullptr};
     
     // Called every frame
@@ -39,14 +39,14 @@ public:
 
 
 protected:
-	void UpdateKagoStateMachine(float inDeltatime);
+	void UpdateChestStateMachine(float inDeltatime);
 
-	void SwitchToNextState(EDIY_KagoState_Type inNextState);
+	void SwitchToNextState(EDIY_ChestState_Type inNextState);
 
     private:
 
 
-	EDIY_KagoState_Type mCurrentState{EDIY_KagoState_Type::Idle};
+	EDIY_ChestState_Type mCurrentState{EDIY_ChestState_Type::Idle};
 
 	float mCurrentStateElapsedTime{0.f};
 	bool mEnteredNewStateSign{false};

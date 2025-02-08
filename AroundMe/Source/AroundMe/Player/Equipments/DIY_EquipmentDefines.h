@@ -43,8 +43,8 @@ enum class EEquipmentsIndex : uint8
     Left_Hand_Head UMETA(DisplayName = "Left_Hand_Head"),
     Right_Hand_Head UMETA(DisplayName = "Right_Hand_Head"),
     Kago UMETA(DisplayName="Kago"),
-
-
+    Chest UMETA(DisplayName="Chest"),
+    Cap UMETA(DisplayName="Cap"),
     Equip_Count
 
 

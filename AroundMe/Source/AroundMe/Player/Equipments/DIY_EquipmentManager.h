@@ -49,6 +49,10 @@ protected:
         TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Bags;
     UPROPERTY(EditDefaultsOnly, Category = "DIY_EquipmentManager")
         TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Kagos;
+    UPROPERTY(EditDefaultsOnly, Category = "DIY_EquipmentManager")
+        TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Chests;
+    UPROPERTY(EditDefaultsOnly, Category = "DIY_EquipmentManager")
+        TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Caps;
 
     
 public:
