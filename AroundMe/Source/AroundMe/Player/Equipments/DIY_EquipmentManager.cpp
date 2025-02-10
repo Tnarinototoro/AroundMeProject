@@ -14,20 +14,102 @@ UDIY_EquipmentManager::UDIY_EquipmentManager()
 	
 
 	InitAllEquipments();
+
+
+	//@TODO 
+	//CurAllEquipModelType[] init should be processed at save object
 	
 }
 
-void UDIY_EquipmentManager::RequestChangeToNew_Hand(int32 HandIndex, EDIY_RobotHandType inTargetHandType)
+
+
+void UDIY_EquipmentManager::RequestEquipModelTypeTo(EEquipmentsIndex inEquipIndex,int inModelType,bool forceReLoad)
 {
+
+	checkf(inEquipIndex<EEquipmentsIndex::Equip_Count,TEXT("input equipment index over the limit"));
+
+	if(CurAllEquipModelType[(int)inEquipIndex]==inModelType&&!forceReLoad)
+	return;
+
+	if(inModelType<0)
+	return;
+
+	TSoftObjectPtr<USkeletalMesh>* needed_object_path=nullptr;
+
+	switch (inEquipIndex)
+	{
+		case EEquipmentsIndex::Bag:
+		{
+			ensureMsgf(inModelType<SKMDepot_Bags.Num(),TEXT("bag requested to invalid model type"));
+			needed_object_path=&SKMDepot_Bags[inModelType];
+			break;
+	    }
+		case EEquipmentsIndex::Left_Hand:
+		{
+			ensureMsgf(inModelType<SKMDepot_Hands.Num(),TEXT("hand requested to invalid model type"));
+
+			needed_object_path=&SKMDepot_Hands[inModelType];
+			break;
+	    }
+		case EEquipmentsIndex::Right_Hand:
+		{
+			ensureMsgf(inModelType<SKMDepot_Hands.Num(),TEXT("hand requested to invalid model type"));
+
+			needed_object_path=&SKMDepot_Hands[inModelType];
+
+
+			break;
+	    }
+		case EEquipmentsIndex::Left_Hand_Head:
+		{
+			ensureMsgf(inModelType<SKMDepot_Hand_Heads.Num(),TEXT("hand head requested to invalid model type"));
+
+			needed_object_path=&SKMDepot_Hand_Heads[inModelType];
+			break;
+	    }
+		case EEquipmentsIndex::Right_Hand_Head:
+		{
+			ensureMsgf(inModelType<SKMDepot_Hand_Heads.Num(),TEXT("hand head requested to invalid model type"));
+			needed_object_path=&SKMDepot_Hand_Heads[inModelType];
+			break;
+	    }
+		case EEquipmentsIndex::Kago:
+		{
+
+			ensureMsgf(inModelType<SKMDepot_Kagos.Num(),TEXT("kago requested to invalid model type"));
+
+			needed_object_path=&SKMDepot_Kagos[inModelType];
+			break;
+	    }
+		case EEquipmentsIndex::Chest:
+		{
+
+			ensureMsgf(inModelType<SKMDepot_Chests.Num(),TEXT("chest requested to invalid model type"));
+
+			needed_object_path=&SKMDepot_Chests[inModelType];
+			break;
+	    }
+		case EEquipmentsIndex::Cap:
+		{
+
+			ensureMsgf(inModelType<SKMDepot_Caps.Num(),TEXT("cap requested to invalid model type"));
+			needed_object_path=&SKMDepot_Caps[inModelType];
+			break;
+	    }
+
+	
+	default:
+		break;
+	}
+
+	ensureMsgf(nullptr!=needed_object_path,TEXT("needed_object_path needs to be valid to create equipment"));
+
+	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)inEquipIndex]->mEquipMentMesh, *needed_object_path);
+
+
+	CurAllEquipModelType[(int)inEquipIndex]=inModelType;
 }
 
-void UDIY_EquipmentManager::RequestChangeToNew_HandHead(int32 HandIndex, EDIY_RobotHand_HeadType inTargetHandHead_Type)
-{
-}
-
-void UDIY_EquipmentManager::RequestChangeToNew_Bag(EDIY_BagType inTargetBagType)
-{
-}
 
 UDIY_EquipmentBase *UDIY_EquipmentManager::GetEquipAtIndex(EEquipmentsIndex inIndex)
 {
@@ -256,13 +338,15 @@ void UDIY_EquipmentManager::InitAllEquipments()
 
 void UDIY_EquipmentManager::RealizeAllEquipmentModels()
 {
-	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh, SKMDepot_Bags[0]);
-	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Left_Hand]->mEquipMentMesh, SKMDepot_Hands[0]);
-	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->mEquipMentMesh, SKMDepot_Hand_Heads[0]);
-	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Right_Hand]->mEquipMentMesh,  SKMDepot_Hands[0]);
-	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->mEquipMentMesh, SKMDepot_Hand_Heads[1]);
-	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Kago]->mEquipMentMesh, SKMDepot_Kagos[0]);
+	RequestEquipModelTypeTo(EEquipmentsIndex::Bag,0,true);
+	RequestEquipModelTypeTo(EEquipmentsIndex::Left_Hand,0,true);
+	RequestEquipModelTypeTo(EEquipmentsIndex::Left_Hand_Head,0,true);
+	RequestEquipModelTypeTo(EEquipmentsIndex::Right_Hand,0,true);
+	RequestEquipModelTypeTo(EEquipmentsIndex::Right_Hand_Head,1,true);
+	RequestEquipModelTypeTo(EEquipmentsIndex::Kago,0,true);
+	RequestEquipModelTypeTo(EEquipmentsIndex::Chest,0,true);
+	RequestEquipModelTypeTo(EEquipmentsIndex::Cap,0,true);
 
-	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Chest]->mEquipMentMesh, SKMDepot_Chests[0]);
-	DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)EEquipmentsIndex::Cap]->mEquipMentMesh, SKMDepot_Caps[0]);
+
+	
 }

@@ -19,16 +19,12 @@ class AROUNDME_API UDIY_EquipmentManager : public USceneComponent
 public:
     UDIY_EquipmentManager();
 
-
+    //0 left 1 right
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
-    void RequestChangeToNew_Hand(int32 HandIndex,EDIY_RobotHandType inTargetHandType);
-
-    UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
-    void RequestChangeToNew_HandHead(int32 HandIndex,EDIY_RobotHand_HeadType inTargetHandHead_Type);
-
-    UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
-    void RequestChangeToNew_Bag(EDIY_BagType inTargetBagType);
+    void RequestEquipModelTypeTo(EEquipmentsIndex inEquipIndex,int inModelType,bool forceReLoad=false);
     
+
+
     
     
     UFUNCTION(BlueprintCallable,BlueprintPure, Category = "DIY_EquipmentManager")
@@ -66,13 +62,7 @@ public:
     UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_EquipmentManager")
     TArray<class UDIY_EquipmentBase*> AllEquipments;
 protected:
-    
-
-    EDIY_BagType mCurrentBagType{EDIY_BagType::Count};
-    EDIY_RobotHandType mCurrentHandType{EDIY_RobotHandType::Count};
-    EDIY_RobotHand_HeadType mCurrentHand_Head_Type{EDIY_RobotHand_HeadType::Count};
-    EDIY_KagoType mCurrentKagoType{EDIY_KagoType::Count};
-    
+    uint32 CurAllEquipModelType[(int)EEquipmentsIndex::Equip_Count]{0};
 private:
     void InitAllEquipments();
     void RealizeAllEquipmentModels();
