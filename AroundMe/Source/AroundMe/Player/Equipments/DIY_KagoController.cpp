@@ -22,7 +22,7 @@ void UDIY_KagoController::TickComponent(float DeltaTime, ELevelTick TickType, FA
 {
     Super::TickComponent(DeltaTime,TickType,ThisTickFunction);
 
-    
+    DrawDebugSphere(GetWorld(),HandHead_Releasing_Point->GetComponentLocation(),10.f,12,FColor::Green);
 }
 
 

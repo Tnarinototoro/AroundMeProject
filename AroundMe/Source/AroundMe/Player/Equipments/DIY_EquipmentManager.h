@@ -19,7 +19,7 @@ class AROUNDME_API UDIY_EquipmentManager : public USceneComponent
 public:
     UDIY_EquipmentManager();
 
-    //0 left 1 right
+
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
     void RequestEquipModelTypeTo(EEquipmentsIndex inEquipIndex,int inModelType,bool forceReLoad=false);
     

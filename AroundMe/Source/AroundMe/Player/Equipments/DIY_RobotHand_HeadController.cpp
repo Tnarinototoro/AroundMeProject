@@ -15,6 +15,27 @@ void UDIY_RobotHand_HeadController::BeginPlay()
 
 void UDIY_RobotHand_HeadController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
+    Super::TickComponent(DeltaTime, TickType,ThisTickFunction);
+    if(nullptr!=mEquipMentMesh)
+    {
+        USkeletalMeshComponent* parent_skm=Cast<USkeletalMeshComponent>(mEquipMentMesh->GetAttachParent());
+        
+        if(nullptr!=parent_skm)
+        {
+            
+            FTransform parent_hand_head_connection_point= parent_skm->GetBoneTransform("armm_l_02");
+            
+            FVector real_forward_vec=-parent_hand_head_connection_point.GetRotation().GetForwardVector();
+            
+            DrawDebugDirectionalArrow(
+                GetWorld(),parent_hand_head_connection_point.GetLocation(),
+            parent_hand_head_connection_point.GetLocation()+real_forward_vec*200.f,10.0f,FColor::Red,false,0.f,0,1.0f);
+
+            mEquipMentMesh->SetWorldRotation(FRotationMatrix::MakeFromX(real_forward_vec).Rotator());
+            
+        }
+    }
+    
 }
 
 void UDIY_RobotHand_HeadController::UpdateHandHeadStateMachine(float inDeltatime)

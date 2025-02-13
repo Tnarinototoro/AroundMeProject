@@ -20,9 +20,19 @@ void UDIY_RobotHandController::BeginPlay()
 
 void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
-    
+    Super::TickComponent(DeltaTime,TickType,ThisTickFunction);
+
+    if(nullptr!=mEquipMentMesh&&nullptr!=mEquipMentMesh->GetSkeletalMeshAsset())
+    {
+
+        DrawDebugSphere(GetWorld(),GetHandEndWolrdLocation(),10.f,12,FColor::Green);
+    }
 }
 
+inline FVector UDIY_RobotHandController::GetHandEndWolrdLocation() const
+{
+    return  mEquipMentMesh->GetBoneTransform("armhead_l_00").GetLocation();
+}
 
 void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
 {
