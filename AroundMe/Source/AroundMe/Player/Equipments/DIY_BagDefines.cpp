@@ -1,5 +1,6 @@
 // All rights reserved to ShadowCandle Studio
 
 
-#include "DIYEquipmentEnums.h"
+#include "DIY_BagDefines.h"
+
 

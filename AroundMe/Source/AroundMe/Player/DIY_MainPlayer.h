@@ -7,7 +7,7 @@
 
 #include "CoreMinimal.h"
 
-#include "Equipments/DIYEquipmentEnums.h"
+#include "Equipments/DIY_EquipmentDefines.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Pawn.h"
 #include "UObject/SoftObjectPath.h"
@@ -63,7 +63,8 @@ protected:
     void UpdateTPSCamera(float deltaTime);
 
     void UpdateGameLogic(float deltaTime);
-
+    virtual void PostInitializeComponents() override;
+  
 public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -78,6 +79,9 @@ private:
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerInputController)
 
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerActionController)
+
+
+    DECLARE_GET_COMPONENT_HELPER(UDIY_EquipmentManager)
 
     UFUNCTION()
     void DoJumpAction(const struct FInputActionValue &Value);

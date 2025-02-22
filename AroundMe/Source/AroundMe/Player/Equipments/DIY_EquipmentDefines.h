@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DIYEquipmentEnums.generated.h"
+#include "DIY_EquipmentDefines.generated.h"
 
 UENUM(BlueprintType)
 enum class EHairType : uint8
@@ -29,5 +29,23 @@ enum class EHatType : uint8
     Hat_Builder UMETA(DisplayName = "Hat_Builder"),
     Hat_Count
    
+
+};
+
+
+
+UENUM(BlueprintType)
+enum class EEquipmentsIndex : uint8
+{
+    Bag UMETA(DisplayName = "Bag"),
+    Left_Hand UMETA(DisplayName = "Left_Hand"),
+    Right_Hand UMETA(DisplayName = "Right_Hand"),
+    Left_Hand_Head UMETA(DisplayName = "Left_Hand_Head"),
+    Right_Hand_Head UMETA(DisplayName = "Right_Hand_Head"),
+    Kago UMETA(DisplayName="Kago"),
+    Chest UMETA(DisplayName="Chest"),
+    Cap UMETA(DisplayName="Cap"),
+    Equip_Count
+
 
 };

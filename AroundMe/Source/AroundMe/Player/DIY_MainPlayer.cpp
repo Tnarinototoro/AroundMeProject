@@ -17,6 +17,7 @@
 #include "Camera/DIY_MainPLayerCameraController.h"
 #include "Components/WidgetComponent.h"
 #include "../UIWidgets/DIY_PlayerStateWidget.h"
+#include "Equipments/DIY_EquipmentManager.h"
 
 #if WITH_EDITOR
 bool ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget = false;
@@ -68,6 +69,9 @@ void ADIY_MainPlayer::BeginPlay()
     }
 
     AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->TriggerProcessJumpInput.AddDynamic(this, &ADIY_MainPlayer::DoJumpAction);
+
+
+    //AcquireOwnerActorOwnedUDIY_EquipmentManager()->CreateAllEquipments();
 }
 
 void ADIY_MainPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -165,6 +169,12 @@ void ADIY_MainPlayer::UpdateGameLogic(float deltaTime)
     AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->mSpeedRate = cur_movement_compo->GetLastUpdateVelocity().Length() / cur_movement_compo->GetMaxSpeed();
 }
 
+void ADIY_MainPlayer::PostInitializeComponents()
+{
+    Super::PostInitializeComponents();
+   
+}
+
 void ADIY_MainPlayer::DoJumpAction(const FInputActionValue &Value)
 {
     Jump();
@@ -211,6 +221,9 @@ IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer, UDIY_MainPlayerCameraContro
 IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer, UDIY_MainPlayerInputController)
 
 IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer, UDIY_MainPlayerActionController)
+
+IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer, UDIY_EquipmentManager)
+
 
 // void ADIY_MainPlayer::ChangeHair(EHairType NewHairType)
 //{
