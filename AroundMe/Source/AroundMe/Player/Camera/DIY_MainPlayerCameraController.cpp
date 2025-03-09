@@ -19,13 +19,17 @@ UDIY_MainPlayerCameraController::UDIY_MainPlayerCameraController()
 
 
     CameraBoom->SetupAttachment(this);
-    CameraBoom->TargetArmLength = 1300.f;
+    CameraBoom->TargetArmLength = 600.f;
     CameraBoom->bUsePawnControlRotation = true; // Rotate arm based on controller
 
     // Create FollowCamera
     FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("TPSCamera"));
     FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach camera to end of boom
     FollowCamera->bUsePawnControlRotation = false;                              // Let the arm control the rotation
+#if 0
+    FollowCamera->SetConstraintAspectRatio(true);
+    FollowCamera->SetAspectRatio(16.0f/9.0f);
+#endif
                                                                                 // if (CameraBoom->GetAttachParent() == GetCapsuleComponent())
                                                                                 // {
                                                                                 // 	UE_LOG(LogTemp, Warning, TEXT("CameraBoom is correctly attached to PlayerCapsule."));
@@ -50,10 +54,7 @@ void UDIY_MainPlayerCameraController::BeginPlay()
 
         cur_controller->SetControlRotation(NewRotator);
     }
-#if 0
-    FollowCamera->SetConstraintAspectRatio(true);
-    FollowCamera->SetAspectRatio(9.0f / 16.0f);
-#endif
+
 }
 
 void UDIY_MainPlayerCameraController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
@@ -116,11 +117,11 @@ void UDIY_MainPlayerCameraController::UpdateUpDownCam(float DeltaTime)
 
             float new_fov = FMath::FInterpTo(FollowCamera->FieldOfView, UpDownCamFOVDepo[TargetUpDownType], DeltaTime, UpDownCameraLerpSpeed);
 
-            FollowCamera->SetFieldOfView(new_fov);
+            //FollowCamera->SetFieldOfView(new_fov);
 
             float new_target_spring_length = FMath::FInterpTo(CameraBoom->TargetArmLength, UpDownCamSpringLengthDepo[TargetUpDownType], DeltaTime, UpDownCameraLerpSpeed);
 
-            CameraBoom->TargetArmLength = new_target_spring_length;
+           CameraBoom->TargetArmLength = new_target_spring_length;
 
             if (FMath::Abs(cur_controller->GetControlRotation().Pitch - target_pitch) <= 0.1f)
             {

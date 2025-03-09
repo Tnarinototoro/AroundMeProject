@@ -92,11 +92,11 @@ public:
 	float UpDownCamSpringLengthDepo[UpDownCameraType::Type_Count]
 	{
 		//Cam_Horizon_Type
-		400.0f,
+		200.0f,
 		//Cam_Basic_TPS_Type
-		500.0f,
+		300.0f,
 		//Cam_Flying_Type
-		1000.0f
+		600.0f
 	};
 
 
