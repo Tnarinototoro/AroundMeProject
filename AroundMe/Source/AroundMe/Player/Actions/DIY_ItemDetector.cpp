@@ -45,7 +45,7 @@ AActor *UDIY_ItemDetector::GetDetectedActor() const
 
 void UDIY_ItemDetector::ProcessBeginOverlapEvent(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-    EASY_LOG_MAINPLAYER("ProcessBeginOverlapEvent");
+    EASY_LOG_MAINPLAYER("Item %s begin overlap with %s",*this->GetName(),*OtherActor->GetName());
     ADIY_ItemBase *possible_item = Cast<ADIY_ItemBase>(OtherActor);
     if (!mDetectedActor &&
         OtherActor &&
@@ -76,7 +76,7 @@ void UDIY_ItemDetector::ProcessBeginOverlapEvent(UPrimitiveComponent *Overlapped
 
 void UDIY_ItemDetector::ProcessEndOverlapEvent(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex)
 {
-    EASY_LOG_MAINPLAYER("ProcessEndOverlapEvent");
+   
     if (mDetectedActor == OtherActor)
     {
         if (IsValid(mDetectedActor))
