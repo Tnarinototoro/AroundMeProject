@@ -38,7 +38,7 @@ EntranceCollisionCheckVolume->SetupAttachment(RootComponent);
   CameraBoom->bUsePawnControlRotation = true; // Rotate arm based on controller
 
   // Create FollowCamera
-  BaseCameras[0] = CreateDefaultSubobject<UCameraComponent>(TEXT("ARound_Camera"));
+  BaseCameras[0] = CreateDefaultSubobject<UCameraComponent>(TEXT("Test_ARound_Camera"));
   BaseCameras[0]->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach camera to end of boom
   BaseCameras[0]->bUsePawnControlRotation = false;                              // Let the arm control the rotation
   BaseCameras[0]->SetActive(false);
@@ -78,6 +78,8 @@ void ADIY_MainBaseManager::BeginPlay()
         EASY_LOG_MAINPLAYER("EntranceCollisionCheckVolume->OnComponentBeginOverlap.AddDynamic(this, &ADIY_MainBaseManager::CheckPawnEntrance);")
         EntranceCollisionCheckVolume->OnComponentBeginOverlap.AddDynamic(this, &ADIY_MainBaseManager::CheckPawnEntrance);
     }
+
+   
 }
 
 // Called every frame
@@ -164,4 +166,21 @@ void ADIY_MainBaseManager::SwitchCamType_Delta(int32 inStep)
     EASY_LOG_MAINPLAYER("SwitchCamType_Delta: %d cam num %d", new_index,total_type_num);
     SwitchBaseCamToType((EDIY_MainBaseCamLocType)new_index);
     
+}
+UCameraComponent* ADIY_MainBaseManager::GetCurrentCamera() const
+{
+    if (CurCameraIndex < 0)
+    {
+        return nullptr;
+    }
+    if (BaseCameras.Num() <= 0)
+    {
+        return nullptr;
+    }
+
+    
+    
+    return BaseCameras[CurCameraIndex];
+
+
 }

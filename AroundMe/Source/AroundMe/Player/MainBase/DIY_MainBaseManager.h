@@ -36,7 +36,7 @@ protected:
     UPROPERTY( BlueprintReadWrite, EditDefaultsOnly, Category = "AroundBaseCamera")
 	class USpringArmComponent* CameraBoom;
 
-    UPROPERTY(BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly)
     int32 CurCameraIndex = -1;
 public:	
     // Called every frame
@@ -57,6 +57,9 @@ public:
 
     UFUNCTION(BlueprintCallable)
     void SwitchCamType_Delta(int32 inStep);
+
+    UFUNCTION(BlueprintCallable)
+    UCameraComponent* GetCurrentCamera() const;
 
 private:
 
