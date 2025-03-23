@@ -122,66 +122,109 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
     bool is_backpack_opened = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsBackPackUiOpened();
     bool is_crafting_platform_opned = AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsCraftingPlatformUiOpened();
 
-    if (is_sub_menu_opened && is_backpack_opened)
-    {
-        AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ExecuteCurrentItemSubMenuCommand();
+    bool is_hero_or_watcher=GetOwner()->ActorHasTag(FName("Hero"));
 
-        return;
-    }
-
-    if (!is_sub_menu_opened && !is_backpack_opened)
+    if(is_hero_or_watcher)
     {
         AActor *detected_actor = AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor();
+    
 
-        ADIY_ItemBase *cur_item = Cast<ADIY_ItemBase>(detected_actor);
+        AActor* already_picked_up_Actor= AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpedActor;
 
-        bool is_pickable = false;
 
-        bool is_crafting_item_pltform = false;
-
-        if (nullptr != cur_item)
+        //try pick up
+        if(nullptr==already_picked_up_Actor)
         {
-            is_crafting_item_pltform = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Has_CraftingPlatform_Function);
-        }
+            ADIY_ItemBase *cur_item = Cast<ADIY_ItemBase>(detected_actor);
 
-        if (is_crafting_item_pltform)
-        {
-            AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ToggleCraftingPlatformUi(!AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsCraftingPlatformUiOpened());
-            return;
-        }
-
-        if (cur_item != nullptr)
-        {
-            is_pickable = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Obey_Physics_Rules);
-        }
-        static bool execute_pick_up{true};
-        if (execute_pick_up)
-        {
-            if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_Base_Motion)
+            bool is_pickable = false;
+    
+            if (cur_item != nullptr)
             {
-                if (nullptr != detected_actor && is_pickable)
-                {
-                    AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PicUpDetectedItem(detected_actor, "hand_rSocket");
-
-                    AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_PickingUp;
-                    EASY_LOG_MAINPLAYER("Picked up the actor yyyyyyyy");
-                }
+                is_pickable = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Obey_Physics_Rules);
             }
-
-            execute_pick_up = false;
+            if (nullptr != detected_actor && is_pickable)
+            {
+                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(detected_actor, "hand_rSocket");
+                EASY_LOG_MAINPLAYER("%s Picked up the actor yyyyyyyy",*GetOwner()->GetName());
+            }
         }
         else
         {
-            if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_PickingUp)
-            {
-                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PlacePickedUpItem();
-                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_Base_Motion;
-                EASY_LOG_MAINPLAYER("PLaced the actorxxxxxxxx");
-            }
+            AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PlacePickedUpItem();
+        }
+        
+        
 
-            execute_pick_up = true;
+    }
+    else
+    {
+        if (is_sub_menu_opened && is_backpack_opened)
+        {
+            AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ExecuteCurrentItemSubMenuCommand();
+    
+            return;
+        }
+    
+        if (!is_sub_menu_opened && !is_backpack_opened)
+        {
+            AActor *detected_actor = AcquireOwnerActorOwnedUDIY_ItemDetector()->GetDetectedActor();
+    
+            ADIY_ItemBase *cur_item = Cast<ADIY_ItemBase>(detected_actor);
+    
+            bool is_pickable = false;
+    
+            bool is_crafting_item_pltform = false;
+    
+            if (nullptr != cur_item)
+            {
+                is_crafting_item_pltform = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Has_CraftingPlatform_Function);
+            }
+    
+            if (is_crafting_item_pltform)
+            {
+                AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->ToggleCraftingPlatformUi(!AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->IsCraftingPlatformUiOpened());
+                return;
+            }
+    
+            if (cur_item != nullptr)
+            {
+                is_pickable = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Obey_Physics_Rules);
+            }
+            static bool execute_pick_up{true};
+            if (execute_pick_up)
+            {
+                if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_Base_Motion)
+                {
+                    if (nullptr != detected_actor && is_pickable)
+                    {
+                        AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(detected_actor, "hand_rSocket");
+    
+                        AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_PickingUp;
+                        EASY_LOG_MAINPLAYER("Picked up the actor yyyyyyyy");
+                    }
+                }
+    
+                execute_pick_up = false;
+            }
+            else
+            {
+                if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_PickingUp)
+                {
+                    AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PlacePickedUpItem();
+                    AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_Base_Motion;
+                    EASY_LOG_MAINPLAYER("PLaced the actorxxxxxxxx");
+                }
+    
+                execute_pick_up = true;
+            }
+    
+    
+            
         }
     }
+
+   
 }
 
 void UDIY_MainPlayerInputController::onInteractReleased(const FInputActionValue &Value)

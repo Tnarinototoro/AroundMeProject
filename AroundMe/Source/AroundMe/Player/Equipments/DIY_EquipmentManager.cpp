@@ -210,10 +210,10 @@ void UDIY_EquipmentManager::InitAllEquipments()
 			UDIY_RobotHandController* cur_hand=Cast<UDIY_RobotHandController>(AllEquipments[(int)EEquipmentsIndex::Left_Hand]);
 
 			
-			cur_hand->Target_Point->SetupAttachment(this);
+			cur_hand->Target_Hook->SetupAttachment(this);
+			//(X=35.000000,Y=-60.000000,Z=20.000000)
 			
-			
-			cur_hand->Target_Point->SetRelativeLocation({0.f,0.f,0.f});
+			cur_hand->Target_Hook->SetRelativeLocation({35.f,-60.f,20.f});
 
 			
 			//EASY_LOG_MAINPLAYER("xxxxxxxxx manager parent is %s",*this->GetAttachParent()->GetName());
@@ -245,9 +245,9 @@ void UDIY_EquipmentManager::InitAllEquipments()
 			AllEquipments[(int)EEquipmentsIndex::Right_Hand]->mEquipModelType=(uint8)EDIY_RobotHandType::RustOld_Type;
 
 			UDIY_RobotHandController* cur_hand=Cast<UDIY_RobotHandController>(AllEquipments[(int)EEquipmentsIndex::Right_Hand]);
-			cur_hand->Target_Point->SetupAttachment(this);
-			cur_hand->Target_Point->SetRelativeLocation({0.f,0.f,0.f});
-			this->GetName();
+			cur_hand->Target_Hook->SetupAttachment(this);
+			cur_hand->Target_Hook->SetRelativeLocation({35.f,60.f,20.f});
+			
 			break;
 		}
 		case (int)EEquipmentsIndex::Left_Hand_Head:

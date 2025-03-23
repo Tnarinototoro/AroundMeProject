@@ -23,7 +23,7 @@ public:
 
 
     UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")
-    class USceneComponent* Target_Point{nullptr};
+    class USceneComponent* Target_Hook{nullptr};
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -34,9 +34,22 @@ public:
 
 
 
-	
+    UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
+    void RequestPickUpTask(class AActor *inTargetItem);
 
 
+
+    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")
+    float PickUpTask_MoveToTargetPointSpeed{1.f};
+
+    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")
+    float PickUpTask_MoveBackSpeed{1.f};
+
+    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")   
+    float PickUpItem_MaxMovingToTarge_TryingTime{5.0f};
+
+    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")
+    float PickUpTask_TargetCloseEnoughDistance{2.f};
 
 protected:
 	void UpdateHandHeadStateMachine(float inDeltatime);
@@ -52,8 +65,11 @@ protected:
 	bool mEnteredNewStateSign{false};
 
     private:
-	
 
+    class AActor *mCurrentTargetPickUpItem{nullptr};
+
+
+    
    
 	
 };

@@ -37,8 +37,10 @@ public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
-    void PicUpDetectedItem(class AActor *inActor, FName SocketName);
+    UFUNCTION(BlueprintCallable)
+    void PickUpDetectedItem(class AActor *inActor, FName SocketName,class USkeletalMeshComponent* inAttachParentSKM=nullptr);
 
+    UFUNCTION(BlueprintCallable)
     void PlacePickedUpItem();
 
     UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")

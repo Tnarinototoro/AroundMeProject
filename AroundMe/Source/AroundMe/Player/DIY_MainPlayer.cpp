@@ -191,20 +191,7 @@ void ADIY_MainPlayer::Tick(float DeltaTime)
 
     UpdateGameLogic(DeltaTime);
 
-    AActor *picked_up_actor = AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpedActor;
-    if (picked_up_actor != nullptr)
-    {
-        ADIY_ItemBase *ItemBase = Cast<ADIY_ItemBase>(picked_up_actor);
-        if (ItemBase)
-        {
-            const FTransform cur_item_pick_socket_trans = ItemBase->GetRootComponent()->GetSocketTransform("PickSocket");
-            const FTransform cur_item_pick_socket_trans_relative = ItemBase->GetRootComponent()->GetSocketTransform("PickSocket", ERelativeTransformSpace::RTS_Actor);
-            FVector socket_loc = GetMesh()->GetSocketLocation("hand_rSocket");
-            FVector relative_location = {socket_loc - cur_item_pick_socket_trans.GetLocation()};
-            ItemBase->SetActorRelativeRotation(cur_item_pick_socket_trans_relative.GetRotation().Inverse());
-            ItemBase->SetActorLocation(relative_location + ItemBase->GetActorLocation());
-        }
-    }
+   
 }
 
 // Called to bind functionality to input

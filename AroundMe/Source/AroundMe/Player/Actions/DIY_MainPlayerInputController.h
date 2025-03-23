@@ -38,7 +38,7 @@ public:
     UFUNCTION()
     void HandlePlayerJump(const FInputActionValue &Value);
 
-    UFUNCTION()
+    UFUNCTION(BlueprintCallable)
     void onInteractPressed(const FInputActionValue &Value);
 
     UFUNCTION()

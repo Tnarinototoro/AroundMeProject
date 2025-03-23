@@ -32,6 +32,10 @@ void UDIY_RobotHand_HeadController::TickComponent(float DeltaTime, ELevelTick Ti
             parent_hand_head_connection_point.GetLocation()+real_forward_vec*200.f,10.0f,FColor::Red,false,0.f,0,1.0f);
 
             mEquipMentMesh->SetWorldRotation(FRotationMatrix::MakeFromX(real_forward_vec).Rotator());
+
+            
+            DrawDebugSphere(GetWorld(),parent_hand_head_connection_point.GetLocation(),10.f,12,FColor::Red);
+            DrawDebugString(GetWorld(),parent_hand_head_connection_point.GetLocation(),"RightDirBone",nullptr,FColor::Red,0.f);
             
         }
     }
@@ -47,7 +51,6 @@ void UDIY_RobotHand_HeadController::UpdateHandHeadStateMachine(float inDeltatime
 
             if(mEnteredNewStateSign)
             {
-
                 
                 mEnteredNewStateSign=false;
 
