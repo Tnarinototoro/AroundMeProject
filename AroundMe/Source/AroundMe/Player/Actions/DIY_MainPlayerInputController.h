@@ -88,4 +88,6 @@ private : void UpdateDesiredDir_ByPlayerInput_FollowCamView(float DeltaTime);
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerCameraController)
     DECLARE_GET_COMPONENT_HELPER(UDIY_ItemDetector)
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerUIController)
+
+    DECLARE_GET_COMPONENT_HELPER(UDIY_EquipmentManager)
 };

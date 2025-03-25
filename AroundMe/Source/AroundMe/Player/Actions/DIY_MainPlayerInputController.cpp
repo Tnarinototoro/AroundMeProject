@@ -12,6 +12,7 @@
 #include "../Items/DIY_Item.h"
 #include "../../GameUtilities/DIY_Utilities.h"
 #include "../Items/DIY_ItemManager.h"
+#include "../Equipments/DIY_EquipmentManager.h"
 
 UDIY_MainPlayerInputController::UDIY_MainPlayerInputController()
 {
@@ -145,7 +146,7 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
             }
             if (nullptr != detected_actor && is_pickable)
             {
-                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(detected_actor, "hand_rSocket");
+                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(detected_actor, "armhead_l_00",AcquireOwnerActorOwnedUDIY_EquipmentManager()->GetEquipSKMAtIndex(EEquipmentsIndex::Right_Hand_Head));
                 EASY_LOG_MAINPLAYER("%s Picked up the actor yyyyyyyy",*GetOwner()->GetName());
             }
         }
@@ -398,3 +399,5 @@ IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController, UDIY_Mai
 
 IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController, UDIY_ItemDetector)
 IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController, UDIY_MainPlayerUIController)
+
+IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_MainPlayerInputController, UDIY_EquipmentManager)
