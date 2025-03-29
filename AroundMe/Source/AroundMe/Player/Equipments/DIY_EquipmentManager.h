@@ -56,6 +56,7 @@ public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
    
+    FVector GetKagoRobotDumpItemPoint();
 
     virtual void PostInitProperties() override;
 

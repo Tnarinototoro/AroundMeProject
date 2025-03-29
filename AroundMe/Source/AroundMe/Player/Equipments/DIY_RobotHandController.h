@@ -4,6 +4,7 @@
 #include "Components/SceneComponent.h"
 #include "DIY_RobotHand_Defines.h"
 #include "DIY_EquipmentBase.h"
+#include "../../GameUtilities/DIY_HelperMacros.h"
 #include "DIY_RobotHandController.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
@@ -68,8 +69,9 @@ protected:
 
     class AActor *mCurrentTargetPickUpItem{nullptr};
 
+    class AActor *mCurrentPickedUpItem{nullptr};
 
-    
-   
+    DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerActionController)
+    DECLARE_GET_COMPONENT_HELPER(UDIY_EquipmentManager)
 	
 };

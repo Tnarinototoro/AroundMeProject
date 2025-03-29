@@ -151,6 +151,12 @@ void UDIY_EquipmentManager::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 }
 
+FVector UDIY_EquipmentManager::GetKagoRobotDumpItemPoint()
+{
+	UDIY_KagoController* kago_controller=Cast<UDIY_KagoController>(GetEquipAtIndex(EEquipmentsIndex::Kago));
+	
+    return kago_controller->HandHead_Releasing_Point->GetComponentLocation();
+}
 
 void UDIY_EquipmentManager::PostInitProperties()
 {

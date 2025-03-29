@@ -1,7 +1,8 @@
 #include "DIY_RobotHandController.h"
 #include "Components/SkeletalMeshComponent.h"
-
-
+#include "../../GameUtilities/Logs/DIY_LogHelper.h"
+#include "../Actions/DIY_MainPlayerActionController.h"
+#include "DIY_EquipmentManager.h"
 UDIY_RobotHandController::UDIY_RobotHandController()
 {
      PrimaryComponentTick.bCanEverTick = true;
@@ -33,6 +34,10 @@ void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickTyp
 
         UpdateHandHeadStateMachine(DeltaTime);
     }
+
+
+    EASY_LOG_MAINPLAYER("current owner name %s",*GetOwner()->GetName());
+    
 }
 
 inline FVector UDIY_RobotHandController::GetHandEndWolrdLocation() const
@@ -60,6 +65,12 @@ void UDIY_RobotHandController::RequestPickUpTask(AActor *inTargetItem)
         return;
     }
 
+
+    //check if the robot is holding an item
+    if(nullptr!=mCurrentPickedUpItem)
+    {
+        return;
+    }
     
 
     //check if the target item is pending kill
@@ -162,11 +173,48 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
             if(mEnteredNewStateSign)
             {
 
+                ensureMsgf(nullptr==mCurrentPickedUpItem&&nullptr!=mCurrentTargetPickUpItem,TEXT("Picked up item is null"));
+                mEnteredNewStateSign=false;
+                mCurrentPickedUpItem=mCurrentTargetPickUpItem;
+                mCurrentTargetPickUpItem=nullptr;
+
+                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(mCurrentPickedUpItem,FName("armhead_l_00"));
+
+                SwitchToNextState(EDIY_RobotHand_State_Type::Moving_ToDumpPoint);
+
+                break;
+            }
+
+
+
+            break;
+        }
+        case EDIY_RobotHand_State_Type::Moving_ToDumpPoint:
+        {
+            
+            if(mEnteredNewStateSign)
+            {
+                ensureMsgf(nullptr!=mCurrentPickedUpItem&&nullptr==mCurrentTargetPickUpItem,TEXT("Picked up item is null"));
                 
                 mEnteredNewStateSign=false;
                 break;
             }
 
+
+
+            FVector TargetPointLocation=AcquireOwnerActorOwnedUDIY_EquipmentManager()->GetKagoRobotDumpItemPoint();
+            FVector CurrentTargetHookPoint=Target_Hook->GetComponentLocation();
+            FVector CurrentHandEndLocation=GetHandEndWolrdLocation();
+        
+            if (FVector::Distance(CurrentHandEndLocation,TargetPointLocation)<=PickUpTask_TargetCloseEnoughDistance)
+            {
+               SwitchToNextState(EDIY_RobotHand_State_Type::MovingBack);
+               break;
+            }
+        
+            FVector cur_calculated_pos= FMath::VInterpTo(CurrentTargetHookPoint,TargetPointLocation,inDeltatime,PickUpTask_MoveToTargetPointSpeed);
+            Target_Hook->SetWorldLocation(cur_calculated_pos);
+            DrawDebugSphere(GetWorld(),cur_calculated_pos,10.f,12,FColor::Green);
 
 
             break;
@@ -177,7 +225,7 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
             if(mEnteredNewStateSign)
             {
 
-                
+                SwitchToNextState(EDIY_RobotHand_State_Type::Idle);
                 mEnteredNewStateSign=false;
                 break;
             }
@@ -203,3 +251,5 @@ void UDIY_RobotHandController::SwitchToNextState(EDIY_RobotHand_State_Type inNex
     mEnteredNewStateSign=true;
     mCurrentStateElapsedTime=0.f;
 }
+IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_RobotHandController, UDIY_MainPlayerActionController)
+IMPL_GET_COMPONENT_HELPER_FOR_COMPONENT(UDIY_RobotHandController, UDIY_EquipmentManager)

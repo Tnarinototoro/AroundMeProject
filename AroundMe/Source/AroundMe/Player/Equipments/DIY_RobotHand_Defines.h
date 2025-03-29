@@ -20,6 +20,7 @@ enum class EDIY_RobotHand_State_Type : uint8
     Idle ,
     Moving_ToTargetPoint,
     At_TargetPoint ,
+    Moving_ToDumpPoint,
     MovingBack ,
     Count
 

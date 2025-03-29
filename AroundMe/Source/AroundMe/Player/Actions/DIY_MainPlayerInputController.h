@@ -82,7 +82,11 @@ public:
     FVector DesiredDir_ByPlayerInput_FollowCamView{FVector::ZeroVector};
 
     FVector2D inPutBackPack_CursorMoveDir{FVector2D::ZeroVector};
-private : void UpdateDesiredDir_ByPlayerInput_FollowCamView(float DeltaTime);
+private : 
+
+
+
+void UpdateDesiredDir_ByPlayerInput_FollowCamView(float DeltaTime);
 
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerActionController)
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerCameraController)

@@ -15,7 +15,7 @@ UDIY_ItemDetector::UDIY_ItemDetector()
     SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
     // SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
     SetRelativeLocation({150.0f, 0.0f, 0.0f});
-    BoxExtent = {100.0f, 50.f, 90.0f};
+    BoxExtent = {100.0f, 200.f, 90.0f};
 }
 
 // void UDIY_ItemDetector::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
