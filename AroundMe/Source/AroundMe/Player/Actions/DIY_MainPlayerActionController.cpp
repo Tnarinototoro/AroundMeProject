@@ -165,7 +165,7 @@ void UDIY_MainPlayerActionController::UpdateParams(float inDelta)
             EASY_LOG_MAINPLAYER("YYYYYYYYYYYY item launched!!!!");
             // BasicStaticMeshComponent->AddImpulse(PulseVec, NAME_None, true);
 
-            BasicStaticMeshComponent->SetPhysicsLinearVelocity(PulseVec * mPickActionVelocityCoe);
+           // BasicStaticMeshComponent->SetPhysicsLinearVelocity(PulseVec * mPickActionVelocityCoe);
             PickUpedActor = nullptr;
         }
         if (nullptr != BasicStaticMeshComponent)
@@ -263,7 +263,7 @@ void UDIY_MainPlayerActionController::PickUpDetectedItem(AActor *inActor, FName 
 
 }
 
-void UDIY_MainPlayerActionController::PlacePickedUpItem()
+void UDIY_MainPlayerActionController::PlacePickedUpItem(bool inThrowFlag)
 {
     if (PickUpedActor)
     {
@@ -281,6 +281,11 @@ void UDIY_MainPlayerActionController::PlacePickedUpItem()
 
             pulse_dir = pulse_dir.GetSafeNormal();
 
+
+            if(!inThrowFlag)
+            {
+                pulse_dir=FVector::ZeroVector;
+            }
             ItemBase->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 
             FVector StartLocation = ItemBase->GetActorLocation();
@@ -301,7 +306,10 @@ void UDIY_MainPlayerActionController::PlacePickedUpItem()
             // 绘制箭头
             DrawDebugLine(GetWorld(), StartLocation, EndLocation, ArrowColor, true, 2.0f, 0, Thickness);
 
+            
             HasImpulseTask = true;
+
+            
             PulseVec = pulse_dir;
             // ItemBase->GetItemDefualtConfig().ItemMass * mPickActionVelocityCoe;
 

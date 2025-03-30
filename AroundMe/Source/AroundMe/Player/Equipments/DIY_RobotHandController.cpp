@@ -149,6 +149,9 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
                 FVector CurrentTargetHookPoint=Target_Hook->GetComponentLocation();
                 FVector CurrentHandEndLocation=GetHandEndWolrdLocation();
 
+                EASY_LOG_MAINPLAYER("FVector::Distance(CurrentHandEndLocation,TargetPointLocation) %f threshold %f",FVector::Distance(CurrentHandEndLocation,TargetPointLocation),PickUpTask_TargetCloseEnoughDistance);
+
+
                 if (FVector::Distance(CurrentHandEndLocation,TargetPointLocation)<=PickUpTask_TargetCloseEnoughDistance)
                 {
                     //close enough
@@ -178,7 +181,7 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
                 mCurrentPickedUpItem=mCurrentTargetPickUpItem;
                 mCurrentTargetPickUpItem=nullptr;
 
-                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(mCurrentPickedUpItem,FName("armhead_l_00"));
+                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(mCurrentPickedUpItem,FName("armhead_l_00"),mEquipMentMesh);
 
                 SwitchToNextState(EDIY_RobotHand_State_Type::Moving_ToDumpPoint);
 
@@ -209,6 +212,8 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
             if (FVector::Distance(CurrentHandEndLocation,TargetPointLocation)<=PickUpTask_TargetCloseEnoughDistance)
             {
                SwitchToNextState(EDIY_RobotHand_State_Type::MovingBack);
+               AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PlacePickedUpItem(false);
+               mCurrentPickedUpItem=nullptr;
                break;
             }
         

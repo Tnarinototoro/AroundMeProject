@@ -41,7 +41,7 @@ public:
     void PickUpDetectedItem(class AActor *inActor, FName SocketName,class USkeletalMeshComponent* inAttachParentSKM=nullptr);
 
     UFUNCTION(BlueprintCallable)
-    void PlacePickedUpItem();
+    void PlacePickedUpItem(bool inThrowFlag=true);
 
     UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
     EMainPlayerActingStateType CurrentActingState{EMainPlayerActingStateType::State_Base_Motion};

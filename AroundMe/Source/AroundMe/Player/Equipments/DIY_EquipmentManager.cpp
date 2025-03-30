@@ -353,6 +353,12 @@ void UDIY_EquipmentManager::RealizeAllEquipmentModels()
 	RequestEquipModelTypeTo(EEquipmentsIndex::Chest,0,true);
 	RequestEquipModelTypeTo(EEquipmentsIndex::Cap,0,true);
 
-
+	for(int i=0;i<AllEquipments.Num();i++)
+	{
+		
+		GetEquipSKMAtIndex((EEquipmentsIndex)i)->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		GetEquipSKMAtIndex((EEquipmentsIndex)i)->SetSimulatePhysics(false);
+		
+	}
 	
 }
