@@ -41,7 +41,7 @@ ADIY_ItemBase::ADIY_ItemBase()
     BasicStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BasicStaticMeshComponent"));
 
     RootComponent = BasicStaticMeshComponent;
-
+    BasicStaticMeshComponent->SetUseCCD(true);
     // FStringClassReference MyWidgetClassRef(TEXT("/Game/UI/DIY_UI_ResourceRemaing.DIY_UI_ResourceRemaing_C"));
 
     /*if (UClass* MyWidgetClass = MyWidgetClassRef.TryLoadClass<UUserWidget>())
