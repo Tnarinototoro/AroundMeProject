@@ -30,7 +30,7 @@ public:
 
 
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
-    inline FVector GetHandEndWolrdLocation() const;
+    FVector GetHandEndWolrdLocation() const;
     
 
 

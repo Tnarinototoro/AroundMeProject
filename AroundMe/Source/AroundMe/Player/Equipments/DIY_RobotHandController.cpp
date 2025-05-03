@@ -40,7 +40,7 @@ void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickTyp
     
 }
 
-inline FVector UDIY_RobotHandController::GetHandEndWolrdLocation() const
+FVector UDIY_RobotHandController::GetHandEndWolrdLocation() const
 {
     return  mEquipMentMesh->GetBoneTransform("armhead_l_00").GetLocation();
 }
