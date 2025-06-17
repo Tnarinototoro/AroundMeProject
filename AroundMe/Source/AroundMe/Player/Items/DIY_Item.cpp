@@ -49,7 +49,7 @@ ADIY_ItemBase::ADIY_ItemBase()
 
     }
     */
-
+    BasicStaticMeshComponent->SetCanEverAffectNavigation(false);
     ItemStateWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("ItemStateWidgetComponent"));
 
     ItemStateWidgetComponent->SetupAttachment(BasicStaticMeshComponent);
@@ -58,6 +58,8 @@ ADIY_ItemBase::ADIY_ItemBase()
 
     ItemStateWidgetComponent->SetPivot(FVector2D(0.5f, 0.5f));
     ItemStateWidgetComponent->SetVisibility(true);
+
+    ItemStateWidgetComponent->SetCanEverAffectNavigation(false);
 }
 
 ADIY_ItemBase::~ADIY_ItemBase()

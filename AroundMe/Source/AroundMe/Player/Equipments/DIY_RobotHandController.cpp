@@ -36,7 +36,6 @@ void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickTyp
     }
 
 
-    EASY_LOG_MAINPLAYER("current owner name %s",*GetOwner()->GetName());
     
 }
 

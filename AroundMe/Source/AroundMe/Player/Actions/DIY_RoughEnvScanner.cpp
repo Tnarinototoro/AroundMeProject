@@ -23,6 +23,14 @@ UDIY_RoughEnvScanner::UDIY_RoughEnvScanner()
 
     this->OnComponentBeginOverlap.AddDynamic(this, &UDIY_RoughEnvScanner::ProcessBeginOverlapEvent);
     this->OnComponentEndOverlap.AddDynamic(this, &UDIY_RoughEnvScanner::ProcessEndOverlapEvent);
+
+    
+    GetOverlappingActors(mDetectedActors,TSubclassOf<ADIY_ItemBase>());
+
+    GetNearest_DetectedActor();
+
+    
+    
 }
 
 void UDIY_RoughEnvScanner::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -35,7 +43,52 @@ void UDIY_RoughEnvScanner::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 AActor *UDIY_RoughEnvScanner::GetNearest_DetectedActor() const
 {
-    return mDetectedNearest_Actor;
+    if(mDetectedActors.Num() == 0)
+    {
+        return nullptr;
+    }
+
+    AActor* OwnerActor=GetOwner();
+
+    if(OwnerActor == nullptr)
+    {
+        return nullptr;
+    }
+
+    float nearest_distance = FLT_MAX;
+
+    AActor* nearest_actor = nullptr;
+
+    for(AActor* CurActor : mDetectedActors)
+    {
+        if(IsValid(CurActor))
+        {
+            float cur_distance = CurActor->GetDistanceTo(OwnerActor);
+            if(cur_distance < nearest_distance)
+            {
+                nearest_distance = cur_distance;
+                nearest_actor=CurActor;
+                
+            }
+            
+        }
+        
+    }
+    if(nullptr!=nearest_actor)
+    {
+        DrawDebugSphere(GetWorld(), nearest_actor->GetActorLocation(), 100.0f,12,FColor::Black,false,0.1f);
+    }
+    
+    return nearest_actor;
+   
+}
+
+void UDIY_RoughEnvScanner::RemoveAllInvalidActors()
+{
+    mDetectedActors.RemoveAll([](AActor* CurActor)
+    {
+    return !IsValid(CurActor);
+    });
 }
 
 void UDIY_RoughEnvScanner::ProcessBeginOverlapEvent(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
@@ -58,13 +111,16 @@ void UDIY_RoughEnvScanner::ProcessBeginOverlapEvent(UPrimitiveComponent *Overlap
         return;
     }
 
-    if (nullptr==mDetectedNearest_Actor || mDetectedNearest_Actor->GetDistanceTo(OwnerActor)>OtherActor->GetDistanceTo(OwnerActor))
+    //aalready  detected
+    if(mDetectedActors.Contains(OtherActor))
     {
-        //always choose and keep the nearest actor
-        mDetectedNearest_Actor = OtherActor;
-        DrawDebugSphere(GetWorld(),OtherActor->GetActorLocation(),100.0f,12,FColor::Green,false,1.0f);
+        return;
     }
- 
+
+    mDetectedActors.Add(OtherActor);
+    RemoveAllInvalidActors();
+    
+    DrawDebugSphere(GetWorld(),OtherActor->GetActorLocation(),100.0f,12,FColor::Green,false,1.0f);
    
 
    
@@ -81,19 +137,13 @@ void UDIY_RoughEnvScanner::ProcessEndOverlapEvent(UPrimitiveComponent *Overlappe
         return;
     }
     
-    if (mDetectedNearest_Actor == OtherActor)
-    {
-        if (IsValid(mDetectedNearest_Actor))
-        {
-            mDetectedNearest_Actor = nullptr;
-            DrawDebugSphere(GetWorld(),OtherActor->GetActorLocation(),100.0f,12,FColor::Yellow,false,1.0f);
-        }
-    }
-    else
-    {
-        DrawDebugSphere(GetWorld(),OtherActor->GetActorLocation(),100.0f,12,FColor::Red,false,1.0f);
-    }
-   
+    
+    DrawDebugSphere(GetWorld(),OtherActor->GetActorLocation(),100.0f,12,FColor::Red,false,1.0f);
+    
+    
+    mDetectedActors.RemoveSingleSwap(ItemActor);
+    
+    RemoveAllInvalidActors();
 
-   
+
 }

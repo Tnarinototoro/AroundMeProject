@@ -21,8 +21,7 @@ protected:
     // Called when the game starts
     virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-    UPROPERTY(BlueprintReadOnly)
-    AActor* mDetectedNearest_Actor{nullptr};
+    
 
 public:    
 	
@@ -32,10 +31,14 @@ public:
     UFUNCTION(BlueprintCallable)
     class AActor* GetNearest_DetectedActor() const;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AroundMe")
+    TArray<class AActor*> mDetectedActors;
+
    
 
 
 private:
+    void RemoveAllInvalidActors();
     UFUNCTION()
     void ProcessBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
     
