@@ -49,7 +49,7 @@
 		},
 		{
 			"Name": "AssetsCleaner",
-			"Enabled": false,
+			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/3caab7c6e81f449296989122c043ae21"
 		},
 		{
@@ -85,6 +85,11 @@
 		{
 			"Name": "LightWeightInstancesEditor",
 			"Enabled": true
+		},
+		{
+			"Name": "GraphFormatter",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/297159d6d3f4425b9c095b18a811a401"
 		}
 	]
 }
