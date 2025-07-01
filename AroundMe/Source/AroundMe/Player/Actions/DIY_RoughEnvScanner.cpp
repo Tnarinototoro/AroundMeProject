@@ -59,6 +59,10 @@ AActor *UDIY_RoughEnvScanner::GetNearest_DetectedActor() const
 
     AActor* nearest_actor = nullptr;
 
+    FVector OwnerActorForwardVector =OwnerActor->GetActorForwardVector();
+
+
+    
     for(AActor* CurActor : mDetectedActors)
     {
         if(IsValid(CurActor))
@@ -66,8 +70,15 @@ AActor *UDIY_RoughEnvScanner::GetNearest_DetectedActor() const
             float cur_distance = CurActor->GetDistanceTo(OwnerActor);
             if(cur_distance < nearest_distance)
             {
-                nearest_distance = cur_distance;
-                nearest_actor=CurActor;
+                FVector CurActorToOwnerActor = CurActor->GetActorLocation() - OwnerActor->GetActorLocation();
+                //added to avoid selecting item behind the player
+                if(CurActorToOwnerActor.Dot(OwnerActorForwardVector) > 0.0f)
+                {
+                    nearest_distance = cur_distance;
+                    nearest_actor=CurActor;
+                }
+                
+
                 
             }
             
