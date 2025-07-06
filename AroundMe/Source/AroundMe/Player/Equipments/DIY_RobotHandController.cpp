@@ -44,6 +44,12 @@ FVector UDIY_RobotHandController::GetHandEndWolrdLocation() const
     return  mEquipMentMesh->GetBoneTransform("armhead_l_00").GetLocation();
 }
 
+EDIY_RobotHand_State_Type UDIY_RobotHandController::GetCurrentState() const
+{
+    return mCurrentState;
+}
+
+
 void UDIY_RobotHandController::RequestPickUpTask(AActor *inTargetItem)
 {
     //check null

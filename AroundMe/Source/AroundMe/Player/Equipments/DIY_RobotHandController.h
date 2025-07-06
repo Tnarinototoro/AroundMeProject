@@ -31,8 +31,9 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
     FVector GetHandEndWolrdLocation() const;
-    
 
+    UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
+    EDIY_RobotHand_State_Type GetCurrentState() const;
 
 
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
