@@ -1,12 +1,12 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
-#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
 #include "DIY_RoughEnvScanner.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_RoughEnvScanner : public USphereComponent
+class AROUNDME_API UDIY_RoughEnvScanner : public UBoxComponent
 {
      
     GENERATED_BODY()
