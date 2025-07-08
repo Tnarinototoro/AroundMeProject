@@ -20,6 +20,7 @@ public class AroundMe : ModuleRules
             "DIYPlatformService",
             "AssetRegistry",
             "DeveloperSettings",
+            "AIModule",
             "RuntimeVertexPainter"
         });
 
