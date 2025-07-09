@@ -65,24 +65,32 @@ AActor *UDIY_RoughEnvScanner::GetNearest_DetectedActor() const
     
     for(AActor* CurActor : mDetectedActors)
     {
-        if(IsValid(CurActor))
+        if(!IsValid(CurActor))
         {
-            float cur_distance = CurActor->GetDistanceTo(OwnerActor);
-            if(cur_distance < nearest_distance)
-            {
-                FVector CurActorToOwnerActor = CurActor->GetActorLocation() - OwnerActor->GetActorLocation();
-                //added to avoid selecting item behind the player
-                if(CurActorToOwnerActor.Dot(OwnerActorForwardVector) > 0.0f)
-                {
-                    nearest_distance = cur_distance;
-                    nearest_actor=CurActor;
-                }
-                
+            continue;
 
-                
-            }
-            
         }
+        ADIY_ItemBase* ItemActor = Cast<ADIY_ItemBase>(CurActor);
+        if(nullptr==ItemActor||!ItemActor->CheckItemFlag(EDIY_InteractItemFlag::Can_Be_PickUped))
+        {
+            continue;
+        }
+
+        float cur_distance = CurActor->GetDistanceTo(OwnerActor);
+        if(cur_distance >= nearest_distance)
+        {
+            continue;
+        }
+        FVector CurActorToOwnerActor = CurActor->GetActorLocation() - OwnerActor->GetActorLocation();
+        //added to avoid selecting item behind the player
+        if(CurActorToOwnerActor.Dot(OwnerActorForwardVector) <= 0.0f)
+        {
+            continue;
+        }
+        
+        
+        nearest_distance = cur_distance;
+        nearest_actor=CurActor;
         
     }
     if(nullptr!=nearest_actor)
