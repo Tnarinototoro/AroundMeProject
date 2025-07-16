@@ -18,6 +18,8 @@ public:
 
     // Called every frame
     virtual void Tick(float DeltaTime) override;
+    void RegisterArea(EDIY_Area inAreaID,AActor *inAreaAncor);
+    void UnregisterArea(EDIY_Area inAreaID);
 
 protected:
     ADIY_AreaManager();
@@ -27,9 +29,8 @@ protected:
     /** Overridable function called whenever this actor is being removed from a level */
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-   
-
 private:
     static ADIY_AreaManager *ManagerInstance;
+    TArray<class AActor*> mAreaAnchors;
    
 };

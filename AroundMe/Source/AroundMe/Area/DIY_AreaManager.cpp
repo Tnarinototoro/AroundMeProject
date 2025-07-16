@@ -44,7 +44,44 @@ void ADIY_AreaManager::Tick(float indelta)
     Super::Tick(indelta);
 }
 
+void ADIY_AreaManager::RegisterArea(EDIY_Area inAreaID, AActor *inAreaAncor)
+{
+    if(mAreaAnchors.Num()!=(int32)EDIY_Area::Area_Count)
+    {
+        mAreaAnchors.Init(nullptr,(int32)EDIY_Area::Area_Count);
+    }
 
+    checkf(mAreaAnchors.Num()==(int32)EDIY_Area::Area_Count,TEXT("AreaManager::RegisterArea() mAreaAnchors.Num()!=EDIY_Area::Area_Count"));
+    checkf(nullptr!=inAreaAncor,TEXT("AreaManager::RegisterArea() nullptr!=inAreaAncor"));
+
+    if(mAreaAnchors[(int32)inAreaID]==nullptr)
+    {
+        mAreaAnchors[(int32)inAreaID] = inAreaAncor;
+        EASY_LOG_MAINPLAYER("AreaManager::RegisterArea() %d", inAreaID);
+
+    }
+    else
+    {
+        ensureAlwaysMsgf(false,TEXT("AreaManager::RegisterArea() %d already registered"),inAreaID);
+
+    }
+   
+}
+
+void ADIY_AreaManager::UnregisterArea(EDIY_Area inAreaID)
+{
+    checkf(mAreaAnchors.Num()==(int32)EDIY_Area::Area_Count,TEXT("AreaManager::RegisterArea() mAreaAnchors.Num()!=EDIY_Area::Area_Count"));
+    if(mAreaAnchors[(int32)inAreaID]!=nullptr)
+    {
+        mAreaAnchors[(int32)inAreaID] = nullptr;
+        EASY_LOG_MAINPLAYER("AreaManager::UnregisterArea() %d", inAreaID);
+
+    }
+    else
+    {
+        ensureAlwaysMsgf(false,TEXT("AreaManager::UnregisterArea() %d already unregistered"),inAreaID);
+    }
+}
 
 ADIY_AreaManager *ADIY_AreaManager::GetManager()
 {
