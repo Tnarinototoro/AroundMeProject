@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/TargetPoint.h"
-
+#include "DIY_AreaDefines.h"
 #include "DIY_AreaTeleportAnchor.generated.h"
 
 UCLASS()
@@ -22,6 +22,10 @@ protected:
 public:
     ADIY_AreaTeleportAnchor();
     ~ADIY_AreaTeleportAnchor();
+
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Area")
+    EDIY_Area AssignedAreaID;
 
 };
 

@@ -37,6 +37,7 @@ void ADIY_AreaManager::BeginPlay()
 void ADIY_AreaManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     ADIY_AreaManager::ManagerInstance = nullptr;
+    mAreaAnchors.Empty();
 }
 
 void ADIY_AreaManager::Tick(float indelta)
@@ -62,7 +63,7 @@ void ADIY_AreaManager::RegisterArea(EDIY_Area inAreaID, AActor *inAreaAncor)
     }
     else
     {
-        ensureAlwaysMsgf(false,TEXT("AreaManager::RegisterArea() %d already registered"),inAreaID);
+        ensureAlwaysMsgf(false,TEXT("AreaManager::RegisterArea() %d already registered with actor %s"),inAreaID,*mAreaAnchors[(int32)inAreaID]->GetName());
 
     }
    
@@ -81,6 +82,16 @@ void ADIY_AreaManager::UnregisterArea(EDIY_Area inAreaID)
     {
         ensureAlwaysMsgf(false,TEXT("AreaManager::UnregisterArea() %d already unregistered"),inAreaID);
     }
+}
+
+AActor *ADIY_AreaManager::GetAreaAnchor(EDIY_Area inAreaID)
+{
+    if(inAreaID==EDIY_Area::Area_Count)
+    {
+        return nullptr;
+    }
+    
+    return mAreaAnchors[(int32)inAreaID];
 }
 
 ADIY_AreaManager *ADIY_AreaManager::GetManager()

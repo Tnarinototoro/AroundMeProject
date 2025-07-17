@@ -19,6 +19,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
     static class ADIY_ItemManager *DIY_GetItemManagerInstance();
 
+    // Get Area Manager static singleton
+    UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
+    static class ADIY_AreaManager *DIY_GetAreaManagerInstance();
+
     // Get Weather Manager static singleton
     UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
     static const class ADIY_WeatherManager *DIY_GetWeatherManagerInstance();

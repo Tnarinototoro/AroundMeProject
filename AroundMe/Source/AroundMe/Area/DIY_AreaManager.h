@@ -21,6 +21,10 @@ public:
     void RegisterArea(EDIY_Area inAreaID,AActor *inAreaAncor);
     void UnregisterArea(EDIY_Area inAreaID);
 
+    // Function to check if logging is enabled
+    UFUNCTION(BlueprintCallable, Category = "AreaManager")
+    class AActor* GetAreaAnchor(EDIY_Area inAreaID);
+    
 protected:
     ADIY_AreaManager();
     ~ADIY_AreaManager();

@@ -4,12 +4,18 @@
 
 #include "../Player/Items/DIY_ItemManager.h"
 #include "Weather/DIY_WeatherManager.h"
+#include "../Area/DIY_AreaManager.h"
 
 bool UDIY_Utilities::bShouldLogToGameScreen = true;
 ADIY_ItemManager *UDIY_Utilities::DIY_GetItemManagerInstance()
 {
 
     return ADIY_ItemManager::GetManager();
+}
+ADIY_AreaManager *UDIY_Utilities::DIY_GetAreaManagerInstance()
+{
+
+    return ADIY_AreaManager::GetManager();
 }
 const ADIY_WeatherManager *UDIY_Utilities::DIY_GetWeatherManagerInstance() 
 {
