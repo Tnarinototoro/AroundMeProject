@@ -9,6 +9,7 @@ UENUM(BlueprintType)
 enum class EDIY_Area : uint8
 {
     WashRoom_SubSpace,
+    Mining_SubSpace,
     Ruined_Tokyo,
     Ruined_NorthEastChina,
     Area_Count
