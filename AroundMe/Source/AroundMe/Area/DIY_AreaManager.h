@@ -23,7 +23,16 @@ public:
 
     // Function to check if logging is enabled
     UFUNCTION(BlueprintCallable, Category = "AreaManager")
-    class AActor* GetAreaAnchor(EDIY_Area inAreaID);
+    const class AActor* GetAreaAnchor(EDIY_Area inAreaID) const;
+
+    UFUNCTION(BlueprintCallable, Category = "AreaManager")
+    void SwitchToNextArea(EDIY_Area inNextAreaID);
+
+    UFUNCTION(BlueprintCallable, Category = "AreaManager")
+    EDIY_Area GetCurrentArea() const;
+
+   
+
     
 protected:
     ADIY_AreaManager();
@@ -33,8 +42,15 @@ protected:
     /** Overridable function called whenever this actor is being removed from a level */
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+    void BeforeSwitchArea(EDIY_Area inNextAreaID);
+
+    void AfterSwitchArea(EDIY_Area inNextAreaID);
+
 private:
     static ADIY_AreaManager *ManagerInstance;
     TArray<class AActor*> mAreaAnchors;
+
+    //means current area is invalid or not loaded yet
+    EDIY_Area CurrentAreaID{EDIY_Area::Area_Count};
    
 };

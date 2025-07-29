@@ -40,6 +40,22 @@ void ADIY_AreaManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
     mAreaAnchors.Empty();
 }
 
+void ADIY_AreaManager::BeforeSwitchArea(EDIY_Area inNextAreaID)
+{
+    FString debug_info=FString::Printf(TEXT("Switching ^..^ to NextAreaID: %s \n"),
+                                    *UEnum::GetValueAsString(inNextAreaID));
+
+    UDIY_Utilities::DIY_PrintLogToScreen(3.0f, debug_info);
+}
+
+void ADIY_AreaManager::AfterSwitchArea(EDIY_Area inNextAreaID)
+{
+    FString debug_info=FString::Printf(TEXT("Already Switched :))to NextAreaID: %s \n"),
+                                    *UEnum::GetValueAsString(inNextAreaID));
+
+    UDIY_Utilities::DIY_PrintLogToScreen(3.0f, debug_info);
+}
+
 void ADIY_AreaManager::Tick(float indelta)
 {
     Super::Tick(indelta);
@@ -84,7 +100,7 @@ void ADIY_AreaManager::UnregisterArea(EDIY_Area inAreaID)
     }
 }
 
-AActor *ADIY_AreaManager::GetAreaAnchor(EDIY_Area inAreaID)
+const AActor *ADIY_AreaManager::GetAreaAnchor(EDIY_Area inAreaID) const
 {
     if(inAreaID==EDIY_Area::Area_Count)
     {
@@ -92,6 +108,29 @@ AActor *ADIY_AreaManager::GetAreaAnchor(EDIY_Area inAreaID)
     }
     
     return mAreaAnchors[(int32)inAreaID];
+}
+
+void ADIY_AreaManager::SwitchToNextArea(EDIY_Area inNextAreaID)
+{
+    if(inNextAreaID==EDIY_Area::Area_Count)
+    {
+        return;
+    }
+
+   BeforeSwitchArea(inNextAreaID);
+
+   CurrentAreaID = inNextAreaID;
+
+
+   AfterSwitchArea(inNextAreaID);
+
+}
+
+EDIY_Area ADIY_AreaManager::GetCurrentArea() const
+{
+
+   return CurrentAreaID;
+
 }
 
 ADIY_AreaManager *ADIY_AreaManager::GetManager()
