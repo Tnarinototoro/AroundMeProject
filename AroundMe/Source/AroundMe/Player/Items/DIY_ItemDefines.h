@@ -23,6 +23,7 @@ enum class EItemID : uint8
     EItemID_MushRoom,
     EItemID_Stone,
     EItemID_Tree,
+    EItemID_WashPotion,
     EItemID_Count
 };
 
