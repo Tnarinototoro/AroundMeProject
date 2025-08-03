@@ -31,7 +31,14 @@ public:
     UFUNCTION(BlueprintCallable, Category = "AreaManager")
     EDIY_Area GetCurrentArea() const;
 
-   
+    UFUNCTION(BlueprintNativeEvent,Category = "AreaManager")
+    void BeforeSwitchArea(EDIY_Area inNextAreaID);
+    
+    UFUNCTION(BlueprintNativeEvent,Category = "AreaManager")
+    void AfterSwitchArea(EDIY_Area inNextAreaID);
+
+    virtual void BeforeSwitchArea_Implementation(EDIY_Area inNextAreaID);
+    virtual void AfterSwitchArea_Implementation(EDIY_Area inNextAreaID);
 
     
 protected:
@@ -42,9 +49,7 @@ protected:
     /** Overridable function called whenever this actor is being removed from a level */
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-    void BeforeSwitchArea(EDIY_Area inNextAreaID);
-
-    void AfterSwitchArea(EDIY_Area inNextAreaID);
+   
 
 private:
     static ADIY_AreaManager *ManagerInstance;

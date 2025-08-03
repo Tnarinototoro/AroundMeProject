@@ -40,7 +40,7 @@ void ADIY_AreaManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
     mAreaAnchors.Empty();
 }
 
-void ADIY_AreaManager::BeforeSwitchArea(EDIY_Area inNextAreaID)
+void ADIY_AreaManager::BeforeSwitchArea_Implementation(EDIY_Area inNextAreaID)
 {
     FString debug_info=FString::Printf(TEXT("Switching ^..^ to NextAreaID: %s \n"),
                                     *UEnum::GetValueAsString(inNextAreaID));
@@ -48,7 +48,7 @@ void ADIY_AreaManager::BeforeSwitchArea(EDIY_Area inNextAreaID)
     UDIY_Utilities::DIY_PrintLogToScreen(3.0f, debug_info);
 }
 
-void ADIY_AreaManager::AfterSwitchArea(EDIY_Area inNextAreaID)
+void ADIY_AreaManager::AfterSwitchArea_Implementation(EDIY_Area inNextAreaID)
 {
     FString debug_info=FString::Printf(TEXT("Already Switched :))to NextAreaID: %s \n"),
                                     *UEnum::GetValueAsString(inNextAreaID));
