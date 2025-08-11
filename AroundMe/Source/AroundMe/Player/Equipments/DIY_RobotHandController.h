@@ -7,27 +7,23 @@
 #include "../../GameUtilities/DIY_HelperMacros.h"
 #include "DIY_RobotHandController.generated.h"
 
-UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup = (Player), meta = (BlueprintSpawnableComponent))
 class AROUNDME_API UDIY_RobotHandController : public UDIY_EquipmentBase
 {
     GENERATED_BODY()
 
-public:    
-   
+public:
     UDIY_RobotHandController();
 
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;
 
-public:    
-
-
-    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")
-    class USceneComponent* Target_Hook{nullptr};
+public:
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
+    class USceneComponent *Target_Hook{nullptr};
     // Called every frame
-    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
     FVector GetHandEndWolrdLocation() const;
@@ -35,44 +31,39 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
     EDIY_RobotHand_State_Type GetCurrentState() const;
 
-
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
-    void RequestPickUpTask(class AActor *inTargetItem);
+    bool RequestPickUpTask(class AActor *inTargetItem);
 
-
-
-    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
     float PickUpTask_MoveToTargetPointSpeed{1.f};
 
-    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
     float PickUpTask_MoveBackSpeed{1.f};
 
-    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")   
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
     float PickUpItem_MaxMovingToTarge_TryingTime{5.0f};
 
-    UPROPERTY(EditAnyWhere,BluePrintReadWrite, Category = "DIY_RobotHandController")
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
     float PickUpTask_TargetCloseEnoughDistance{2.f};
 
 protected:
-	void UpdateHandHeadStateMachine(float inDeltatime);
+    void UpdateHandHeadStateMachine(float inDeltatime);
 
-	void SwitchToNextState(EDIY_RobotHand_State_Type inNextState);
+    void SwitchToNextState(EDIY_RobotHand_State_Type inNextState);
 
-    private:
+private:
+    EDIY_RobotHand_State_Type mCurrentState{EDIY_RobotHand_State_Type::Idle};
 
+    float mCurrentStateElapsedTime{0.f};
+    bool mEnteredNewStateSign{false};
 
-	EDIY_RobotHand_State_Type mCurrentState{EDIY_RobotHand_State_Type::Idle};
-
-	float mCurrentStateElapsedTime{0.f};
-	bool mEnteredNewStateSign{false};
-
-    private:
-
+private:
     class AActor *mCurrentTargetPickUpItem{nullptr};
 
     class AActor *mCurrentPickedUpItem{nullptr};
 
+    class UDIY_RobotHand_HeadController *GetHeadController();
+
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerActionController)
     DECLARE_GET_COMPONENT_HELPER(UDIY_EquipmentManager)
-	
 };

@@ -3,64 +3,50 @@
 #include "DIY_BagController.h"
 #include "Components/SkeletalMeshComponent.h"
 
-
 UDIY_BagController::UDIY_BagController()
 {
     PrimaryComponentTick.bCanEverTick = true;
 
-   
-   
-    mEquipName=FName(TEXT("EquipBag"));
-    mEquipIndex=EEquipmentsIndex::Bag;
-    
-    
-    //defualt
-    mEquipModelType=0;
+    mEquipName = FName(TEXT("EquipBag"));
+    mEquipIndex = EEquipmentsIndex::Bag;
 }
 
 void UDIY_BagController::BeginPlay()
 {
 }
 
-void UDIY_BagController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UDIY_BagController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 }
 
 void UDIY_BagController::UpdateHandHeadStateMachine(float inDeltatime)
 {
-         switch (mCurrentState)
+    switch (mCurrentState)
     {
-        case EDIY_BagState_Type::Idle:
+    case EDIY_BagState_Type::Idle:
+    {
+
+        if (mEnteredNewStateSign)
         {
 
-            if(mEnteredNewStateSign)
-            {
-
-                
-                mEnteredNewStateSign=false;
-
-                
-            }
-
-
-            break;
+            mEnteredNewStateSign = false;
         }
+
+        break;
+    }
     default:
         break;
     }
 
-
-
-
-   mCurrentStateElapsedTime+=inDeltatime;
+    mCurrentStateElapsedTime += inDeltatime;
 }
 
 void UDIY_BagController::SwitchToNextState(EDIY_BagState_Type inNextState)
 {
-     if(inNextState==mCurrentState)
-    return;
+    if (inNextState == mCurrentState)
+        return;
 
-    mCurrentState=inNextState;
-    mEnteredNewStateSign=true;
-    mCurrentStateElapsedTime=0.f;
+    mCurrentState = inNextState;
+    mEnteredNewStateSign = true;
+    mCurrentStateElapsedTime = 0.f;
 }

@@ -10,29 +10,38 @@
 UCLASS(ClassGroup = (Equipment), meta = (BlueprintSpawnableComponent))
 class AROUNDME_API UDIY_EquipmentBase : public UActorComponent
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-
-	UDIY_EquipmentBase();
-
-
-
+    UDIY_EquipmentBase();
 
 public:
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "UDIY_EquipmentBase")
-	class USkeletalMeshComponent* mEquipMentMesh{ nullptr };
+    UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "UDIY_EquipmentBase")
+    class USkeletalMeshComponent *mEquipMentMesh{nullptr};
 
-	UPROPERTY(BlueprintReadOnly,VisibleAnyWhere, Category = "UDIY_EquipmentBase")
-	FName mEquipName;
+    UPROPERTY(BlueprintReadOnly, VisibleAnyWhere, Category = "UDIY_EquipmentBase")
+    FName mEquipName;
 
-    UPROPERTY(BlueprintReadOnly,VisibleAnyWhere, Category = "UDIY_EquipmentBase")
-	EEquipmentsIndex mEquipIndex;
-	
-	
-	UPROPERTY(BlueprintReadOnly,VisibleAnyWhere, Category = "UDIY_EquipmentBase")
-	uint8 mEquipModelType;
+    UPROPERTY(BlueprintReadOnly, VisibleAnyWhere, Category = "UDIY_EquipmentBase")
+    EEquipmentsIndex mEquipIndex;
 
+    void SetParentEquipment(UActorComponent *inParentEquipment);
 
-	
+    void AddChildEquipment(UActorComponent *inChildEquipment);
+
+    void SetEquipModelType(int32 inModelType)
+    {
+        EquipModelType = inModelType;
+    }
+    int32 GetEquipModelType() const
+    {
+        return EquipModelType;
+    }
+
+private:
+protected:
+    int32 EquipModelType{-1};
+    UActorComponent *ParentEquipment{nullptr};
+
+    TArray<UActorComponent *> ChildEquipments;
 };
