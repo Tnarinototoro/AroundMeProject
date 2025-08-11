@@ -11,6 +11,8 @@ UDIY_RobotHand_HeadController::UDIY_RobotHand_HeadController()
 
 void UDIY_RobotHand_HeadController::BeginPlay()
 {
+    SwitchToNextState(EDIY_RobotHand_Head_State_Type::Idle);
+
 }
 
 void UDIY_RobotHand_HeadController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
@@ -18,7 +20,23 @@ void UDIY_RobotHand_HeadController::TickComponent(float DeltaTime, ELevelTick Ti
     Super::TickComponent(DeltaTime, TickType,ThisTickFunction);
     if(nullptr!=mEquipMentMesh)
     {
-        USkeletalMeshComponent* parent_skm=Cast<USkeletalMeshComponent>(mEquipMentMesh->GetAttachParent());
+      
+
+        UpdateHandHeadStateMachine(DeltaTime);
+        
+        //actaully do updates here!
+        UpdateParams(DeltaTime);
+    }
+    
+}
+
+void UDIY_RobotHand_HeadController::UpdateParams(float inDeltatime)
+{
+    switch (mCurrentState)
+    {
+        case EDIY_RobotHand_Head_State_Type::Idle:
+        {
+              USkeletalMeshComponent* parent_skm=Cast<USkeletalMeshComponent>(mEquipMentMesh->GetAttachParent());
         
         if(nullptr!=parent_skm)
         {
@@ -31,19 +49,48 @@ void UDIY_RobotHand_HeadController::TickComponent(float DeltaTime, ELevelTick Ti
                 GetWorld(),parent_hand_head_connection_point.GetLocation(),
             parent_hand_head_connection_point.GetLocation()+real_forward_vec*200.f,10.0f,FColor::Red,false,0.f,0,1.0f);
 
-            mEquipMentMesh->SetWorldRotation(FRotationMatrix::MakeFromX(real_forward_vec).Rotator());
-
+            FRotator cur_rotate= mEquipMentMesh->GetRelativeRotationFromWorld(FRotationMatrix::MakeFromX(real_forward_vec).ToQuat()).Rotator();
             
+            cur_rotate.Roll=CurrentSpinAngle;
+            CurrentSpinAngle+=CurrentSpinSpeed*inDeltatime;
+            
+            CurrentSpinAngle=FMath::Modulo(CurrentSpinAngle,360.f);
+
+            //you have to set relative rotation directly
+            mEquipMentMesh->SetRelativeRotation(cur_rotate);
+
             DrawDebugSphere(GetWorld(),parent_hand_head_connection_point.GetLocation(),10.f,12,FColor::Red);
             DrawDebugString(GetWorld(),parent_hand_head_connection_point.GetLocation(),"RightDirBone",nullptr,FColor::Red,0.f);
             
         }
+
+
+
+            break;
+        }
+         case EDIY_RobotHand_Head_State_Type::Turning_On:
+        {
+
+            break;
+        }
+         case EDIY_RobotHand_Head_State_Type::Running:
+        {
+
+            break;
+        }
     }
-    
+
 }
 
 void UDIY_RobotHand_HeadController::UpdateHandHeadStateMachine(float inDeltatime)
 {
+
+    FRotator cur_rotate= mEquipMentMesh->GetRelativeRotation();
+    FString debug_str=FString::Printf(TEXT("Head State: %s RelativeRotate: %s"),
+                               *UEnum::GetValueAsString(mCurrentState),*cur_rotate.ToString());
+                               
+    
+    DrawDebugString(GetWorld(),this->mEquipMentMesh->GetComponentLocation(),debug_str,nullptr,FColor::Green,0.f);
     switch (mCurrentState)
     {
         case EDIY_RobotHand_Head_State_Type::Idle:
@@ -53,6 +100,7 @@ void UDIY_RobotHand_HeadController::UpdateHandHeadStateMachine(float inDeltatime
             {
                 
                 mEnteredNewStateSign=false;
+
 
                 
             }

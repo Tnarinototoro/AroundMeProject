@@ -27,7 +27,7 @@ public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-   
+
 
 
 
@@ -37,6 +37,8 @@ public:
 
 	protected:
 	void UpdateHandHeadStateMachine(float inDeltatime);
+
+    void UpdateParams(float inDeltatime);
 
 	void SwitchToNextState(EDIY_RobotHand_Head_State_Type inNextState);
 
@@ -49,5 +51,12 @@ public:
 	bool mEnteredNewStateSign{false};
 	EDIY_RobotHand_HeadType mCurrentHeadType{ EDIY_RobotHand_HeadType::Count };
 
- 
+    //this used as Drill_Type spinning speed
+    float Param_Float_0{0.f};
+
+
+
+    float CurrentSpinAngle{0.f};
+    float CurrentSpinSpeed{90.f};
+
 };
