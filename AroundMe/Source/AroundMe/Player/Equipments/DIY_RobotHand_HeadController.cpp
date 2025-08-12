@@ -35,8 +35,6 @@ void UDIY_RobotHand_HeadController::SetHeadSpinningAngle_Directly(float inSpinAn
     CurrentSpinAngle = inSpinAngle;
 }
 
-
-
 void UDIY_RobotHand_HeadController::UpdateParams(float inDeltatime)
 {
     // update head angles and spinning
@@ -93,8 +91,8 @@ void UDIY_RobotHand_HeadController::UpdateHandHeadStateMachine(float inDeltatime
 {
 
     FRotator cur_rotate = mEquipMentMesh->GetRelativeRotation();
-    FString debug_str = FString::Printf(TEXT("%s"),
-                                        *UEnum::GetValueAsString(mCurrentState), *cur_rotate.ToString());
+    FString debug_str = FString::Printf(TEXT("%s SpinSpeed %f"),
+                                        *UEnum::GetValueAsString(mCurrentState), CurrentSpinSpeed);
 
     DrawDebugString(GetWorld(), this->mEquipMentMesh->GetComponentLocation(), debug_str, nullptr, FColor::Green, 0.f);
     switch (mCurrentState)

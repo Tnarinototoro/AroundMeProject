@@ -18,10 +18,17 @@ UENUM(BlueprintType)
 enum class EDIY_RobotHand_State_Type : uint8
 {
     Idle ,
+
+    //pick up task
     Moving_ToTargetPoint,
     At_TargetPoint ,
     Moving_ToDumpPoint,
-    MovingBack ,
+    MovingBack,
+
+
+    //drill task
+    Moving_ToDrillTargetObject,
+    At_DrillTargetObject,
     Count
 
 };

@@ -34,6 +34,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
     bool RequestPickUpTask(class AActor *inTargetItem);
 
+    UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
+    bool RequestDrillTask(class AActor *inTargetItem);
+
+    // pick up params
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
     float PickUpTask_MoveToTargetPointSpeed{1.f};
 
@@ -41,10 +45,20 @@ public:
     float PickUpTask_MoveBackSpeed{1.f};
 
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
-    float PickUpItem_MaxMovingToTarge_TryingTime{5.0f};
+    float PickUpItem_MaxMovingToTarget_TryingTime{5.0f};
 
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
     float PickUpTask_TargetCloseEnoughDistance{2.f};
+
+    // drill task params
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
+    float DrillTask_MoveToTargetObjectSpeed{1.f};
+
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
+    float DrillTask_MaxMovingToTarget_TryingTime{3.0f};
+
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
+    float DrillTask_AtObject_DrillingTime{4.0f};
 
 protected:
     void UpdateHandHeadStateMachine(float inDeltatime);
@@ -61,6 +75,8 @@ private:
     class AActor *mCurrentTargetPickUpItem{nullptr};
 
     class AActor *mCurrentPickedUpItem{nullptr};
+
+    class AActor *mCurentBeingDrilledItem{nullptr};
 
     class UDIY_RobotHand_HeadController *GetHeadController();
 

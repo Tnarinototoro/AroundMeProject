@@ -104,6 +104,64 @@ bool UDIY_RobotHandController::RequestPickUpTask(AActor *inTargetItem)
     return true;
 }
 
+bool UDIY_RobotHandController::RequestDrillTask(AActor *inTargetItem)
+{
+
+    // check null
+    if (nullptr == inTargetItem)
+    {
+        return false;
+    }
+
+    // already in working state
+    if (mCurrentState != EDIY_RobotHand_State_Type::Idle)
+    {
+        return false;
+    }
+
+    // Already have a drilling target item
+    if (nullptr != mCurentBeingDrilledItem)
+    {
+        return false;
+    }
+
+    // check if the target item is pending kill
+    if (inTargetItem->IsPendingKillPending())
+    {
+
+        ensureMsgf(false, TEXT("Target Item is pending kill"));
+
+        return false;
+    }
+
+    if (inTargetItem->IsActorBeingDestroyed())
+    {
+
+        ensureMsgf(false, TEXT("Target Item is being destroyed"));
+
+        return false;
+    }
+
+    UDIY_RobotHand_HeadController *HeadController = GetHeadController();
+
+    // if not set properly do not accept this task
+    if (nullptr == HeadController)
+    {
+        return false;
+    }
+
+    // only claw type allows for pick up task
+    if (HeadController->GetEquipModelType() != (int32)EDIY_RobotHand_HeadType::Drill_Type)
+    {
+        return false;
+    }
+
+    mCurentBeingDrilledItem = inTargetItem;
+
+    SwitchToNextState(EDIY_RobotHand_State_Type::Moving_ToDrillTargetObject);
+    return true;
+}
+
 UDIY_RobotHand_HeadController *UDIY_RobotHandController::GetHeadController()
 {
     if (this->ChildEquipments.IsEmpty())
@@ -120,6 +178,13 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
                                         *UEnum::GetValueAsString(mCurrentState));
 
     DrawDebugString(GetWorld(), this->mEquipMentMesh->GetComponentLocation(), debug_str, nullptr, FColor::Red, 0.f);
+    UDIY_RobotHand_HeadController *HeadController = GetHeadController();
+
+    if (nullptr == HeadController)
+    {
+        return;
+    }
+
     switch (mCurrentState)
     {
     case EDIY_RobotHand_State_Type::Idle:
@@ -131,6 +196,7 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
             mEnteredNewStateSign = false;
             break;
         }
+        HeadController->SetHeadSpinningSpeed(90.f);
 
         break;
     }
@@ -139,13 +205,13 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
 
         if (mEnteredNewStateSign)
         {
-
+            HeadController->SetHeadSpinningSpeed(0.f);
             mEnteredNewStateSign = false;
 
             break;
         }
 
-        if (mCurrentStateElapsedTime > PickUpItem_MaxMovingToTarge_TryingTime)
+        if (mCurrentStateElapsedTime > PickUpItem_MaxMovingToTarget_TryingTime)
         {
             SwitchToNextState(EDIY_RobotHand_State_Type::MovingBack);
             mCurrentTargetPickUpItem = nullptr;
@@ -202,6 +268,8 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
             ensureMsgf(nullptr != mCurrentPickedUpItem && nullptr == mCurrentTargetPickUpItem, TEXT("Picked up item is null"));
 
             mEnteredNewStateSign = false;
+
+            HeadController->SetHeadSpinningSpeed(0.f);
             break;
         }
 
@@ -224,6 +292,32 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
         break;
     }
     case EDIY_RobotHand_State_Type::MovingBack:
+    {
+
+        if (mEnteredNewStateSign)
+        {
+
+            SwitchToNextState(EDIY_RobotHand_State_Type::Idle);
+            mEnteredNewStateSign = false;
+            break;
+        }
+        break;
+    }
+    // drill task
+    case EDIY_RobotHand_State_Type::Moving_ToDrillTargetObject:
+    {
+
+        if (mEnteredNewStateSign)
+        {
+
+            SwitchToNextState(EDIY_RobotHand_State_Type::Idle);
+            mEnteredNewStateSign = false;
+            break;
+        }
+
+        break;
+    }
+    case EDIY_RobotHand_State_Type::At_DrillTargetObject:
     {
 
         if (mEnteredNewStateSign)
