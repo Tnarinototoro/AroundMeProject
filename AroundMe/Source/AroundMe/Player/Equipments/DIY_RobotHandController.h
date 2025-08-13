@@ -55,10 +55,13 @@ public:
     float DrillTask_MoveToTargetObjectSpeed{1.f};
 
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
-    float DrillTask_MaxMovingToTarget_TryingTime{3.0f};
+    float DrillTask_MaxMovingToTarget_TryingTime{5.0f};
 
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
     float DrillTask_AtObject_DrillingTime{4.0f};
+
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_RobotHandController")
+    float DrillTask_TargetCloseEnoughDistance{80.f};
 
 protected:
     void UpdateHandHeadStateMachine(float inDeltatime);
@@ -76,7 +79,7 @@ private:
 
     class AActor *mCurrentPickedUpItem{nullptr};
 
-    class AActor *mCurentBeingDrilledItem{nullptr};
+    class AActor *mCurrentBeingDrilledItem{nullptr};
 
     class UDIY_RobotHand_HeadController *GetHeadController();
 

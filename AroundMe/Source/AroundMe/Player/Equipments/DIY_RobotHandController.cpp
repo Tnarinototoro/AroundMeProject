@@ -120,7 +120,7 @@ bool UDIY_RobotHandController::RequestDrillTask(AActor *inTargetItem)
     }
 
     // Already have a drilling target item
-    if (nullptr != mCurentBeingDrilledItem)
+    if (nullptr != mCurrentBeingDrilledItem)
     {
         return false;
     }
@@ -156,7 +156,7 @@ bool UDIY_RobotHandController::RequestDrillTask(AActor *inTargetItem)
         return false;
     }
 
-    mCurentBeingDrilledItem = inTargetItem;
+    mCurrentBeingDrilledItem = inTargetItem;
 
     SwitchToNextState(EDIY_RobotHand_State_Type::Moving_ToDrillTargetObject);
     return true;
@@ -174,12 +174,13 @@ UDIY_RobotHand_HeadController *UDIY_RobotHandController::GetHeadController()
 
 void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
 {
-    FString debug_str = FString::Printf(TEXT("State: %s"),
+    FString debug_str = FString::Printf(TEXT("%s"),
                                         *UEnum::GetValueAsString(mCurrentState));
 
     DrawDebugString(GetWorld(), this->mEquipMentMesh->GetComponentLocation(), debug_str, nullptr, FColor::Red, 0.f);
     UDIY_RobotHand_HeadController *HeadController = GetHeadController();
-
+    const FVector CurrentHandEndLocation = GetHandEndWolrdLocation();
+    const FVector CurrentTargetHookPoint = Target_Hook->GetComponentLocation();
     if (nullptr == HeadController)
     {
         return;
@@ -221,8 +222,6 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
         // process movement
         {
             FVector TargetPointLocation = mCurrentTargetPickUpItem->GetActorLocation();
-            FVector CurrentTargetHookPoint = Target_Hook->GetComponentLocation();
-            FVector CurrentHandEndLocation = GetHandEndWolrdLocation();
 
             EASY_LOG_MAINPLAYER("FVector::Distance(CurrentHandEndLocation,TargetPointLocation) %f threshold %f", FVector::Distance(CurrentHandEndLocation, TargetPointLocation), PickUpTask_TargetCloseEnoughDistance);
 
@@ -274,8 +273,6 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
         }
 
         FVector TargetPointLocation = AcquireOwnerActorOwnedUDIY_EquipmentManager()->GetKagoRobotDumpItemPoint();
-        FVector CurrentTargetHookPoint = Target_Hook->GetComponentLocation();
-        FVector CurrentHandEndLocation = GetHandEndWolrdLocation();
 
         if (FVector::Distance(CurrentHandEndLocation, TargetPointLocation) <= PickUpTask_TargetCloseEnoughDistance)
         {
@@ -310,11 +307,29 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
         if (mEnteredNewStateSign)
         {
 
-            SwitchToNextState(EDIY_RobotHand_State_Type::Idle);
+            HeadController->SetHeadSpinningSpeed(200.f);
             mEnteredNewStateSign = false;
             break;
         }
 
+        FVector target_pos = mCurrentBeingDrilledItem->GetActorLocation() + HeadController->mEquipMentMesh->GetBoneLocation(FName("root")) - HeadController->mEquipMentMesh->GetSocketLocation(FName("Drill_Head"));
+
+        FVector cur_calculated_pos = FMath::VInterpTo(CurrentTargetHookPoint, target_pos, inDeltatime, DrillTask_MoveToTargetObjectSpeed);
+        Target_Hook->SetWorldLocation(cur_calculated_pos);
+
+        if (FVector::Distance(CurrentHandEndLocation, target_pos) <= DrillTask_TargetCloseEnoughDistance)
+        {
+            SwitchToNextState(EDIY_RobotHand_State_Type::At_DrillTargetObject);
+
+            break;
+        }
+
+        if (mCurrentStateElapsedTime > DrillTask_MaxMovingToTarget_TryingTime)
+        {
+            SwitchToNextState(EDIY_RobotHand_State_Type::MovingBack);
+
+            break;
+        }
         break;
     }
     case EDIY_RobotHand_State_Type::At_DrillTargetObject:
@@ -322,11 +337,18 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
 
         if (mEnteredNewStateSign)
         {
+            HeadController->SetHeadSpinningSpeed(900.f);
 
-            SwitchToNextState(EDIY_RobotHand_State_Type::Idle);
             mEnteredNewStateSign = false;
             break;
         }
+        if (mCurrentStateElapsedTime > DrillTask_AtObject_DrillingTime)
+        {
+            SwitchToNextState(EDIY_RobotHand_State_Type::MovingBack);
+            mCurrentBeingDrilledItem = nullptr;
+            break;
+        }
+
         break;
     }
 

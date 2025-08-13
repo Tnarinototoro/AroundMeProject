@@ -24,6 +24,7 @@ enum class EItemID : uint8
     EItemID_Stone,
     EItemID_Tree,
     EItemID_WashPotion,
+    EItemID_MineralRock,
     EItemID_Count
 };
 

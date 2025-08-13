@@ -29,6 +29,8 @@ public:
 
     void AddChildEquipment(UActorComponent *inChildEquipment);
 
+    
+
     void SetEquipModelType(int32 inModelType)
     {
         EquipModelType = inModelType;
