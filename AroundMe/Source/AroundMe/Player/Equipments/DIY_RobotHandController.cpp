@@ -345,7 +345,12 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
         if (mCurrentStateElapsedTime > DrillTask_AtObject_DrillingTime)
         {
             SwitchToNextState(EDIY_RobotHand_State_Type::MovingBack);
-            mCurrentBeingDrilledItem = nullptr;
+            if (nullptr != mCurrentBeingDrilledItem)
+            {
+                mCurrentBeingDrilledItem->Destroy();
+                 mCurrentBeingDrilledItem = nullptr;
+            }
+           
             break;
         }
 
