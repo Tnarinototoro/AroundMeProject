@@ -15,7 +15,9 @@ enum class EDIY_InteractItemFlag : uint8
     React_To_Temperature UMETA(Description = "React to temperature?"),
     Has_Any_Conductivity UMETA(Description = "conductivity good then electricity comes in"),
     Has_CraftingPlatform_Function UMETA(Description = "item crafting platform type"),
-    Can_Be_PickUped UMETA(Description = "Can be picked up by the pet npc or any other npc?")
+    Can_Be_PickUped UMETA(Description = "Can be picked up by the pet npc or any other npc?"),
+    Can_Be_Drilled UMETA(Description = "Can be drilled by hero drill hand head")
+  
     
 
 

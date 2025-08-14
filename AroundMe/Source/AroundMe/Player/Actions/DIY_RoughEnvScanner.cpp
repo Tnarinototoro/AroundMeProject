@@ -71,9 +71,10 @@ AActor *UDIY_RoughEnvScanner::GetNearest_DetectedActor() const
 
         }
         ADIY_ItemBase* ItemActor = Cast<ADIY_ItemBase>(CurActor);
-        if(nullptr==ItemActor||!ItemActor->CheckItemFlag(EDIY_InteractItemFlag::Can_Be_PickUped))
+        if(nullptr==ItemActor)
         {
-            continue;
+            if (!ItemActor->CheckItemFlag(EDIY_InteractItemFlag::Can_Be_PickUped) && !ItemActor->CheckItemFlag(EDIY_InteractItemFlag::Can_Be_Drilled))
+                continue;
         }
 
         float cur_distance = CurActor->GetDistanceTo(OwnerActor);
