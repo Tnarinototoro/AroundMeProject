@@ -56,19 +56,19 @@ struct FRVPContext
 {
     GENERATED_BODY()
     UPROPERTY()
-    UStaticMeshComponent *StaticMeshComponent;
+    UStaticMeshComponent *StaticMeshComponent{nullptr};
 
     UPROPERTY()
     TArray<FVertexColorsArray> VertexColorsArray;
 
     UPROPERTY()
-    EPaintChannel Channel;
+    EPaintChannel Channel{EPaintChannel::RGBA};
 
     UPROPERTY()
-    bool bSingleLOD;
+    bool bSingleLOD{false};
 
     UPROPERTY()
-    uint32 LODIndex;
+    uint32 LODIndex{0};
 };
 
 // This is a struct for SkeletalMeshComponent vertex-painting process.
@@ -78,19 +78,19 @@ struct FRVPContextSK
 {
     GENERATED_BODY()
     UPROPERTY()
-    USkeletalMeshComponent *SkeletalMeshComponent;
+    USkeletalMeshComponent *SkeletalMeshComponent{nullptr};
 
     UPROPERTY()
     TArray<FVertexColorsArray> VertexColorsArray;
 
     UPROPERTY()
-    EPaintChannel Channel;
+    EPaintChannel Channel{EPaintChannel::RGBA};
 
     UPROPERTY()
-    bool bSingleLOD;
+    bool bSingleLOD{false};
 
     UPROPERTY()
-    uint32 LODIndex;
+    uint32 LODIndex{0};
 };
 
 UCLASS()
