@@ -1,4 +1,4 @@
-
+/*
 
 package com.aroundmelib;
 
@@ -43,11 +43,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+
+
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Vector;
 
-import com.example.com.aroundmelib.R;
+
 
 @SuppressLint("MissingPermission")
 public class MainActivity extends AppCompatActivity {
@@ -1162,3 +1164,5 @@ public class MainActivity extends AppCompatActivity {
     }
     // activity events end
 }
+
+*/

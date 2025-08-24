@@ -46,11 +46,21 @@
 
 
 
-	<init>
-		<log text="[SJL] Plugin_APL INIT"/>
+    <init>
+		<log text="[SJL] DIYPlatformService Android INIT"/>
 	</init>
+    <prebuildCopies>
+    <copyDir src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib" dst="$S(BuildDir)/src/com/aroundmelib" />
+    </prebuildCopies>
 
-
+    <!-- optional additions to proguard -->
+    <proguardAdditions>
+        <insert>
+            -dontwarn com.aroundmelib.**
+            -keep class com.aroundmelib.** { *; }
+            -keep interface com.aroundmelib.** { *; }
+        </insert>
+    </proguardAdditions>
 	<!--<baseBuildGradleAdditions>
 		<insert>
 			allprojects

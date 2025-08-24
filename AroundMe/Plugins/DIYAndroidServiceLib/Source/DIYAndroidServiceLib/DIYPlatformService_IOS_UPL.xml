@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) 2020 Nineva Studios
+-->
+<root xmlns:android="http://schemas.android.com/apk/res/ios">
+  <init>
+    <log text="DIY Service iOS UPL Init"/>
+  </init>
+
+  <iosPListUpdates>
+    <addElements tag="DIY">
+      <key>DIYServiceDescription</key>
+      <string>$(PRODUCT_NAME) constructs ble based interaction in game app</string>
+
+    </addElements>
+  </iosPListUpdates>
+</root>
