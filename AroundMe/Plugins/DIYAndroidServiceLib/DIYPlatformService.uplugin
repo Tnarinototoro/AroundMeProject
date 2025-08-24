@@ -27,5 +27,11 @@
 			"Type": "Runtime",
 			"LoadingPhase": "PreLoadingScreen"
 		}
+	],
+    "Plugins": [
+		{
+			"Name": "AndroidPermission",
+			"Enabled": true
+		}
 	]
 }
