@@ -129,6 +129,16 @@ void ADIYPlatformServiceProvider::StartProvidingService()
         static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StartAroundMeService", "()V", false);
         FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
     }
+
+#endif
+
+#if PLATFORM_ANDROID
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
+    {
+        static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StartDIYServiceFromUE", "()V", false);
+        FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
+        UE_LOG(LogTemp, Log, TEXT("DIY_Service started via UPL extension!"));
+    }
 #endif
 }
 
@@ -139,6 +149,14 @@ void ADIYPlatformServiceProvider::StopProvidingService()
     if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
     {
         static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StopAroundMeService", "()V", false);
+        FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
+    }
+#endif
+
+#if PLATFORM_ANDROID
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
+    {
+        static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StopDIYServiceFromUE", "()V", false);
         FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
     }
 #endif

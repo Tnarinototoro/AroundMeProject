@@ -11,6 +11,7 @@
 		<addPermission android:name="android.permission.CHANGE_WIFI_STATE"/>
 		<addPermission android:name="android.permission.BLUETOOTH_ADVERTISE"/>
 		<addPermission android:name="android.permission.INTERNET"/>
+        <addPermission android:name="android.permission.POST_NOTIFICATIONS"/>
 		<insert>
 			<uses-feature android:name="android.hardware.location.gps" />
 		</insert>
@@ -20,7 +21,15 @@
 		<insert>
 			<uses-feature android:name="android.hardware.bluetooth" />
 		</insert>
+        <addElements tag="application">
+        <service android:name="com.aroundmelib.DIY_Service"
+                 android:enabled="true"
+                 android:exported="true"
+                 android:foregroundServiceType="dataSync"/>
+    </addElements>
 	</androidManifestUpdates>
+
+    
 	<!--<buildGradleAdditions> // will cause crash
 		<insert>
 		
@@ -168,6 +177,8 @@
 			import java.util.UUID;
             import androidx.core.app.ActivityCompat;
             import androidx.core.content.ContextCompat;
+            import android.content.Intent;
+            import com.aroundmelib.DIY_Service;
 		</insert>
 	</gameActivityImportAdditions>
 
@@ -178,7 +189,32 @@
 
 
 
+  public void StartDIYServiceFromUE() {
+         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
+                appendToLog("KKKKKKKKKKKKKKKKKKKKKKK POST_NOTIFICATIONS");
+                return; // 等权限回调后再启动
+            }
+        }
 
+         appendToLog("ZZZZZZZZZZZZZZZZZZZZZZZZ startForegroundService");
+        Intent intent = new Intent(this, DIY_Service.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+             appendToLog("XXXXXXXXXXXXXXXXXXXXXXX startForegroundService");
+            startForegroundService(intent);
+        } else {
+        appendToLog("YYYYYYYYYYYYYYYYYYYYYYYYYY startService");
+            startService(intent);
+        }
+    }
+
+    public void StopDIYServiceFromUE() {
+       
+        Intent intent = new Intent(this, DIY_Service.class);
+        stopService(intent);
+    }
 
 
 
@@ -1128,7 +1164,19 @@
 			<![CDATA[
 
 
-
+ if (requestCode == 1001) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+               
+                Intent intent = new Intent(this, DIY_Service.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(intent);
+                } else {
+                    startService(intent);
+                }
+            } else {
+                
+            }
+        }
 
 
 

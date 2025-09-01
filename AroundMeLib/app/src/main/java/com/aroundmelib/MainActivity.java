@@ -34,6 +34,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -315,6 +316,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private void StopAroundMeService()
     {
+        Log.d("MainActivity", "Stopping DIY_Service...");
+        Intent intent = new Intent(this, DIY_Service.class);
+        stopService(intent);
+
         if (!mBluetoothAdapter.isEnabled())
         {
 
@@ -364,6 +369,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void StartAroundMeService() {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
+                return; // 等权限回调后再启动
+            }
+        }
+
+        Log.d("MainActivity", "Starting DIY_Service...");
+        Intent intent = new Intent(this, DIY_Service.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
+
         if (!mBluetoothAdapter.isEnabled()) {
 
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -1125,6 +1147,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("MainActivity", "通知权限已授予，启动 Service");
+                Intent intent = new Intent(this, DIY_Service.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(intent);
+                } else {
+                    startService(intent);
+                }
+            } else {
+                Log.w("MainActivity", "通知权限被拒绝，前台服务不会显示通知！");
+            }
+        }
         if (requestCode == PERMISSION_REQUEST_BLUETOOTH)
         {
             if (grantResults.length > 1
