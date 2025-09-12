@@ -1,6 +1,14 @@
 #pragma once
-#include <string>
+
 #if 1
+#include <imgui.h>
+#include <string>
+DECLARE_LOG_CATEGORY_CLASS(LogDIY_ImGui, Log, All);
+
+// namespace DIY_ImGui
+// {
+//     void Tick(const UObject *Owner, float DeltaTime, const TFunctionRef<void()> &CustomRenderFunction);
+// }
 namespace DIY_ImGuiNames
 {
     constexpr std::string MenuCategoryNameRenderer = "Renderer";

@@ -119,13 +119,6 @@ FDIY_ImGuiMainPlayerProxy::FDIY_ImGuiMainPlayerProxy(UDIY_DebugImGuiSubsystem &I
         new FDIY_ImGuiContentProxy_Camera(*this)};
 }
 
-FDIY_ImGuiCameraPlayerProxy::FDIY_ImGuiCameraPlayerProxy(UDIY_DebugImGuiSubsystem &InSubsystem)
-    : FDIY_ImGuiCommonPlayerProxy(InSubsystem)
-{
-    ContentProxies = {
-        new FDIY_ImGuiContentProxy_Camera(*this)};
-}
-
 void FDIY_ImGuiMainPlayerProxy::UpdateWindows(float DeltaTime)
 {
 }
@@ -145,39 +138,6 @@ void FDIY_ImGuiMainPlayerProxy::UpdateMainMenu(float DeltaTime)
         return;
     if (ImGui::BeginMainMenuBar(
             // ImVec2(100, 0)
-            ))
-    {
-        RegisterMenu(DIY_ImGuiNames::MenuCategoryNameSettings);
-        ImGui::Separator();
-        RegisterMenu(DIY_ImGuiNames::MenuCategoryNameRenderer);
-        RegisterMenu(DIY_ImGuiNames::MenuCategoryNameVisualizer);
-        RegisterMenu(DIY_ImGuiNames::MenuCategoryNameGamePlay);
-        RegisterMenu(DIY_ImGuiNames::MenuCategoryNameUI);
-        RegisterMenu(DIY_ImGuiNames::MenuCategoryNameSystem);
-        RegisterMenu(DIY_ImGuiNames::MenuCategoryNameWwise);
-        ImGui::Separator();
-        ImGui::Checkbox("ShowWindow", &bShowWindows);
-        ImGui::Checkbox("ShowImGUI", &bShowImGui);
-        ImGui::Separator();
-        DrawFramerate();
-        ImGui::Separator();
-        DrawUsedMemory();
-        ImGui::Separator();
-        DrawDynamicResolution();
-        ImGui::Separator();
-        DrawBuildVersion();
-        ImGui::EndMainMenuBar();
-    }
-}
-
-void FDIY_ImGuiCameraPlayerProxy::UpdateMainMenu(float DeltaTime)
-{
-    UWorld *World = OwningSubsystem.GetWorld();
-    if (!ensure(World))
-        return;
-    if (ImGui::BeginMainMenuBar(
-            // ImVec2(100, 0)
-
             ))
     {
         RegisterMenu(DIY_ImGuiNames::MenuCategoryNameSettings);

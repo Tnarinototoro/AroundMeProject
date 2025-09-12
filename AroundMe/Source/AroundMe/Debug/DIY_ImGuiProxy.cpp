@@ -5,7 +5,7 @@
 
 #include "DIY_DebugImGuiSubsystem.h"
 #include "DIY_ImGui.h"
-#include "../DIY_DebugUserGameSettings.h"
+
 #include "Slate/SceneViewport.h"
 
 // Need this so we can StaticCastSharedRef from SViewport to SWidget
@@ -100,14 +100,10 @@ FDIY_ImGuiContentProxy_MenuWindow::FDIY_ImGuiContentProxy_MenuWindow(FDIY_ImGuiP
                                                                      const std::string &InMenuItemName, const std::string &InWindowName, int32 InWindowFlags)
     : FDIY_ImGuiContentProxy(InOwningProxy), MenuCategoryName(InMenuCategoryName), MenuItemName(InMenuItemName), WindowName(InWindowName), WindowFlags(InWindowFlags)
 {
-    if (const UDIY_DebugUserGameSettings *UserGameSettings = GetDefault<UDIY_DebugUserGameSettings>())
-    {
-        if (UserGameSettings->bUseLastWindowState)
-        {
-            FString WindowNameString = GetWindowNameString();
-            GConfig->GetBool(*WindowNameString, TEXT("LastOpened"), bShowWindow, GetOwningSubsystem().GetImGuiStateIni());
-        }
-    }
+
+    // use last windows state!
+    FString WindowNameString = GetWindowNameString();
+    GConfig->GetBool(*WindowNameString, TEXT("LastOpened"), bShowWindow, GetOwningSubsystem().GetImGuiStateIni());
 }
 
 void FDIY_ImGuiContentProxy_MenuWindow::UpdateWindow(float DeltaTime)
@@ -250,24 +246,6 @@ bool FDIY_ImGuiContentProxy_MenuWindow::GetPieWindowRect(const UWorld *World, FV
     }
 
     return false;
-}
-
-FDIY_ImGuiContentProxy_InlineMenuWindow::FDIY_ImGuiContentProxy_InlineMenuWindow(FDIY_ImGuiProxy &InOwningProxy, const std::string &InMenuCategoryName)
-    : FDIY_ImGuiContentProxy(InOwningProxy), MenuCategoryName(InMenuCategoryName)
-{
-}
-
-void FDIY_ImGuiContentProxy_InlineMenuWindow::UpdateMainMenu(float DeltaTime)
-{
-    if (ImGui::BeginMainMenuBar())
-    {
-        if (ImGui::BeginMenu(MenuCategoryName.c_str()))
-        {
-            DrawWindow(DeltaTime);
-            ImGui::EndMenu();
-        }
-        ImGui::EndMainMenuBar();
-    }
 }
 
 #endif

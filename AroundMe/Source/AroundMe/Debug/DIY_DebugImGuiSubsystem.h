@@ -3,11 +3,10 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/Actor.h"
-#include "../../System/DIY_WorldSubsystem.h"
-#include <string>
+#include "../System/DIY_WorldSubsystem.h"
+
 #include "DIY_DebugImGuiSubsystem.generated.h"
 
-class FDIY_ImGuiCameraPlayerProxy;
 class FDIY_ImGuiMainPlayerProxy;
 class FDIY_ImGuiProxy;
 
@@ -27,7 +26,6 @@ private:
     FDIY_ImGuiProxy *ImGuiProxy = nullptr;
 
     TPimplPtr<FDIY_ImGuiMainPlayerProxy> MainPlayerProxy;
-    TPimplPtr<FDIY_ImGuiCameraPlayerProxy> CameraPlayerProxy;
 
 #endif
 
@@ -54,15 +52,7 @@ public:
 
     void UpdateInput();
 
-    // DEPRECATED METHODS
 public:
-    [[deprecated("Always create new ContentProxy class instead of using this method.")]]
-    void RegisterMenuWindow(const std::string &CategoryName, const std::string &MenuName, const std::string &WindowName, FDIY_ImGuiUpdateDelegate &&OnUpdateWindow);
-    [[deprecated("Always create new ContentProxy class instead of using this method.")]]
-    void RegisterMainPlayerMenuWindow(const std::string &CategoryName, const std::string &MenuName, const std::string &WindowName, FDIY_ImGuiUpdateDelegate &&OnUpdateWindow);
-    [[deprecated("Always create new ContentProxy class instead of using this method.")]]
-    void RegisterCameraPlayerMenuWindow(const std::string &CategoryName, const std::string &MenuName, const std::string &WindowName, FDIY_ImGuiUpdateDelegate &&OnUpdateWindow);
-
 public:
     UPROPERTY()
     FGameplayTagContainer DebugOverrideGameplayTags;

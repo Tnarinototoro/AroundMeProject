@@ -31,15 +31,4 @@ public:
     virtual void UpdateMainMenu(float DeltaTime) override;
 };
 
-class FDIY_ImGuiCameraPlayerProxy : public FDIY_ImGuiCommonPlayerProxy
-{
-public:
-    FDIY_ImGuiCameraPlayerProxy(UDIY_DebugImGuiSubsystem &InSubsystem);
-    virtual ~FDIY_ImGuiCameraPlayerProxy() override
-    {
-    }
-
-    virtual void UpdateMainMenu(float DeltaTime) override;
-};
-
 // #endif

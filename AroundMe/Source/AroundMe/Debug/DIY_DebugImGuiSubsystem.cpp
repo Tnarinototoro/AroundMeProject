@@ -6,7 +6,6 @@
 
 #include "DIY_ImGui.h"
 
-#include "../DIY_DebugUserGameSettings.h"
 // #include "Input/CommonUIActionRouterBase.h"
 #include "Misc/ConfigContext.h"
 
@@ -33,47 +32,6 @@ RegisterDebugImGuiConsoleCommand(TEXT("DIY.ImGui.ToggleGamepadCapture"), TEXT("T
 
 #endif
 
-bool FDIY_DebugComboKey::IsJustPressedAny(APlayerController *PC) const
-{
-    for (const FKey &Key : Keys)
-    {
-        if (PC->WasInputKeyJustPressed(Key))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool FDIY_DebugComboKey::IsPressedAll(APlayerController *PC) const
-{
-    for (const FKey &Key : Keys)
-    {
-        if (!PC->IsInputKeyDown(Key))
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool FDIY_DebugComboKey::ShouldTrigger(APlayerController *PC) const
-{
-    return IsJustPressedAny(PC) && IsPressedAll(PC);
-}
-
-bool FDIY_DebugComboKeyArray::ShouldTrigger(APlayerController *PC) const
-{
-    for (const FDIY_DebugComboKey &ComboKey : ComboKeys)
-    {
-        if (ComboKey.ShouldTrigger(PC))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 UDIY_DebugImGuiSubsystem::UDIY_DebugImGuiSubsystem()
     : Super()
 {
@@ -84,30 +42,6 @@ void UDIY_DebugImGuiSubsystem::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
 #if 1
-    if (const UDIY_DebugGameSettings *DebugGameSettings = GetDefault<UDIY_DebugGameSettings>())
-    {
-
-        if (APlayerController *PC = UGameplayStatics::GetPlayerController(this, 0))
-        {
-            if (DebugGameSettings->EnableImGuiShortcuts.ShouldTrigger(PC))
-            {
-                ToggleEnableImGui();
-            }
-            if (DebugGameSettings->EnableWindowsShortcuts.ShouldTrigger(PC))
-            {
-                ToggleEnableMainMenuBar();
-            }
-            if (DebugGameSettings->CaptureKeyMouseShortcuts.ShouldTrigger(PC))
-            {
-                ToggleCaptureKeyMouse();
-            }
-            if (DebugGameSettings->CaptureGamepadShortcuts.ShouldTrigger(PC))
-            {
-                ToggleCaptureGamepad();
-            }
-        }
-    }
-
     if (ImGuiProxy)
     {
         ImGuiProxy->Tick(DeltaTime);
@@ -129,10 +63,7 @@ void UDIY_DebugImGuiSubsystem::Initialize(FSubsystemCollectionBase &Collection)
     bInitializedImGui = true;
     if (bInitializedImGui)
     {
-        if (const UDIY_DebugUserGameSettings *UserGameSettings = GetDefault<UDIY_DebugUserGameSettings>())
-        {
-            bEnableImGui = !UserGameSettings->bHideImGui;
-        }
+        bEnableImGui = true;
         SetEnableImGui(bEnableImGui);
     }
 #endif
@@ -143,7 +74,6 @@ void UDIY_DebugImGuiSubsystem::Deinitialize()
 #if 1
     SaveImGuiState();
     MainPlayerProxy.Reset();
-    CameraPlayerProxy.Reset();
     ImGuiProxy = nullptr;
 #endif
 
@@ -269,61 +199,6 @@ void UDIY_DebugImGuiSubsystem::UpdateInput()
 #endif
     }
 
-    // if (APlayerController *PlayerController = UGameplayStatics::GetPlayerController(this, 0))
-    // {
-    //     if (ULocalPlayer *LocalPlayer = PlayerController->GetLocalPlayer())
-    //     {
-    //         if (UCommonUIActionRouterBase *Subsystem = LocalPlayer->GetSubsystem<UCommonUIActionRouterBase>())
-    //         {
-    //             Subsystem->SetDisableAnalogCursor(bEnableImGui && bGamepadCapture);
-    //         }
-    //     }
-    // }
-#endif
-}
-
-void UDIY_DebugImGuiSubsystem::RegisterMenuWindow(const std::string &CategoryName, const std::string &MenuName, const std::string &WindowName,
-                                                  FDIY_ImGuiUpdateDelegate &&OnUpdateWindow)
-{
-#if 1
-    if (!ensureAlwaysMsgf(IsInitialized(), TEXT("ImGui subsystem is not initialized.")))
-    {
-        return;
-    }
-    if (ImGuiProxy)
-    {
-        ImGuiProxy->ContentProxies.Add(new FDIY_ImGuiContentProxy_DelegatedMenuWindow(*ImGuiProxy, CategoryName, MenuName, WindowName, MoveTemp(OnUpdateWindow)));
-    }
-#endif
-}
-
-void UDIY_DebugImGuiSubsystem::RegisterMainPlayerMenuWindow(const std::string &CategoryName, const std::string &MenuName, const std::string &WindowName,
-                                                            FDIY_ImGuiUpdateDelegate &&OnUpdateWindow)
-{
-#if 1
-    if (!ensureAlwaysMsgf(IsInitialized(), TEXT("ImGui subsystem is not initialized.")))
-    {
-        return;
-    }
-    if (MainPlayerProxy.IsValid())
-    {
-        MainPlayerProxy->ContentProxies.Add(new FDIY_ImGuiContentProxy_DelegatedMenuWindow(*MainPlayerProxy.Get(), CategoryName, MenuName, WindowName, MoveTemp(OnUpdateWindow)));
-    }
-#endif
-}
-
-void UDIY_DebugImGuiSubsystem::RegisterCameraPlayerMenuWindow(const std::string &CategoryName, const std::string &MenuName,
-                                                              const std::string &WindowName, FDIY_ImGuiUpdateDelegate &&OnUpdateWindow)
-{
-#if 1
-    if (!ensureAlwaysMsgf(IsInitialized(), TEXT("ImGui subsystem is not initialized.")))
-    {
-        return;
-    }
-    if (CameraPlayerProxy.IsValid())
-    {
-        CameraPlayerProxy->ContentProxies.Add(new FDIY_ImGuiContentProxy_DelegatedMenuWindow(*CameraPlayerProxy.Get(), CategoryName, MenuName, WindowName, MoveTemp(OnUpdateWindow)));
-    }
 #endif
 }
 
@@ -435,14 +310,6 @@ const FString &UDIY_DebugImGuiSubsystem::GetImGuiStateIni() const
         FWorldContext *WorldContext = GameInstance->GetWorldContext();
 
         FString IniFileName;
-        // switch (GameInstance->GetInstanceType())
-        // {
-        // case EInstanceType::MainPlayer:
-        //     IniFileName = TEXT("DIY_ImGuiStateMainPlayer");
-        //     break;
-        // case EInstanceType::CameraPlayer:
-        //     IniFileName = TEXT("DIY_ImGuiStateCameraPlayer");
-        // }
         IniFileName = TEXT("DIY_ImGuiStateMainPlayer");
         if (WorldContext && WorldContext->WorldType == EWorldType::PIE)
         {
