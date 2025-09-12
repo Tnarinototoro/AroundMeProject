@@ -6,7 +6,7 @@
 **/.vs/**
 **/.vscode/**
 **/Binaries/**
-
+**/obj/**
 
 AroundMe/.ignore
 AroundMe/AroundMe.sln

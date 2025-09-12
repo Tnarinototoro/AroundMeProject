@@ -21,7 +21,10 @@ public class AroundMe : ModuleRules
             "AssetRegistry",
             "DeveloperSettings",
             "AIModule",
-            "RuntimeVertexPainter"
+            "RuntimeVertexPainter",
+            "GameplayTags",
+            "ImGui",
+            "Json"
         });
 
 
@@ -29,7 +32,8 @@ public class AroundMe : ModuleRules
         // Uncomment if you are using Slate UI
         PrivateDependencyModuleNames.AddRange(new string[] {
             "Slate",
-            "SlateCore"
+            "SlateCore",
+            "RenderCore"
              });
 
         // Uncomment if you are using online features
