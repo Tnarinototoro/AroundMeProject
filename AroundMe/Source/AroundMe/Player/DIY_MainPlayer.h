@@ -23,9 +23,14 @@ private:
 public:
     // Sets default values for this pawn's properties
     ADIY_MainPlayer();
+
+    
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     static bool Dbg_Enable_PlayerInfo_Widget;
 #endif
+
+
+
 protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
@@ -75,6 +80,7 @@ private:
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     void UpdatePlayerStateWidgetInfo(float inDeltaTime);
 #endif
+
     void UpdatePlayerMove(float deltaTime);
 
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerCameraController)
@@ -85,11 +91,10 @@ private:
 
     DECLARE_GET_COMPONENT_HELPER(UDIY_EquipmentManager)
 
-
-
     UFUNCTION()
     void DoJumpAction(const struct FInputActionValue &Value);
 
-    UPROPERTY(VisibleAnywhere, Category = "UI")
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     class UWidgetComponent *PlayerState_WidgetComponent{nullptr};
+#endif
 };

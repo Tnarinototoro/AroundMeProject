@@ -2,10 +2,7 @@
 #include "LevelEditor.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "Modules/ModuleManager.h"
-#include "../AroundMe/Player/Items/DIY_Item.h"
-#include "../AroundMe/Player/DIY_MainPlayer.h"
 #include "Widgets/Input/SSlider.h"
-#include "../AroundMe/GameUtilities/MusicPlayer/DIY_MusicPlayer.h"
 
 void FAroundMeEditorModule::StartupModule()
 {
@@ -87,52 +84,48 @@ void FAroundMeEditorModule::Fill_SubMenu_Item(FMenuBuilder &MenuBuilder)
 void FAroundMeEditorModule::ToggleDbg_Enable_ItemInfo_Widget()
 {
 #if WITH_EDITOR
-    ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget = !ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget;
+    bEnable_Iteminfo_Widget = !bEnable_Playerinfo_Widget;
 #endif
 }
 
 bool FAroundMeEditorModule::GetDbg_Enable_ItemInfo_Widget() const
 {
-    return ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget;
+    return bEnable_Iteminfo_Widget;
 }
 
 bool FAroundMeEditorModule::GetDbg_Enable_PlayerInfo_Widget() const
 {
+
 #if WITH_EDITOR
-    return ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget;
-    // Handle slider value change
+    return bEnable_Playerinfo_Widget;
 #endif
 }
 
 void FAroundMeEditorModule::ToggleDbg_Enable_PlayerInfo_Widget()
 {
 #if WITH_EDITOR
-    ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget = !ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget;
-    // Handle slider value change
+    bEnable_Playerinfo_Widget = !bEnable_Playerinfo_Widget;
 #endif
 }
 
 void FAroundMeEditorModule::OnMusicHourSliderValueChanged(float NewValue)
 {
 #if WITH_EDITOR
+    HourSliderValue = NewValue;
 
-    // Handle slider value change
 #endif
 }
 
 float FAroundMeEditorModule::GetMusicHourSliderValue() const
 {
-    // Return current slider value
-    return 0;
 
-    // ADIY_MusicPlayer::Dbg_Music_Hour; // Example value
+    return HourSliderValue;
 }
 
 FText FAroundMeEditorModule::GetMusicHourSliderValueText() const
 {
-    int SliderValue = 0;
-    // ADIY_MusicPlayer::Dbg_Music_Hour;
-    return FText::FromString(FString::Printf(TEXT("Current Value: %d"), SliderValue));
+
+    return FText::FromString(FString::Printf(TEXT("Current Value: %d"), HourSliderValue));
 }
 
 void FAroundMeEditorModule::ShutdownModule()

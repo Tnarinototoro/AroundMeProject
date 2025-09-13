@@ -28,4 +28,7 @@ public:
     bool GetDbg_Enable_PlayerInfo_Widget() const;
 
 private:
+    bool bEnable_Iteminfo_Widget = false;
+    bool bEnable_Playerinfo_Widget = false;
+    float HourSliderValue = -1.f;
 };

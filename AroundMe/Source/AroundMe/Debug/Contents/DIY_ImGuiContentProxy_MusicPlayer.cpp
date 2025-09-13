@@ -12,7 +12,9 @@ void FDIY_ImGuiContentProxy_MusicPlayer::DrawWindow(float DeltaTime)
 {
     ImGui::Text("BGM");
     ImGui::SliderInt("Hour", &hour, -1, 23);
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     ADIY_MusicPlayer::Dbg_Music_Hour = hour;
+#endif
 }
 
 #endif

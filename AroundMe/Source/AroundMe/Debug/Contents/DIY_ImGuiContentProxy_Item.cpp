@@ -13,7 +13,9 @@ void FDIY_ImGuiContentProxy_Item::DrawWindow(float DeltaTime)
     ImGui::Text("ItemInfo");
     if (ImGui::Checkbox("ShowItemInfo", &bShowItemState))
     {
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
         ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget = bShowItemState;
+#endif
     }
 }
 

@@ -130,7 +130,7 @@ void UDIY_DebugImGuiSubsystem::BindInput()
 
 void UDIY_DebugImGuiSubsystem::UpdateInput()
 {
-#if 1
+#if 0
     if (!bInitializedImGui)
         return;
 

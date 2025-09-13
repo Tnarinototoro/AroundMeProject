@@ -39,27 +39,19 @@ ADIY_ItemBase::ADIY_ItemBase()
     PrimaryActorTick.bCanEverTick = true;
 
     BasicStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BasicStaticMeshComponent"));
-
-    RootComponent = BasicStaticMeshComponent;
     BasicStaticMeshComponent->SetUseCCD(true);
-    // FStringClassReference MyWidgetClassRef(TEXT("/Game/UI/DIY_UI_ResourceRemaing.DIY_UI_ResourceRemaing_C"));
-
-    /*if (UClass* MyWidgetClass = MyWidgetClassRef.TryLoadClass<UUserWidget>())
-    {
-
-    }
-    */
     BasicStaticMeshComponent->SetCanEverAffectNavigation(false);
-    ItemStateWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("ItemStateWidgetComponent"));
+    RootComponent = BasicStaticMeshComponent;
 
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+    ItemStateWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("ItemStateWidgetComponent"));
     ItemStateWidgetComponent->SetupAttachment(BasicStaticMeshComponent);
     ItemStateWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
     ItemStateWidgetComponent->SetDrawAtDesiredSize(false);
-
     ItemStateWidgetComponent->SetPivot(FVector2D(0.5f, 0.5f));
     ItemStateWidgetComponent->SetVisibility(true);
-
     ItemStateWidgetComponent->SetCanEverAffectNavigation(false);
+#endif
 }
 
 ADIY_ItemBase::~ADIY_ItemBase()
@@ -87,7 +79,9 @@ void ADIY_ItemBase::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     UpdateStateWidgetInfo(DeltaTime);
+#endif
 }
 
 void ADIY_ItemBase::ResumeTrinkling()
@@ -235,6 +229,7 @@ bool ADIY_ItemBase::SwitchCycleState(EItemLifeCycleState targetState, bool Force
     return false;
 }
 
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 void ADIY_ItemBase::UpdateWidgetText_Internal(const FString &NewText)
 {
     if (StateDisplayWidget)
@@ -256,7 +251,6 @@ void ADIY_ItemBase::UpdateWidgetText_Internal(const FString &NewText)
 
 void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 {
-#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     if (!Dbg_Enable_ItemInfo_Widget)
     {
         if (ItemStateWidgetComponent)
@@ -307,5 +301,6 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
                                         Possible_Solidness_Processor->GetSolidNessAttrs().blunt_damage_susceptibility);
     }
     UpdateWidgetText_Internal(updated_text);
-#endif
 }
+
+#endif

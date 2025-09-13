@@ -13,7 +13,9 @@ void FDIY_ImGuiContentProxy_Player::DrawWindow(float DeltaTime)
     ImGui::Text("PlayerInfo");
     if (ImGui::Checkbox("ShowPlayerInfo", &bShowPlayerState))
     {
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
         ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget = bShowPlayerState;
+#endif
     }
 }
 

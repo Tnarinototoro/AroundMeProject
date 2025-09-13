@@ -64,21 +64,20 @@ public:
 #endif
 protected:
 private:
-    UPROPERTY(VisibleAnywhere, Category = "UI")
-    class UWidgetComponent *ItemStateWidgetComponent;
     FDIY_ItemDefualtConfig config_copy;
     int32 BulkInteractionFlags{0};
 
     EItemLifeCycleState CurrentLifeState{EItemLifeCycleState::EItemState_SpanwedJustNow};
 
-    void UpdateWidgetText_Internal(const FString &NewText);
-
-    void UpdateStateWidgetInfo(float inDeltaTime);
-
-    class UDIY_ItemStateWidget *StateDisplayWidget{nullptr};
-
-    
     class UDIY_ConductivityProcessor *Possible_Conductivity_Processor{nullptr};
     class UDIY_SolidnessProcessor *Possible_Solidness_Processor{nullptr};
     class UDIY_TemperatureProcessor *Possible_Temperature_Processor{nullptr};
+
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+    class UWidgetComponent *ItemStateWidgetComponent;
+    void UpdateWidgetText_Internal(const FString &NewText);
+
+    void UpdateStateWidgetInfo(float inDeltaTime);
+    class UDIY_ItemStateWidget *StateDisplayWidget{nullptr};
+#endif
 };

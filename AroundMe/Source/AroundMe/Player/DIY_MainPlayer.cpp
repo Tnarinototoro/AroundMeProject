@@ -35,7 +35,7 @@ ADIY_MainPlayer::ADIY_MainPlayer()
     // HatComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HatComponent"));
 
     // HatComponent->SetupAttachment(GetMesh(),TEXT("headSocket"));
-
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     PlayerState_WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("PlayerStateInfo"));
 
     PlayerState_WidgetComponent->SetupAttachment(this->GetCapsuleComponent());
@@ -48,6 +48,7 @@ ADIY_MainPlayer::ADIY_MainPlayer()
 
     // relative rotation setup (Pitch=0.000000,Yaw=-179.999999,Roll=0.000000)
     PlayerState_WidgetComponent->SetRelativeRotation({0.000000, -179.999999, 0.000000});
+#endif
 }
 // Called when the game starts or when spawned
 void ADIY_MainPlayer::BeginPlay()
