@@ -115,7 +115,7 @@ void FAroundMeEditorModule::ToggleDbg_Enable_PlayerInfo_Widget()
 void FAroundMeEditorModule::OnMusicHourSliderValueChanged(float NewValue)
 {
 #if WITH_EDITOR
-    ADIY_MusicPlayer::Dbg_Music_Hour = NewValue;
+
     // Handle slider value change
 #endif
 }
@@ -123,12 +123,15 @@ void FAroundMeEditorModule::OnMusicHourSliderValueChanged(float NewValue)
 float FAroundMeEditorModule::GetMusicHourSliderValue() const
 {
     // Return current slider value
-    return ADIY_MusicPlayer::Dbg_Music_Hour; // Example value
+    return 0;
+
+    // ADIY_MusicPlayer::Dbg_Music_Hour; // Example value
 }
 
 FText FAroundMeEditorModule::GetMusicHourSliderValueText() const
 {
-    int SliderValue = ADIY_MusicPlayer::Dbg_Music_Hour;
+    int SliderValue = 0;
+    // ADIY_MusicPlayer::Dbg_Music_Hour;
     return FText::FromString(FString::Printf(TEXT("Current Value: %d"), SliderValue));
 }
 

@@ -40,7 +40,7 @@ protected:
     uint32 GenerateDateCorrespondingMusicIndex();
 
 public:
-#if WITH_EDITOR
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     static int Dbg_Music_Hour;
 #endif
     static ADIY_MusicPlayer *GetMusicPlayer();

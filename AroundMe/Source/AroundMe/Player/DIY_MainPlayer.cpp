@@ -19,7 +19,7 @@
 #include "../UIWidgets/DIY_PlayerStateWidget.h"
 #include "Equipments/DIY_EquipmentManager.h"
 
-#if WITH_EDITOR
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 bool ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget = false;
 #endif
 
@@ -53,13 +53,9 @@ ADIY_MainPlayer::ADIY_MainPlayer()
 void ADIY_MainPlayer::BeginPlay()
 {
     Super::BeginPlay();
-#if WITH_EDITOR
-    if (ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget)
-    {
-
-        ensureMsgf(PlayerState_WidgetComponent != nullptr, TEXT("player info widget is null"));
-        PlayerState_WidgetComponent->SetWidgetClass(UDIY_PlayerStateWidget::StaticClass());
-    }
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+    ensureMsgf(PlayerState_WidgetComponent != nullptr, TEXT("player info widget is null"));
+    PlayerState_WidgetComponent->SetWidgetClass(UDIY_PlayerStateWidget::StaticClass());
 #endif
     APlayerController *PC = Cast<APlayerController>(GetController());
     if (PC)
@@ -70,8 +66,7 @@ void ADIY_MainPlayer::BeginPlay()
 
     AcquireOwnerActorOwnedUDIY_MainPlayerInputController()->TriggerProcessJumpInput.AddDynamic(this, &ADIY_MainPlayer::DoJumpAction);
 
-
-    //AcquireOwnerActorOwnedUDIY_EquipmentManager()->CreateAllEquipments();
+    // AcquireOwnerActorOwnedUDIY_EquipmentManager()->CreateAllEquipments();
 }
 
 void ADIY_MainPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -172,7 +167,6 @@ void ADIY_MainPlayer::UpdateGameLogic(float deltaTime)
 void ADIY_MainPlayer::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
-   
 }
 
 void ADIY_MainPlayer::DoJumpAction(const FInputActionValue &Value)
@@ -191,7 +185,9 @@ void ADIY_MainPlayer::Tick(float DeltaTime)
 
     UpdateGameLogic(DeltaTime);
 
-   
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+    UpdatePlayerStateWidgetInfo(DeltaTime);
+#endif
 }
 
 // Called to bind functionality to input
@@ -210,7 +206,6 @@ IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer, UDIY_MainPlayerInputControl
 IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer, UDIY_MainPlayerActionController)
 
 IMPL_GET_COMPONENT_HELPER_FOR_ACTOR(ADIY_MainPlayer, UDIY_EquipmentManager)
-
 
 // void ADIY_MainPlayer::ChangeHair(EHairType NewHairType)
 //{
@@ -260,3 +255,19 @@ FSoftObjectPath ADIY_MainPlayer::GetHatMeshReferenceFromType(EHatType HatType)
 
     return FSoftObjectPath();
 }
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+void ADIY_MainPlayer::UpdatePlayerStateWidgetInfo(float inDeltaTime)
+{
+    if (!Dbg_Enable_PlayerInfo_Widget)
+    {
+        if (PlayerState_WidgetComponent)
+        {
+            PlayerState_WidgetComponent->SetVisibility(false);
+        }
+
+        return;
+    }
+
+    PlayerState_WidgetComponent->SetVisibility(true);
+}
+#endif

@@ -57,9 +57,9 @@ public:
     bool CheckItemFlag(EDIY_InteractItemFlag inFlag);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
-    const FDIY_ItemDefualtConfig& GetItemDefualtConfig();
+    const FDIY_ItemDefualtConfig &GetItemDefualtConfig();
 
-#if WITH_EDITOR
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     static bool Dbg_Enable_ItemInfo_Widget;
 #endif
 protected:
@@ -77,6 +77,7 @@ private:
 
     class UDIY_ItemStateWidget *StateDisplayWidget{nullptr};
 
+    
     class UDIY_ConductivityProcessor *Possible_Conductivity_Processor{nullptr};
     class UDIY_SolidnessProcessor *Possible_Solidness_Processor{nullptr};
     class UDIY_TemperatureProcessor *Possible_Temperature_Processor{nullptr};

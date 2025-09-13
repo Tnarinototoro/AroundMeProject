@@ -9,6 +9,9 @@
 #include "JsonObjectWrapper.h"
 
 #include "Contents/DIY_ImGuiContentProxy_Camera.h"
+#include "Contents/DIY_ImGuiContentProxy_Item.h"
+#include "Contents/DIY_ImGuiContentProxy_MusicPlayer.h"
+#include "Contents/DIY_ImGuiContentProxy_Player.h"
 
 extern ENGINE_API float GAverageFPS;
 
@@ -116,7 +119,12 @@ FDIY_ImGuiMainPlayerProxy::FDIY_ImGuiMainPlayerProxy(UDIY_DebugImGuiSubsystem &I
 {
     ContentProxies = {
 
-        new FDIY_ImGuiContentProxy_Camera(*this)};
+        new FDIY_ImGuiContentProxy_Camera(*this),
+        new FDIY_ImGuiContentProxy_Item(*this),
+        new FDIY_ImGuiContentProxy_MusicPlayer(*this),
+        new FDIY_ImGuiContentProxy_Player(*this)
+
+    };
 }
 
 void FDIY_ImGuiMainPlayerProxy::UpdateWindows(float DeltaTime)
@@ -144,6 +152,7 @@ void FDIY_ImGuiMainPlayerProxy::UpdateMainMenu(float DeltaTime)
         ImGui::Separator();
         RegisterMenu(DIY_ImGuiNames::MenuCategoryNameRenderer);
         RegisterMenu(DIY_ImGuiNames::MenuCategoryNameVisualizer);
+        RegisterMenu(DIY_ImGuiNames::MenuCategoryNameSound);
         RegisterMenu(DIY_ImGuiNames::MenuCategoryNameGamePlay);
         RegisterMenu(DIY_ImGuiNames::MenuCategoryNameUI);
         RegisterMenu(DIY_ImGuiNames::MenuCategoryNameSystem);

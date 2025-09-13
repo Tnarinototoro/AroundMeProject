@@ -111,13 +111,11 @@ void FDIY_ImGuiContentProxy_MenuWindow::UpdateWindow(float DeltaTime)
     if (bShowWindow)
     {
         ApplyPositionOverride();
-
-        if (ImGui::Begin(WindowName.c_str(), &bShowWindow, WindowFlags))
-        {
-            bWindowDrawnThisFrame = true;
-            DrawWindow(DeltaTime);
-            ImGui::End();
-        }
+        // opend ?
+        ImGui::Begin(WindowName.c_str(), &bShowWindow, WindowFlags);
+        bWindowDrawnThisFrame = true;
+        DrawWindow(DeltaTime);
+        ImGui::End();
     }
 }
 

@@ -23,7 +23,7 @@ private:
 public:
     // Sets default values for this pawn's properties
     ADIY_MainPlayer();
-#if WITH_EDITOR
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     static bool Dbg_Enable_PlayerInfo_Widget;
 #endif
 protected:
@@ -64,7 +64,7 @@ protected:
 
     void UpdateGameLogic(float deltaTime);
     virtual void PostInitializeComponents() override;
-  
+
 public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -72,6 +72,9 @@ public:
     virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
 private:
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+    void UpdatePlayerStateWidgetInfo(float inDeltaTime);
+#endif
     void UpdatePlayerMove(float deltaTime);
 
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerCameraController)
@@ -80,8 +83,9 @@ private:
 
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerActionController)
 
-
     DECLARE_GET_COMPONENT_HELPER(UDIY_EquipmentManager)
+
+
 
     UFUNCTION()
     void DoJumpAction(const struct FInputActionValue &Value);

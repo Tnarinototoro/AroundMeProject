@@ -11,7 +11,7 @@
 #include "../Interactions/DIY_TemperatureProcessor.h"
 #include "../Interactions/DIY_ConductivityProcessor.h"
 
-#if WITH_EDITOR
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 bool ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget = false;
 #endif
 
@@ -70,12 +70,8 @@ ADIY_ItemBase::~ADIY_ItemBase()
 void ADIY_ItemBase::BeginPlay()
 {
     Super::BeginPlay();
-#if WITH_EDITOR
-    if (ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget)
-    {
-
-        ItemStateWidgetComponent->SetWidgetClass(UDIY_ItemStateWidget::StaticClass());
-    }
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+    ItemStateWidgetComponent->SetWidgetClass(UDIY_ItemStateWidget::StaticClass());
 #endif
     GetWorld()->GetTimerManager().SetTimer(
         TimerHandle_HighLight,
@@ -260,7 +256,18 @@ void ADIY_ItemBase::UpdateWidgetText_Internal(const FString &NewText)
 
 void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 {
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+    if (!Dbg_Enable_ItemInfo_Widget)
+    {
+        if (ItemStateWidgetComponent)
+        {
+            ItemStateWidgetComponent->SetVisibility(false);
+        }
 
+        return;
+    }
+
+    ItemStateWidgetComponent->SetVisibility(true);
     FString updated_text{};
 
     updated_text += FString::Printf(TEXT("ItemID: %s \n"),
@@ -300,4 +307,5 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
                                         Possible_Solidness_Processor->GetSolidNessAttrs().blunt_damage_susceptibility);
     }
     UpdateWidgetText_Internal(updated_text);
+#endif
 }

@@ -17,6 +17,7 @@ namespace DIY_ImGuiNames
     constexpr std::string MenuCategoryNameUI = "UI";
     constexpr std::string MenuCategoryNameSystem = "System";
     constexpr std::string MenuCategoryNameSettings = "Settings";
+    constexpr std::string MenuCategoryNameSound = "Sound";
     constexpr std::string MenuCategoryNameWwise = "Wwise";
 }
 #endif

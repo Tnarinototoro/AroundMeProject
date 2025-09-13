@@ -10,6 +10,8 @@ FDIY_ImGuiContentProxy_Camera::FDIY_ImGuiContentProxy_Camera(FDIY_ImGuiProxy &In
 void FDIY_ImGuiContentProxy_Camera::DrawWindow(float DeltaTime)
 {
     ImGui::Text("This is the first window for camera");
+
+    
 }
 
 #endif

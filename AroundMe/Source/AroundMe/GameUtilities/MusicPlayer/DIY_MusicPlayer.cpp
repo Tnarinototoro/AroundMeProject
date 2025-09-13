@@ -10,9 +10,11 @@
 #include "../Logs/DIY_LogHelper.h"
 
 ADIY_MusicPlayer *ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;
-#if WITH_EDITOR
+
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 int ADIY_MusicPlayer::Dbg_Music_Hour = {-1};
 #endif
+
 ADIY_MusicPlayer::ADIY_MusicPlayer()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -33,7 +35,8 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
 
     FDateTime cur_date_time = FDateTime::Now();
     uint8 new_hour = cur_date_time.GetHour();
-#if WITH_EDITOR
+
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     if (ADIY_MusicPlayer::Dbg_Music_Hour >= 0)
     {
         new_hour = (int)ADIY_MusicPlayer::Dbg_Music_Hour;
