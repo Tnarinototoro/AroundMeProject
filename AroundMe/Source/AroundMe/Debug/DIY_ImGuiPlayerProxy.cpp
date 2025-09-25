@@ -65,17 +65,17 @@ void FDIY_ImGuiCommonPlayerProxy::DrawDynamicResolution()
     switch (DynamicResolutionStateInfos.Status)
     {
     case EDynamicResolutionStatus::Unsupported:
-        sprintf_s(Text, "DynRes: Unsupported");
+        snprintf(Text,255,"DynRes: Unsupported");
         break;
     case EDynamicResolutionStatus::Disabled:
-        sprintf_s(Text, "DynRes: Disabled");
+        snprintf(Text,255, "DynRes: Disabled");
         break;
     case EDynamicResolutionStatus::Paused:
-        sprintf_s(Text, "DynRes: Paused");
+        snprintf(Text,255, "DynRes: Paused");
         break;
     case EDynamicResolutionStatus::Enabled:
     {
-        sprintf_s(Text, "DynRes: %3.1f", ScreenPercentage);
+        snprintf(Text, 255,"DynRes: %3.1f", ScreenPercentage);
         float ScrPer2Col = FMath::Clamp((ScreenPercentage - 50.0f) / 50.0f, 0.0f, 1.0f);
         TextColor.x = 1.0f - ScrPer2Col;
         TextColor.y = ScrPer2Col;
@@ -83,10 +83,10 @@ void FDIY_ImGuiCommonPlayerProxy::DrawDynamicResolution()
     }
     break;
     default:
-        sprintf_s(Text, "DynRes: Unknown");
+        snprintf(Text,255, "DynRes: Unknown");
         break;
     }
-    ImGui::TextColored(TextColor, Text);
+    ImGui::TextColored(TextColor, "%s", Text);
 }
 
 void FDIY_ImGuiCommonPlayerProxy::DrawBuildVersion()

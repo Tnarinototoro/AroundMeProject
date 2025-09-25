@@ -11,13 +11,13 @@ DECLARE_LOG_CATEGORY_CLASS(LogDIY_ImGui, Log, All);
 // }
 namespace DIY_ImGuiNames
 {
-    constexpr std::string MenuCategoryNameRenderer = "Renderer";
-    constexpr std::string MenuCategoryNameVisualizer = "Visualizer";
-    constexpr std::string MenuCategoryNameGamePlay = "GamePlay";
-    constexpr std::string MenuCategoryNameUI = "UI";
-    constexpr std::string MenuCategoryNameSystem = "System";
-    constexpr std::string MenuCategoryNameSettings = "Settings";
-    constexpr std::string MenuCategoryNameSound = "Sound";
-    constexpr std::string MenuCategoryNameWwise = "Wwise";
+    constexpr const char* MenuCategoryNameRenderer = "Renderer";
+    constexpr const char* MenuCategoryNameVisualizer = "Visualizer";
+    constexpr const char* MenuCategoryNameGamePlay = "GamePlay";
+    constexpr const char* MenuCategoryNameUI = "UI";
+    constexpr const char* MenuCategoryNameSystem = "System";
+    constexpr const char* MenuCategoryNameSettings = "Settings";
+    constexpr const char* MenuCategoryNameSound = "Sound";
+    constexpr const char* MenuCategoryNameWwise = "Wwise";
 }
 #endif
