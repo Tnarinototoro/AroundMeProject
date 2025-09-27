@@ -2,6 +2,8 @@
 
 #include "DIYPlatformService.h"
 #include "DIYPlatformServiceProvider.h"
+#include "DIY_CommuLog.h"
+
 #define LOCTEXT_NAMESPACE "FDIYPlatformServiceModule"
 
 void FDIYPlatformServiceModule::StartupModule()
@@ -63,3 +65,5 @@ void FDIYPlatformServiceModule::ShutdownPlatformProvider()
 #undef LOCTEXT_NAMESPACE
 	
 IMPLEMENT_MODULE(FDIYPlatformServiceModule, DIYPlatformService)
+
+DEFINE_LOG_CATEGORY(DIY_CommuLog);
