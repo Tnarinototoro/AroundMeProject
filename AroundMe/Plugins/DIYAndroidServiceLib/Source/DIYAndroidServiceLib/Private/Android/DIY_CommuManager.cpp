@@ -12,7 +12,7 @@ void UDIY_CommuManager::Init()
 	UE_LOG(DIY_CommuLog, Verbose, TEXT("Initialising Android DIY_Commu Manager"));
 
 	DIY_CommuManagerJObject = MakeShared<FJavaClassObject>(
-		"com/ninevastudios/ble/BleGoodiesManager", "(Landroid/app/Activity;J)V", FJavaWrapper::GameActivityThis, (jlong)this);
+		"com/aroundmelib/DIY_CommuManager", "(Landroid/app/Activity;J)V", FJavaWrapper::GameActivityThis, (jlong)this);
 
 	IsBleSupportedMethod = DIY_CommuManagerJObject->GetClassMethod("isBleSupported", "()Z");
 	IsBluetoothEnabledMethod = DIY_CommuManagerJObject->GetClassMethod("isBluetoothEnabled", "()Z");
