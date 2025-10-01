@@ -38,7 +38,7 @@ void UDIY_CraftReceiptRowWidget::AddSlot(int32 SlotIndex, const FVector2D &IconI
         if (Border && IconImage && CountText)
         {
 
-            IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(SlotIndex + UDIY_CraftReceiptRowWidget::col_num_setup * saved_cur_row_index));
+            IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(SlotIndex + UDIY_CraftReceiptRowWidget::col_num_setup * saved_cur_row_index));
 
             CountText->SetText(FText::AsNumber(SlotIndex));
             Border->SetBrushColor(FLinearColor::Transparent);

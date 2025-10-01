@@ -7,10 +7,12 @@
 #include "../Area/DIY_AreaManager.h"
 
 bool UDIY_Utilities::bShouldLogToGameScreen = true;
-ADIY_ItemManager *UDIY_Utilities::DIY_GetItemManagerInstance()
+UDIY_ItemManagerSubsystem *UDIY_Utilities::DIY_GetItemManagerInstance(const UObject* WorldContextObject)
 {
 
-    return ADIY_ItemManager::GetManager();
+    if (!WorldContextObject) return nullptr;
+    UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject);
+    return UDIY_ItemManagerSubsystem::Get(World);
 }
 ADIY_AreaManager *UDIY_Utilities::DIY_GetAreaManagerInstance()
 {

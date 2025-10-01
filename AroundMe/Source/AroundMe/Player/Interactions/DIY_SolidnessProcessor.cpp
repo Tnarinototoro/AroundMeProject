@@ -43,7 +43,7 @@ void UDIY_SolidnessProcessor::AcceptDamage(float inDamage, float inDamageSphereN
 
     if (Final_Durability <= 0.f)
     {
-        UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(GetOwner());
+        UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestRecycleItem(GetOwner());
         this->DestroyComponent();
     }
 }

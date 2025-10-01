@@ -16,8 +16,8 @@ class AROUNDME_API UDIY_Utilities : public UBlueprintFunctionLibrary
     GENERATED_BODY()
 public:
     // Get ItemManager static singleton
-    UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
-    static class ADIY_ItemManager *DIY_GetItemManagerInstance();
+    UFUNCTION(BlueprintCallable, Category = "DIY_Utilities", meta=(WorldContext="WorldContextObject"))
+    static class UDIY_ItemManagerSubsystem *DIY_GetItemManagerInstance(const UObject* WorldContextObject);
 
     // Get Area Manager static singleton
     UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")

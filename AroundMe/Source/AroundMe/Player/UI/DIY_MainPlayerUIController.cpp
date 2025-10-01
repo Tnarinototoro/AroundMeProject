@@ -103,7 +103,7 @@ void UDIY_MainPlayerUIController::BeginPlay()
         }
     }
 
-    ADIY_ItemManager::OnItemsNumInBackPack_Changed.AddUObject(this, &UDIY_MainPlayerUIController::OnItemBackPackNumChanged);
+    UDIY_ItemManagerSubsystem::OnItemsNumInBackPack_Changed.AddUObject(this, &UDIY_MainPlayerUIController::OnItemBackPackNumChanged);
 }
 
 void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -155,7 +155,7 @@ void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReas
             break;
         }
     }
-    ADIY_ItemManager::OnItemsNumInBackPack_Changed.RemoveAll(this);
+    UDIY_ItemManagerSubsystem::OnItemsNumInBackPack_Changed.RemoveAll(this);
 }
 void UDIY_MainPlayerUIController::OnItemBackPackNumChanged(int32 itemID)
 {
@@ -174,7 +174,7 @@ void UDIY_MainPlayerUIController::OnItemBackPackNumChanged(int32 itemID)
     int row_y = slot_index / BackPack_GridColNum;
     int col_x = slot_index % BackPack_GridColNum;
 
-    item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(UDIY_Utilities::DIY_GetItemManagerInstance()->Get_ItemNumInBackPack_Statistics((EItemID)itemID)));
+    item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->Get_ItemNumInBackPack_Statistics((EItemID)itemID)));
 
     item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(row_y, col_x, ESlateVisibility::Visible);
     EASY_LOG_MAINPLAYER("OnItemBackPackNumChanged %d", itemID);
@@ -312,10 +312,10 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
 
             // item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(1));
             EASY_LOG_MAINPLAYER("current item id %d added", current_item_id);
-            item_backpack_widget->RequestChangeSlotImage(row_y, col_x, UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(int32(current_item_id)));
+            item_backpack_widget->RequestChangeSlotImage(row_y, col_x, UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(int32(current_item_id)));
             // item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(row_y, col_x, ESlateVisibility::Visible);
-            UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
-            UDIY_Utilities::DIY_GetItemManagerInstance()->RequestChange_ItemNumInBackPack_Statistics(current_item_id, 1);
+            UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestRecycleItem(current_item);
+            UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestChange_ItemNumInBackPack_Statistics(current_item_id, 1);
             return true;
         }
         else
@@ -335,9 +335,9 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
 
         // item_backpack_widget->RequestChangeSlotCountText(existing_row_y, existing_col_x, FText::AsNumber(cur_item_info.ItemCount));
         // item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(existing_row_y, existing_col_x, ESlateVisibility::Visible);
-        item_backpack_widget->RequestChangeSlotImage(existing_row_y, existing_col_x, UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(int32(current_item_id)));
-        UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(current_item);
-        UDIY_Utilities::DIY_GetItemManagerInstance()->RequestChange_ItemNumInBackPack_Statistics(current_item_id, 1);
+        item_backpack_widget->RequestChangeSlotImage(existing_row_y, existing_col_x, UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(int32(current_item_id)));
+        UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestRecycleItem(current_item);
+        UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestChange_ItemNumInBackPack_Statistics(current_item_id, 1);
         return true;
     }
 }
@@ -487,7 +487,7 @@ void UDIY_MainPlayerUIController::ExecuteCurrentItemSubMenuCommand()
         spawned_loc.Z += 100.0f;
 
         // DrawDebugLine(GetWorld(), player->GetActorLocation(), spawned_loc, FColor::Red, true, 2.0f, 0, 1.0f);
-        UDIY_Utilities::DIY_GetItemManagerInstance()->RequestSpawnItem(cur_item_info->itemID, spawned_loc, {0.f, 0.f, 0.f});
+        UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestSpawnItem(cur_item_info->itemID, spawned_loc, {0.f, 0.f, 0.f});
     }
 }
 
@@ -633,18 +633,18 @@ void UDIY_MainPlayerUIController::SelectCraftingPlatformSlotOn(uint32 col_x, uin
         ensureMsgf(nullptr != cur_crafting_platform_widget, TEXT("cur_crafting_platform_widget is null"));
         cur_crafting_platform_widget->RequestUpdateShowConsoleWidget(true);
 
-        cur_crafting_platform_widget->RequestChangeConsoleWidgetImage(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(row_y * ItemCraftingPlatform_GridColNum + col_x));
+        cur_crafting_platform_widget->RequestChangeConsoleWidgetImage(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(row_y * ItemCraftingPlatform_GridColNum + col_x));
         FString final_Receipt_String{};
         int32 cur_item_id = row_y * ItemCraftingPlatform_GridColNum + col_x;
 
-        FDIY_CraftingReceipt cur_receipt = UDIY_Utilities::DIY_GetItemManagerInstance()->GetReceiptFromItemID((EItemID)cur_item_id);
+        FDIY_CraftingReceipt cur_receipt = UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetReceiptFromItemID((EItemID)cur_item_id);
         final_Receipt_String += FString::Printf(TEXT("Target:%s \n"), *UEnum::GetValueAsString((EItemID)cur_item_id));
 
         bool okay_to_craft = true;
         for (const FDIY_CraftingReceipt_Element &cur_element : cur_receipt.InputElements)
         {
             int32 cur_element_req_num = cur_element.CurrentItemNumReq;
-            int32 cur_element_existing_num = UDIY_Utilities::DIY_GetItemManagerInstance()->Get_ItemNumInBackPack_Statistics(cur_element.ItemID);
+            int32 cur_element_existing_num = UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->Get_ItemNumInBackPack_Statistics(cur_element.ItemID);
             final_Receipt_String += FString::Printf(TEXT("%s:(%d/%d)\n"), *UEnum::GetValueAsString(cur_element.ItemID), cur_element_existing_num, cur_element_req_num);
 
             if (cur_element_existing_num < cur_element_req_num)

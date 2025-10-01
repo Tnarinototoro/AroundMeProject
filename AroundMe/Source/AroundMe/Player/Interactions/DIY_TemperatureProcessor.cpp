@@ -242,7 +242,7 @@ void UDIY_TemperatureProcessor::UpdateStateMachine(float inDeltaTime)
                 SpawnedEffectCompo->DestroyComponent();
                 SpawnedEffectCompo = nullptr;
             }
-            UDIY_Utilities::DIY_GetItemManagerInstance()->RequestRecycleItem(GetOwner());
+            UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestRecycleItem(GetOwner());
             SwitchToNextState(ETemperatureRelatedState::TS_Normal);
             this->DestroyComponent();
         }

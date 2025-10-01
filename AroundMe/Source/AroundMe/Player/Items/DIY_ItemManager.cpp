@@ -11,58 +11,14 @@
 
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "../../GameUtilities/DIY_Utilities.h"
+#include "../../System/Util/DIY_SysUtil.h"
 
-ADIY_ItemManager *ADIY_ItemManager::ManagerInstance = nullptr;
 
-FOnItemsNumInBackPack_Changed ADIY_ItemManager::OnItemsNumInBackPack_Changed = {};
-ADIY_ItemManager::ADIY_ItemManager()
-{
+FOnItemsNumInBackPack_Changed UDIY_ItemManagerSubsystem::OnItemsNumInBackPack_Changed = {};
 
-    PrimaryActorTick.bCanEverTick = false;
-    InitializeItemReferences();
-}
 
-ADIY_ItemManager::~ADIY_ItemManager()
-{
-}
 
-void ADIY_ItemManager::BeginPlay()
-{
-    if (ADIY_ItemManager::ManagerInstance == nullptr || ADIY_ItemManager::ManagerInstance != this)
-    {
-        ADIY_ItemManager::ManagerInstance = this;
-        UDIY_Utilities::DIY_PrintLogToScreen(1.0f, FString{"MAnager Instance Created!"});
-    }
-    else
-    {
-        UDIY_Utilities::DIY_PrintLogToScreen(1.0f, FString{"MAnager Instance Failed Creating!"}, FColor::Red);
-    }
-
-    // init current statistics
-    {
-        ItemStatistics.Reset((int32)EItemID::EItemID_Count);
-        FDIY_ItemStatisticInfo tmp_item{};
-        for (uint32 id = 0; id < (uint32)EItemID::EItemID_Count; ++id)
-        {
-
-            tmp_item.ItemID = (EItemID)id;
-            tmp_item.ItemNumInBackPack = 0;
-            ItemStatistics.Add(tmp_item);
-        }
-    }
-}
-
-void ADIY_ItemManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-    ADIY_ItemManager::ManagerInstance = nullptr;
-}
-
-void ADIY_ItemManager::Tick(float indelta)
-{
-    Super::Tick(indelta);
-}
-
-void ADIY_ItemManager::RequestSpawnItem(EItemID ItemID, const FVector &Location, const FRotator &Rotation)
+void UDIY_ItemManagerSubsystem::RequestSpawnItem(EItemID ItemID, const FVector &Location, const FRotator &Rotation)
 {
     TArray<AActor *> *Pool = ItemPools.Find(ItemID);
     if (nullptr != Pool && Pool->Num() > 0)
@@ -95,7 +51,7 @@ void ADIY_ItemManager::RequestSpawnItem(EItemID ItemID, const FVector &Location,
     SpawnItemByID_Internal(ItemID, Location, Rotation);
 }
 
-void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
+void UDIY_ItemManagerSubsystem::RequestRecycleItem(AActor *Item)
 {
     if (!Item)
     {
@@ -131,7 +87,7 @@ void ADIY_ItemManager::RequestRecycleItem(AActor *Item)
     EASY_LOG_MAINPLAYER("item %s recycled to the objects pool", *UEnum::GetValueAsString(ItemID));
 }
 
-UTexture2D *ADIY_ItemManager::GetItemIconTexture(int32 inITemID) const
+UTexture2D *UDIY_ItemManagerSubsystem::GetItemIconTexture(int32 inITemID) const
 {
 
     ensureMsgf(DefualtItemSlotIcon != nullptr && nullptr != EmptyItemSlotIcon, TEXT("please set up defualt and empty slot icon for backup"));
@@ -156,16 +112,55 @@ UTexture2D *ADIY_ItemManager::GetItemIconTexture(int32 inITemID) const
     return icon;
 }
 
-ADIY_ItemManager *ADIY_ItemManager::GetManager()
+UDIY_ItemManagerSubsystem::UDIY_ItemManagerSubsystem()
 {
-    return ManagerInstance;
+    
+
+ // --- DataTable ---
+    static ConstructorHelpers::FObjectFinder<UDataTable> DT_ItemDepot(
+        TEXT("/Game/Blueprint/Items/DataTable/DT_DIY_ItemDepot.DT_DIY_ItemDepot"));
+    if (DT_ItemDepot.Succeeded())
+    {
+        ItemDataTable = DT_ItemDepot.Object;
+    }
+
+    // --- Default Slot Icon ---
+    static ConstructorHelpers::FObjectFinder<UTexture2D> DefaultIconObj(
+        TEXT("/Game/Blueprint/Items/ItemParts/UITextures/ICON_TEST.ICON_TEST"));
+    if (DefaultIconObj.Succeeded())
+    {
+        DefualtItemSlotIcon = DefaultIconObj.Object;
+    }
+
+    // --- Empty Slot Icon ---
+    static ConstructorHelpers::FObjectFinder<UTexture2D> EmptyIconObj(
+        TEXT("/Game/Blueprint/Items/ItemParts/UITextures/Slot_Empty.Slot_Empty"));
+    if (EmptyIconObj.Succeeded())
+    {
+        EmptyItemSlotIcon = EmptyIconObj.Object;
+    }
+
+    ItemIcons.Reset();
+    
+    static ConstructorHelpers::FObjectFinder<UTexture2D> AppleIconObj(
+        TEXT("/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon"));
+    if (AppleIconObj.Succeeded())
+    {
+        for(uint32 id = 0; id < (uint32)EItemID::EItemID_Count; ++id)
+        {
+            ItemIcons.Add(AppleIconObj.Object);
+        }
+    }
+
 }
 
-void ADIY_ItemManager::InitializeItemReferences()
+UDIY_ItemManagerSubsystem *UDIY_ItemManagerSubsystem::Get(UWorld *World)
 {
+   
+    return DIY_SysUtil::GetGameInstanceSubsystem<UDIY_ItemManagerSubsystem>(World);;
 }
 
-void ADIY_ItemManager::SpawnItemByID_Internal(EItemID ItemID, const FVector &Location, const FRotator &Rotation)
+void UDIY_ItemManagerSubsystem::SpawnItemByID_Internal(EItemID ItemID, const FVector &Location, const FRotator &Rotation)
 {
 
     FSoftObjectPath ItemPath{nullptr};
@@ -207,7 +202,7 @@ void ADIY_ItemManager::SpawnItemByID_Internal(EItemID ItemID, const FVector &Loc
     UAssetManager::GetStreamableManager().RequestAsyncLoad(
         ItemPath,
         FStreamableDelegate::CreateUObject(this,
-                                           &ADIY_ItemManager::OnItemClassLoaded,
+                                           &UDIY_ItemManagerSubsystem::OnItemClassLoaded,
                                            ItemID,
                                            ItemPath,
                                            Location,
@@ -215,7 +210,7 @@ void ADIY_ItemManager::SpawnItemByID_Internal(EItemID ItemID, const FVector &Loc
                                            *cur_config));
 }
 
-void ADIY_ItemManager::OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig)
+void UDIY_ItemManagerSubsystem::OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig)
 {
     TSoftObjectPtr<UClass> ClassToLoad(ItemPath);
     UClass *LoadedClass = ClassToLoad.Get();
@@ -234,7 +229,7 @@ void ADIY_ItemManager::OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPat
     }
 }
 
-void ADIY_ItemManager::SpawnActorFromClass(UClass *ActorClass, const FVector &Location, const FRotator &Rotation, const FDIY_ItemDefualtConfig &inConfig)
+void UDIY_ItemManagerSubsystem::SpawnActorFromClass(UClass *ActorClass, const FVector &Location, const FRotator &Rotation, const FDIY_ItemDefualtConfig &inConfig)
 {
     if (UWorld *World = GetWorld())
     {
@@ -257,12 +252,12 @@ void ADIY_ItemManager::SpawnActorFromClass(UClass *ActorClass, const FVector &Lo
     }
 }
 
-void ADIY_ItemManager::OnItemRequestRecycle(class AActor *inActor)
+void UDIY_ItemManagerSubsystem::OnItemRequestRecycle(class AActor *inActor)
 {
     RequestRecycleItem(inActor);
 }
 
-void ADIY_ItemManager::RequestChange_ItemNumInBackPack_Statistics(EItemID inItemID, int32 inDeltaNum)
+void UDIY_ItemManagerSubsystem::RequestChange_ItemNumInBackPack_Statistics(EItemID inItemID, int32 inDeltaNum)
 {
     if ((int32)inItemID >= (int32)EItemID::EItemID_Count)
         return;
@@ -275,7 +270,7 @@ void ADIY_ItemManager::RequestChange_ItemNumInBackPack_Statistics(EItemID inItem
     OnItemsNumInBackPack_Changed.Broadcast((int32)inItemID);
 }
 
-const FDIY_CraftingReceipt &ADIY_ItemManager::GetReceiptFromItemID(EItemID inItemID)
+const FDIY_CraftingReceipt &UDIY_ItemManagerSubsystem::GetReceiptFromItemID(EItemID inItemID)
 {
     ensureMsgf((int32)inItemID < (int32)EItemID::EItemID_Count, TEXT("item id exceeding boundary"));
     int32 item_id = static_cast<int32>(inItemID);
@@ -285,7 +280,7 @@ const FDIY_CraftingReceipt &ADIY_ItemManager::GetReceiptFromItemID(EItemID inIte
     return Row->CurrentItemReceipt;
 }
 
-const FDIY_ItemDefualtConfig &ADIY_ItemManager::GetConfigFromItemID(EItemID inItemID)
+const FDIY_ItemDefualtConfig &UDIY_ItemManagerSubsystem::GetConfigFromItemID(EItemID inItemID)
 {
     ensureMsgf((int32)inItemID < (int32)EItemID::EItemID_Count, TEXT("item id exceeding boundary"));
     int32 item_id = static_cast<int32>(inItemID);
@@ -295,13 +290,13 @@ const FDIY_ItemDefualtConfig &ADIY_ItemManager::GetConfigFromItemID(EItemID inIt
     return Row->ItemDefualtConfig;
 }
 
-int32 ADIY_ItemManager::Get_ItemNumInBackPack_Statistics(EItemID inItemID)
+int32 UDIY_ItemManagerSubsystem::Get_ItemNumInBackPack_Statistics(EItemID inItemID)
 {
     ensureMsgf(inItemID == ItemStatistics[(int32)inItemID].ItemID, TEXT("add item to different depo statistics"));
     return ItemStatistics[(int32)inItemID].ItemNumInBackPack;
 }
 
-bool ADIY_ItemManager::TryRequestSpawningItem_CraftPlatform(EItemID inItemID, FVector inLocation, FRotator inRotator = {0.f, 0.f, 0.f})
+bool UDIY_ItemManagerSubsystem::TryRequestSpawningItem_CraftPlatform(EItemID inItemID, FVector inLocation, FRotator inRotator = {0.f, 0.f, 0.f})
 {
 
     FDIY_CraftingReceipt cur_receipt = GetReceiptFromItemID(inItemID);
@@ -323,4 +318,27 @@ bool ADIY_ItemManager::TryRequestSpawningItem_CraftPlatform(EItemID inItemID, FV
     }
 
     return true;
+}
+
+void UDIY_ItemManagerSubsystem::Initialize(FSubsystemCollectionBase &Collection)
+{
+    Super::Initialize(Collection);
+
+   
+    // init current statistics
+    {
+        ItemStatistics.Reset((int32)EItemID::EItemID_Count);
+        FDIY_ItemStatisticInfo tmp_item{};
+        for (uint32 id = 0; id < (uint32)EItemID::EItemID_Count; ++id)
+        {
+
+            tmp_item.ItemID = (EItemID)id;
+            tmp_item.ItemNumInBackPack = 0;
+            ItemStatistics.Add(tmp_item);
+        }
+    }
+}
+
+void UDIY_ItemManagerSubsystem::Deinitialize()
+{
 }

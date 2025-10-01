@@ -8,30 +8,26 @@
 // #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "DIY_ItemManager.generated.h"
 
-UCLASS(Blueprintable)
-class AROUNDME_API ADIY_ItemManager : public AActor
+UCLASS()
+class AROUNDME_API UDIY_ItemManagerSubsystem : public UGameInstanceSubsystem
 {
     GENERATED_BODY()
 
 public:
-    static ADIY_ItemManager *GetManager();
+
+
+    UDIY_ItemManagerSubsystem();
+
+    static UDIY_ItemManagerSubsystem* Get(UWorld* World);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    void InitializeItemReferences();
+    void RequestSpawnItem(EItemID ItemID, const FVector& Location, const FRotator& Rotation);
 
-    // Spawn an Item
-    // UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    void RequestRecycleItem(AActor* Item);
 
-    // Called every frame
-    virtual void Tick(float DeltaTime) override;
-    // Spawn an Item
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    void RequestSpawnItem(EItemID ItemID, const FVector &Location, const FRotator &Rotation);
-    // Spawn an Item
-    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    void RequestRecycleItem(AActor *Item);
-    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    class UTexture2D *GetItemIconTexture(int32 inITemID) const;
+    UTexture2D* GetItemIconTexture(int32 inItemID) const;
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     void RequestChange_ItemNumInBackPack_Statistics(EItemID inItemID, int32 inDeltaNum);
@@ -40,10 +36,10 @@ public:
     int32 Get_ItemNumInBackPack_Statistics(EItemID inItemID);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    const FDIY_CraftingReceipt &GetReceiptFromItemID(EItemID inItemID);
+    const FDIY_CraftingReceipt& GetReceiptFromItemID(EItemID inItemID);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    const FDIY_ItemDefualtConfig &GetConfigFromItemID(EItemID inItemID);
+    const FDIY_ItemDefualtConfig& GetConfigFromItemID(EItemID inItemID);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     bool TryRequestSpawningItem_CraftPlatform(EItemID inItemID, FVector inLocation, FRotator inRotator);
@@ -51,37 +47,29 @@ public:
     static FOnItemsNumInBackPack_Changed OnItemsNumInBackPack_Changed;
 
 protected:
-    ADIY_ItemManager();
-    ~ADIY_ItemManager();
-    // Called when the game starts or when spawned
-    virtual void BeginPlay() override;
-    /** Overridable function called whenever this actor is being removed from a level */
-    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+    virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+    virtual void Deinitialize() override;
 
+    
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemManager")
-    UDataTable *ItemDataTable;
+    UDataTable* ItemDataTable;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemManager")
-    TMap<EItemID, FSoftObjectPath> BP_Items_Map;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemManager")
-    TArray<class UPhysicalMaterial *> Item_PhysicsDepo;
+    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
+    UTexture2D* DefualtItemSlotIcon;
+
+    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
+    UTexture2D* EmptyItemSlotIcon;
+
+    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
+    TArray<UTexture2D*> ItemIcons;
 
 private:
-    static ADIY_ItemManager *ManagerInstance;
-    void SpawnItemByID_Internal(EItemID ItemID, const FVector &Location, const FRotator &Rotation);
-    void OnItemRequestRecycle(class AActor *inActor);
+    void SpawnItemByID_Internal(EItemID ItemID, const FVector& Location, const FRotator& Rotation);
+    void OnItemRequestRecycle(AActor* inActor);
     void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig);
-    void SpawnActorFromClass(UClass *inClass, const FVector &Location, const FRotator &Rotation, const FDIY_ItemDefualtConfig &inConfig);
+    void SpawnActorFromClass(UClass* inClass, const FVector& Location, const FRotator& Rotation, const FDIY_ItemDefualtConfig& inConfig);
 
-    TMap<EItemID, TArray<AActor *>> ItemPools;
-
-    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
-    class UTexture2D *DefualtItemSlotIcon;
-    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
-    class UTexture2D *EmptyItemSlotIcon;
-    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
-    TArray<class UTexture2D *> ItemIcons;
-
+    TMap<EItemID, TArray<AActor*>> ItemPools;
     TArray<FDIY_ItemStatisticInfo> ItemStatistics;
 };

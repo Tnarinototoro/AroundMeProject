@@ -175,7 +175,7 @@ void UDIY_ItemBackPackWidget::CreateGrid()
                 if (Border && IconImage && CountText)
                 {
                     //@TODO set icon image
-                    IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance()->GetItemIconTexture(-1));
+                    IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(-1));
                     CountText->SetText(FText::AsNumber(0));
                     // CountText->SetVisibility(ESlateVisibility::Hidden);
                     Border->SetBrushColor(FLinearColor::Transparent);
