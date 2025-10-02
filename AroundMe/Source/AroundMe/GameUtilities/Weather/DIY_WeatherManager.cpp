@@ -1,45 +1,45 @@
-// All rights reserved to ShadowCandle Studio
-
 #include "DIY_WeatherManager.h"
+#include "TimerManager.h"
 
-ADIY_WeatherManager *ADIY_WeatherManager::gWeatherManagerInstance = nullptr;
-ADIY_WeatherManager::ADIY_WeatherManager()
+void UDIY_WeatherManager::Initialize(FSubsystemCollectionBase& Collection)
 {
-    PrimaryActorTick.bCanEverTick = false;
+    Super::Initialize(Collection);
+
+    // 启动一个定时器，每隔 10 秒刷新一次天气
+    if (UWorld* World = GetWorld())
+    {
+        World->GetTimerManager().SetTimer(
+            WeatherTimerHandle,
+            this,
+            &UDIY_WeatherManager::QueryWeatherFromAPI,
+            10.0f,   // 间隔（秒）
+            true     // 循环
+        );
+    }
 }
 
-ADIY_WeatherManager::~ADIY_WeatherManager()
+void UDIY_WeatherManager::Deinitialize()
 {
+    if (UWorld* World = GetWorld())
+    {
+        World->GetTimerManager().ClearTimer(WeatherTimerHandle);
+    }
+    Super::Deinitialize();
 }
 
-ADIY_WeatherManager *ADIY_WeatherManager::GetWeatherManager()
+void UDIY_WeatherManager::QueryWeatherNow()
 {
-    checkf(nullptr != gWeatherManagerInstance, TEXT("gWeatherManagerInstance can not be inited her"));
-
-    return ADIY_WeatherManager::gWeatherManagerInstance;
+    QueryWeatherFromAPI();
 }
 
-float ADIY_WeatherManager::InquireCurrentEnvTemperature() const
+void UDIY_WeatherManager::QueryWeatherFromAPI()
 {
-    //@TODO get temperature from weather api
-    return 26.0f;
-}
+    
+    UE_LOG(LogTemp, Log, TEXT("Querying real-world weather API..."));
 
-float ADIY_WeatherManager::InquireCurrentEnvMoist() const
-{
-    //@TODO get moist from weather api
-    return 0.3f;
-}
+   
+    CurrentTemperature = FMath::RandRange(-10.0f, 35.0f);
+    CurrentMoisture = FMath::FRandRange(0.f, 1.f);
 
-void ADIY_WeatherManager::BeginPlay()
-{
-    Super::BeginPlay();
-    checkf(ADIY_WeatherManager::gWeatherManagerInstance == nullptr, TEXT("More than one WeatherManagerInstance is created now which is not allowed"));
-    ADIY_WeatherManager::gWeatherManagerInstance = this;
-}
-
-void ADIY_WeatherManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-
-    ADIY_WeatherManager::gWeatherManagerInstance = nullptr;
+    UE_LOG(LogTemp, Log, TEXT("Updated Weather -> Temp: %.1f, Moist: %.2f"), CurrentTemperature, CurrentMoisture);
 }

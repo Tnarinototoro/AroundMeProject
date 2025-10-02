@@ -14,16 +14,6 @@ UDIY_ItemManagerSubsystem *UDIY_Utilities::DIY_GetItemManagerInstance(const UObj
     UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject);
     return UDIY_ItemManagerSubsystem::Get(World);
 }
-ADIY_AreaManager *UDIY_Utilities::DIY_GetAreaManagerInstance()
-{
-
-    return ADIY_AreaManager::GetManager();
-}
-const ADIY_WeatherManager *UDIY_Utilities::DIY_GetWeatherManagerInstance() 
-{
-
-    return ADIY_WeatherManager::GetWeatherManager();
-}
 
 void UDIY_Utilities::DIY_EnableLogging(bool bEnable)
 {

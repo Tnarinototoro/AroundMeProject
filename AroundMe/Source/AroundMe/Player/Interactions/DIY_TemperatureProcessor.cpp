@@ -24,14 +24,14 @@ void UDIY_TemperatureProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfi
 void UDIY_TemperatureProcessor::OnResetComponentValues()
 {
     //@Todo get init weater moisture
-    Final_MoistureValue = OuterWolrdMoistureValue = ADIY_WeatherManager::GetWeatherManager()->InquireCurrentEnvMoist();
+    Final_MoistureValue = OuterWolrdMoistureValue = UDIY_WeatherManager::Get(this)->GetMoisture();
 
     SpawnedEffectCompo = {nullptr};
     EffectResource = {nullptr};
 
     // / target_moist= (moist_value_weather(moist_value_weather_geo));
 
-    Final_TemperatureValue = OuterWolrdTemperatureValue = ADIY_WeatherManager::GetWeatherManager()->InquireCurrentEnvTemperature();
+    Final_TemperatureValue = OuterWolrdTemperatureValue = UDIY_WeatherManager::Get(this)->GetTemperature();
 
     // need to get weathre temperature from world
 }
@@ -142,7 +142,7 @@ void UDIY_TemperatureProcessor::UpdateParams(float inDeltaTime)
 
             if (LastDominant_TemperatureHolder_RemainingTime <= 0.f)
             {
-                OverrideOuterMoisture(ADIY_WeatherManager::GetWeatherManager()->InquireCurrentEnvMoist());
+                OverrideOuterMoisture(UDIY_WeatherManager::Get(this)->GetMoisture());
 
                 // reset to the weather temperature
             }
@@ -169,7 +169,7 @@ void UDIY_TemperatureProcessor::UpdateParams(float inDeltaTime)
 
             if (LastDominant_TemperatureHolder_RemainingTime <= 0.f)
             {
-                OverrideOuterTemperature(ADIY_WeatherManager::GetWeatherManager()->InquireCurrentEnvTemperature());
+                OverrideOuterTemperature(UDIY_WeatherManager::Get(this)->GetTemperature());
 
                 // reset to the weather temperature
             }

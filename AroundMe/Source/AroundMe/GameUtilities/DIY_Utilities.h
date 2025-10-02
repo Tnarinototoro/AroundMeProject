@@ -19,13 +19,8 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_Utilities", meta=(WorldContext="WorldContextObject"))
     static class UDIY_ItemManagerSubsystem *DIY_GetItemManagerInstance(const UObject* WorldContextObject);
 
-    // Get Area Manager static singleton
-    UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
-    static class ADIY_AreaManager *DIY_GetAreaManagerInstance();
 
-    // Get Weather Manager static singleton
-    UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
-    static const class ADIY_WeatherManager *DIY_GetWeatherManagerInstance();
+   
     // Function to enable or disable logging
     UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
     static void DIY_EnableLogging(bool bEnable);
