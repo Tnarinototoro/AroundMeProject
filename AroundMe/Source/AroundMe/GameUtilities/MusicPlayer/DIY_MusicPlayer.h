@@ -44,12 +44,11 @@ public:
     static int Dbg_Music_Hour;
 #endif
     static ADIY_MusicPlayer *GetMusicPlayer();
-    // 音乐资源数组
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_MusicPlayer")
-    TMap<ESoundTrackID, USoundBase *> MusicTracks;
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="DIY_MusicPlayer")
+    UDataTable* MusicDataTable;
 
-    // 音频组件用于播放2D音乐
-    // UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Music")
+
+    UPROPERTY()
     UAudioComponent *AudioComponent;
 
     // 功能：加载音乐
@@ -68,6 +67,7 @@ public:
 
     uint8 GetCurrentHour() const { return HourOfToday; }
     void SetCurrentHour(uint8 inNewHour);
-
+    // TrackID -> RowName 映射
+    TMap<ESoundTrackID, FName> TrackToRowName;
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerUIController);
 };

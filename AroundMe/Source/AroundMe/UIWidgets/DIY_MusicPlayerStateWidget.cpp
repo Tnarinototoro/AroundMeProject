@@ -51,6 +51,10 @@ void UDIY_MusicPlayerStateWidget::UpdateText(const FText& NewText)
 {
     if (InfoTextBlock)
     {
-        InfoTextBlock->SetText(NewText);
+        FText CombinedText = FText::Format(
+            FText::FromString(TEXT("Music Player State Text\n{0}")),
+            NewText
+        );
+        InfoTextBlock->SetText(CombinedText);
     }
 }
