@@ -100,16 +100,16 @@ enum class ESoundTrackID : uint8
 
 
 
-USTRUCT(BlueprintType)
-struct FDIY_SoundTrackRow : public FTableRowBase
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    ESoundTrackID TrackID;
-
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TSoftObjectPtr<USoundBase> SoundAsset;
-};
+//USTRUCT(BlueprintType)
+//struct FDIY_MusicTrackInfoDataTableRow : public FTableRowBase
+//{
+//	GENERATED_BODY()
+//
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Music")
+//        FString TrackName;
+//
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Music")
+//        USoundBase* Sound;
+//
+//
+//};
