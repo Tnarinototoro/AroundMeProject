@@ -58,10 +58,28 @@
     <init>
 		<log text="[SJL] DIYPlatformService Android INIT"/>
 	</init>
-    <prebuildCopies>
+    <!-- <prebuildCopies>
     <copyDir src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib" dst="$S(BuildDir)/src/com/aroundmelib" />
-    </prebuildCopies>
+    </prebuildCopies> -->
+<prebuildCopies>
+    <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_CommuDevice.java"
+              dst="$S(BuildDir)/src/com/aroundmelib/DIY_CommuDevice.java"/>
 
+    <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_CommuManager.java"
+              dst="$S(BuildDir)/src/com/aroundmelib/DIY_CommuManager.java" />
+
+    <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_CommuUtils.java"
+              dst="$S(BuildDir)/src/com/aroundmelib/DIY_CommuUtils.java" />
+
+    <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_Service.java"
+              dst="$S(BuildDir)/src/com/aroundmelib/DIY_Service.java" />
+
+
+
+
+
+
+</prebuildCopies>
     <!-- optional additions to proguard -->
     <proguardAdditions>
         <insert>
@@ -70,6 +88,7 @@
             -keep interface com.aroundmelib.** { *; }
         </insert>
     </proguardAdditions>
+
 	<!--<baseBuildGradleAdditions>
 		<insert>
 			allprojects

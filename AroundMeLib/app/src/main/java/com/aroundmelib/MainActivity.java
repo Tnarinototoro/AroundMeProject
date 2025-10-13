@@ -1,4 +1,3 @@
-/*
 
 package com.aroundmelib;
 
@@ -374,15 +373,18 @@ public class MainActivity extends AppCompatActivity {
             if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
+                appendToLog("KKKKKKKKKKKKKKKKKKKKKKK POST_NOTIFICATIONS");
                 return; // 等权限回调后再启动
             }
         }
 
-        Log.d("MainActivity", "Starting DIY_Service...");
+        appendToLog("ZZZZZZZZZZZZZZZZZZZZZZZZ startForegroundService");
         Intent intent = new Intent(this, DIY_Service.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            appendToLog("XXXXXXXXXXXXXXXXXXXXXXX startForegroundService");
             startForegroundService(intent);
         } else {
+            appendToLog("YYYYYYYYYYYYYYYYYYYYYYYYYY startService");
             startService(intent);
         }
 
@@ -1199,5 +1201,3 @@ public class MainActivity extends AppCompatActivity {
     }
     // activity events end
 }
-
-*/

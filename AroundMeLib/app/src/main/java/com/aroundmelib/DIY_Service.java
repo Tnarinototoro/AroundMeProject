@@ -4,6 +4,7 @@ import android.app.Service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -36,16 +37,32 @@ public class DIY_Service extends Service {
             notificationManager.createNotificationChannel(channel);
         }
 
-        // 初始通知
+        // 👉 定义一个 Intent 用于点击按钮时停止服务
+        Intent stopIntent = new Intent(this, DIY_Service.class);
+        stopIntent.setAction("STOP_SERVICE");
+
+        PendingIntent stopPendingIntent = PendingIntent.getService(
+                this,
+                0,
+                stopIntent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
+                        PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT :
+                        PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        // 👉 创建带“停止”按钮的通知
         Notification notification = new Notification.Builder(this, CHANNEL_ID)
                 .setContentTitle("DIY Service")
                 .setContentText("Service started, counting...")
                 .setSmallIcon(android.R.drawable.ic_media_play)
+                .addAction(new Notification.Action.Builder(
+                        null, "Stop Service", stopPendingIntent).build())
                 .build();
 
+        // 启动前台服务
         startForeground(1, notification);
 
-        // 定时任务：每秒更新通知和日志
+        // 👉 定时任务：每秒更新通知内容
         handler = new Handler();
         logTask = new Runnable() {
             @Override
@@ -58,18 +75,23 @@ public class DIY_Service extends Service {
                         .setContentTitle("DIY Service")
                         .setContentText(msg)
                         .setSmallIcon(android.R.drawable.ic_media_play)
+                        .addAction(new Notification.Action.Builder(
+                                null, "Stop Service", stopPendingIntent).build())
                         .build();
 
                 notificationManager.notify(1, updatedNotification);
-
                 handler.postDelayed(this, 1000);
             }
         };
         handler.post(logTask);
     }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // 👉 点击通知按钮后触发
+        if (intent != null && "STOP_SERVICE".equals(intent.getAction())) {
+            Log.d(TAG, "Stop button clicked, stopping service.");
+            stopSelf();
+        }
         return START_STICKY; // 保持运行，系统杀掉后会尽量重启
     }
 
