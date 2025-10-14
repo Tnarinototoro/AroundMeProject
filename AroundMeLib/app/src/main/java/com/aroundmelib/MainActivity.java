@@ -1,6 +1,7 @@
 
 package com.aroundmelib;
 
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -43,12 +44,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-
-
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -58,7 +57,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.Vector;
 
 
 
@@ -105,39 +103,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Debug ui part ends----------------------------------------------------------------------
 
-    public class PlayerDeviceInfo {
-        public BluetoothGatt mDeviceGatt = null;
-        public String mDeviceName = null;
-        public String mRegisteredPlayerDeviceMacAddr = null;
-
-        public boolean misRandomDeivce = true;
-        public double mDistance = -1.0f;
-        public int mIndex = 0;
-
-        public String GenerateDisplayString() {
-            return mDeviceName + "@Mac:" + mRegisteredPlayerDeviceMacAddr + "@Dist:" + String.format("%.2f", mDistance);
-        }
-    };
-
-    private double calculateDistance(double rssi) {
-        double RSSI_BASE = -69.0;
-        double ENVIRONMENT_FACTOR = 2.0;
-        return Math.pow(10, (RSSI_BASE - rssi) / (10 * ENVIRONMENT_FACTOR));
-    }
-
-    private double calculateDistance(int rssi, int txPower) {
-        if (rssi == 0) {
-            return -1.0; // if we cannot determine accuracy, return -1.
-        }
-        double ratio = rssi * 1.0 / txPower;
-        if (ratio < 1.0) {
-            return Math.pow(ratio, 10);
-        } else {
-            double distance = 0.89976 * Math.pow(ratio, 7.7095) + 0.111;
-            return distance;
-        }
-    }
-
     private String GetCurrentNumStatus() {
         return String.format("Name:%d, Null:%d, User:%d", mDeviceCountEncountered_WithName,
                 mDeviceCountEncountered_WithGarbageName,mSp_deviceDisplayArrayList.size());
@@ -172,12 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_ENABLE_BT = 999;
     BluetoothManager mBluetoothManager;
-    private final UUID mAroundMeIdentify_UUID = UUID.fromString("fd4e1f57-110a-4d52-9a5b-fe97e0dcf7bb");
-    private static final UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = UUID
-            .fromString("00002902-0000-1000-8000-00805f9b34fb");
-    public final UUID mAroundMe_CONNECT_CHARACTERISTIC_UUID = UUID.fromString("0C136FCC-3381-4F1E-9602-E2A3F8B70CEB");
-    // public static final String mAroundMe_READ_CHARACTERISTIC_UUID =
-    // "1BE31CB9-9E07-4892-AA26-30E87ABE9F70";
+
     private BluetoothAdapter mBluetoothAdapter;
 
     private BluetoothLeScanner mBluetoothLeScanner;
@@ -194,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Integer> mRequestedToGiveItems=new ArrayList<Integer>();
 
-    private Map<String, PlayerDeviceInfo> mDeviceInfoAll = new HashMap<>();
+    private Map<String, DIY_CommuDevice> mAllDevices = new HashMap<>();
 
     private int mDeviceCountEncountered_WithName = 0;
 
@@ -294,18 +254,18 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        if (mDeviceInfoAll != null)
+        if (mAllDevices != null)
         {
-            for (String mac_addr : mDeviceInfoAll.keySet())
+            for (String mac_addr : mAllDevices.keySet())
             {
-                BluetoothGatt gatt_got_now = mDeviceInfoAll.get(mac_addr).mDeviceGatt;
+                BluetoothGatt gatt_got_now = mAllDevices.get(mac_addr).mDeviceGatt;
 
                 if (null != gatt_got_now)
                 {
                     gatt_got_now.close();
                 }
             }
-            mDeviceInfoAll.clear();
+            mAllDevices.clear();
         }
     }
 
@@ -426,11 +386,11 @@ public class MainActivity extends AppCompatActivity {
             appendToLog("mBluetoothGattServer started well");
         }
 
-        BluetoothGattService service = new BluetoothGattService(mAroundMeIdentify_UUID,
+        BluetoothGattService service = new BluetoothGattService(DIY_CommuUtils.mAroundMeIdentify_UUID,
                 BluetoothGattService.SERVICE_TYPE_PRIMARY);
 
         BluetoothGattCharacteristic writeCharacteristic = new BluetoothGattCharacteristic(
-                mAroundMe_CONNECT_CHARACTERISTIC_UUID,
+                DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID,
                 BluetoothGattCharacteristic.PROPERTY_NOTIFY |
                         BluetoothGattCharacteristic.PROPERTY_READ |
                         BluetoothGattCharacteristic.PROPERTY_WRITE,
@@ -445,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void StartScanning() {
         ScanFilter scanFilter = new ScanFilter.Builder()
-                .setServiceUuid(new ParcelUuid(mAroundMeIdentify_UUID))
+                .setServiceUuid(new ParcelUuid(DIY_CommuUtils.mAroundMeIdentify_UUID))
                 .build();
 
         ScanSettings scanSettings = new ScanSettings.Builder()
@@ -466,7 +426,7 @@ public class MainActivity extends AppCompatActivity {
 
         AdvertiseData advdata = new AdvertiseData.Builder()
                 .setIncludeDeviceName(true)
-                .addServiceUuid(new ParcelUuid(mAroundMeIdentify_UUID))
+                .addServiceUuid(new ParcelUuid(DIY_CommuUtils.mAroundMeIdentify_UUID))
                 .build();
         mBluetoothLeAdvertiser.startAdvertising(settings, advdata, mAdvertiseCallback);
 
@@ -524,9 +484,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (result_device.getName() != null && !result_device.getName().equals("null")) {
                 // 处理带有特定服务UUID的设备
-                if (mDeviceInfoAll.containsKey(result_device_mac_addr)) {
+                if (mAllDevices.containsKey(result_device_mac_addr)) {
 
-                    PlayerDeviceInfo cur_player_info = mDeviceInfoAll.get(result_device_mac_addr);
+                    DIY_CommuDevice cur_player_info = mAllDevices.get(result_device_mac_addr);
 
                     if (null != cur_player_info && !cur_player_info.misRandomDeivce) {
                         int rssi = result.getRssi();
@@ -534,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
                         int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
                         // results
 
-                        double estimatedDistance_new = calculateDistance(rssi, txPower);
+                        double estimatedDistance_new = DIY_CommuUtils.calculateDistance(rssi, txPower);
 
                         cur_player_info.mDistance = estimatedDistance_new;
 
@@ -563,16 +523,16 @@ public class MainActivity extends AppCompatActivity {
                     int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
                     // results
 
-                    double estimatedDistance = calculateDistance(rssi, txPower);
+                    double estimatedDistance = DIY_CommuUtils.calculateDistance(rssi, txPower);
 
-                    PlayerDeviceInfo player_info = new PlayerDeviceInfo();
+                    DIY_CommuDevice player_info = new DIY_CommuDevice(MainActivity.this,result_device);
                     player_info.mDeviceGatt = got_gatt;
                     player_info.mDeviceName = result_device.getName();
                     player_info.misRandomDeivce = false;
                     player_info.mDistance = estimatedDistance;
                     player_info.mRegisteredPlayerDeviceMacAddr = result_device_mac_addr;
                     player_info.mIndex = mSp_deviceDisplayArrayList.size();
-                    mDeviceInfoAll.put(result_device_mac_addr, player_info);
+                    mAllDevices.put(result_device_mac_addr, player_info);
 
                     mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
                     mDeviceCountEncountered_WithName++;
@@ -643,15 +603,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                BluetoothGattService service = gatt.getService(mAroundMeIdentify_UUID);
+                BluetoothGattService service = gatt.getService(DIY_CommuUtils.mAroundMeIdentify_UUID);
                 if (service != null) {
                     BluetoothGattCharacteristic characteristic = service
-                            .getCharacteristic(mAroundMe_CONNECT_CHARACTERISTIC_UUID);
+                            .getCharacteristic(DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID);
                     if (characteristic != null) {
                         gatt.setCharacteristicNotification(characteristic, true);
 
                         BluetoothGattDescriptor descriptor = characteristic
-                                .getDescriptor(CLIENT_CHARACTERISTIC_CONFIG_UUID);
+                                .getDescriptor(DIY_CommuUtils.CLIENT_CHARACTERISTIC_CONFIG_UUID);
                         if (descriptor != null) {
                             // activate notify functionality
                             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
@@ -707,7 +667,7 @@ public class MainActivity extends AppCompatActivity {
             super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset,
                     value);
 
-            if (mAroundMe_CONNECT_CHARACTERISTIC_UUID.equals(characteristic.getUuid()) && device.getName() != "null") {
+            if (DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID.equals(characteristic.getUuid()) && device.getName() != "null") {
                 mBluetoothGattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, 0, null);
 
                 String receivedData = new String(value, StandardCharsets.UTF_8);
@@ -731,7 +691,7 @@ public class MainActivity extends AppCompatActivity {
                 // connect to c device, me as p device
                 appendToLog("Connected with c-device: " + device.getName() + "@" + device.getAddress());
 
-                if (mDeviceInfoAll.containsKey(device.getAddress())) {
+                if (mAllDevices.containsKey(device.getAddress())) {
                     appendToLog("Already connected with  p-device:  " + device.getName() + "@" + device.getAddress());
 
                 }
@@ -760,13 +720,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                    if (true) {
+                    if (true)
+                    {
                         String messageToSend = "TestString";
                         if (mDebug_With_UI)
                         {
                             messageToSend = mInputMessage.getText().toString();
                         }
-
 
                         if(mRequestedToGiveItems.size()>0)
                         {
@@ -776,8 +736,8 @@ public class MainActivity extends AppCompatActivity {
                             appendToLog(String.format("XXXXXXXX left gifts to give %d",mRequestedToGiveItems.size()));
                         }
                         BluetoothGattCharacteristic characteristic = mBluetoothGattServer
-                                .getService(mAroundMeIdentify_UUID)
-                                .getCharacteristic(mAroundMe_CONNECT_CHARACTERISTIC_UUID);
+                                .getService(DIY_CommuUtils.mAroundMeIdentify_UUID)
+                                .getCharacteristic(DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID);
                         characteristic.setValue(messageToSend.getBytes(StandardCharsets.UTF_8));
                         mBluetoothGattServer.notifyCharacteristicChanged(device, characteristic, false);
 
@@ -826,18 +786,18 @@ public class MainActivity extends AppCompatActivity {
                 String deviceAddress = device.getAddress();
 
                 if (deviceName != null && !deviceName.equals("null")) {
-                    if (!mDeviceInfoAll.containsKey(deviceAddress)) {
+                    if (!mAllDevices.containsKey(deviceAddress)) {
 
                         short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                        double estimatedDistance = calculateDistance(rssi);
-                        PlayerDeviceInfo player_info = new PlayerDeviceInfo();
+                        double estimatedDistance = DIY_CommuUtils.calculateDistance(rssi);
+                        DIY_CommuDevice player_info = new DIY_CommuDevice(MainActivity.this,device);
                         player_info.mDeviceGatt = null;
                         player_info.mDeviceName = deviceName;
                         player_info.mRegisteredPlayerDeviceMacAddr = deviceAddress;
                         player_info.misRandomDeivce = true;
                         player_info.mIndex = mRandom_deviceDisplayArrayList.size();
                         player_info.mDistance = estimatedDistance;
-                        mDeviceInfoAll.put(deviceAddress, player_info);
+                        mAllDevices.put(deviceAddress, player_info);
                         mRandom_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
                         mDeviceCountEncountered_WithName++;
 
@@ -850,11 +810,11 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     } else {
-                        PlayerDeviceInfo cur_player_info = mDeviceInfoAll.get(deviceAddress);
+                        DIY_CommuDevice cur_player_info = mAllDevices.get(deviceAddress);
 
                         if (null != cur_player_info && cur_player_info.misRandomDeivce) {
                             short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                            double estimatedDistance_new = calculateDistance(rssi);
+                            double estimatedDistance_new = DIY_CommuUtils.calculateDistance(rssi);
                             cur_player_info.mDistance = estimatedDistance_new;
                             mRandom_deviceDisplayArrayList.set(cur_player_info.mIndex,
                                     cur_player_info.GenerateDisplayString());

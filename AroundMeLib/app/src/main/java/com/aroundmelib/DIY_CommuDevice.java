@@ -37,6 +37,17 @@ public class DIY_CommuDevice {
         mDevice = device;
     }
 
+    public BluetoothGatt mDeviceGatt = null;
+    public String mDeviceName = null;
+    public String mRegisteredPlayerDeviceMacAddr = null;
+
+    public boolean misRandomDeivce = true;
+    public double mDistance = -1.0f;
+    public int mIndex = 0;
+
+    public String GenerateDisplayString() {
+        return mDeviceName + "@Mac:" + mRegisteredPlayerDeviceMacAddr + "@Dist:" + String.format("%.2f", mDistance);
+    }
     public void initCallbacks(long callbackAddr) { mCallbackAddr = callbackAddr; }
 
     public void connect() {
