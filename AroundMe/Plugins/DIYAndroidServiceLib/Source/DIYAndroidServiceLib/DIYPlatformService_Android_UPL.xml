@@ -58,9 +58,6 @@
     <init>
 		<log text="[SJL] DIYPlatformService Android INIT"/>
 	</init>
-    <!-- <prebuildCopies>
-    <copyDir src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib" dst="$S(BuildDir)/src/com/aroundmelib" />
-    </prebuildCopies> -->
 <prebuildCopies>
     <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_CommuDevice.java"
               dst="$S(BuildDir)/src/com/aroundmelib/DIY_CommuDevice.java"/>
@@ -73,7 +70,12 @@
 
     <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_Service.java"
               dst="$S(BuildDir)/src/com/aroundmelib/DIY_Service.java" />
+    
+    <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_CommuManagerReportSchema.java"
+              dst="$S(BuildDir)/src/com/aroundmelib/DIY_CommuManagerReportSchema.java" />
 
+    <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_PermissionHelper.java"
+              dst="$S(BuildDir)/src/com/aroundmelib/DIY_PermissionHelper.java" />
 
 
 

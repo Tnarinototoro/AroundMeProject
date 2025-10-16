@@ -146,7 +146,7 @@ public class DIY_CommuManager
                             {
                                 player_info.mIndex = mReportSchema.GetRandom_deviceDisplayArrayList().size();
                                 mReportSchema.GetRandom_deviceDisplayArrayList().add(player_info.GenerateDisplayString());
-                                
+
                             }
 
 
@@ -266,7 +266,8 @@ public class DIY_CommuManager
         return mActivity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
     }
 
-    public boolean isBluetoothEnabled() {
+    public boolean isBluetoothEnabled()
+    {
         return mBluetoothAdapter != null && mBluetoothAdapter.isEnabled();
     }
 

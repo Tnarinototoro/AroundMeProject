@@ -237,50 +237,52 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     }
     private void StopAroundMeService()
     {
+
+
+        if (DIY_PermissionHelper.ensureBluetoothEnabled(this))
+        {
+            DIY_CommuUtils.PushToast(this, "蓝牙可用，可以启动服务");
+        }
+        else
+        {
+            DIY_CommuUtils.PushToast(this, "请开启蓝牙后再试");
+
+            return;
+        }
+
         Log.d("MainActivity", "Stopping DIY_Service...");
         Intent intent = new Intent(this, DIY_Service.class);
         stopService(intent);
-
-        if (!mBluetoothAdapter.isEnabled())
+        // BLE process
         {
 
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, DIY_CommuUtils.REQUEST_ENABLE_BT);
-        } else
+            if (mBluetoothLeAdvertiser != null && mAdvertiseCallback != null)
+            {
+                mBluetoothLeAdvertiser.stopAdvertising(mAdvertiseCallback);
+
+                appendToLog("Stop BroadCasting your service");
+            }
+
+            if (mBluetoothLeScanner != null && mBLEScanCallback != null)
+            {
+                mBluetoothLeScanner.stopScan(mBLEScanCallback);
+            }
+
+            NotifyLeScanStopped();
+
+            mBluetoothGattServer.close();
+
+            ResetAroundMeBluetoothServiceResults();
+
+
+
+
+        }
+
+        // classic bluetooth process
         {
 
-            // BLE process
-            {
-
-                if (mBluetoothLeAdvertiser != null && mAdvertiseCallback != null)
-                {
-                    mBluetoothLeAdvertiser.stopAdvertising(mAdvertiseCallback);
-
-                    appendToLog("Stop BroadCasting your service");
-                }
-
-                if (mBluetoothLeScanner != null && mBLEScanCallback != null)
-                {
-                    mBluetoothLeScanner.stopScan(mBLEScanCallback);
-                }
-
-                NotifyLeScanStopped();
-
-                mBluetoothGattServer.close();
-
-                ResetAroundMeBluetoothServiceResults();
-
-
-
-
-            }
-
-            // classic bluetooth process
-            {
-
-                mDIY_CommuManagerInstace.stopClassicBluetoothDiscovery();
-
-            }
+            mDIY_CommuManagerInstace.stopClassicBluetoothDiscovery();
 
         }
 
@@ -292,84 +294,74 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     private void StartAroundMeService()
     {
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
-                appendToLog("KKKKKKKKKKKKKKKKKKKKKKK POST_NOTIFICATIONS");
-                return; // 等权限回调后再启动
-            }
-        }
 
-        appendToLog("ZZZZZZZZZZZZZZZZZZZZZZZZ startForegroundService");
-        Intent intent = new Intent(this, DIY_Service.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            appendToLog("XXXXXXXXXXXXXXXXXXXXXXX startForegroundService");
-            startForegroundService(intent);
-        } else {
-            appendToLog("YYYYYYYYYYYYYYYYYYYYYYYYYY startService");
-            startService(intent);
-        }
 
-        if (!mBluetoothAdapter.isEnabled())
+
+
+        if (!DIY_PermissionHelper.ensureAllPermissions(this))
         {
+            return; // 等权限回调后再继续
+        }
 
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, DIY_CommuUtils.REQUEST_ENABLE_BT);
-
+        if (DIY_PermissionHelper.ensureBluetoothEnabled(this))
+        {
+            DIY_CommuUtils.PushToast(this, "蓝牙可用，可以启动服务");
         }
         else
         {
-            mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithName(0);
-            mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithGarbageName(0);
-
-
-            mDIY_CommuManagerInstace.startClassicBluetoothDiscovery();
-            setupServer();
-
-            StartScanning();
-
-            StartAdvertising();
-
-            ToggleButtons();
-
-            mHandler.post(communicationRunnable);
-
-            mIsAroundMeServiceRunning = true;
-
-        }
-    }
-
-    private void setupServer() {
-        mBluetoothGattServer = mBluetoothManager.openGattServer(getApplicationContext(), gattServerCallback);
-
-        if (mBluetoothGattServer == null) {
-            appendToLog("mBluetoothGattServer not started well");
-
-        } else {
-            appendToLog("mBluetoothGattServer started well");
+            DIY_CommuUtils.PushToast(this, "请开启蓝牙后再试");
         }
 
-        BluetoothGattService service = new BluetoothGattService(DIY_CommuUtils.mAroundMeIdentify_UUID,
-                BluetoothGattService.SERVICE_TYPE_PRIMARY);
 
-        BluetoothGattCharacteristic writeCharacteristic = new BluetoothGattCharacteristic(
-                DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID,
-                BluetoothGattCharacteristic.PROPERTY_NOTIFY |
-                        BluetoothGattCharacteristic.PROPERTY_READ |
-                        BluetoothGattCharacteristic.PROPERTY_WRITE,
-                BluetoothGattCharacteristic.PERMISSION_READ |
-                        BluetoothGattCharacteristic.PERMISSION_WRITE |
-                        BluetoothGattCharacteristic.PROPERTY_NOTIFY);
 
-        service.addCharacteristic(writeCharacteristic);
 
-        mBluetoothGattServer.addService(service);
+
+
+
+
+        //Test Service
+        {
+            Intent intent = new Intent(this, DIY_Service.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            {
+
+                startForegroundService(intent);
+            }
+            else
+            {
+
+                startService(intent);
+            }
+        }
+
+
+        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithName(0);
+        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithGarbageName(0);
+
+
+        mDIY_CommuManagerInstace.startClassicBluetoothDiscovery();
+
+
+
+        StartBLE_DIYServiceBroadcast();
+
+        StartBLE_DIYServiceScanning();
+
+
+
+        ToggleButtons();
+
+        mHandler.post(communicationRunnable);
+
+        mIsAroundMeServiceRunning = true;
     }
 
-    private void StartScanning() {
+
+
+    private void StartBLE_DIYServiceScanning()
+    {
         ScanFilter scanFilter = new ScanFilter.Builder()
-                //.setServiceUuid(new ParcelUuid(DIY_CommuUtils.mAroundMeIdentify_UUID))
+                .setServiceUuid(new ParcelUuid(DIY_CommuUtils.mAroundMeIdentify_UUID))
                 .build();
 
         ScanSettings scanSettings = new ScanSettings.Builder()
@@ -380,62 +372,58 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
         appendToLog("BLE Scanning started!");
     }
 
-    private void StartAdvertising() {
-        AdvertiseSettings settings = new AdvertiseSettings.Builder()
-                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
-                .setConnectable(true)
-                .setTimeout(0)
-                .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
-                .build();
+    private void StartBLE_DIYServiceBroadcast()
+    {
 
-        AdvertiseData advdata = new AdvertiseData.Builder()
-                .setIncludeDeviceName(true)
-                .addServiceUuid(new ParcelUuid(DIY_CommuUtils.mAroundMeIdentify_UUID))
-                .build();
-        mBluetoothLeAdvertiser.startAdvertising(settings, advdata, mAdvertiseCallback);
+        //Configure service server profile!
+        {
+            mBluetoothGattServer = mBluetoothManager.openGattServer(getApplicationContext(), gattServerCallback);
 
-    }
+            if (mBluetoothGattServer == null) {
+                appendToLog("mBluetoothGattServer not started well");
 
-    private boolean checkLocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
-                        DIY_CommuUtils.PERMISSION_REQUEST_FINE_LOCATION);
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean checkBluetoothPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED
-                    ||
-                    ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.BLUETOOTH_ADVERTISE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[] {
-                                Manifest.permission.BLUETOOTH_SCAN,
-                                Manifest.permission.BLUETOOTH_CONNECT,
-
-                                Manifest.permission.BLUETOOTH_ADVERTISE
-                        },
-                        DIY_CommuUtils.PERMISSION_REQUEST_BLUETOOTH);
-                return false;
+            } else {
+                appendToLog("mBluetoothGattServer started well");
             }
 
+            BluetoothGattService service = new BluetoothGattService(DIY_CommuUtils.mAroundMeIdentify_UUID,
+                    BluetoothGattService.SERVICE_TYPE_PRIMARY);
+
+            BluetoothGattCharacteristic writeCharacteristic = new BluetoothGattCharacteristic(
+                    DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID,
+                    BluetoothGattCharacteristic.PROPERTY_NOTIFY |
+                            BluetoothGattCharacteristic.PROPERTY_READ |
+                            BluetoothGattCharacteristic.PROPERTY_WRITE,
+                    BluetoothGattCharacteristic.PERMISSION_READ |
+                            BluetoothGattCharacteristic.PERMISSION_WRITE |
+                            BluetoothGattCharacteristic.PROPERTY_NOTIFY);
+
+            service.addCharacteristic(writeCharacteristic);
+
+            mBluetoothGattServer.addService(service);
         }
 
-        return true;
-    }
 
-    // 定义广播接
+
+        //start actual advertise
+        {
+            AdvertiseSettings settings = new AdvertiseSettings.Builder()
+                    .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+                    .setConnectable(true)
+                    .setTimeout(0)
+                    .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_LOW)
+                    .build();
+
+            AdvertiseData advdata = new AdvertiseData.Builder()
+                    .setIncludeDeviceName(true)
+                    .addServiceUuid(new ParcelUuid(DIY_CommuUtils.mAroundMeIdentify_UUID))
+                    .build();
+            mBluetoothLeAdvertiser.startAdvertising(settings, advdata, mAdvertiseCallback);
+        }
+
+
+
+    }
 
     private ScanCallback mBLEScanCallback = new ScanCallback() {
         @Override
@@ -538,7 +526,6 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
             // Scanning failed. Handle error.
         }
 
-        // 其他回调方法，如onBatchScanResults, onScanFailed等
     };
     private AdvertiseCallback mAdvertiseCallback = new AdvertiseCallback() {
         @Override
@@ -693,9 +680,6 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
                 List<BluetoothDevice> connectedDevices = mBluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
                 for (BluetoothDevice device : connectedDevices)
                 {
-
-
-
                     if (true)
                     {
                         String messageToSend = "TestString";
@@ -926,8 +910,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
         // permission check
         {
-            checkBluetoothPermissions();
-            checkLocationPermission();
+            DIY_PermissionHelper.initializeBluetoothLauncher(this);
         }
 
         // bluetooth utility init
@@ -992,7 +975,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == DIY_CommuUtils.REQUEST_ENABLE_BT)
+        /*if (requestCode == DIY_CommuUtils.REQUEST_ENABLE_BT)
         {
             if (resultCode == RESULT_OK)
             {
@@ -1001,7 +984,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
             {
                 // User denied enabling Bluetooth, you might want to handle accordingly
             }
-        }
+        }*/
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
@@ -1010,51 +993,13 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
 
 
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1001) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d("MainActivity", "通知权限已授予，启动 Service");
-                Intent intent = new Intent(this, DIY_Service.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(intent);
-                } else {
-                    startService(intent);
-                }
-            } else {
-                Log.w("MainActivity", "通知权限被拒绝，前台服务不会显示通知！");
-            }
-        }
-        if (requestCode == DIY_CommuUtils.PERMISSION_REQUEST_BLUETOOTH)
+      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (DIY_PermissionHelper.handlePermissionsResult(this, requestCode, permissions, grantResults))
         {
-            if (grantResults.length > 1
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[2] == PackageManager.PERMISSION_GRANTED)
-            {
-                appendToLog("Bluetooth permissions granted");
 
-            }
-            else
-            {
-                appendToLog("Bluetooth permissions denied");
-
-                finish();
-            }
+            StartAroundMeService();
         }
-        else if (requestCode == DIY_CommuUtils.PERMISSION_REQUEST_FINE_LOCATION)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                appendToLog("Location permission granted");
-
-            } else
-            {
-                appendToLog("Location permission denied");
-
-                finish();
-            }
-        }
-
 
 
 

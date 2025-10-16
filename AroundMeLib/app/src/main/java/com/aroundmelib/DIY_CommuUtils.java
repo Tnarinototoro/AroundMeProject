@@ -1,26 +1,25 @@
 package com.aroundmelib;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.os.Looper;
 import android.util.Log;
 import java.util.UUID;
-
-
-
+import android.os.Handler;
+import android.widget.Toast;
 
 
 public class DIY_CommuUtils
 {
 
-
+    // Base UUID 按照标准定义
+    private static final long MSB = 0x0000000000001000L;
+    private static final long LSB = 0x800000805f9b34fbL;
     private static final String TAG = "DIY_CommuUtils";
 
-    public static final UUID mAroundMeIdentify_UUID = UUID.fromString("fd4e1f57-110a-4d52-9a5b-fe97e0dcf7bb");
-    public static final UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = UUID
-            .fromString("00002902-0000-1000-8000-00805f9b34fb");
-    public static final UUID mAroundMe_CONNECT_CHARACTERISTIC_UUID = UUID.fromString("0C136FCC-3381-4F1E-9602-E2A3F8B70CEB");
+    public static final UUID mAroundMeIdentify_UUID = intToUUID(0xDE1FABE1);
+    public static final UUID mAroundMe_CONNECT_CHARACTERISTIC_UUID = intToUUID(0xDE1FABE2);
+    public static final UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = intToUUID(0x2902);
 
-
-    public static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
-    public static final int PERMISSION_REQUEST_BLUETOOTH = 2;
 
     public static final int REQUEST_ENABLE_BT = 999;
 
@@ -49,13 +48,18 @@ public class DIY_CommuUtils
     }
     public static UUID intToUUID(int i)
     {
-        final long MSB = 0x0000000000001000L;
-        final long LSB = 0x800000805f9b34fbL;
         return new UUID(MSB | ((long) i << 32), LSB);
     }
 
     public static void log(String message)
     {
         Log.d(TAG, message);
+    }
+    public static void PushToast(Context context, String message) {
+        if (context == null) return;
+
+        new Handler(Looper.getMainLooper()).post(() -> {
+            Toast.makeText(context.getApplicationContext(), "🔧 " + message, Toast.LENGTH_SHORT).show();
+        });
     }
 }
