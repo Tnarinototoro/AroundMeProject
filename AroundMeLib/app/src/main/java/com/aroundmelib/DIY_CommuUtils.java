@@ -1,6 +1,11 @@
 package com.aroundmelib;
+import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 import java.util.UUID;
+
+
+
+
 
 public class DIY_CommuUtils
 {
@@ -12,6 +17,13 @@ public class DIY_CommuUtils
     public static final UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = UUID
             .fromString("00002902-0000-1000-8000-00805f9b34fb");
     public static final UUID mAroundMe_CONNECT_CHARACTERISTIC_UUID = UUID.fromString("0C136FCC-3381-4F1E-9602-E2A3F8B70CEB");
+
+
+    public static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
+    public static final int PERMISSION_REQUEST_BLUETOOTH = 2;
+
+    public static final int REQUEST_ENABLE_BT = 999;
+
 
     public static double calculateDistance(double rssi) {
         double RSSI_BASE = -69.0;
