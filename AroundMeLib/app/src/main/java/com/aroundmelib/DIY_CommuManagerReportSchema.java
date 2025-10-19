@@ -1,25 +1,37 @@
 package com.aroundmelib;
 
-import android.bluetooth.BluetoothDevice;
-
 import java.util.ArrayList;
 
 public interface DIY_CommuManagerReportSchema
 {
-    default void OnCallBack_NewRandomDeviceEncountered_WithName(String inText)
+    default void OnCallBack_NewClassicDeviceEncountered_WithName(String inText)
     {
         return;
     }
 
-    default void OnCallBack_OldRandomDeviceEncountered_WithName(String inText)
+    default void OnCallBack_OldClassicDeviceEncountered_WithName(String inText)
     {
         return;
     }
-    default void OnCallBack_NewRandomDeviceEncountered_GarbageName()
+    default void OnCallBack_BLEDeviceEncountered_GarbageName()
     {
         return;
     }
-    default void onLogReport(String inText)
+
+    default void OnCallBack_NewBLEDeviceEncountered_WithName(String inText)
+    {
+        return;
+    }
+
+    default void OnCallBack_OldBLEDeviceEncountered_WithName(String inText)
+    {
+        return;
+    }
+    default void OnCallBack_ClassicDeviceEncountered_GarbageName()
+    {
+        return;
+    }
+    default void onLogReport(String inText,DIY_CommuUtils.LogLevel inLogLevel)
     {
         return;
     }
@@ -33,5 +45,35 @@ public interface DIY_CommuManagerReportSchema
         return null;
     }
 
+    default void OnPostMainUpdate()
+    {
+        return;
+    }
+    default void OnSubmitInfoToUE5()
+    {
+        return;
+    }
+
+    default void OnPostResetAroundMeBluetoothService()
+    {
+        return;
+    }
+    default void PostStopAroundMeService()
+    {
+        return;
+    }
+
+    default void PostStartAroundMeService()
+    {
+        return;
+    }
+    default void PostMsgReceivedFromPDevice(String inText)
+    {
+        return;
+    }
+    default String GetInputMessage()
+    {
+        return "null";
+    }
 
 }

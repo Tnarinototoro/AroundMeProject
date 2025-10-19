@@ -10,6 +10,13 @@ import android.widget.Toast;
 
 public class DIY_CommuUtils
 {
+    public enum LogLevel {
+        INFO,       // 一般信息
+        WARNING,    // 警告
+        ERROR,      // 错误
+        DEBUG,      // 调试信息
+        SUCCESS     // 成功或确认信息
+    }
 
     // Base UUID 按照标准定义
     private static final long MSB = 0x0000000000001000L;

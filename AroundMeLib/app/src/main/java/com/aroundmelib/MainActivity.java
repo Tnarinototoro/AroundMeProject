@@ -29,11 +29,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,10 +55,13 @@ import androidx.core.content.ContextCompat;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import com.aroundmelib.DIY_CommuManagerReportSchema;
@@ -135,58 +142,88 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
     // 定义
 
-    BluetoothManager mBluetoothManager;
 
-    private BluetoothAdapter mBluetoothAdapter;
 
-    private BluetoothLeScanner mBluetoothLeScanner;
 
-    private BluetoothLeAdvertiser mBluetoothLeAdvertiser;
 
-    private BluetoothGattServer mBluetoothGattServer;
-    private Handler mHandler = new Handler();
 
     private ArrayList<String> mSp_deviceDisplayArrayList;
 
     private ArrayList<String> mRandom_deviceDisplayArrayList;
 
 
-    private ArrayList<Integer> mRequestedToGiveItems=new ArrayList<Integer>();
-
 
     private DIY_CommuManager mDIY_CommuManagerInstace=null;
 
 
-    private boolean mIsAroundMeServiceRunning = false;
 
 
 
-    protected void NotifyLeScanStopped()
+
+
+    public void appendToLog(String text, DIY_CommuUtils.LogLevel level)
     {
-        appendToLog("BLE搜索结束...");
-        ToggleButtons();
+        if (mDebug_With_UI)
+        {
+            runOnUiThread(() -> {
+                if (mLogTextView == null) return;
 
+                int color;
+                String prefix = "";
+
+                // 🎨 根据日志级别决定颜色和前缀
+                switch (level)
+                {
+                    case ERROR:
+                        color = Color.RED;
+                        prefix = "❌ [Error] ";
+                        break;
+
+                    case WARNING:
+                        color = Color.rgb(255, 165, 0);
+                        prefix = "⚠ [Warning] ";
+                        break;
+
+                    case DEBUG:
+                        color = Color.CYAN;
+                        prefix = "🔍 [Debug] ";
+                        break;
+
+                    case SUCCESS:
+                        color = Color.GREEN;
+                        prefix = "✅ [OK] ";
+                        break;
+
+                    case INFO:
+                    default:
+                        color = Color.WHITE;
+                        prefix = "ℹ [Info] ";
+                        break;
+                }
+
+                // 时间戳
+                String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                String formatted = String.format("[%s] %s%s", time, prefix, text);
+
+                SpannableString coloredText = new SpannableString(formatted + "\n");
+                coloredText.setSpan(new ForegroundColorSpan(color), 0, coloredText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                mLogTextView.append(coloredText);
+
+                // 自动滚动到底部
+                if (mLogViewautoScroll && mLogScrollView != null)
+                {
+                    mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
+                }
+            });
+        }
+        else
+        {
+            // UE 模式下直接打印普通日志
+            runOnUiThread(() -> OnNewLogGenerated(text));
+        }
     }
 
-    public void appendToLog(String text)
-    {
-        runOnUiThread(() -> {
-            mLogTextView.append(text + "\n");
-            // 自动滚动到底部
-            if (mLogViewautoScroll)
-            {
-                scrollToBottom();
-            }
-
-            if(!mDebug_With_UI)
-            {
-                OnNewLogGenerated(text);
-            }
-
-        });
-
-
-    }
 
     private void SubmitInfoToUE5()
     {
@@ -200,542 +237,9 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
             OnSubmittingBaypassData_GameUser(mSp_deviceDisplayArrayList.size());
         }
 
-        appendToLog("SubmitInfoToUE5 once"+ GetCurrentNumStatus());
+        appendToLog("SubmitInfoToUE5 once"+ GetCurrentNumStatus(), DIY_CommuUtils.LogLevel.INFO);
 
     }
-    private void ResetAroundMeBluetoothServiceResults()
-    {
-        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithName(0);
-        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithGarbageName(0);
-
-
-        mSp_deviceDisplayArrayList.clear();
-        mRandom_deviceDisplayArrayList.clear();
-
-        mRandom_deviceArrayAdapter.notifyDataSetChanged();
-        mSp_deviceArrayAdapter.notifyDataSetChanged();
-        mMacAddrCountView.setText(GetCurrentNumStatus());
-
-        if (mDIY_CommuManagerInstace.mFoundDevices != null)
-        {
-            for (String mac_addr : mDIY_CommuManagerInstace.mFoundDevices.keySet())
-            {
-                BluetoothGatt gatt_got_now = mDIY_CommuManagerInstace.mFoundDevices.get(mac_addr).mDeviceGatt;
-
-                if (null != gatt_got_now)
-                {
-                    gatt_got_now.close();
-                }
-            }
-            mDIY_CommuManagerInstace.mFoundDevices.clear();
-        }
-    }
-
-    private void OnRequestAddGiveTask(int inItemID)
-    {
-        mRequestedToGiveItems.add(inItemID);
-    }
-    private void StopAroundMeService()
-    {
-
-
-        if (DIY_PermissionHelper.ensureBluetoothEnabled(this))
-        {
-            DIY_CommuUtils.PushToast(this, "蓝牙可用，可以启动服务");
-        }
-        else
-        {
-            DIY_CommuUtils.PushToast(this, "请开启蓝牙后再试");
-
-            return;
-        }
-
-        Log.d("MainActivity", "Stopping DIY_Service...");
-        Intent intent = new Intent(this, DIY_Service.class);
-        stopService(intent);
-        // BLE process
-        {
-
-            if (mBluetoothLeAdvertiser != null && mAdvertiseCallback != null)
-            {
-                mBluetoothLeAdvertiser.stopAdvertising(mAdvertiseCallback);
-
-                appendToLog("Stop BroadCasting your service");
-            }
-
-            if (mBluetoothLeScanner != null && mBLEScanCallback != null)
-            {
-                mBluetoothLeScanner.stopScan(mBLEScanCallback);
-            }
-
-            NotifyLeScanStopped();
-
-            mBluetoothGattServer.close();
-
-            ResetAroundMeBluetoothServiceResults();
-
-
-
-
-        }
-
-        // classic bluetooth process
-        {
-
-            mDIY_CommuManagerInstace.stopClassicBluetoothDiscovery();
-
-        }
-
-        mHandler.removeCallbacks(communicationRunnable);
-
-        mIsAroundMeServiceRunning = false;
-    }
-
-    private void StartAroundMeService()
-    {
-
-
-
-
-
-        if (!DIY_PermissionHelper.ensureAllPermissions(this))
-        {
-            return; // 等权限回调后再继续
-        }
-
-        if (DIY_PermissionHelper.ensureBluetoothEnabled(this))
-        {
-            DIY_CommuUtils.PushToast(this, "蓝牙可用，可以启动服务");
-        }
-        else
-        {
-            DIY_CommuUtils.PushToast(this, "请开启蓝牙后再试");
-        }
-
-
-
-
-
-
-
-
-        //Test Service
-        {
-            Intent intent = new Intent(this, DIY_Service.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            {
-
-                startForegroundService(intent);
-            }
-            else
-            {
-
-                startService(intent);
-            }
-        }
-
-
-        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithName(0);
-        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithGarbageName(0);
-
-
-        mDIY_CommuManagerInstace.startClassicBluetoothDiscovery();
-
-
-
-        StartBLE_DIYServiceBroadcast();
-
-        StartBLE_DIYServiceScanning();
-
-
-
-        ToggleButtons();
-
-        mHandler.post(communicationRunnable);
-
-        mIsAroundMeServiceRunning = true;
-    }
-
-
-
-    private void StartBLE_DIYServiceScanning()
-    {
-        ScanFilter scanFilter = new ScanFilter.Builder()
-                .setServiceUuid(new ParcelUuid(DIY_CommuUtils.mAroundMeIdentify_UUID))
-                .build();
-
-        ScanSettings scanSettings = new ScanSettings.Builder()
-                .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                .build();
-
-        mBluetoothLeScanner.startScan(Arrays.asList(scanFilter), scanSettings, mBLEScanCallback);
-        appendToLog("BLE Scanning started!");
-    }
-
-    private void StartBLE_DIYServiceBroadcast()
-    {
-
-        //Configure service server profile!
-        {
-            mBluetoothGattServer = mBluetoothManager.openGattServer(getApplicationContext(), gattServerCallback);
-
-            if (mBluetoothGattServer == null) {
-                appendToLog("mBluetoothGattServer not started well");
-
-            } else {
-                appendToLog("mBluetoothGattServer started well");
-            }
-
-            BluetoothGattService service = new BluetoothGattService(DIY_CommuUtils.mAroundMeIdentify_UUID,
-                    BluetoothGattService.SERVICE_TYPE_PRIMARY);
-
-            BluetoothGattCharacteristic writeCharacteristic = new BluetoothGattCharacteristic(
-                    DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID,
-                    BluetoothGattCharacteristic.PROPERTY_NOTIFY |
-                            BluetoothGattCharacteristic.PROPERTY_READ |
-                            BluetoothGattCharacteristic.PROPERTY_WRITE,
-                    BluetoothGattCharacteristic.PERMISSION_READ |
-                            BluetoothGattCharacteristic.PERMISSION_WRITE |
-                            BluetoothGattCharacteristic.PROPERTY_NOTIFY);
-
-            service.addCharacteristic(writeCharacteristic);
-
-            mBluetoothGattServer.addService(service);
-        }
-
-
-
-        //start actual advertise
-        {
-            AdvertiseSettings settings = new AdvertiseSettings.Builder()
-                    .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
-                    .setConnectable(true)
-                    .setTimeout(0)
-                    .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_LOW)
-                    .build();
-
-            AdvertiseData advdata = new AdvertiseData.Builder()
-                    .setIncludeDeviceName(true)
-                    .addServiceUuid(new ParcelUuid(DIY_CommuUtils.mAroundMeIdentify_UUID))
-                    .build();
-            mBluetoothLeAdvertiser.startAdvertising(settings, advdata, mAdvertiseCallback);
-        }
-
-
-
-    }
-
-    private ScanCallback mBLEScanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
-
-            BluetoothDevice result_device = result.getDevice();
-
-            String result_device_mac_addr = result_device.getAddress();
-
-            if (result_device.getName() != null && !result_device.getName().equals("null")) {
-                // 处理带有特定服务UUID的设备
-                if (mDIY_CommuManagerInstace.mFoundDevices.containsKey(result_device_mac_addr)) {
-
-                    DIY_CommuDevice cur_player_info = mDIY_CommuManagerInstace.mFoundDevices.get(result_device_mac_addr);
-
-                    if (null != cur_player_info && !cur_player_info.misRandomDeivce) {
-                        int rssi = result.getRssi();
-                        // TODO: Replace with the actual TX Power value for your beacon or BLE device
-                        int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
-                        // results
-
-                        double estimatedDistance_new = DIY_CommuUtils.calculateDistance(rssi, txPower);
-
-                        cur_player_info.mDistance = estimatedDistance_new;
-
-                        mSp_deviceDisplayArrayList.set(cur_player_info.mIndex, cur_player_info.GenerateDisplayString());
-
-                        mSp_deviceArrayAdapter.notifyDataSetChanged();
-
-                    }
-
-                }
-                else
-                {
-                    BluetoothGatt got_gatt = result_device.connectGatt(getApplicationContext(), false,
-                            mConnection_GattCallback);
-
-                    if (got_gatt != null)
-                    {
-                        appendToLog("connected successfully");
-
-                    }
-                    else
-                    {
-                        appendToLog("connected failed!");
-
-                    }
-
-                    int rssi = result.getRssi();
-                    // TODO: Replace with the actual TX Power value for your beacon or BLE device
-                    int txPower = -59; // This is just an example value, you need the actual TX Power for accurate
-                    // results
-
-                    double estimatedDistance = DIY_CommuUtils.calculateDistance(rssi, txPower);
-
-                    DIY_CommuDevice player_info = new DIY_CommuDevice(MainActivity.this,result_device);
-                    player_info.mDeviceGatt = got_gatt;
-                    player_info.mDeviceName = result_device.getName();
-                    player_info.misRandomDeivce = false;
-                    player_info.mDistance = estimatedDistance;
-                    player_info.mRegisteredPlayerDeviceMacAddr = result_device_mac_addr;
-                    player_info.mIndex = mSp_deviceDisplayArrayList.size();
-                    mDIY_CommuManagerInstace.mFoundDevices.put(result_device_mac_addr, player_info);
-
-                    mSp_deviceDisplayArrayList.add(player_info.GenerateDisplayString());
-
-                    mDIY_CommuManagerInstace.AddDeltaToDeviceCountEncountered_WithName(1);
-
-
-                    // OnNewMacAddressEncountered();
-                    mSp_deviceArrayAdapter.notifyDataSetChanged();
-
-                    if(!mDebug_With_UI)
-                    {
-                        OnNewRandomDeviceEncountered_WithName(player_info.GenerateDisplayString());
-                    }
-
-
-                }
-            }
-            else
-            {
-                mDIY_CommuManagerInstace.AddDeltaToDeviceCountEncountered_WithGarbageName(1);
-
-                if(!mDebug_With_UI)
-                {
-                    OnNewRandomDeviceEncountered_GarbageName();
-                }
-
-            }
-
-        }
-
-        @Override
-        public void onScanFailed(int errorCode) {
-            super.onScanFailed(errorCode);
-            appendToLog("BLE Scan Started Failed! with error code: " + errorCode);
-
-            // Scanning failed. Handle error.
-        }
-
-    };
-    private AdvertiseCallback mAdvertiseCallback = new AdvertiseCallback() {
-        @Override
-        public void onStartSuccess(AdvertiseSettings settingsInEffect) {
-            super.onStartSuccess(settingsInEffect);
-
-            appendToLog("BLE BroadCast Started successfully");
-
-        }
-
-        @Override
-        public void onStartFailure(int errorCode) {
-            super.onStartFailure(errorCode);
-
-            appendToLog("BLE BroadCast Started Failed! with error code " + errorCode);
-
-            // Failed to start broadcasting
-        }
-    };
-
-    // a client callback receiving msg from p devices
-    private BluetoothGattCallback mConnection_GattCallback = new BluetoothGattCallback() {
-
-        @Override
-        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            // connect to p device
-            if (newState == BluetoothProfile.STATE_CONNECTED) {
-
-                appendToLog(
-                        "connected with p-device:" + gatt.getDevice().getName() + "@" + gatt.getDevice().getAddress());
-
-                gatt.discoverServices();
-            }
-        }
-
-        @Override
-        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-                BluetoothGattService service = gatt.getService(DIY_CommuUtils.mAroundMeIdentify_UUID);
-                if (service != null) {
-                    BluetoothGattCharacteristic characteristic = service
-                            .getCharacteristic(DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID);
-                    if (characteristic != null) {
-                        gatt.setCharacteristicNotification(characteristic, true);
-
-                        BluetoothGattDescriptor descriptor = characteristic
-                                .getDescriptor(DIY_CommuUtils.CLIENT_CHARACTERISTIC_CONFIG_UUID);
-                        if (descriptor != null) {
-                            // activate notify functionality
-                            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                            gatt.writeDescriptor(descriptor);
-                        }
-                    }
-                }
-            }
-        }
-
-        @Override
-        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-
-            }
-        }
-
-        // 接受外围设备的消息变更 这个地方能收到外围设备的mac的
-        @Override
-        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-
-            byte[] data = characteristic.getValue();
-            String receivedString = new String(data, Charset.forName("UTF-8"));
-            appendToLog("msg from p device:" + gatt.getDevice().getName() + "@" + gatt.getDevice().getAddress()
-                    + "@mgs:" + receivedString);
-            if(!mDebug_With_UI)
-            {
-                OnMessageReceivedFromOtherPDevices(receivedString);
-            }
-
-            if(receivedString.startsWith("X")||receivedString.startsWith("x"))
-            {
-
-            }
-            else
-            {
-                if(!mDebug_With_UI)
-                {
-                    OnItemGiftReceived(Integer.parseInt(receivedString));
-                }
-
-            }
-
-
-        }
-    };
-
-    private final BluetoothGattServerCallback gattServerCallback = new BluetoothGattServerCallback() {
-
-        // receive msg from c device
-        @Override
-        public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId,
-                                                 BluetoothGattCharacteristic characteristic, boolean preparedWrite, boolean responseNeeded, int offset,
-                                                 byte[] value) {
-            super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset,
-                    value);
-
-            if (DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID.equals(characteristic.getUuid()) && device.getName() != "null") {
-                mBluetoothGattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, 0, null);
-
-                String receivedData = new String(value, StandardCharsets.UTF_8);
-
-                appendToLog("Received msg from c device: " + device.getName() + "@" + device.getAddress() + "msg:"
-                        + receivedData);
-
-            }
-        }
-
-        public void onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset,
-                                                BluetoothGattCharacteristic characteristic) {
-            super.onCharacteristicReadRequest(device, requestId, offset, characteristic);
-            mBluetoothGattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset,
-                    characteristic.getValue());
-        }
-
-        public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
-            super.onConnectionStateChange(device, status, newState);
-            if (newState == BluetoothProfile.STATE_CONNECTED) {
-                // connect to c device, me as p device
-                appendToLog("Connected with c-device: " + device.getName() + "@" + device.getAddress());
-
-                if (mDIY_CommuManagerInstace.mFoundDevices.containsKey(device.getAddress())) {
-                    appendToLog("Already connected with  p-device:  " + device.getName() + "@" + device.getAddress());
-
-                }
-
-                // Do something, e.g., allocate resources, save the device reference, etc.
-            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                appendToLog("disconnected with c-device: " + device.getName() + "@" + device.getAddress());
-
-                // Cleanup or reset as needed.
-            }
-        }
-
-    };
-
-    private Runnable communicationRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-
-            if (mBluetoothGattServer != null)
-            {
-                // Here, we simulate sending data as peripheral every 2 seconds.
-                List<BluetoothDevice> connectedDevices = mBluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
-                for (BluetoothDevice device : connectedDevices)
-                {
-                    if (true)
-                    {
-                        String messageToSend = "TestString";
-                        messageToSend = mInputMessage.getText().toString();
-
-                        if(mRequestedToGiveItems.size()>0)
-                        {
-                            messageToSend=String.format("%d",mRequestedToGiveItems.get(mRequestedToGiveItems.size()-1));
-                            mRequestedToGiveItems.remove(mRequestedToGiveItems.size()-1);
-
-                            appendToLog(String.format("XXXXXXXX left gifts to give %d",mRequestedToGiveItems.size()));
-                        }
-                        BluetoothGattCharacteristic characteristic = mBluetoothGattServer
-                                .getService(DIY_CommuUtils.mAroundMeIdentify_UUID)
-                                .getCharacteristic(DIY_CommuUtils.mAroundMe_CONNECT_CHARACTERISTIC_UUID);
-                        characteristic.setValue(messageToSend.getBytes(StandardCharsets.UTF_8));
-                        mBluetoothGattServer.notifyCharacteristicChanged(device, characteristic, false);
-
-                        appendToLog("msg sent to c device :" + device.getName() + "@" + device.getAddress()+"msg: "+messageToSend);
-
-
-                    }
-
-                }
-            }
-
-            if (mBluetoothAdapter.isEnabled())
-            {
-
-
-                if (mBluetoothAdapter.isDiscovering())
-                {
-                    appendToLog("经典蓝牙搜索设备ing");
-                }
-                else
-                {
-                    SubmitInfoToUE5();
-                    mDIY_CommuManagerInstace.startClassicBluetoothDiscovery();
-                    ResetAroundMeBluetoothServiceResults();
-
-                }
-
-            }
-
-            mHandler.postDelayed(communicationRunnable, 2000); // Schedule the next message in 2 seconds
-
-            mMacAddrCountView.setText(GetCurrentNumStatus());
-
-        }
-    };
-
-
-
-
-
-
 
 
     // activity events start
@@ -888,9 +392,8 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
                     @Override
                     public void onClick(View arg0) {
-                        StartAroundMeService();
-                        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithName(0);
-                        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithGarbageName(0);
+                        mDIY_CommuManagerInstace.StartAroundMeService();
+
                     }
                 });
 
@@ -898,9 +401,8 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
                     @Override
                     public void onClick(View arg0) {
-                        StopAroundMeService();
-                        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithName(0);
-                        mDIY_CommuManagerInstace.SetDeviceCountEncountered_WithGarbageName(0);
+                        mDIY_CommuManagerInstace.StopAroundMeService();
+
                     }
 
                 });
@@ -908,33 +410,17 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
         }
 
+        {
+            mDIY_CommuManagerInstace=new DIY_CommuManager(this,getApplicationContext());
+            mDIY_CommuManagerInstace.setCommuManagerReportSchema(this);
+        }
+
         // permission check
         {
             DIY_PermissionHelper.initializeBluetoothLauncher(this);
         }
 
-        // bluetooth utility init
-        {
-            mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-            mBluetoothAdapter = mBluetoothManager.getAdapter();
 
-            mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
-            mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
-
-
-            mDIY_CommuManagerInstace=new DIY_CommuManager(this,getApplicationContext());
-            mDIY_CommuManagerInstace.setCommuManagerReportSchema(this);
-            if (mBluetoothLeAdvertiser == null)
-            {
-                appendToLog("硬件不支持 BLE 广播");
-
-            }
-            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
-            {
-                appendToLog("硬件不支持 BLE机能");
-
-            }
-        }
 
         // wifi direct is not in use now, we are still discussing the usability of it
         {
@@ -943,7 +429,8 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
     }
 
-    public void onDestroy() {
+    public void onDestroy()
+    {
 
         super.onDestroy();
         mDIY_CommuManagerInstace.onDestroy();
@@ -952,9 +439,9 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     protected void onResume()
     {
         super.onResume();
-        if (mIsAroundMeServiceRunning)
+        if (null!=mDIY_CommuManagerInstace&&mDIY_CommuManagerInstace.mIsAroundMeServiceRunning)
         {
-            mHandler.post(communicationRunnable); // Start sending messages
+            mDIY_CommuManagerInstace.RequestMainUpdateNextFrame();
         }
 
     }
@@ -964,9 +451,9 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     {
         super.onPause();
 
-        if (mIsAroundMeServiceRunning)
+        if (null!=mDIY_CommuManagerInstace&&mDIY_CommuManagerInstace.mIsAroundMeServiceRunning)
         {
-            mHandler.removeCallbacks(communicationRunnable); // Stop sending messages
+            mDIY_CommuManagerInstace.StopMainUpdate();
         }
 
     }
@@ -998,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
         if (DIY_PermissionHelper.handlePermissionsResult(this, requestCode, permissions, grantResults))
         {
 
-            StartAroundMeService();
+           mDIY_CommuManagerInstace.StartAroundMeService();
         }
 
 
@@ -1009,7 +496,107 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     }
 
     @Override
-    public void OnCallBack_NewRandomDeviceEncountered_WithName(String inText)
+    public void OnPostResetAroundMeBluetoothService()
+    {
+        DIY_CommuManagerReportSchema.super.OnPostResetAroundMeBluetoothService();
+
+        mSp_deviceDisplayArrayList.clear();
+        mRandom_deviceDisplayArrayList.clear();
+
+        mRandom_deviceArrayAdapter.notifyDataSetChanged();
+        mSp_deviceArrayAdapter.notifyDataSetChanged();
+        mMacAddrCountView.setText(GetCurrentNumStatus());
+
+    }
+
+    @Override
+    public void PostStopAroundMeService()
+    {
+        DIY_CommuManagerReportSchema.super.PostStopAroundMeService();
+        appendToLog("BLE搜索结束...", DIY_CommuUtils.LogLevel.INFO);
+        ToggleButtons();
+    }
+
+    @Override
+    public void PostStartAroundMeService()
+    {
+        DIY_CommuManagerReportSchema.super.PostStartAroundMeService();
+        ToggleButtons();
+
+    }
+
+
+    @Override
+    public void PostMsgReceivedFromPDevice(String inText)
+    {
+        DIY_CommuManagerReportSchema.super.PostMsgReceivedFromPDevice(inText);
+        // 🔄 如果当前不是调试模式（即游戏运行中），将消息回调给 UE 层
+        if (!mDebug_With_UI)
+        {
+            OnMessageReceivedFromOtherPDevices(inText);
+        }
+
+        // 🎁 简单的消息解析逻辑：
+        // 如果消息以 "X" 或 "x" 开头，则认为是系统指令；
+        // 否则认为是游戏中收到的“礼物物品ID”。
+        if (inText.startsWith("X") || inText.startsWith("x"))
+        {
+            // TODO: 系统级指令处理
+        }
+        else
+        {
+            if (!mDebug_With_UI)
+            {
+                // 将字符串转为整数作为 Item ID，通知游戏层“收到礼物”
+                OnItemGiftReceived(Integer.parseInt(inText));
+            }
+        }
+    }
+
+    @Override
+    public void OnPostMainUpdate()
+    {
+
+        DIY_CommuManagerReportSchema.super.OnPostMainUpdate();
+
+        mMacAddrCountView.setText(GetCurrentNumStatus());
+    }
+
+
+    @Override
+    public void OnSubmitInfoToUE5()
+    {
+        DIY_CommuManagerReportSchema.super.OnSubmitInfoToUE5();
+        SubmitInfoToUE5();
+    }
+
+    @Override
+    public void OnCallBack_BLEDeviceEncountered_GarbageName()
+    {
+        if(!mDebug_With_UI)
+        {
+            OnNewRandomDeviceEncountered_GarbageName();
+        }
+    }
+    @Override
+    public void OnCallBack_NewBLEDeviceEncountered_WithName(String inText)
+    {
+        mSp_deviceArrayAdapter.notifyDataSetChanged();
+
+        if(!mDebug_With_UI)
+        {
+            OnNewRandomDeviceEncountered_WithName(inText);
+        }
+    }
+
+
+    @Override
+    public void OnCallBack_OldBLEDeviceEncountered_WithName(String inText)
+    {
+        mSp_deviceArrayAdapter.notifyDataSetChanged();
+    }
+    @Override
+    public void OnCallBack_NewClassicDeviceEncountered_WithName(String inText)
     {
         if(!mDebug_With_UI)
         {
@@ -1021,7 +608,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     }
 
     @Override
-    public void OnCallBack_OldRandomDeviceEncountered_WithName(String inText)
+    public void OnCallBack_OldClassicDeviceEncountered_WithName(String inText)
     {
         mRandom_deviceArrayAdapter.notifyDataSetChanged();
 
@@ -1029,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     }
 
     @Override
-    public void OnCallBack_NewRandomDeviceEncountered_GarbageName()
+    public void OnCallBack_ClassicDeviceEncountered_GarbageName()
     {
         if(!mDebug_With_UI)
         {
@@ -1039,9 +626,9 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     }
 
     @Override
-    public void onLogReport(String inText)
+    public void onLogReport(String inText, DIY_CommuUtils.LogLevel level)
     {
-        appendToLog(inText);
+        appendToLog(inText, level);
 
     }
 
@@ -1054,5 +641,12 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     public ArrayList<String> GetRandom_deviceDisplayArrayList() {
         return mRandom_deviceDisplayArrayList;
     }
+
+    @Override
+    public String GetInputMessage()
+    {
+        return mInputMessage.getText().toString();
+    }
+
     // activity events end
 }
