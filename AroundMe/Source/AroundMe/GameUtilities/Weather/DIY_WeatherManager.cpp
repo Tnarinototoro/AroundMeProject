@@ -32,6 +32,42 @@ void UDIY_WeatherManager::QueryWeatherNow()
     QueryWeatherFromAPI();
 }
 
+void UDIY_WeatherManager::RegisterWeatherInsrance(AActor *InWeatherActor)
+{
+    ensureAlwaysMsgf(InWeatherActor, TEXT("InWeatherActor is nullptr"));
+    ensureAlwaysMsgf(CurrentWorldWeatherActorInstance==nullptr, TEXT("CurrentWorldWeatherActorInstance is not nullptr"));
+    CurrentWorldWeatherActorInstance = InWeatherActor;
+}
+
+void UDIY_WeatherManager::RegisterParamsStore(AActor *InParamStoreActor)
+{
+    ensureAlwaysMsgf(InParamStoreActor, TEXT("InParamStoreActor is nullptr"));
+    ensureAlwaysMsgf(CurrentWorldParamsStoreInstance==nullptr, TEXT("CurrentParamsStoreActorInstance is not nullptr"));
+    CurrentWorldParamsStoreInstance = InParamStoreActor;
+}
+
+void UDIY_WeatherManager::UnRegisterParamsStore()
+{
+    CurrentWorldParamsStoreInstance=nullptr;
+}
+
+void UDIY_WeatherManager::RegisterSkyInsrance(AActor *InSkyActor)
+{
+    ensureAlwaysMsgf(InSkyActor, TEXT("InSkyActor is nullptr"));
+    ensureAlwaysMsgf(CurrentWorldSkyActorInstance==nullptr, TEXT("CurrentWorldSkyActorInstance is not nullptr"));
+    CurrentWorldSkyActorInstance = InSkyActor;
+}
+
+void UDIY_WeatherManager::UnRegisterWeatherInsrance()
+{
+    CurrentWorldWeatherActorInstance=nullptr;
+}
+
+void UDIY_WeatherManager::UnRegisterSkyInsrance()
+{
+    CurrentWorldSkyActorInstance=nullptr;
+}
+
 void UDIY_WeatherManager::QueryWeatherFromAPI()
 {
     

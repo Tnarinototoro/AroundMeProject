@@ -12,6 +12,8 @@
 #include "Contents/DIY_ImGuiContentProxy_Item.h"
 #include "Contents/DIY_ImGuiContentProxy_MusicPlayer.h"
 #include "Contents/DIY_ImGuiContentProxy_Player.h"
+#include "Contents/DIY_ImGuiContentProxy_Sky.h"
+#include "Contents/DIY_ImGuiContentProxy_Weather.h"
 
 extern ENGINE_API float GAverageFPS;
 
@@ -122,7 +124,9 @@ FDIY_ImGuiMainPlayerProxy::FDIY_ImGuiMainPlayerProxy(UDIY_DebugImGuiSubsystem &I
         new FDIY_ImGuiContentProxy_Camera(*this),
         new FDIY_ImGuiContentProxy_Item(*this),
         new FDIY_ImGuiContentProxy_MusicPlayer(*this),
-        new FDIY_ImGuiContentProxy_Player(*this)
+        new FDIY_ImGuiContentProxy_Player(*this),
+        new FDIY_ImGuiContentProxy_Sky(*this),
+        new FDIY_ImGuiContentProxy_Weather(*this)
 
     };
 }

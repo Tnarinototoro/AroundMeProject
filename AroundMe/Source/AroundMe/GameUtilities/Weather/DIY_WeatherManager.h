@@ -31,10 +31,50 @@ public:
     UFUNCTION(BlueprintCallable, Category="Weather")
     void QueryWeatherNow();
 
+
+    UFUNCTION(BlueprintCallable, Category="Weather")
+    void RegisterWeatherInsrance(AActor* InWeatherActor);
+
+    UFUNCTION(BlueprintCallable, Category="Weather")
+    void RegisterParamsStore(AActor* InParamStoreActor);
+
+    UFUNCTION(BlueprintCallable, Category="Weather")
+    void UnRegisterParamsStore();
+
+    UFUNCTION(BlueprintCallable, Category="Weather")
+    void RegisterSkyInsrance(AActor* InSkyActor);
+
+    UFUNCTION(BlueprintCallable, Category="Weather")
+    void UnRegisterWeatherInsrance();
+
+    UFUNCTION(BlueprintCallable, Category="Weather")
+    void UnRegisterSkyInsrance();
+
+
+    UFUNCTION(BlueprintCallable, Category="Weather")
+    AActor* GetWorldWeatherActorInstance() const { return CurrentWorldWeatherActorInstance.Get(); }
+
+    UFUNCTION(BlueprintCallable, Category="Weather")
+    AActor* GetWorldSkyActorInstance() const { return CurrentWorldSkyActorInstance.Get(); }
+
+    UFUNCTION(BlueprintCallable, Category="Weather")
+    AActor* GetWorldParamsStoreInstance() const { return CurrentWorldParamsStoreInstance.Get(); }
+
 private:
-    void QueryWeatherFromAPI();   // 实际访问 API 的逻辑
+    void QueryWeatherFromAPI(); // 实际访问 API 的逻辑
 
     FTimerHandle WeatherTimerHandle;
     float CurrentTemperature = 0.0f;
     float CurrentMoisture = 0.0f;
+
+   
+    UPROPERTY()
+    TWeakObjectPtr<AActor> CurrentWorldWeatherActorInstance{nullptr};
+
+    UPROPERTY()
+    TWeakObjectPtr<AActor> CurrentWorldSkyActorInstance{nullptr};
+
+    UPROPERTY()
+    TWeakObjectPtr<AActor> CurrentWorldParamsStoreInstance{nullptr};
+
 };
