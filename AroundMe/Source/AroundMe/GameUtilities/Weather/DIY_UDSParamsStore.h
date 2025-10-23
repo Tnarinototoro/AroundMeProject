@@ -28,6 +28,18 @@ public:
 
     UFUNCTION(BlueprintImplementableEvent, Category="DIY_UDSParamsStore")
     void SetParam_TimeOfDay(float InTimeOfDay);
+
+    UFUNCTION(BlueprintImplementableEvent, Category="DIY_UDSParamsStore")
+    void SetParam_OverallIntensity(float InOverallIntensity);
+
+    UFUNCTION(BlueprintImplementableEvent, Category="DIY_UDSParamsStore")
+    void SetParam_Contrast(float InContrast);
+
+    UFUNCTION(BlueprintImplementableEvent, Category="DIY_UDSParamsStore")
+    void SetParam_Saturation(float InSaturation);
+
+    UFUNCTION(BlueprintImplementableEvent, Category="DIY_UDSParamsStore")
+    void SetParam_WeatherPresetType(int32 InWeatherPresetType);
     
     
 };

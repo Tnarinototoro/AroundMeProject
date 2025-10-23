@@ -13,8 +13,9 @@ void FDIY_ImGuiContentProxy_Sky::DrawWindow(float DeltaTime)
 {
     ImGui::Text("BasicControl");
     ImGui::SliderFloat("Hour", &TimeOfDay, 0.f, 2400.f);
-
-
+    ImGui::SliderFloat("OverallIntensity", &OverallIntensity, 0.f, 2.f);
+    ImGui::SliderFloat("Contrast", &Contrast, -0.2f,1.f);
+    ImGui::SliderFloat("Saturation", &Saturation, 0.f,1.5f);
 
     UDIY_WeatherManager* WeatherManager = UDIY_WeatherManager::Get(GetWorld());
 
@@ -30,13 +31,21 @@ void FDIY_ImGuiContentProxy_Sky::DrawWindow(float DeltaTime)
         return;
     }
 
-    Param_store->SetParam_TimeOfDay(TimeOfDay);
+    
 
 
     
 
     
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+
+
+
+    Param_store->SetParam_TimeOfDay(TimeOfDay);
+    Param_store->SetParam_OverallIntensity(OverallIntensity);
+    Param_store->SetParam_Contrast(Contrast);
+    Param_store->SetParam_Saturation(Saturation);
+
     
 #endif
 }

@@ -11,6 +11,8 @@ public:
     virtual void DrawWindow(float DeltaTime) override;
 
 public:
-    int hour{-1};
+
+    //0-20
+    int32 WeatherPresetType{0};
 };
 #endif

@@ -11,6 +11,21 @@ public:
     virtual void DrawWindow(float DeltaTime) override;
 
 public:
+
+
+
+    //0-2400
     float TimeOfDay{1200.f};
+
+    //0-2.0f
+    float OverallIntensity{1.f};
+
+    //-0.2-1.f
+    float Contrast{0.1f};
+
+    //0-1.5f
+    float Saturation{1.0f};
+
+
 };
 #endif
