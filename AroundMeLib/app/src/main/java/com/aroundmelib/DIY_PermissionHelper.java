@@ -3,6 +3,7 @@ package com.aroundmelib;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -20,30 +21,18 @@ public class DIY_PermissionHelper {
 
     private static final String TAG = "DIY_PermissionHelper";
     public static final int REQUEST_CODE_PERMISSIONS = 1001;
-    // 删除 onBluetoothEnabledCallback，不再需要
-    private static androidx.activity.result.ActivityResultLauncher<android.content.Intent> enableBluetoothLauncher = null;
+    public static final int REQUEST_ENABLE_BT = 2001; // 新增常量
 
+    // 删除掉 ActivityResultLauncher，不再使用 AndroidX 组件
+    // private static androidx.activity.result.ActivityResultLauncher<android.content.Intent> enableBluetoothLauncher = null;
 
-    // 新增：在 Activity.onCreate 里调用一次
-    public static void initializeBluetoothLauncher(final android.app.Activity activity) {
-        if (activity == null) return;
+    /** 初始化不再需要 — UnrealActivity 不支持 registerForActivityResult，所以删掉 */
+    // public static void initializeBluetoothLauncher(final android.app.Activity activity) { ... }
+    // ↑ 直接删除
 
-        enableBluetoothLauncher = ((androidx.activity.ComponentActivity) activity)
-                .registerForActivityResult(
-                        new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
-                        result -> {
-                            if (result.getResultCode() == android.app.Activity.RESULT_OK) {
-                                DIY_CommuUtils.PushToast(activity, "✅ 蓝牙已开启");
-                            } else {
-                                DIY_CommuUtils.PushToast(activity, "❌ 必须开启蓝牙才能使用 AroundMe");
-                                showEnableBluetoothDialog(activity);
-                            }
-                        }
-                );
-    }
-
-    public static boolean ensureBluetoothEnabled(final android.app.Activity activity) {
-        android.bluetooth.BluetoothAdapter adapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
+    /** 检查并尝试启用蓝牙 */
+    public static boolean ensureBluetoothEnabled(final Activity activity) {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
 
         if (adapter == null) {
             DIY_CommuUtils.PushToast(activity, "此设备不支持蓝牙功能");
@@ -51,29 +40,24 @@ public class DIY_PermissionHelper {
         }
 
         if (!adapter.isEnabled()) {
-            android.content.Intent enableBtIntent = new android.content.Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            if (enableBluetoothLauncher != null) {
-                enableBluetoothLauncher.launch(enableBtIntent);
-            } else {
-                // 兼容旧式 GameActivity
-                activity.startActivityForResult(enableBtIntent, DIY_CommuUtils.REQUEST_ENABLE_BT);
-            }
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            // ✅ 旧式兼容 GameActivity 的启动方式
+            activity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             return false;
         }
 
-        // 蓝牙已经是开的
+        // 蓝牙已开启
         return true;
     }
 
-    private static void showEnableBluetoothDialog(final android.app.Activity activity) {
-        new android.app.AlertDialog.Builder(activity)
+    /** 当蓝牙未开启时弹窗提示 */
+    public static void showEnableBluetoothDialog(final Activity activity) {
+        new AlertDialog.Builder(activity)
                 .setTitle("蓝牙未开启")
                 .setMessage("AroundMe 需要蓝牙以搜索附近设备，请开启蓝牙后重试。")
                 .setPositiveButton("开启蓝牙", (d, w) -> {
-                    android.content.Intent enableBtIntent =
-                            new android.content.Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    if (enableBluetoothLauncher != null) enableBluetoothLauncher.launch(enableBtIntent);
-                    else activity.startActivity(enableBtIntent);
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    activity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                 })
                 .setNegativeButton("取消", (d, w) -> d.dismiss())
                 .show();
@@ -92,9 +76,7 @@ public class DIY_PermissionHelper {
         return perms.toArray(new String[0]);
     }
 
-    /** 首次/再次检查并请求权限
-     *  返回 true 表示已经全部具备；false 表示发起了请求或仍有缺失
-     */
+    /** 检查并请求所有权限 */
     public static boolean ensureAllPermissions(Activity activity) {
         if (activity == null) return false;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
@@ -106,13 +88,12 @@ public class DIY_PermissionHelper {
                 missing.add(p);
             }
         }
+
         if (missing.isEmpty()) {
             Log.d(TAG, "✅ 所有权限已具备");
             return true;
         }
 
-        // ⚠️ 这里不要用 shouldShow.. 来判断永久拒绝（第一次也是 false）
-        // 直接请求即可；是否永久拒绝放到 onRequestPermissionsResult 里判断
         ActivityCompat.requestPermissions(
                 activity,
                 missing.toArray(new String[0]),
@@ -136,7 +117,6 @@ public class DIY_PermissionHelper {
                     && grantResults[i] == PackageManager.PERMISSION_GRANTED;
             if (!granted) {
                 denied.add(permissions[i]);
-                // 只有在“已经请求过一次”后的回调中，判断不再询问才有意义
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[i])) {
                     deniedAndDontAsk.add(permissions[i]);
                 }
@@ -148,14 +128,12 @@ public class DIY_PermissionHelper {
             return true;
         }
 
-        // 存在永久拒绝 -> 引导去设置
         if (!deniedAndDontAsk.isEmpty()) {
             DIY_CommuUtils.PushToast(activity, "部分权限被永久拒绝，请到设置中开启");
             showGoToSettingsDialog(activity);
             return false;
         }
 
-        // 普通拒绝 -> 给个提示，用户可再次点击“开始”按钮触发 ensureAllPermissions 再请求
         DIY_CommuUtils.PushToast(activity, "请授予必要权限以使用 AroundMe");
         return false;
     }

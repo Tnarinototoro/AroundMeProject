@@ -4,6 +4,7 @@ package com.aroundmelib;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
     // Debug ui part starts ----------------------------------------------------------------------
     private View mLog_button_divider;
-    private static final boolean mDebug_With_UI = true;
     private View mUtility_DeviceList_divider;
     private LinearLayout mbuttonPanel;
     private LinearLayout mlogPanel;
@@ -118,22 +118,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     }
 
     // call from java implemented in UE5
-    public static native void OnNewRandomDeviceEncountered_GarbageName();
 
-    public static native void OnNewLogGenerated(String in_string);
-
-    public static native void OnNewRandomDeviceEncountered_WithName(String in_string);
-    public static native void OnMessageReceivedFromOtherPDevices(String in_string);
-
-    public static native void OnSubmittingBypassData_WithNames(int in_withname_device_count);
-
-    public static native void OnSubmittingBypassData_GarbageNames(int in_withoutname_device_count);
-
-    public static native void OnSubmittingBaypassData_GameUser(int in_User_Coount);
-
-
-
-    public static native void OnItemGiftReceived(int received_item_id);
 
 
 
@@ -163,80 +148,62 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
     public void appendToLog(String text, DIY_CommuUtils.LogLevel level)
     {
-        if (mDebug_With_UI)
-        {
-            runOnUiThread(() -> {
-                if (mLogTextView == null) return;
+        runOnUiThread(() -> {
+            if (mLogTextView == null) return;
 
-                int color;
-                String prefix = "";
+            int color;
+            String prefix = "";
 
-                // 🎨 根据日志级别决定颜色和前缀
-                switch (level)
-                {
-                    case ERROR:
-                        color = Color.RED;
-                        prefix = "❌ [Error] ";
-                        break;
+            // 🎨 根据日志级别决定颜色和前缀
+            switch (level)
+            {
+                case ERROR:
+                    color = Color.RED;
+                    prefix = "❌ [Error] ";
+                    break;
 
-                    case WARNING:
-                        color = Color.rgb(255, 165, 0);
-                        prefix = "⚠ [Warning] ";
-                        break;
+                case WARNING:
+                    color = Color.rgb(255, 165, 0);
+                    prefix = "⚠ [Warning] ";
+                    break;
 
-                    case DEBUG:
-                        color = Color.CYAN;
-                        prefix = "🔍 [Debug] ";
-                        break;
+                case DEBUG:
+                    color = Color.CYAN;
+                    prefix = "🔍 [Debug] ";
+                    break;
 
-                    case SUCCESS:
-                        color = Color.GREEN;
-                        prefix = "✅ [OK] ";
-                        break;
+                case SUCCESS:
+                    color = Color.GREEN;
+                    prefix = "✅ [OK] ";
+                    break;
 
-                    case INFO:
-                    default:
-                        color = Color.WHITE;
-                        prefix = "ℹ [Info] ";
-                        break;
-                }
+                case INFO:
+                default:
+                    color = Color.WHITE;
+                    prefix = "ℹ [Info] ";
+                    break;
+            }
 
-                // 时间戳
-                String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-                String formatted = String.format("[%s] %s%s", time, prefix, text);
+            // 时间戳
+            String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+            String formatted = String.format("[%s] %s%s", time, prefix, text);
 
-                SpannableString coloredText = new SpannableString(formatted + "\n");
-                coloredText.setSpan(new ForegroundColorSpan(color), 0, coloredText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString coloredText = new SpannableString(formatted + "\n");
+            coloredText.setSpan(new ForegroundColorSpan(color), 0, coloredText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                mLogTextView.append(coloredText);
+            mLogTextView.append(coloredText);
 
-                // 自动滚动到底部
-                if (mLogViewautoScroll && mLogScrollView != null)
-                {
-                    mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
-                }
-            });
-        }
-        else
-        {
-            // UE 模式下直接打印普通日志
-            runOnUiThread(() -> OnNewLogGenerated(text));
-        }
+            // 自动滚动到底部
+            if (mLogViewautoScroll && mLogScrollView != null)
+            {
+                mLogScrollView.post(() -> mLogScrollView.fullScroll(View.FOCUS_DOWN));
+            }
+        });
     }
 
 
     private void SubmitInfoToUE5()
     {
-        if(!mDebug_With_UI)
-        {
-            OnSubmittingBypassData_GarbageNames(mDIY_CommuManagerInstace.GetDeviceCountEncountered_WithGarbageName());
-
-
-            OnSubmittingBypassData_WithNames(mDIY_CommuManagerInstace.GetDeviceCountEncountered_WithName());
-
-            OnSubmittingBaypassData_GameUser(mSp_deviceDisplayArrayList.size());
-        }
-
         appendToLog("SubmitInfoToUE5 once"+ GetCurrentNumStatus(), DIY_CommuUtils.LogLevel.INFO);
 
     }
@@ -415,10 +382,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
             mDIY_CommuManagerInstace.setCommuManagerReportSchema(this);
         }
 
-        // permission check
-        {
-            DIY_PermissionHelper.initializeBluetoothLauncher(this);
-        }
+
 
 
 
@@ -462,16 +426,15 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        /*if (requestCode == DIY_CommuUtils.REQUEST_ENABLE_BT)
-        {
-            if (resultCode == RESULT_OK)
-            {
-                // Bluetooth is now enabled, you can proceed with your functionality
-            } else if (resultCode == RESULT_CANCELED)
-            {
-                // User denied enabling Bluetooth, you might want to handle accordingly
+
+        if (requestCode == DIY_PermissionHelper.REQUEST_ENABLE_BT) {
+            if (resultCode == Activity.RESULT_OK) {
+                DIY_CommuUtils.PushToast(this, "✅ 蓝牙已开启");
+            } else {
+                DIY_CommuUtils.PushToast(this, "❌ 必须开启蓝牙才能使用 AroundMe");
+                DIY_PermissionHelper.showEnableBluetoothDialog(this);
             }
-        }*/
+        }
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
@@ -531,11 +494,6 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     {
         DIY_CommuManagerReportSchema.super.PostMsgReceivedFromPDevice(inText);
         // 🔄 如果当前不是调试模式（即游戏运行中），将消息回调给 UE 层
-        if (!mDebug_With_UI)
-        {
-            OnMessageReceivedFromOtherPDevices(inText);
-        }
-
         // 🎁 简单的消息解析逻辑：
         // 如果消息以 "X" 或 "x" 开头，则认为是系统指令；
         // 否则认为是游戏中收到的“礼物物品ID”。
@@ -545,11 +503,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
         }
         else
         {
-            if (!mDebug_With_UI)
-            {
-                // 将字符串转为整数作为 Item ID，通知游戏层“收到礼物”
-                OnItemGiftReceived(Integer.parseInt(inText));
-            }
+
         }
     }
 
@@ -573,20 +527,13 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     @Override
     public void OnCallBack_BLEDeviceEncountered_GarbageName()
     {
-        if(!mDebug_With_UI)
-        {
-            OnNewRandomDeviceEncountered_GarbageName();
-        }
     }
     @Override
     public void OnCallBack_NewBLEDeviceEncountered_WithName(String inText)
     {
         mSp_deviceArrayAdapter.notifyDataSetChanged();
 
-        if(!mDebug_With_UI)
-        {
-            OnNewRandomDeviceEncountered_WithName(inText);
-        }
+
     }
 
 
@@ -598,11 +545,6 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     @Override
     public void OnCallBack_NewClassicDeviceEncountered_WithName(String inText)
     {
-        if(!mDebug_With_UI)
-        {
-            OnNewRandomDeviceEncountered_WithName(inText);
-        }
-
         mRandom_deviceArrayAdapter.notifyDataSetChanged();
 
     }
@@ -618,11 +560,6 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     @Override
     public void OnCallBack_ClassicDeviceEncountered_GarbageName()
     {
-        if(!mDebug_With_UI)
-        {
-            OnNewRandomDeviceEncountered_GarbageName();
-        }
-
     }
 
     @Override

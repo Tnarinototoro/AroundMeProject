@@ -20,8 +20,6 @@ public:
     UFUNCTION()
     void StopServiceButtonClicked();
 
-    UFUNCTION()
-    void ToTestAndroidButtonClicked();
 
 private:
     UPROPERTY()
@@ -30,5 +28,4 @@ private:
     class UButton *StartServiceButton;
     class UVerticalBox *VerticalBox;
     class UButton *StopServiceButton;
-    class UButton* ToTestAndroidButton;
 };

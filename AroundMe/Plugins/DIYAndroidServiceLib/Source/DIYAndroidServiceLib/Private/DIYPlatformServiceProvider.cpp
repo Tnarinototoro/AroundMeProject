@@ -12,7 +12,7 @@ ADIYPlatformServiceProvider::~ADIYPlatformServiceProvider()
 extern "C"
 {
 
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewLogGenerated(JNIEnv *jenv, jclass clazz, jstring MyString)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewLogGenerated(JNIEnv *jenv, jclass clazz, jstring MyString)
     {
 
         const char *chars = jenv->GetStringUTFChars(MyString, 0);
@@ -27,7 +27,7 @@ extern "C"
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewRandomDeviceEncountered_1GarbageName(JNIEnv *jenv, jclass clazz)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewRandomDeviceEncountered_1GarbageName(JNIEnv *jenv, jclass clazz)
     {
 
         if (GEngine)
@@ -38,7 +38,7 @@ extern "C"
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnNewRandomDeviceEncountered_1WithName(JNIEnv *jenv, jclass clazz, jstring MyString)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewRandomDeviceEncountered_1WithName(JNIEnv *jenv, jclass clazz, jstring MyString)
     {
 
         const char *chars = jenv->GetStringUTFChars(MyString, 0);
@@ -54,7 +54,7 @@ extern "C"
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnMessageReceivedFromOtherPDevices(JNIEnv *jenv, jclass clazz, jstring MyString)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnMessageReceivedFromOtherPDevices(JNIEnv *jenv, jclass clazz, jstring MyString)
     {
 
         const char *chars = jenv->GetStringUTFChars(MyString, 0);
@@ -70,7 +70,7 @@ extern "C"
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnSubmittingBypassData_1GarbageNames(JNIEnv *jenv, jclass clazz, jint inCount)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBypassData_1GarbageNames(JNIEnv *jenv, jclass clazz, jint inCount)
     {
 
         int ConvertedInt = static_cast<int>(inCount);
@@ -82,7 +82,7 @@ extern "C"
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnSubmittingBypassData_1WithNames(JNIEnv *jenv, jclass clazz, jint inCount)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBypassData_1WithNames(JNIEnv *jenv, jclass clazz, jint inCount)
     {
 
         int ConvertedInt = static_cast<int>(inCount);
@@ -94,7 +94,7 @@ extern "C"
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnSubmittingBaypassData_1GameUser(JNIEnv *jenv, jclass clazz, jint inCount)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBaypassData_1GameUser(JNIEnv *jenv, jclass clazz, jint inCount)
     {
 
         int ConvertedInt = static_cast<int>(inCount);
@@ -106,7 +106,7 @@ extern "C"
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_epicgames_unreal_GameActivity_OnItemGiftReceived(JNIEnv *jenv, jclass clazz, jint inGiftItemID)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnItemGiftReceived(JNIEnv *jenv, jclass clazz, jint inGiftItemID)
     {
 
         int ConvertedInt = static_cast<int>(inGiftItemID);
@@ -123,42 +123,49 @@ extern "C"
 
 void ADIYPlatformServiceProvider::StartProvidingService()
 {
-#if PLATFORM_ANDROID
-    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
-    {
-        static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StartAroundMeService", "()V", false);
-        FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
-    }
+// #if PLATFORM_ANDROID
+//     if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
+//     {
+//         static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StartAroundMeService", "()V", false);
+//         FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
+//     }
 
-#endif
+// #endif
 
 #if PLATFORM_ANDROID
-    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
-    {
-        static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StartDIYServiceFromUE", "()V", false);
-        FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
-        UE_LOG(LogTemp, Log, TEXT("DIY_Service started via UPL extension!"));
-    }
+if(JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+{
+jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
+jmethodID StartMethod = Env->GetStaticMethodID(ServiceClass, "StartDIYService", "(Landroid/app/Activity;)V");
+Env->CallStaticVoidMethod(ServiceClass, StartMethod, FJavaWrapper::GameActivityThis);
+
+}
+
+
+
 #endif
 }
 
 void ADIYPlatformServiceProvider::StopProvidingService()
 {
 
-#if PLATFORM_ANDROID
-    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
-    {
-        static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StopAroundMeService", "()V", false);
-        FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
-    }
-#endif
+// #if PLATFORM_ANDROID
+//     if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
+//     {
+//         static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StopAroundMeService", "()V", false);
+//         FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
+//     }
+// #endif
 
 #if PLATFORM_ANDROID
-    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
-    {
-        static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StopDIYServiceFromUE", "()V", false);
-        FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
-    }
+if(JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+{
+jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
+jmethodID StopMethod = Env->GetStaticMethodID(ServiceClass, "StopDIYService", "(Landroid/app/Activity;)V");
+Env->CallStaticVoidMethod(ServiceClass, StopMethod, FJavaWrapper::GameActivityThis);
+
+}
+	
 #endif
 }
 

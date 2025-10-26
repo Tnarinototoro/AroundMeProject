@@ -1,8 +1,8 @@
 package com.aroundmelib;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-        import android.bluetooth.BluetoothAdapter;
-        import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -17,11 +17,11 @@ import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.bluetooth.le.BluetoothLeScanner;
-        import android.bluetooth.le.ScanCallback;
-        import android.bluetooth.le.ScanFilter;
-        import android.bluetooth.le.ScanRecord;
-        import android.bluetooth.le.ScanResult;
-        import android.bluetooth.le.ScanSettings;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanRecord;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -674,9 +674,7 @@ public class DIY_CommuManager
             return;
         }
 
-        Log.d("MainActivity", "Stopping DIY_Service...");
-        Intent intent = new Intent(mActivity, DIY_Service.class);
-        mActivity.stopService(intent);
+
         // BLE process
         {
 
@@ -752,21 +750,6 @@ public class DIY_CommuManager
 
         SetDeviceCountEncountered_WithName(0);
         SetDeviceCountEncountered_WithGarbageName(0);
-
-        //Test Service
-        {
-            Intent intent = new Intent(mActivity, DIY_Service.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            {
-
-                mActivity.startForegroundService(intent);
-            }
-            else
-            {
-
-                mActivity.startService(intent);
-            }
-        }
 
 
         SetDeviceCountEncountered_WithName(0);

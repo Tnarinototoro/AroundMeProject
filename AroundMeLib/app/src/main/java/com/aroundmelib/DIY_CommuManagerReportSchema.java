@@ -2,6 +2,7 @@ package com.aroundmelib;
 
 import java.util.ArrayList;
 
+//Basically for DIY commuMAnager report
 public interface DIY_CommuManagerReportSchema
 {
     default void OnCallBack_NewClassicDeviceEncountered_WithName(String inText)

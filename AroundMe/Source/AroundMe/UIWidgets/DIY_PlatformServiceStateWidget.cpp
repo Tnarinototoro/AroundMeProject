@@ -96,34 +96,6 @@ void UDIY_PlatformServiceStateWidget::NativeOnInitialized()
             }
         }
 
-        ToTestAndroidButton = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), TEXT("ToTestAndroidButton"));
-        if (ToTestAndroidButton)
-        {
-            
-            ToTestAndroidButton->OnClicked.AddDynamic(this, &UDIY_PlatformServiceStateWidget::ToTestAndroidButtonClicked);
-            
-            UTextBlock *ButtonText = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass(), TEXT("ToTestAndroidButtonText"));
-            if (ButtonText)
-            {
-                ButtonText->SetText(FText::FromString(TEXT("ToTestAndroidLevel")));
-                ButtonText->SetColorAndOpacity(FLinearColor::White);
-                ButtonText->SetFont(FSlateFontInfo(FPaths::EngineContentDir() / TEXT("Slate/Fonts/Roboto-Regular.ttf"), 24));
-
-                ToTestAndroidButton->AddChild(ButtonText);
-            }
-
-            UVerticalBoxSlot *ButtonSlot = VerticalBox->AddChildToVerticalBox(ToTestAndroidButton);
-            if (ButtonSlot)
-            {
-
-                ButtonSlot->SetSize(FSlateChildSize());
-                ButtonSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-                ButtonSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-                ButtonSlot->SetPadding(FMargin(0, 20));
-            }
-        }
-
-
     }
 }
 
@@ -151,10 +123,4 @@ void UDIY_PlatformServiceStateWidget::StopServiceButtonClicked()
     StopServiceButton->SetIsEnabled(!StopServiceButton->GetIsEnabled());
     UDIYBFL_PlatformService::StopPlatformService();
     EASY_LOG_MAINPLAYER("StopServiceButtonClicked");
-}
-
-void UDIY_PlatformServiceStateWidget::ToTestAndroidButtonClicked()
-{
-    UGameplayStatics::OpenLevel(GetWorld(),TEXT("Test_BLEDemo"));
-    ToTestAndroidButton->SetIsEnabled(!ToTestAndroidButton->GetIsEnabled());
 }
