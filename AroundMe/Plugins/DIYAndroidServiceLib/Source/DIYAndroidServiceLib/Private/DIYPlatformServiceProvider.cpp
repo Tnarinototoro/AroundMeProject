@@ -123,14 +123,6 @@ extern "C"
 
 void ADIYPlatformServiceProvider::StartProvidingService()
 {
-// #if PLATFORM_ANDROID
-//     if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
-//     {
-//         static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StartAroundMeService", "()V", false);
-//         FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
-//     }
-
-// #endif
 
 #if PLATFORM_ANDROID
 if(JNIEnv* Env = FAndroidApplication::GetJavaEnv())
@@ -148,15 +140,6 @@ Env->CallStaticVoidMethod(ServiceClass, StartMethod, FJavaWrapper::GameActivityT
 
 void ADIYPlatformServiceProvider::StopProvidingService()
 {
-
-// #if PLATFORM_ANDROID
-//     if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
-//     {
-//         static jmethodID MethodID = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "StopAroundMeService", "()V", false);
-//         FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID);
-//     }
-// #endif
-
 #if PLATFORM_ANDROID
 if(JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 {
@@ -176,18 +159,9 @@ void ADIYPlatformServiceProvider::RequestAddGiveTask(int in_Item_ID)
     if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
     {
 
-        static jmethodID MethodID = FJavaWrapper::FindMethod(
-            Env,
-            FJavaWrapper::GameActivityClassID,
-            "OnRequestAddGiveTask",
-            "(I)V",
-            false);
-
-        if (MethodID != nullptr)
-        {
-
-            FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, MethodID, in_Item_ID);
-        }
+        jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
+        jmethodID GiveGiftMethod = Env->GetStaticMethodID(ServiceClass, "RequestGiveAItem", "(I)V");
+        Env->CallStaticVoidMethod(ServiceClass, GiveGiftMethod, in_Item_ID);
     }
 #endif
 }

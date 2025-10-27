@@ -112,9 +112,9 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     private String GetCurrentNumStatus()
     {
         return String.format("Name:%d, Null:%d, User:%d",
-                mDIY_CommuManagerInstace.GetDeviceCountEncountered_WithName(),
-                mDIY_CommuManagerInstace.GetDeviceCountEncountered_WithGarbageName(),
-                mSp_deviceDisplayArrayList.size());
+                mDIY_CommuManagerInstace.mDeviceCountEncountered_WithName_Latest,
+                mDIY_CommuManagerInstace.mDeviceCountEncountered_WithGarbageName_Latest,
+                mDIY_CommuManagerInstace.mDIYGameUserEncountered_WithName_Latest);
     }
 
     // call from java implemented in UE5

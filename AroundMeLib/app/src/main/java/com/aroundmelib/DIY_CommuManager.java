@@ -27,10 +27,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
 import android.os.ParcelUuid;
-import android.util.Log;
 import android.util.SparseArray;
 
 import java.nio.charset.Charset;
@@ -78,7 +76,13 @@ public class DIY_CommuManager
 
     private int mDeviceCountEncountered_WithGarbageName = 0;
 
-    private void OnRequestAddGiveTask(int inItemID)
+    private int mDIYGameUserEncountered_WithName = 0;
+
+    public int mDeviceCountEncountered_WithName_Latest = 0;
+    public int mDeviceCountEncountered_WithGarbageName_Latest = 0;
+
+    public int mDIYGameUserEncountered_WithName_Latest = 0;
+    public void RequestGiveAItemTask(int inItemID)
     {
         mRequestedToGiveItems.add(inItemID);
     }
@@ -99,33 +103,26 @@ public class DIY_CommuManager
     {
         return mDeviceCountEncountered_WithName;
     }
-    public void AddDeltaToDeviceCountEncountered_WithName(int delta)
-    {
-        mDeviceCountEncountered_WithName+=delta;
-    }
-    public void SetDeviceCountEncountered_WithName(int inCount)
-    {
-        mDeviceCountEncountered_WithName = inCount;
-    }
     public int GetDeviceCountEncountered_WithGarbageName()
     {
         return mDeviceCountEncountered_WithGarbageName;
     }
-    public void AddDeltaToDeviceCountEncountered_WithGarbageName(int delta)
-    {
-        mDeviceCountEncountered_WithGarbageName+=delta;
-    }
-    public void SetDeviceCountEncountered_WithGarbageName(int inCount)
-    {
-        mDeviceCountEncountered_WithGarbageName = inCount;
-    }
 
+
+    private void UpdateCounts()
+    {
+
+        mDeviceCountEncountered_WithName_Latest = Math.max(mDeviceCountEncountered_WithName_Latest, mDeviceCountEncountered_WithName);
+        mDeviceCountEncountered_WithGarbageName_Latest =Math.max(mDeviceCountEncountered_WithGarbageName_Latest, mDeviceCountEncountered_WithGarbageName);
+        mDIYGameUserEncountered_WithName_Latest =Math.max(mDIYGameUserEncountered_WithName_Latest, mDIYGameUserEncountered_WithName);
+    }
 
     @SuppressLint("MissingPermission")
     private void ResetAroundMeBluetoothServiceResults()
     {
-        SetDeviceCountEncountered_WithName(0);
-        SetDeviceCountEncountered_WithGarbageName(0);
+        mDeviceCountEncountered_WithName = 0;
+        mDeviceCountEncountered_WithGarbageName = 0;
+
 
 
 
@@ -352,8 +349,10 @@ public class DIY_CommuManager
                     // 存入全局设备表
                     mFoundDevices.put(result_device_mac_addr, player_info);
 
+
                     // 有效设备数量 +1
-                    AddDeltaToDeviceCountEncountered_WithName(1);
+                    mDeviceCountEncountered_WithName++;
+                    mDIYGameUserEncountered_WithName++;
 
                     // 通知回调层（如 GameActivity）
                     if (mReportSchema != null)
@@ -365,8 +364,8 @@ public class DIY_CommuManager
             else
             {
                 // 🚫 设备无名称（可能是匿名广播、IoT设备或垃圾数据）
-                AddDeltaToDeviceCountEncountered_WithGarbageName(1);
 
+                mDeviceCountEncountered_WithGarbageName++;
                 // 通知回调层更新统计
                 if (mReportSchema != null)
                 {
@@ -677,10 +676,6 @@ public class DIY_CommuManager
 
         // BLE process
         {
-
-            SetDeviceCountEncountered_WithName(0);
-            SetDeviceCountEncountered_WithGarbageName(0);
-
             if (mBluetoothLeAdvertiser != null && mAdvertiseCallback != null)
             {
                 mBluetoothLeAdvertiser.stopAdvertising(mAdvertiseCallback);
@@ -696,6 +691,10 @@ public class DIY_CommuManager
 
 
             mBluetoothGattServer.close();
+
+
+            UpdateCounts();
+
 
             ResetAroundMeBluetoothServiceResults();
 
@@ -744,16 +743,7 @@ public class DIY_CommuManager
         }
 
 
-
-
-
-
-        SetDeviceCountEncountered_WithName(0);
-        SetDeviceCountEncountered_WithGarbageName(0);
-
-
-        SetDeviceCountEncountered_WithName(0);
-        SetDeviceCountEncountered_WithGarbageName(0);
+        ResetAroundMeBluetoothServiceResults();
 
 
         startClassicBluetoothDiscovery();
@@ -862,6 +852,7 @@ public class DIY_CommuManager
                     startClassicBluetoothDiscovery();
 
 
+                    UpdateCounts();
                     ResetAroundMeBluetoothServiceResults();
 
                 }
@@ -938,6 +929,7 @@ public class DIY_CommuManager
 
                         }
 
+                        //classic device with name
                         mDeviceCountEncountered_WithName++;
 
                         // OnNewMacAddressEncountered();

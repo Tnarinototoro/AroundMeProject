@@ -20,6 +20,8 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     private static final String CHANNEL_ID = "DIYServiceChannel";
     public static DIY_Service Instance = null;
     public static Activity BoundActivity = null;
+
+
     public static native void OnNewRandomDeviceEncountered_GarbageName();
 
     public static native void OnNewLogGenerated(String in_string);
@@ -65,6 +67,25 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         Log.d("DIY_Service", "Service stopped from UE");
     }
 
+    public static void RequestGiveAItem(int item_id)
+    {
+        if(null==Instance)
+        {
+            OnNewLogGenerated("RequestGiveAItem Failed due to invalid service instance");
+            return;
+        }
+
+        if(null== Instance.mCommuManager)
+        {
+            OnNewLogGenerated("RequestGiveAItem Failed due to invalid commu manager instance");
+            return;
+        }
+
+        Instance.mCommuManager.RequestGiveAItemTask(item_id);
+
+    }
+
+
     private DIY_CommuManager mCommuManager = null;
     private Handler handler;
     private Runnable logTask;
@@ -74,18 +95,18 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
     public void appendToLog(String text, DIY_CommuUtils.LogLevel level)
     {
-
+        OnNewLogGenerated(text);
     }
     private void SubmitInfoToUE5()
     {
 
         //no more needed to do this!
-       /*OnSubmittingBypassData_GarbageNames(mDIY_CommuManagerInstace.GetDeviceCountEncountered_WithGarbageName());
+       OnSubmittingBypassData_GarbageNames(mCommuManager.mDeviceCountEncountered_WithGarbageName_Latest);
 
 
-       OnSubmittingBypassData_WithNames(mDIY_CommuManagerInstace.GetDeviceCountEncountered_WithName());*/
+       OnSubmittingBypassData_WithNames(mCommuManager.mDeviceCountEncountered_WithName_Latest);
+        OnSubmittingBaypassData_GameUser(mCommuManager.mDIYGameUserEncountered_WithName_Latest);
 
-       OnSubmittingBaypassData_GameUser(-1);
 
        appendToLog("SubmitInfoToUE5 once"
 
@@ -131,7 +152,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         Notification notification = new Notification.Builder(this, CHANNEL_ID)
                 .setContentTitle("DIY Service")
                 .setContentText("Service started, counting...")
-                .setSmallIcon(android.R.drawable.ic_media_play)
+                .setSmallIcon(android.R.drawable.ic_menu_gallery)
                 .addAction(new Notification.Action.Builder(
                         null, "Stop Service", stopPendingIntent).build())
                 .build();
@@ -144,17 +165,24 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
         // 👉 定时任务：每秒更新通知内容
         handler = new Handler();
-        logTask = new Runnable() {
+        logTask = new Runnable()
+        {
             @Override
             public void run() {
                 seconds++;
-                String msg = "Service running for " + seconds + " sec";
-                Log.d(TAG, msg);
+
 
                 Notification updatedNotification = new Notification.Builder(DIY_Service.this, CHANNEL_ID)
                         .setContentTitle("DIY Service")
-                        .setContentText(msg)
-                        .setSmallIcon(android.R.drawable.ic_media_play)
+                        .setContentText(String.format("Service running for %d sec \n Name:%d Null:%d User:%d",
+                                seconds,
+                                mCommuManager.mDeviceCountEncountered_WithName_Latest,
+                                mCommuManager.mDeviceCountEncountered_WithGarbageName_Latest,
+                                mCommuManager.mDIYGameUserEncountered_WithName_Latest
+
+
+                        ))
+                        .setSmallIcon(android.R.drawable.ic_menu_gallery)
                         .addAction(new Notification.Action.Builder(
                                 null, "Stop Service", stopPendingIntent).build())
                         .build();
@@ -235,8 +263,11 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public void PostMsgReceivedFromPDevice(String inText)
     {
         DIY_CommuManagerReportSchema.super.PostMsgReceivedFromPDevice(inText);
+
+
         // 🔄 如果当前不是调试模式（即游戏运行中），将消息回调给 UE 层
         OnMessageReceivedFromOtherPDevices(inText);
+
 
         // 🎁 简单的消息解析逻辑：
         // 如果消息以 "X" 或 "x" 开头，则认为是系统指令；
@@ -247,8 +278,10 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         }
         else
         {
+
             // 将字符串转为整数作为 Item ID，通知游戏层“收到礼物”
             OnItemGiftReceived(Integer.parseInt(inText));
+
         }
     }
 
@@ -272,11 +305,13 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public void OnCallBack_BLEDeviceEncountered_GarbageName()
     {
         OnNewRandomDeviceEncountered_GarbageName();
+
     }
     @Override
     public void OnCallBack_NewBLEDeviceEncountered_WithName(String inText)
     {
         OnNewRandomDeviceEncountered_WithName(inText);
+
     }
 
 
@@ -302,6 +337,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     @Override
     public void OnCallBack_ClassicDeviceEncountered_GarbageName()
     {
+
         OnNewRandomDeviceEncountered_GarbageName();
 
     }
