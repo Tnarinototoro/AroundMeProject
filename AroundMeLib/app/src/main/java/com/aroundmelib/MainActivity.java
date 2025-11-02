@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -75,14 +77,20 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     // Debug ui part starts ----------------------------------------------------------------------
     private View mLog_button_divider;
     private View mUtility_DeviceList_divider;
+
+    private View mDeviceList_divider_y2;
+    private ImageView Picked_imageView;
     private LinearLayout mbuttonPanel;
     private LinearLayout mlogPanel;
+    private LinearLayout mBypassPanel;
 
     private LinearLayout mUtilityPanel;
     private LinearLayout mDeviceListPanel;
     private EditText mInputMessage;
     private Button mButton_StartScan;
     private Button mButton_CancelScan;
+
+    private Button mButton_Pick;
     private boolean mLogViewautoScroll = true;
     private ListView mSp_Device_listView;
     private ListView mRandom_Device_listView;
@@ -140,6 +148,8 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
     private DIY_CommuManager mDIY_CommuManagerInstace=null;
 
+
+    private DIY_PassByManager mDIY_PassByManagerInstace=null;
 
 
 
@@ -257,12 +267,16 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
                 mButton_StartScan.setEnabled(true);
                 mButton_CancelScan.setEnabled(false);
 
+                mButton_Pick = this.findViewById(R.id.button_pickpic);
                 mLogTextView = findViewById(R.id.log_text_view);
                 mLogScrollView = findViewById(R.id.log_scroll_view);
                 mInputMessage = findViewById(R.id.input_message);
                 mMacAddrCountView = findViewById(R.id.Mac_Addr_Count);
                 mLog_button_divider = findViewById(R.id.divider);
                 mUtility_DeviceList_divider = findViewById(R.id.divider_y);
+                Picked_imageView=findViewById(R.id.image_send);
+                mBypassPanel= findViewById(R.id.bypass_panel);;
+                mDeviceList_divider_y2=findViewById(R.id.divider_y2);
                 mbuttonPanel = findViewById(R.id.button_panel);
                 mlogPanel = findViewById(R.id.log_panel);
 
@@ -328,6 +342,36 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
                     }
                 });
 
+                mDeviceList_divider_y2.setOnTouchListener(new View.OnTouchListener() {
+                    private float initialY;
+                    private int initialDevicePanelHeight, initialBypassPanelHeight;
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                initialY = event.getY();
+                                initialDevicePanelHeight = mDeviceListPanel.getHeight();
+                                initialBypassPanelHeight = mBypassPanel.getHeight();
+                                return true;
+                            case MotionEvent.ACTION_MOVE:
+                                float deltaY = event.getY() - initialY;
+                                int newDevicePanelHeight = initialDevicePanelHeight + (int) deltaY;
+                                int newBypassPanelHeight = initialBypassPanelHeight - (int) deltaY;
+
+                                LinearLayout.LayoutParams params =
+                                        (LinearLayout.LayoutParams) mDeviceListPanel.getLayoutParams();
+                                params.height = newDevicePanelHeight;
+                                mDeviceListPanel.setLayoutParams(params);
+
+                                params = (LinearLayout.LayoutParams) mBypassPanel.getLayoutParams();
+                                params.height = newBypassPanelHeight;
+                                mBypassPanel.setLayoutParams(params);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
             }
 
 
@@ -364,7 +408,9 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
                     }
                 });
 
-                mButton_CancelScan.setOnClickListener(new View.OnClickListener() {
+                mButton_CancelScan.setOnClickListener
+                        (new View.OnClickListener()
+                {
 
                     @Override
                     public void onClick(View arg0) {
@@ -373,6 +419,19 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
                     }
 
                 });
+
+
+                mButton_Pick.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View arg0)
+                        {
+                            if(null!=mDIY_PassByManagerInstace)
+                            {
+                                mDIY_PassByManagerInstace.openImagePicker();
+                            }
+                        }
+                });
             }
 
         }
@@ -380,6 +439,9 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
         {
             mDIY_CommuManagerInstace=new DIY_CommuManager(this,getApplicationContext());
             mDIY_CommuManagerInstace.setCommuManagerReportSchema(this);
+
+
+            mDIY_PassByManagerInstace=new DIY_PassByManager(this);
         }
 
 
@@ -435,6 +497,16 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
                 DIY_PermissionHelper.showEnableBluetoothDialog(this);
             }
         }
+        mDIY_PassByManagerInstace.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DIY_CommuUtils.REQUEST_OPEN_PIC && resultCode == Activity.RESULT_OK && data != null)
+        {
+            Uri selectedImage =mDIY_PassByManagerInstace.GetChosen_Uri();
+
+            appendToLog("图片已选择：" + selectedImage.toString(), DIY_CommuUtils.LogLevel.INFO);
+            Picked_imageView.setImageURI(selectedImage);
+            //imageView.setImageURI(selectedImage);
+            //nativeOnImageSelected(path);
+        }
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
@@ -448,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
         if (DIY_PermissionHelper.handlePermissionsResult(this, requestCode, permissions, grantResults))
         {
 
-           mDIY_CommuManagerInstace.StartAroundMeService();
+            mDIY_CommuManagerInstace.StartAroundMeService();
         }
 
 

@@ -23,13 +23,6 @@ public class DIY_PermissionHelper {
     public static final int REQUEST_CODE_PERMISSIONS = 1001;
     public static final int REQUEST_ENABLE_BT = 2001; // 新增常量
 
-    // 删除掉 ActivityResultLauncher，不再使用 AndroidX 组件
-    // private static androidx.activity.result.ActivityResultLauncher<android.content.Intent> enableBluetoothLauncher = null;
-
-    /** 初始化不再需要 — UnrealActivity 不支持 registerForActivityResult，所以删掉 */
-    // public static void initializeBluetoothLauncher(final android.app.Activity activity) { ... }
-    // ↑ 直接删除
-
     /** 检查并尝试启用蓝牙 */
     public static boolean ensureBluetoothEnabled(final Activity activity) {
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();

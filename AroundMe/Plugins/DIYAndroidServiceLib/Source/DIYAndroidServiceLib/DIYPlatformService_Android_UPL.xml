@@ -79,7 +79,8 @@
     <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_PermissionHelper.java"
               dst="$S(BuildDir)/src/com/aroundmelib/DIY_PermissionHelper.java" />
 
-
+    <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_PassByManager.java"
+              dst="$S(BuildDir)/src/com/aroundmelib/DIY_PassByManager.java" />
 
 
 

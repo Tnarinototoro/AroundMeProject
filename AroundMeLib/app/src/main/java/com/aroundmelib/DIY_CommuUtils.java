@@ -30,6 +30,7 @@ public class DIY_CommuUtils
 
     public static final int REQUEST_ENABLE_BT = 999;
 
+    public static final int REQUEST_OPEN_PIC=1002;
 
     public static double calculateDistance(double rssi) {
         double RSSI_BASE = -69.0;

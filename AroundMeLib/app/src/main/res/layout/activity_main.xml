@@ -15,7 +15,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:weightSum="1"
+        android:weightSum="3"
         android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -26,7 +26,7 @@
             android:id="@+id/utility_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -46,6 +46,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Stop" />
+
+                <Button
+                    android:id="@+id/button_pickpic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pick" />
 
                 <TextView
                     android:id="@+id/Mac_Addr_Count"
@@ -106,7 +112,7 @@
             android:id="@+id/Device_list_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -153,6 +159,86 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/divider_y2"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#000000"/>
+
+        <LinearLayout
+            android:id="@+id/bypass_panel"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <!-- 发送区 -->
+            <LinearLayout
+                android:id="@+id/panel_send"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_send_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Send → To: [Test]" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical|horizontal">
+
+                    <ImageView
+                        android:id="@+id/image_send"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:contentDescription="Sent image preview"/>
+                </ScrollView>
+            </LinearLayout>
+
+            <!-- 中间分隔条 -->
+            <View
+                android:id="@+id/divider_x"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:background="#000000"/>
+
+            <!-- 接收区 -->
+            <LinearLayout
+                android:id="@+id/panel_receive"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_receive_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="← Received From: [Test]" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical|horizontal">
+
+                    <ImageView
+                        android:id="@+id/image_receive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:contentDescription="Sent image preview"/>
+                </ScrollView>
+            </LinearLayout>
+        </LinearLayout>
+
 
     </LinearLayout>
 
