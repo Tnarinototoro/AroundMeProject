@@ -1,6 +1,7 @@
 package com.aroundmelib;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -17,6 +18,8 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@SuppressLint("MissingPermission")
 public class DIY_PermissionHelper {
 
     private static final String TAG = "DIY_PermissionHelper";

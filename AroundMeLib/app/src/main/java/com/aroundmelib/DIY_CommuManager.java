@@ -527,6 +527,11 @@ public class DIY_CommuManager
                 appendToLog("Received msg from c device: " +
                         device.getName() + "@" + device.getAddress() +
                         " msg:" + receivedData);
+
+                if(mReportSchema!=null)
+                {
+                    mReportSchema.PostMsgReceivedFromCDevice(receivedData);
+                }
             }
         }
 

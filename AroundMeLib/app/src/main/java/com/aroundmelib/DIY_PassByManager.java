@@ -137,4 +137,31 @@ public class DIY_PassByManager
         }
         return null;
     }
+
+
+
+    /** 初始化 WiFi Direct 连接模块 */
+    public void initialize() {
+        // TODO: 初始化 P2P 连接管理器、注册广播等
+    }
+
+    /** 发送文件（图片、音频等） */
+    public void sendFile(File file) {
+        // TODO: 建立 socket 连接并发送
+    }
+
+    /** 接收文件并保存 */
+    public void startReceive() {
+        // TODO: 开启 socket server 等待对方连接
+    }
+
+    /** 接收完成后的回调 */
+    private void onFileReceived(File file) {
+        // TODO: 通知 UI 或 DIY_Service 更新 ReceivedImageView
+    }
+
+    /** 清理资源 */
+    public void release() {
+        // TODO: 关闭 socket、注销广播
+    }
 }

@@ -286,6 +286,15 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     }
 
     @Override
+    public void PostMsgReceivedFromCDevice(String inText)
+    {
+        DIY_CommuManagerReportSchema.super.PostMsgReceivedFromCDevice(inText);
+
+
+
+    }
+
+    @Override
     public void OnPostMainUpdate()
     {
 

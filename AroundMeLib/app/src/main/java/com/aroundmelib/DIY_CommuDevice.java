@@ -1,5 +1,6 @@
 package com.aroundmelib;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressLint("MissingPermission")
 public class DIY_CommuDevice {
 
     public static native void onConnect(long callbackAddr);
@@ -49,6 +51,7 @@ public class DIY_CommuDevice {
         return mDeviceName + "@Mac:" + mRegisteredPlayerDeviceMacAddr + "@Dist:" + String.format("%.2f", mDistance);
     }
     public void initCallbacks(long callbackAddr) { mCallbackAddr = callbackAddr; }
+
 
     public void connect() {
         mConnection = mDevice.connectGatt(mActivity, false, getGattCallback());

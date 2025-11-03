@@ -72,6 +72,10 @@ public interface DIY_CommuManagerReportSchema
     {
         return;
     }
+    default void PostMsgReceivedFromCDevice(String inText)
+    {
+        return;
+    }
     default String GetInputMessage()
     {
         return "null";

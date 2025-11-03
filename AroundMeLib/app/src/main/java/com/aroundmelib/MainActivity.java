@@ -580,6 +580,15 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     }
 
     @Override
+    public void PostMsgReceivedFromCDevice(String inText)
+    {
+        DIY_CommuManagerReportSchema.super.PostMsgReceivedFromCDevice(inText);
+
+
+
+    }
+
+    @Override
     public void OnPostMainUpdate()
     {
 
