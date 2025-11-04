@@ -16,6 +16,7 @@ class AROUNDME_API UDIY_GameInstanceSubsystem : public UGameInstanceSubsystem
 
 public:
     virtual void Initialize(FSubsystemCollectionBase &Collection) override;
+    virtual void Deinitialize() override;
     virtual void OnWorldChange(UWorld *NewWorld);
     virtual void OnWorldInitialized(UWorld *NewWorld);
 };

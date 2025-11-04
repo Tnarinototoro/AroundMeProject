@@ -3,24 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Subsystems/WorldSubsystem.h"
-#include "DIY_WorldSubsystem.generated.h"
+#include "DIY_GameInstanceSubsystem.h"
+#include "DIY_TickableWorldSubsystem.generated.h"
 
-/**
- *
- */
 UCLASS(Abstract)
-class AROUNDME_API UDIY_WorldSubsystem : public UWorldSubsystem
+class AROUNDME_API UDIY_TickableWorldSubsystem : public UTickableWorldSubsystem
 {
     GENERATED_BODY()
 
 public:
-    virtual void Initialize(FSubsystemCollectionBase &Collection) override;
-
     virtual bool ShouldCreateSubsystem(UObject *Outer) const override;
     virtual bool DoesSupportWorldType(const EWorldType::Type WorldType) const override;
 
-protected:
-    virtual void OnWorldActorsBeginPlay() {};
+    virtual TStatId GetStatId() const override;
 };
-

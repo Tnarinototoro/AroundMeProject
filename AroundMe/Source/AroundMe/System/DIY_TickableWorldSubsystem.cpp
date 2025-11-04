@@ -1,22 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "DIY_WorldSubsystem.h"
+#include "DIY_TickableWorldSubsystem.h"
 
-void UDIY_WorldSubsystem::Initialize(FSubsystemCollectionBase &Collection)
-{
-    Super::Initialize(Collection);
+#include "Misc/OutputDeviceNull.h"
 
-    if (GetWorldRef().GetBegunPlay())
-    {
-        OnWorldActorsBeginPlay();
-    }
-    else
-    {
-        GetWorldRef().OnWorldBeginPlay.AddUObject(this, &UDIY_WorldSubsystem::OnWorldActorsBeginPlay);
-    }
-}
-
-bool UDIY_WorldSubsystem::ShouldCreateSubsystem(UObject *Outer) const
+bool UDIY_TickableWorldSubsystem::ShouldCreateSubsystem(UObject *Outer) const
 {
     // if (UWorld *World = Cast<UWorld>(Outer))
     // {
@@ -31,8 +19,12 @@ bool UDIY_WorldSubsystem::ShouldCreateSubsystem(UObject *Outer) const
     return Super::ShouldCreateSubsystem(Outer);
 }
 
-bool UDIY_WorldSubsystem::DoesSupportWorldType(const EWorldType::Type WorldType) const
+bool UDIY_TickableWorldSubsystem::DoesSupportWorldType(const EWorldType::Type WorldType) const
 {
     return WorldType == EWorldType::Game || WorldType == EWorldType::PIE;
 }
 
+TStatId UDIY_TickableWorldSubsystem::GetStatId() const
+{
+    RETURN_QUICK_DECLARE_CYCLE_STAT(UDIY_TickableWorldSubsystem, STATGROUP_Tickables);
+}

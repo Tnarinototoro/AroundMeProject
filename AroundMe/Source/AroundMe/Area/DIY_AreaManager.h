@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "Subsystems/WorldSubsystem.h"
+#include "../System/DIY_WorldSubsystem.h"
 #include "DIY_AreaDefines.h"
 // #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "DIY_AreaManager.generated.h"
 
 UCLASS()
-class AROUNDME_API UDIY_AreaManager : public UWorldSubsystem
+class AROUNDME_API UDIY_AreaManager : public UDIY_WorldSubsystem
 {
     GENERATED_BODY()
 

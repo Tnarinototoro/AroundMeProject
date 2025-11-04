@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/Actor.h"
-#include "../System/DIY_WorldSubsystem.h"
+#include "../System/DIY_TickableWorldSubsystem.h"
 
 #include "DIY_DebugImGuiSubsystem.generated.h"
 
