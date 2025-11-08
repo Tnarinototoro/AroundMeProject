@@ -1,5 +1,5 @@
 #pragma once
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 
 #include "../DIY_ImGuiProxy.h"
 

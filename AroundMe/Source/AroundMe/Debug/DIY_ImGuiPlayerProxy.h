@@ -1,6 +1,6 @@
 #pragma once
 
-// #if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 #include "DIY_ImGuiProxy.h"
 
 class FDIY_ImGuiCommonPlayerProxy : public FDIY_ImGuiProxy
@@ -31,4 +31,4 @@ public:
     virtual void UpdateMainMenu(float DeltaTime) override;
 };
 
-// #endif
+#endif

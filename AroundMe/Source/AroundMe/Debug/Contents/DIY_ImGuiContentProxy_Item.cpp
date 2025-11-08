@@ -1,4 +1,4 @@
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 #include "DIY_ImGuiContentProxy_Item.h"
 #include "../DIY_ImGui.h"
 #include "../../Player/Items/DIY_Item.h"

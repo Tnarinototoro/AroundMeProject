@@ -1,6 +1,6 @@
 
 
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 #include "DIY_ImGuiPlayerProxy.h"
 
 #include "DIY_ImGui.h"
@@ -14,6 +14,7 @@
 #include "Contents/DIY_ImGuiContentProxy_Player.h"
 #include "Contents/DIY_ImGuiContentProxy_Sky.h"
 #include "Contents/DIY_ImGuiContentProxy_Weather.h"
+#include "Contents/DIY_ImGuiContentProxy_Equip.h"
 
 extern ENGINE_API float GAverageFPS;
 
@@ -126,7 +127,8 @@ FDIY_ImGuiMainPlayerProxy::FDIY_ImGuiMainPlayerProxy(UDIY_DebugImGuiSubsystem &I
         new FDIY_ImGuiContentProxy_MusicPlayer(*this),
         new FDIY_ImGuiContentProxy_Player(*this),
         new FDIY_ImGuiContentProxy_Sky(*this),
-        new FDIY_ImGuiContentProxy_Weather(*this)
+        new FDIY_ImGuiContentProxy_Weather(*this),
+        new FDIY_ImGuiContentProxy_Equip(*this)
 
     };
 }

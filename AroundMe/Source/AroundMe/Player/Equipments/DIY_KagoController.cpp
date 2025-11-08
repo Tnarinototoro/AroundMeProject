@@ -1,5 +1,8 @@
 #include "DIY_KagoController.h"
 #include "Components/SkeletalMeshComponent.h"
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+#include "Debug/DIY_EquipmentDebugSettings.h"
+#endif
 
 
 UDIY_KagoController::UDIY_KagoController()
@@ -21,8 +24,15 @@ void UDIY_KagoController::BeginPlay()
 void UDIY_KagoController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
     Super::TickComponent(DeltaTime,TickType,ThisTickFunction);
-
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
+if(DIY_EquipmentDebugSettings::sInstance.bShowKagoDebugInfo)
+{
     DrawDebugSphere(GetWorld(),HandHead_Releasing_Point->GetComponentLocation(),10.f,12,FColor::Green);
+}
+
+#endif
+
+    
 }
 
 

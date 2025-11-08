@@ -2,7 +2,7 @@
 
 #pragma once
 
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 #include "DIY_ImGuiPositionOverride.h"
 #include <string>
 class FDIY_ImGuiContentProxy;
