@@ -7,6 +7,11 @@ void UDIY_GameInstanceSubsystem::Initialize(FSubsystemCollectionBase &Collection
     Super::Initialize(Collection);
 }
 
+void UDIY_GameInstanceSubsystem::Deinitialize()
+{
+    Super::Deinitialize();
+}
+
 void UDIY_GameInstanceSubsystem::OnWorldChange(UWorld *NewWorld)
 {
 }

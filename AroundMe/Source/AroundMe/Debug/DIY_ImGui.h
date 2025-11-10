@@ -1,6 +1,6 @@
 #pragma once
 
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 #include <imgui.h>
 #include <string>
 DECLARE_LOG_CATEGORY_CLASS(LogDIY_ImGui, Log, All);

@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/Actor.h"
-#include "../System/DIY_WorldSubsystem.h"
+#include "../System/DIY_TickableWorldSubsystem.h"
 
 #include "DIY_DebugImGuiSubsystem.generated.h"
 
@@ -22,7 +22,7 @@ public:
 
 private:
     bool bInitializedImGui = false;
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     FDIY_ImGuiProxy *ImGuiProxy = nullptr;
 
     TPimplPtr<FDIY_ImGuiMainPlayerProxy> MainPlayerProxy;

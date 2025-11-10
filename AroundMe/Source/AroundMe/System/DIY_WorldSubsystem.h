@@ -24,14 +24,3 @@ protected:
     virtual void OnWorldActorsBeginPlay() {};
 };
 
-UCLASS(Abstract)
-class AROUNDME_API UDIY_TickableWorldSubsystem : public UTickableWorldSubsystem
-{
-    GENERATED_BODY()
-
-public:
-    virtual bool ShouldCreateSubsystem(UObject *Outer) const override;
-    virtual bool DoesSupportWorldType(const EWorldType::Type WorldType) const override;
-
-    virtual TStatId GetStatId() const override;
-};

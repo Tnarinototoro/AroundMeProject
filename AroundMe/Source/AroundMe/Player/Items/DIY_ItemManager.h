@@ -5,11 +5,12 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "DIY_ItemDefines.h"
+#include "../../System/DIY_GameInstanceSubsystem.h"
 // #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "DIY_ItemManager.generated.h"
 
 UCLASS()
-class AROUNDME_API UDIY_ItemManagerSubsystem : public UGameInstanceSubsystem
+class AROUNDME_API UDIY_ItemManagerSubsystem : public UDIY_GameInstanceSubsystem
 {
     GENERATED_BODY()
 

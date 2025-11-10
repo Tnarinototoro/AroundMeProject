@@ -9,7 +9,7 @@
 // #include "Input/CommonUIActionRouterBase.h"
 #include "Misc/ConfigContext.h"
 
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 #include "ImGuiModule.h"
 #endif
 
@@ -41,7 +41,7 @@ void UDIY_DebugImGuiSubsystem::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     if (ImGuiProxy)
     {
         ImGuiProxy->Tick(DeltaTime);
@@ -53,7 +53,7 @@ void UDIY_DebugImGuiSubsystem::Initialize(FSubsystemCollectionBase &Collection)
 {
     Super::Initialize(Collection);
 
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     if (UGameInstance *GameInstance = GetWorldRef().GetGameInstance())
     {
         MainPlayerProxy = MakePimpl<FDIY_ImGuiMainPlayerProxy>(*this);
@@ -71,7 +71,7 @@ void UDIY_DebugImGuiSubsystem::Initialize(FSubsystemCollectionBase &Collection)
 
 void UDIY_DebugImGuiSubsystem::Deinitialize()
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     SaveImGuiState();
     MainPlayerProxy.Reset();
     ImGuiProxy = nullptr;
@@ -87,7 +87,7 @@ TStatId UDIY_DebugImGuiSubsystem::GetStatId() const
 
 UInputComponent *UDIY_DebugImGuiSubsystem::AcquireInputComponent()
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     if (!InputComponent)
     {
         if (UEnhancedInputComponent *EnhancedInputComponent = NewObject<UEnhancedInputComponent>(this))
@@ -204,7 +204,7 @@ void UDIY_DebugImGuiSubsystem::UpdateInput()
 
 void UDIY_DebugImGuiSubsystem::SetEnableImGui(bool bInEnable)
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     UE_LOG(LogDIY_ImGui, Log, TEXT("SetEnableImGui: %s"), bInEnable ? TEXT("true") : TEXT("false"));
     bEnableImGui = bInEnable;
     if (ImGuiProxy)
@@ -217,14 +217,14 @@ void UDIY_DebugImGuiSubsystem::SetEnableImGui(bool bInEnable)
 
 void UDIY_DebugImGuiSubsystem::ToggleEnableImGui()
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     SetEnableImGui(!bEnableImGui);
 #endif
 }
 
 void UDIY_DebugImGuiSubsystem::SetEnableMainMenuBar(bool bInEnable)
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     UE_LOG(LogDIY_ImGui, Log, TEXT("SetEnableMainMenuBar: %s"), bInEnable ? TEXT("true") : TEXT("false"));
     if (ImGuiProxy)
     {
@@ -235,7 +235,7 @@ void UDIY_DebugImGuiSubsystem::SetEnableMainMenuBar(bool bInEnable)
 
 void UDIY_DebugImGuiSubsystem::ToggleEnableMainMenuBar()
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     if (ImGuiProxy)
     {
         ImGuiProxy->bShowMainMenuBar = !ImGuiProxy->bShowMainMenuBar;
@@ -245,7 +245,7 @@ void UDIY_DebugImGuiSubsystem::ToggleEnableMainMenuBar()
 
 void UDIY_DebugImGuiSubsystem::SetEnableShowWindows(bool bInEnable)
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     UE_LOG(LogDIY_ImGui, Log, TEXT("SetEnableShowWindows: %s"), bInEnable ? TEXT("true") : TEXT("false"));
     if (ImGuiProxy)
     {
@@ -256,7 +256,7 @@ void UDIY_DebugImGuiSubsystem::SetEnableShowWindows(bool bInEnable)
 
 void UDIY_DebugImGuiSubsystem::ToggleEnableShowWindows()
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     if (ImGuiProxy)
     {
         ImGuiProxy->bShowWindows = !ImGuiProxy->bShowWindows;
@@ -266,7 +266,7 @@ void UDIY_DebugImGuiSubsystem::ToggleEnableShowWindows()
 
 void UDIY_DebugImGuiSubsystem::SetCaptureKeyMouse(bool bInCapture)
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     UE_LOG(LogDIY_ImGui, Log, TEXT("SetCaptureKeyMouse: %s"), bInCapture ? TEXT("true") : TEXT("false"));
     bKeyMouseCapture = bInCapture;
     UpdateInput();
@@ -275,7 +275,7 @@ void UDIY_DebugImGuiSubsystem::SetCaptureKeyMouse(bool bInCapture)
 
 void UDIY_DebugImGuiSubsystem::ToggleCaptureKeyMouse()
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     bKeyMouseCapture = !bKeyMouseCapture;
     UE_LOG(LogDIY_ImGui, Log, TEXT("ToggleCaptureKeyMouse: %s"), bKeyMouseCapture ? TEXT("true") : TEXT("false"));
     UpdateInput();
@@ -284,7 +284,7 @@ void UDIY_DebugImGuiSubsystem::ToggleCaptureKeyMouse()
 
 void UDIY_DebugImGuiSubsystem::SetCaptureGamepad(bool bInCapture)
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     UE_LOG(LogDIY_ImGui, Log, TEXT("SetCaptureGamepad: %s"), bInCapture ? TEXT("true") : TEXT("false"));
     bGamepadCapture = bInCapture;
     UpdateInput();
@@ -293,7 +293,7 @@ void UDIY_DebugImGuiSubsystem::SetCaptureGamepad(bool bInCapture)
 
 void UDIY_DebugImGuiSubsystem::ToggleCaptureGamepad()
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     bGamepadCapture = !bGamepadCapture;
     UE_LOG(LogDIY_ImGui, Log, TEXT("ToggleCaptureGamepad: %s"), bGamepadCapture ? TEXT("true") : TEXT("false"));
     UpdateInput();
@@ -331,7 +331,7 @@ const FString &UDIY_DebugImGuiSubsystem::GetImGuiStateIni() const
 
 void UDIY_DebugImGuiSubsystem::SaveImGuiState()
 {
-#if 1
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     if (ImGuiProxy)
     {
         ImGuiProxy->SaveProxyState();

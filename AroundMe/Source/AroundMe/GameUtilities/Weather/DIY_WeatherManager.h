@@ -1,11 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Subsystems/WorldSubsystem.h"
+#include "../../System/DIY_WorldSubsystem.h"
 #include "DIY_WeatherManager.generated.h"
 
 UCLASS()
-class AROUNDME_API UDIY_WeatherManager : public UWorldSubsystem
+class AROUNDME_API UDIY_WeatherManager : public UDIY_WorldSubsystem
 {
     GENERATED_BODY()
 
