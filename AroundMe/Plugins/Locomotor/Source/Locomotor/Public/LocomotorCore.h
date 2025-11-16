@@ -159,6 +159,7 @@ struct FLocomotorMovementSettings
 	float Acceleration = 100.f;
 	// the acceleration in cm/s/s
 	float Deceleration  = 30.f;
+    float FinalTargetDistanceScale = 1.0f;
 	// movement styles
 	TArray<EMovementStyle> Styles;
 

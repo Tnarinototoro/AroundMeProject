@@ -97,6 +97,7 @@ FRigUnit_Locomotor_Execute()
 	Settings.Movement.PhaseSpeedMin = Movement.PhaseSpeedMin;
 	Settings.Movement.Acceleration = Movement.Acceleration;
 	Settings.Movement.Deceleration = Movement.Deceleration;
+    Settings.Movement.FinalTargetDistanceScale = Movement.FinalTargetDistanceScale;
 	for (ELocomotorMovementStyle Style : Movement.Styles)
 	{
 		EMovementStyle StyleToAdd = static_cast<EMovementStyle>(Style); // cast from BP enum to internal enum

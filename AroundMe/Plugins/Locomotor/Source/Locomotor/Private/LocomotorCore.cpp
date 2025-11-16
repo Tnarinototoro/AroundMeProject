@@ -265,8 +265,21 @@ void FLocomotor::UpdateFeetTargets()
 		FLocomotorFoot& Foot = *FootPtr;
 		
 		// continuously update the final foot target
-		Foot.FinalTargetWorld = Foot.InitialRelativeToRootGoal * Settings.CurrentWorldRootGoal;
-		if (Settings.Stepping.bEnableGroundCollision)
+		
+        FTransform RawFinalTarget = Foot.InitialRelativeToRootGoal * Settings.CurrentWorldRootGoal;
+
+       
+        FVector Raw_Pelvis = Settings.CurrentWorldRootGoal.GetLocation();
+        FVector RawLoc = RawFinalTarget.GetLocation();
+
+        FVector Dir = (RawLoc - Raw_Pelvis);
+        RawLoc = Raw_Pelvis + Dir * Settings.Movement.FinalTargetDistanceScale;
+
+        RawFinalTarget.SetLocation(RawLoc);
+
+        Foot.FinalTargetWorld = RawFinalTarget;
+
+        if (Settings.Stepping.bEnableGroundCollision)
 		{
 			ProjectToGroundWithSphereCast(Foot, Foot.FinalTargetWorld);	
 		}

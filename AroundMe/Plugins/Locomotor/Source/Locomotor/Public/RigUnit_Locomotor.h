@@ -81,7 +81,7 @@ struct LOCOMOTOR_API FMovementSettings
 		SpeedMin(50.f),
 		Acceleration(100.f),
 		Deceleration(30.f),
-		GlobalTimeScale(1.f){}
+		GlobalTimeScale(1.f),FinalTargetDistanceScale(1.0f){}
 	
 	// the length of the smallest step to take in cm
 	UPROPERTY(meta = (Input))
@@ -114,6 +114,11 @@ struct LOCOMOTOR_API FMovementSettings
 	// adjust global speed of the simulation
 	UPROPERTY(meta = (Input))
 	float GlobalTimeScale = 1.f;
+
+
+    // scale the final target distance by this amount (helps with foot reach issues)
+    UPROPERTY(meta = (Input))
+	float FinalTargetDistanceScale = 1.0f;
 
 	// The the movement styles to cycle through based on speed
 	UPROPERTY(meta = (Input))
