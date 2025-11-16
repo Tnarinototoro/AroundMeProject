@@ -28,13 +28,69 @@ if not exist "%HOOKS_DIR%" (
     exit /b
 )
 
-REM -------- find printf --------
-set PRINTLF="C:\Program Files\Git\usr\bin\printf.exe"
-if not exist %PRINTLF% (
-    echo ERROR: printf not found!
+REM -------- auto-find git.exe then derive printf path (stable search) --------
+set GIT_EXE=
+set PRINTLF=
+
+echo Searching for git.exe (max depth 5)...
+
+for %%D in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
+    if exist "%%D:\" (
+
+        echo Scanning drive %%D...
+
+        REM Use DIR instead of FOR /R to avoid path-expansion bugs
+        for /f "delims=" %%F in ('dir /b /s "%%D:\git.exe" 2^>nul') do (
+
+            REM depth limit (safe computation)
+            set "FP=%%F"
+            set "P=!FP:%%D:\=!"
+            set "CNT=0"
+
+            for %%X in (!P:\=\!) do set /a CNT+=1
+
+            if !CNT! LEQ 5 (
+                set "GIT_EXE=%%F"
+                echo Found git.exe at depth !CNT!: %%F
+                goto FOUND_GIT
+            )
+        )
+    )
+)
+
+:FOUND_GIT
+
+if "%GIT_EXE%"=="" (
+    echo ERROR: git.exe NOT found on any drive within depth 5!
     pause
     exit /b
 )
+
+echo.
+echo Found git.exe:
+echo   %GIT_EXE%
+echo.
+
+REM git.exe is usually inside ".../cmd/git.exe"
+for %%P in ("%GIT_EXE%") do set "GIT_BASE=%%~dpP"
+
+set "PRINTLF=%GIT_BASE%..\usr\bin\printf.exe"
+
+echo Derived printf.exe path:
+echo   %PRINTLF%
+echo.
+
+if not exist "%PRINTLF%" (
+    echo ERROR: derived printf.exe DOES NOT EXIST
+    pause
+    exit /b
+)
+
+echo printf.exe confirmed existing.
+echo.
+
+
+
 
 REM -------- Parse EngineAssociation from uproject --------
 echo Reading EngineAssociation from uproject...
@@ -93,24 +149,25 @@ REM      WRITE SH HOOKS (SAFE VERSION)
 REM =============================================
 echo Creating post-merge...
 setlocal DisableDelayedExpansion
-%PRINTLF% "#!/bin/sh\n" > "%HOOKS_DIR%\post-merge"
+"%PRINTLF%" "#!/bin/sh\n" > "%HOOKS_DIR%\post-merge"
 endlocal & (
-    %PRINTLF% "%POSTMERGE_UNIX%\n" >> "%HOOKS_DIR%\post-merge"
+    "%PRINTLF%" "%POSTMERGE_UNIX%\n" >> "%HOOKS_DIR%\post-merge"
 )
 
 echo Creating post-checkout...
 setlocal DisableDelayedExpansion
-%PRINTLF% "#!/bin/sh\n" > "%HOOKS_DIR%\post-checkout"
+"%PRINTLF%" "#!/bin/sh\n" > "%HOOKS_DIR%\post-checkout"
 endlocal & (
-    %PRINTLF% "%POSTCHECKOUT_UNIX%\n" >> "%HOOKS_DIR%\post-checkout"
+    "%PRINTLF%" "%POSTCHECKOUT_UNIX%\n" >> "%HOOKS_DIR%\post-checkout"
 )
 
 echo Creating pre-push...
 setlocal DisableDelayedExpansion
-%PRINTLF% "#!/bin/sh\n" > "%HOOKS_DIR%\pre-push"
+"%PRINTLF%" "#!/bin/sh\n" > "%HOOKS_DIR%\pre-push"
 endlocal & (
-    %PRINTLF% "%PREPUSH_UNIX%\n" >> "%HOOKS_DIR%\pre-push"
+    "%PRINTLF%" "%PREPUSH_UNIX%\n" >> "%HOOKS_DIR%\pre-push"
 )
+
 
 
 REM =============================================
