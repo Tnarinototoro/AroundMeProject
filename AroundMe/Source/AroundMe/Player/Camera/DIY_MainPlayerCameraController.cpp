@@ -81,7 +81,7 @@ AController *UDIY_MainPlayerCameraController::AcquireOwnerPawnController()
 }
 void UDIY_MainPlayerCameraController::UpdateUpDownCam(float DeltaTime)
 {
-#if 1
+#if 0
     AController *cur_controller = AcquireOwnerPawnController();
 
     if (cur_controller)
@@ -136,7 +136,7 @@ void UDIY_MainPlayerCameraController::UpdateUpDownCam(float DeltaTime)
 void UDIY_MainPlayerCameraController::HandleMouseMoveForUpDownCam(const FVector2D &Value)
 {
     // UE_LOG(MainPlayerLog, Warning, TEXT("yYYYYY before pitch x %f, added pitch %f"), GetControlRotation().Pitch, Axis2DValue.Y * 5.0f);
-#if 1
+#if 0
 
     if (CurrentUpDownType == TargetUpDownType)
     {
@@ -169,7 +169,7 @@ void UDIY_MainPlayerCameraController::HandleMouseMoveForUpDownCam(const FVector2
     if (nullptr != cur_player_pawn)
     {
         cur_player_pawn->AddControllerYawInput(Value.X);
-        // cur_player_pawn->AddControllerPitchInput(Value.Y);
+        cur_player_pawn->AddControllerPitchInput(-Value.Y);
     }
 
     // UE_LOG(MainPlayerLog, Warning, TEXT("xxxxxxxx after pitch %f"),GetControlRotation().Pitch);
