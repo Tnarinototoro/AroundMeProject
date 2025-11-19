@@ -168,37 +168,61 @@ REM --- 缓存无效，清空并重新搜索 UE ---
 set "UE_ROOT="
 echo Cached UE_ROOT invalid, rescanning...
 
-for %%D in (C D E F G) do (
+REM -----------------------------------------
+REM   全盘 BFS 搜索 UE 目录，深度 <= 5
+REM   广度优先：所有盘深度1 -> 所有盘深度2 -> ...
+REM -----------------------------------------
+set "QUEUE="
 
+REM 初始化：把所有存在的盘根目录加入队列
+for %%D in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
     if exist "%%D:\" (
         echo Scanning drive %%D...
+        set "QUEUE=!QUEUE! "%%D:\!""
+    )
+)
 
-        for /f "delims=" %%F in ('dir /b /ad "%%D:\" 2^>nul') do (
+REM 如果没有任何盘，直接结束
+if not defined QUEUE goto FOUND_UE
 
-            set "FOLDER=%%F"
-            set "LCFOLDER=!FOLDER!"
-            set "LCFOLDER=!LCFOLDER:~0!"
+REM BFS，从深度1到5
+for /L %%L in (1,1,5) do (
+    if not defined QUEUE goto BFS_DONE
+    echo Depth %%L...
 
-            REM --- 必须包含 UE / ue / Unreal / unreal ---
-            echo !LCFOLDER! | findstr /i "ue unreal" >nul
-            if !errorlevel! neq 0 (
-                REM 不符合 UE 字样，继续下一个
-            ) else (
+    set "NEXT="
 
-                REM --- 必须匹配 5.*3 模式（major.minor） ---
-                echo !LCFOLDER! | findstr /i "%MAJOR%.*%MINOR%" >nul
-                if !errorlevel! neq 0 (
-                    REM 版本不符合，继续
-                ) else (
-                    REM 完全匹配
-                    set "UE_ROOT=%%D:\%%F"
+    for %%P in (!QUEUE!) do (
+        set "CUR=%%~P"
+        echo   [DIR] !CUR!
+
+        REM 列出当前目录的所有子目录
+        for /f "delims=" %%F in ('dir /b /ad "!CUR!" 2^>nul') do (
+            set "NAME=%%F"
+            set "FULL=!CUR!!NAME!"
+
+            REM --- 判断是否 UE 目录 ---
+            echo !NAME! | findstr /i "ue unreal" >nul
+            if !errorlevel! equ 0 (
+                echo !NAME! | findstr /i "%MAJOR%.*%MINOR%" >nul
+                if !errorlevel! equ 0 (
+                    set "UE_ROOT=!FULL!"
                     echo Found UE folder: !UE_ROOT!
                     goto FOUND_UE
                 )
             )
+
+            REM 把子目录加入下一层队列（注意尾部 \）
+            set "NEXT=!NEXT! "!FULL!\!""
         )
     )
+
+    REM 进入下一层
+    set "QUEUE=!NEXT!"
 )
+
+:BFS_DONE
+
 
 :FOUND_UE
 
