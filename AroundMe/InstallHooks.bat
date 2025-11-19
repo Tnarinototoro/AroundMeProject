@@ -29,7 +29,34 @@ if not exist "%HOOKS_DIR%" (
     exit /b
 )
 
+REM ===================================================
+REM =============== LOAD CACHE IF EXISTS ==============
+REM ===================================================
+REM *** NEW: 缓存文件，优先读取
+set "CACHE_FILE=%PROJECT_DIR%InstallHooksCache.ini"
+set "GIT_EXE="
+set "PRINTLF="
+set "UE_ROOT="
+
+if exist "%CACHE_FILE%" (
+    echo Loading cached paths from InstallHooksCache.ini...
+    for /f "usebackq tokens=1,* delims==" %%A in ("%CACHE_FILE%") do (
+        if /i "%%A"=="GIT_EXE"  set "GIT_EXE=%%B"
+        if /i "%%A"=="PRINTLF"  set "PRINTLF=%%B"
+        if /i "%%A"=="UE_ROOT"  set "UE_ROOT=%%B"
+    )
+)
+
 REM -------- auto-find git.exe then derive printf path (stable search) --------
+REM *** NEW: 如果缓存中的 git.exe / printf.exe 都存在，就直接跳过扫描
+if defined GIT_EXE if exist "%GIT_EXE%" if defined PRINTLF if exist "%PRINTLF%" (
+    echo Using cached git.exe:
+    echo   %GIT_EXE%
+    echo Using cached printf.exe:
+    echo   %PRINTLF%
+    goto AFTER_GIT_SEARCH
+)
+
 set GIT_EXE=
 set PRINTLF=
 
@@ -64,10 +91,6 @@ for %%D in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
     )
 )
 
-
-
-
-
 :FOUND_GIT
 
 if "%GIT_EXE%"=="" (
@@ -99,7 +122,8 @@ if not exist "%PRINTLF%" (
 echo printf.exe confirmed existing.
 echo.
 
-
+:AFTER_GIT_SEARCH
+REM *** NEW: git 部分结束标签，用于缓存分支和扫描分支汇合
 
 
 REM -------- Parse EngineAssociation from uproject --------
@@ -118,13 +142,20 @@ echo   EngineAssociation = %ENGINE_VERSION%
 echo.
 
 REM -------- Find matching Unreal Engine installation (fuzzy search) --------
-set UE_ROOT=
+
 
 set "MAJOR=%ENGINE_VERSION:~0,1%"
 set "MINOR=%ENGINE_VERSION:~2,1%"
 
 echo Searching Unreal Engine folders matching: UE + %MAJOR% + %MINOR%
 echo.
+
+REM *** NEW: 如果缓存中 UE_ROOT 存在且目录有效，直接复用
+if defined UE_ROOT if exist "%UE_ROOT%" (
+    echo Using cached Unreal Engine:
+    echo   %UE_ROOT%
+    goto AFTER_UE_SEARCH
+)
 
 for %%D in (C D E F G) do (
 
@@ -170,6 +201,22 @@ echo Found Unreal Engine:
 echo   %UE_ROOT%
 echo.
 
+:AFTER_UE_SEARCH
+REM *** NEW: UE 搜索结束标签，用于缓存/扫描两路汇合
+
+REM *** NEW: 在此统一保存缓存（git + printf + UE）
+if not "%GIT_EXE%"=="" if not "%PRINTLF%"=="" if not "%UE_ROOT%"=="" (
+    echo Saving cache to InstallHooksCache.ini...
+    (
+    echo GIT_EXE=%GIT_EXE%
+    echo PRINTLF=%PRINTLF%
+    echo UE_ROOT=%UE_ROOT%
+    )>"%CACHE_FILE%"
+    echo Cache saved.
+    echo.
+)
+
+
 set BUILD_BAT=%UE_ROOT%\Engine\Build\BatchFiles\Build.bat
 
 REM =============================================
@@ -179,9 +226,9 @@ set POSTMERGE_UNIX=%HOOKS_DIR%\post-merge.cmd
 set POSTCHECKOUT_UNIX=%HOOKS_DIR%\post-checkout.cmd
 set PREPUSH_UNIX=%HOOKS_DIR%\pre-push.cmd
 
-set POSTMERGE_UNIX=%POSTMERGE_UNIX:\=/%
-set POSTCHECKOUT_UNIX=%POSTCHECKOUT_UNIX:\=/%
-set PREPUSH_UNIX=%PREPUSH_UNIX:\=/%
+set POSTMERGE_UNIX=%POSTMERGE_UNIX:\=/%/
+set POSTCHECKOUT_UNIX=%POSTCHECKOUT_UNIX:\=/%/
+set PREPUSH_UNIX=%PREPUSH_UNIX:\=/%/
 
 REM =============================================
 REM      WRITE SH HOOKS (SAFE VERSION)
