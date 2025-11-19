@@ -117,17 +117,51 @@ set ENGINE_VERSION=%ENGINE_VERSION: =%
 echo   EngineAssociation = %ENGINE_VERSION%
 echo.
 
-REM -------- Find matching Unreal Engine installation --------
+REM -------- Find matching Unreal Engine installation (fuzzy search) --------
 set UE_ROOT=
 
+set "MAJOR=%ENGINE_VERSION:~0,1%"
+set "MINOR=%ENGINE_VERSION:~2,1%"
+
+echo Searching Unreal Engine folders matching: UE + %MAJOR% + %MINOR%
+echo.
+
 for %%D in (C D E F G) do (
-  if exist "%%D:\UE_%ENGINE_VERSION%" (
-      set UE_ROOT=%%D:\UE_%ENGINE_VERSION%
-  )
+
+    if exist "%%D:\" (
+        echo Scanning drive %%D...
+
+        for /f "delims=" %%F in ('dir /b /ad "%%D:\" 2^>nul') do (
+
+            set "FOLDER=%%F"
+            set "LCFOLDER=!FOLDER!"
+            set "LCFOLDER=!LCFOLDER:~0!"
+
+            REM --- 必须包含 UE / ue / Unreal / unreal ---
+            echo !LCFOLDER! | findstr /i "ue unreal" >nul
+            if !errorlevel! neq 0 (
+                REM 不符合 UE 字样，继续下一个
+            ) else (
+
+                REM --- 必须匹配 5.*3 模式（major.minor） ---
+                echo !LCFOLDER! | findstr /i "%MAJOR%.*%MINOR%" >nul
+                if !errorlevel! neq 0 (
+                    REM 版本不符合，继续
+                ) else (
+                    REM 完全匹配
+                    set "UE_ROOT=%%D:\%%F"
+                    echo Found UE folder: !UE_ROOT!
+                    goto FOUND_UE
+                )
+            )
+        )
+    )
 )
 
+:FOUND_UE
+
 if "%UE_ROOT%"=="" (
-    echo ERROR: Unreal Engine UE_%ENGINE_VERSION% not found on any drive root!
+    echo ERROR: Unreal Engine matching version %ENGINE_VERSION% not found!
     pause
     exit /b
 )
@@ -137,11 +171,6 @@ echo   %UE_ROOT%
 echo.
 
 set BUILD_BAT=%UE_ROOT%\Engine\Build\BatchFiles\Build.bat
-
-
-echo Found UE:
-echo   %UE_ROOT%
-echo.
 
 REM =============================================
 REM     PATH CONVERSION (Windows → Unix)
