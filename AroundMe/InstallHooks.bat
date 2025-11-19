@@ -48,14 +48,21 @@ if exist "%CACHE_FILE%" (
 )
 
 REM -------- auto-find git.exe then derive printf path (stable search) --------
-REM *** NEW: 如果缓存中的 git.exe / printf.exe 都存在，就直接跳过扫描
-if defined GIT_EXE if exist "%GIT_EXE%" if defined PRINTLF if exist "%PRINTLF%" (
-    echo Using cached git.exe:
-    echo   %GIT_EXE%
-    echo Using cached printf.exe:
-    echo   %PRINTLF%
-    goto AFTER_GIT_SEARCH
+REM --- 检查 git.exe 与 printf.exe 是否真的存在，不存在则清空缓存并重新扫描 ---
+if defined GIT_EXE if exist "%GIT_EXE%" (
+    if defined PRINTLF if exist "%PRINTLF%" (
+        echo Using cached git.exe:
+        echo   %GIT_EXE%
+        echo Using cached printf.exe:
+        echo   %PRINTLF%
+        goto AFTER_GIT_SEARCH
+    )
 )
+
+REM --- 缓存无效，清空并进入扫描流程 ---
+set "GIT_EXE="
+set "PRINTLF="
+echo Cached git/printf invalid, rescanning...
 
 set GIT_EXE=
 set PRINTLF=
@@ -150,12 +157,16 @@ set "MINOR=%ENGINE_VERSION:~2,1%"
 echo Searching Unreal Engine folders matching: UE + %MAJOR% + %MINOR%
 echo.
 
-REM *** NEW: 如果缓存中 UE_ROOT 存在且目录有效，直接复用
+REM --- 检查 UE_ROOT 是否存在 ---
 if defined UE_ROOT if exist "%UE_ROOT%" (
     echo Using cached Unreal Engine:
     echo   %UE_ROOT%
     goto AFTER_UE_SEARCH
 )
+
+REM --- 缓存无效，清空并重新搜索 UE ---
+set "UE_ROOT="
+echo Cached UE_ROOT invalid, rescanning...
 
 for %%D in (C D E F G) do (
 
