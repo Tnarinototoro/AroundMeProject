@@ -40,7 +40,12 @@ for %%D in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
 
         echo Scanning drive %%D...
 
-        REM Use DIR instead of FOR /R to avoid path-expansion bugs
+        REM --- 只扫描文件夹并实时打印 ---
+        for /f "delims=" %%P in ('dir "%%D:\" /ad /b 2^>nul') do (
+            echo   [DIR] %%D:\%%P
+        )
+
+        REM --- 使用你原来的逻辑找 git.exe（保持不变） ---
         for /f "delims=" %%F in ('dir /b /s "%%D:\git.exe" 2^>nul') do (
 
             REM depth limit (safe computation)
@@ -58,6 +63,10 @@ for %%D in (C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
         )
     )
 )
+
+
+
+
 
 :FOUND_GIT
 
