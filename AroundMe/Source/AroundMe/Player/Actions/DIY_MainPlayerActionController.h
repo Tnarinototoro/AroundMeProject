@@ -43,8 +43,13 @@ public:
     UFUNCTION(BlueprintCallable)
     void PlacePickedUpItem(bool inThrowFlag=true);
 
-    UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
-    EMainPlayerActingStateType CurrentActingState{EMainPlayerActingStateType::State_Base_Motion};
+    UFUNCTION(BlueprintCallable)
+    void SwitchActionState(EMainPlayerActingStateType NewState);
+
+   
+    UFUNCTION(BlueprintPure)
+    EMainPlayerActingStateType GetCurrentActionState() const;
+
     UPROPERTY(BlueprintReadWrite, Category = "DIY_MainPlayerActionController")
     bool CraftSuccessSign{false};
 
@@ -66,4 +71,12 @@ public:
 private:
     // 0--> physics   1---> pickup state no phy no collision  -1 no need to do any thing
     int TargetPhysicsState{-1};
+
+
+protected:
+    UPROPERTY(BlueprintReadOnly, Category = "DIY_MainPlayerActionController")
+    EMainPlayerActingStateType CurrentActingState{EMainPlayerActingStateType::State_Base_Motion};
+
+    UFUNCTION(BlueprintimplementableEvent, Category = "DIY_MainPlayerActionController")
+    void OnActingStateChanged(EMainPlayerActingStateType OldState ,EMainPlayerActingStateType NewState);
 };

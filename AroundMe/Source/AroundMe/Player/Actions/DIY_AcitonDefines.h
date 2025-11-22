@@ -25,6 +25,7 @@ enum class EMainPlayerActingStateType : uint8
 	State_Mining,
 	State_PickingUp,
 	State_WoodChopping,
+    State_Pray,
 	ActingState_Count
 };
 

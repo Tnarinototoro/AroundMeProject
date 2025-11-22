@@ -190,14 +190,16 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
             static bool execute_pick_up{true};
             if (execute_pick_up)
             {
-                if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_Base_Motion)
+                if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->GetCurrentActionState() == EMainPlayerActingStateType::State_Base_Motion)
                 {
                     if (nullptr != detected_actor && is_pickable)
                     {
                         AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(detected_actor, "hand_rSocket");
 
-                        AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_PickingUp;
-                        EASY_LOG_MAINPLAYER("Picked up the actor yyyyyyyy");
+
+                        
+                        AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->SwitchActionState(EMainPlayerActingStateType::State_PickingUp);
+                       
                     }
                 }
 
@@ -205,11 +207,10 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
             }
             else
             {
-                if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState == EMainPlayerActingStateType::State_PickingUp)
+                if (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->GetCurrentActionState() == EMainPlayerActingStateType::State_PickingUp)
                 {
                     AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PlacePickedUpItem();
-                    AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState = EMainPlayerActingStateType::State_Base_Motion;
-                    EASY_LOG_MAINPLAYER("PLaced the actorxxxxxxxx");
+                    AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->SwitchActionState(EMainPlayerActingStateType::State_Base_Motion);
                 }
 
                 execute_pick_up = true;

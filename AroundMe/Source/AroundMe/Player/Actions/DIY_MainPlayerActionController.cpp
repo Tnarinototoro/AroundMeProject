@@ -142,7 +142,6 @@ void UDIY_MainPlayerActionController::UpdateParams(float inDelta)
         if (nullptr != BasicStaticMeshComponent && HasImpulseTask && BasicStaticMeshComponent->IsSimulatingPhysics())
         {
             HasImpulseTask = false;
-            EASY_LOG_MAINPLAYER("YYYYYYYYYYYY item launched!!!!");
             // BasicStaticMeshComponent->AddImpulse(PulseVec, NAME_None, true);
 
             // BasicStaticMeshComponent->SetPhysicsLinearVelocity(PulseVec * mPickActionVelocityCoe);
@@ -279,6 +278,25 @@ void UDIY_MainPlayerActionController::PlacePickedUpItem(bool inThrowFlag)
             EASY_LOG_MAINPLAYER("%s placed the actor %s successfully", *GetOwner()->GetName(), *PickUpedActor->GetName());
         }
     }
+}
+
+void UDIY_MainPlayerActionController::SwitchActionState(EMainPlayerActingStateType NewState)
+{
+    if (CurrentActingState == NewState)
+    {
+        return;
+    }
+
+    OnActingStateChanged(CurrentActingState, NewState);
+
+    CurrentActingState = NewState;
+
+
+}
+
+EMainPlayerActingStateType UDIY_MainPlayerActionController::GetCurrentActionState() const
+{
+    return CurrentActingState;
 }
 
 void UDIY_MainPlayerActionController::ProcessJumpInput()

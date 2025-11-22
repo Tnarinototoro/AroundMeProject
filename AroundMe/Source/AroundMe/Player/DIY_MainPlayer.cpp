@@ -126,7 +126,7 @@ void ADIY_MainPlayer::UpdatePlayerMove(float deltaTime)
 void ADIY_MainPlayer::UpdateGameLogic(float deltaTime)
 {
 
-    switch (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->CurrentActingState)
+    switch (AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->GetCurrentActionState())
     {
     case EMainPlayerActingStateType::State_Building:
     {
