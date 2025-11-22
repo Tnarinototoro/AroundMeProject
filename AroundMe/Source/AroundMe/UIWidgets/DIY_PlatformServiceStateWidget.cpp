@@ -9,9 +9,9 @@
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/VerticalBoxSlot.h"
-#include "DIYBFL_PlatformService.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+#include "DIY_PlatformServiceSubsystem.h"
 void UDIY_PlatformServiceStateWidget::NativeConstruct()
 {
     Super::NativeConstruct();
@@ -112,7 +112,12 @@ void UDIY_PlatformServiceStateWidget::StartServiceButtonClicked()
     ensureMsgf(StartServiceButton != nullptr && nullptr != StopServiceButton, TEXT("Buttons are not initialized well"));
     StartServiceButton->SetIsEnabled(!StartServiceButton->GetIsEnabled());
     StopServiceButton->SetIsEnabled(!StopServiceButton->GetIsEnabled());
-    UDIYBFL_PlatformService::StartPlatformService();
+    
+    if (UDIYPlatformServiceSubsystem* Subsys = UDIYPlatformServiceSubsystem::Get(GetWorld()))
+    {
+        Subsys->StartPlatformService();
+    }
+    
     EASY_LOG_MAINPLAYER("StartServiceButtonClicked");
 }
 
@@ -121,6 +126,9 @@ void UDIY_PlatformServiceStateWidget::StopServiceButtonClicked()
     ensureMsgf(StartServiceButton != nullptr && nullptr != StopServiceButton, TEXT("Buttons are not initialized well"));
     StartServiceButton->SetIsEnabled(!StartServiceButton->GetIsEnabled());
     StopServiceButton->SetIsEnabled(!StopServiceButton->GetIsEnabled());
-    UDIYBFL_PlatformService::StopPlatformService();
+    if (UDIYPlatformServiceSubsystem* Subsys = UDIYPlatformServiceSubsystem::Get(GetWorld()))
+    {
+        Subsys->StopPlatformService();
+    }
     EASY_LOG_MAINPLAYER("StopServiceButtonClicked");
 }
