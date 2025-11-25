@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.aroundmelib.MainActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/Operation_Panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_pickpic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pick" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_y2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#000000"/>
+
+    <LinearLayout
+        android:id="@+id/bypass_panel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <!-- 发送区 -->
+        <LinearLayout
+            android:id="@+id/panel_send"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_send_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Send → To: [Test]" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical|horizontal">
+
+                <ImageView
+                    android:id="@+id/image_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:contentDescription="Sent image preview"/>
+            </ScrollView>
+        </LinearLayout>
+
+        <!-- 中间分隔条 -->
+        <View
+            android:id="@+id/divider_x"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="#000000"/>
+
+        <!-- 接收区 -->
+        <LinearLayout
+            android:id="@+id/panel_receive"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_receive_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="← Received From: [Test]" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical|horizontal">
+
+                <ImageView
+                    android:id="@+id/image_receive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:contentDescription="Sent image preview"/>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
