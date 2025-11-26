@@ -16,14 +16,86 @@
         android:id="@+id/Operation_Panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
+        <!-- 选图按钮 -->
         <Button
             android:id="@+id/button_pickpic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pick" />
+
+        <Button
+            android:id="@+id/button_scan_peers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan WiFi Direct Peers" />
+        <!-- TCP 端口配置 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TCP Port:" />
+
+            <EditText
+                android:id="@+id/edit_tcp_port"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:text="8988" />
+        </LinearLayout>
+
+        <!-- WiFi Direct 调试信息 -->
+        <HorizontalScrollView
+            android:id="@+id/wfd_horizontal_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scrollbars="horizontal|vertical">
+
+            <ScrollView
+                android:id="@+id/wfd_vertical_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/text_wfd_debug"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WFD: idle" />
+            </ScrollView>
+
+        </HorizontalScrollView>
     </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/panel_peers"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:background="#222222">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nearby WiFi Direct Devices:"
+            android:textColor="#ffffff"/>
+
+        <ListView
+            android:id="@+id/list_peers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
 
     <View
         android:id="@+id/divider_y2"

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -18,13 +19,28 @@ public class DIY_PassByManager
 {
     private static final String TAG = "DIY_PassByManager";
 
+    WifiP2pManager manager;
+    WifiP2pManager.Channel channel;
+
     // JNI 回调（在 C++ 侧实现）
     private native void nativeOnImageSelected(String path);
     private Activity activity;
     private Uri Chosen_Uri;
     public DIY_PassByManager(Activity activity)
     {
+
         this.activity = activity;
+        manager = (WifiP2pManager) activity.getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(activity, activity.getMainLooper(), null);
+    }
+    public WifiP2pManager GetWifiP2pManager()
+    {
+        return manager;
+    }
+
+    public WifiP2pManager.Channel GetChannel()
+    {
+        return channel;
     }
 
     public Uri GetChosen_Uri()

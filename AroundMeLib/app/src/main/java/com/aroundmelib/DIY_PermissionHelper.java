@@ -69,6 +69,15 @@ public class DIY_PermissionHelper {
         perms.add(Manifest.permission.BLUETOOTH_CONNECT);
         perms.add(Manifest.permission.BLUETOOTH_ADVERTISE);
         perms.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        perms.add(Manifest.permission.ACCESS_WIFI_STATE);
+        perms.add(Manifest.permission.CHANGE_WIFI_STATE);
+
+        perms.add(Manifest.permission.ACCESS_NETWORK_STATE);
+        perms.add(Manifest.permission.CHANGE_NETWORK_STATE);
+        perms.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+
+
+
         return perms.toArray(new String[0]);
     }
 
