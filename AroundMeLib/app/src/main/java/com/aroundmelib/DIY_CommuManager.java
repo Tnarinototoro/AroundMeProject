@@ -117,6 +117,15 @@ public class DIY_CommuManager
         mDIYGameUserEncountered_WithName_Latest =Math.max(mDIYGameUserEncountered_WithName_Latest, mDIYGameUserEncountered_WithName);
     }
 
+
+    public String GetCurrentNumStatus()
+    {
+        return String.format("Name:%d, Null:%d, User:%d",
+                mDeviceCountEncountered_WithName_Latest,
+                mDeviceCountEncountered_WithGarbageName_Latest,
+                mDIYGameUserEncountered_WithName_Latest);
+    }
+
     @SuppressLint("MissingPermission")
     private void ResetAroundMeBluetoothServiceResults()
     {

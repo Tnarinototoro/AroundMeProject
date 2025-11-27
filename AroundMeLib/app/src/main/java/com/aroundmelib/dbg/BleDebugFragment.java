@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.aroundmelib.DIY_CommuManager;
+import com.aroundmelib.DIY_CommuManagerReportSchema;
 import com.aroundmelib.DIY_CommuUtils;
 import com.aroundmelib.DIY_PassByManager;
 import com.aroundmelib.MainActivity;
@@ -34,7 +35,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class BleDebugFragment extends Fragment {
+public class BleDebugFragment extends Fragment implements DIY_CommuManagerReportSchema
+{
     public ListView mSp_Device_listView;
     public ArrayAdapter<String> mSp_deviceArrayAdapter;
     public ArrayList<String> mSp_deviceDisplayArrayList;
@@ -55,6 +57,19 @@ public class BleDebugFragment extends Fragment {
 
 
 
+
+    private DIY_CommuManager GetDIY_CommuManagerInstance()
+    {
+        MainActivity Cur_Activity =
+                (MainActivity)getActivity();
+
+        if(null!=Cur_Activity)
+        {
+            return Cur_Activity.getDIY_CommuManagerInstace();
+        }
+
+        return null;
+    }
 
     public boolean mLogViewautoScroll = true;
 
@@ -131,12 +146,11 @@ public class BleDebugFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
 
 
-        // 把原来 MainActivity.findViewById() 部分搬到这里
-        // 其他逻辑保持不动
 
         // sp device list view init
         {
@@ -291,14 +305,11 @@ public class BleDebugFragment extends Fragment {
                 @Override
                 public void onClick(View arg0)
                 {
-                    MainActivity Cur_Activity =
-                    (MainActivity)getActivity();
-
-                    if(null!=Cur_Activity)
+                    DIY_CommuManager Cur_DIY_CommuManager =GetDIY_CommuManagerInstance();
+                    if(null!=Cur_DIY_CommuManager)
                     {
-                        Cur_Activity.getDIY_CommuManagerInstace().StartAroundMeService();
+                        Cur_DIY_CommuManager.StartAroundMeService();
                     }
-
 
                 }
             });
@@ -310,12 +321,10 @@ public class BleDebugFragment extends Fragment {
                         @Override
                         public void onClick(View arg0)
                         {
-
-                            MainActivity Cur_Activity =
-                            (MainActivity)getActivity();
-                            if(null!=Cur_Activity)
+                            DIY_CommuManager Cur_DIY_CommuManager =GetDIY_CommuManagerInstance();
+                            if(null!=Cur_DIY_CommuManager)
                             {
-                                Cur_Activity.getDIY_CommuManagerInstace().StopAroundMeService();
+                                Cur_DIY_CommuManager.StopAroundMeService();
                             }
 
                         }
@@ -329,4 +338,166 @@ public class BleDebugFragment extends Fragment {
 
 
     }
+
+
+
+
+    //Interfaces!!!!
+
+    @Override
+    public void OnPostResetAroundMeBluetoothService()
+    {
+        DIY_CommuManagerReportSchema.super.OnPostResetAroundMeBluetoothService();
+
+
+        mSp_deviceDisplayArrayList.clear();
+        mRandom_deviceDisplayArrayList.clear();
+
+        mRandom_deviceArrayAdapter.notifyDataSetChanged();
+        mSp_deviceArrayAdapter.notifyDataSetChanged();
+
+        DIY_CommuManager Cur_DIY_CommuManager =GetDIY_CommuManagerInstance();
+        if(null!=Cur_DIY_CommuManager)
+        {
+            mMacAddrCountView.setText(Cur_DIY_CommuManager.GetCurrentNumStatus());
+        }
+
+
+
+    }
+
+    @Override
+    public void PostStopAroundMeService()
+    {
+        DIY_CommuManagerReportSchema.super.PostStopAroundMeService();
+        appendToLog("BLE搜索结束...", DIY_CommuUtils.LogLevel.INFO);
+        ToggleButtons();
+    }
+
+    @Override
+    public void PostStartAroundMeService()
+    {
+        DIY_CommuManagerReportSchema.super.PostStartAroundMeService();
+        ToggleButtons();
+
+    }
+
+
+    @Override
+    public void PostMsgReceivedFromPDevice(String inText)
+    {
+        DIY_CommuManagerReportSchema.super.PostMsgReceivedFromPDevice(inText);
+        // 🔄 如果当前不是调试模式（即游戏运行中），将消息回调给 UE 层
+        // 🎁 简单的消息解析逻辑：
+        // 如果消息以 "X" 或 "x" 开头，则认为是系统指令；
+        // 否则认为是游戏中收到的“礼物物品ID”。
+        if (inText.startsWith("X") || inText.startsWith("x"))
+        {
+            // TODO: 系统级指令处理
+        }
+        else
+        {
+
+        }
+    }
+
+    @Override
+    public void PostMsgReceivedFromCDevice(String inText)
+    {
+        DIY_CommuManagerReportSchema.super.PostMsgReceivedFromCDevice(inText);
+
+
+
+    }
+
+    @Override
+    public void OnPostMainUpdate()
+    {
+
+        DIY_CommuManagerReportSchema.super.OnPostMainUpdate();
+
+
+        DIY_CommuManager Cur_DIY_CommuManager =GetDIY_CommuManagerInstance();
+        if(null!=Cur_DIY_CommuManager)
+        {
+            mMacAddrCountView.setText(Cur_DIY_CommuManager.GetCurrentNumStatus());
+        }
+
+    }
+
+
+    @Override
+    public void OnSubmitInfoToUE5()
+    {
+        DIY_CommuManagerReportSchema.super.OnSubmitInfoToUE5();
+
+        DIY_CommuManager Cur_DIY_CommuManager =GetDIY_CommuManagerInstance();
+        if(null!=Cur_DIY_CommuManager)
+        {
+            appendToLog("SubmitInfoToUE5 once"+ Cur_DIY_CommuManager.GetCurrentNumStatus(), DIY_CommuUtils.LogLevel.INFO);
+        }
+
+    }
+
+    @Override
+    public void OnCallBack_BLEDeviceEncountered_GarbageName()
+    {
+    }
+    @Override
+    public void OnCallBack_NewBLEDeviceEncountered_WithName(String inText)
+    {
+        mSp_deviceArrayAdapter.notifyDataSetChanged();
+
+
+    }
+
+
+    @Override
+    public void OnCallBack_OldBLEDeviceEncountered_WithName(String inText)
+    {
+        mSp_deviceArrayAdapter.notifyDataSetChanged();
+    }
+    @Override
+    public void OnCallBack_NewClassicDeviceEncountered_WithName(String inText)
+    {
+        mRandom_deviceArrayAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void OnCallBack_OldClassicDeviceEncountered_WithName(String inText)
+    {
+        mRandom_deviceArrayAdapter.notifyDataSetChanged();
+
+
+    }
+
+    @Override
+    public void OnCallBack_ClassicDeviceEncountered_GarbageName()
+    {
+    }
+
+    @Override
+    public void onLogReport(String inText, DIY_CommuUtils.LogLevel level)
+    {
+        appendToLog(inText, level);
+
+    }
+
+    @Override
+    public ArrayList<String> GetSp_deviceDisplayArrayList() {
+        return mSp_deviceDisplayArrayList;
+    }
+
+    @Override
+    public ArrayList<String> GetRandom_deviceDisplayArrayList() {
+        return mRandom_deviceDisplayArrayList;
+    }
+
+    @Override
+    public String GetInputMessage()
+    {
+        return mInputMessage.getText().toString();
+    }
+
 }

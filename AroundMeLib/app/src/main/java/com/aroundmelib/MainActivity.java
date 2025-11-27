@@ -30,7 +30,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 
 @SuppressLint("MissingPermission")
-public class MainActivity extends AppCompatActivity implements DIY_CommuManagerReportSchema
+public class MainActivity extends AppCompatActivity
 {
 
     // Debug ui part starts ----------------------------------------------------------------------
@@ -43,13 +43,6 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
     private WifiDirectDebugFragment wifiFragment=null;
     // Debug ui part ends----------------------------------------------------------------------
 
-    private String GetCurrentNumStatus()
-    {
-        return String.format("Name:%d, Null:%d, User:%d",
-                mDIY_CommuManagerInstace.mDeviceCountEncountered_WithName_Latest,
-                mDIY_CommuManagerInstace.mDeviceCountEncountered_WithGarbageName_Latest,
-                mDIY_CommuManagerInstace.mDIYGameUserEncountered_WithName_Latest);
-    }
 
 
     private DIY_CommuManager mDIY_CommuManagerInstace=null;
@@ -78,15 +71,7 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
         }
     }
 
-    private void SubmitInfoToUE5()
-    {
-        if(bleFragment!=null)
-        {
-            bleFragment.appendToLog("SubmitInfoToUE5 once"+ GetCurrentNumStatus(), DIY_CommuUtils.LogLevel.INFO);
-        }
 
-
-    }
 
 
     // activity events start
@@ -135,10 +120,11 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
         {
             mDIY_CommuManagerInstace=new DIY_CommuManager(this,getApplicationContext());
-            mDIY_CommuManagerInstace.setCommuManagerReportSchema(this);
+            mDIY_CommuManagerInstace.setCommuManagerReportSchema(bleFragment);
 
 
             mDIY_PassByManagerInstace=new DIY_PassByManager(this);
+            mDIY_PassByManagerInstace.setPassByManagerReportSchema(wifiFragment);
         }
 
 
@@ -222,142 +208,6 @@ public class MainActivity extends AppCompatActivity implements DIY_CommuManagerR
 
     }
 
-    @Override
-    public void OnPostResetAroundMeBluetoothService()
-    {
-        DIY_CommuManagerReportSchema.super.OnPostResetAroundMeBluetoothService();
-
-
-        bleFragment.mSp_deviceDisplayArrayList.clear();
-        bleFragment.mRandom_deviceDisplayArrayList.clear();
-
-        bleFragment.mRandom_deviceArrayAdapter.notifyDataSetChanged();
-        bleFragment.mSp_deviceArrayAdapter.notifyDataSetChanged();
-        bleFragment.mMacAddrCountView.setText(GetCurrentNumStatus());
-
-    }
-
-    @Override
-    public void PostStopAroundMeService()
-    {
-        DIY_CommuManagerReportSchema.super.PostStopAroundMeService();
-        appendToLog("BLE搜索结束...", DIY_CommuUtils.LogLevel.INFO);
-        bleFragment.ToggleButtons();
-    }
-
-    @Override
-    public void PostStartAroundMeService()
-    {
-        DIY_CommuManagerReportSchema.super.PostStartAroundMeService();
-        bleFragment.ToggleButtons();
-
-    }
-
-
-    @Override
-    public void PostMsgReceivedFromPDevice(String inText)
-    {
-        DIY_CommuManagerReportSchema.super.PostMsgReceivedFromPDevice(inText);
-        // 🔄 如果当前不是调试模式（即游戏运行中），将消息回调给 UE 层
-        // 🎁 简单的消息解析逻辑：
-        // 如果消息以 "X" 或 "x" 开头，则认为是系统指令；
-        // 否则认为是游戏中收到的“礼物物品ID”。
-        if (inText.startsWith("X") || inText.startsWith("x"))
-        {
-            // TODO: 系统级指令处理
-        }
-        else
-        {
-
-        }
-    }
-
-    @Override
-    public void PostMsgReceivedFromCDevice(String inText)
-    {
-        DIY_CommuManagerReportSchema.super.PostMsgReceivedFromCDevice(inText);
-
-
-
-    }
-
-    @Override
-    public void OnPostMainUpdate()
-    {
-
-        DIY_CommuManagerReportSchema.super.OnPostMainUpdate();
-
-        bleFragment.mMacAddrCountView.setText(GetCurrentNumStatus());
-    }
-
-
-    @Override
-    public void OnSubmitInfoToUE5()
-    {
-        DIY_CommuManagerReportSchema.super.OnSubmitInfoToUE5();
-        SubmitInfoToUE5();
-    }
-
-    @Override
-    public void OnCallBack_BLEDeviceEncountered_GarbageName()
-    {
-    }
-    @Override
-    public void OnCallBack_NewBLEDeviceEncountered_WithName(String inText)
-    {
-        bleFragment.mSp_deviceArrayAdapter.notifyDataSetChanged();
-
-
-    }
-
-
-    @Override
-    public void OnCallBack_OldBLEDeviceEncountered_WithName(String inText)
-    {
-        bleFragment.mSp_deviceArrayAdapter.notifyDataSetChanged();
-    }
-    @Override
-    public void OnCallBack_NewClassicDeviceEncountered_WithName(String inText)
-    {
-        bleFragment.mRandom_deviceArrayAdapter.notifyDataSetChanged();
-
-    }
-
-    @Override
-    public void OnCallBack_OldClassicDeviceEncountered_WithName(String inText)
-    {
-        bleFragment.mRandom_deviceArrayAdapter.notifyDataSetChanged();
-
-
-    }
-
-    @Override
-    public void OnCallBack_ClassicDeviceEncountered_GarbageName()
-    {
-    }
-
-    @Override
-    public void onLogReport(String inText, DIY_CommuUtils.LogLevel level)
-    {
-        appendToLog(inText, level);
-
-    }
-
-    @Override
-    public ArrayList<String> GetSp_deviceDisplayArrayList() {
-        return bleFragment.mSp_deviceDisplayArrayList;
-    }
-
-    @Override
-    public ArrayList<String> GetRandom_deviceDisplayArrayList() {
-        return bleFragment.mRandom_deviceDisplayArrayList;
-    }
-
-    @Override
-    public String GetInputMessage()
-    {
-        return bleFragment.mInputMessage.getText().toString();
-    }
 
     // activity events end
 }

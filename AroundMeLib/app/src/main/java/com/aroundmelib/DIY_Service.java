@@ -87,6 +87,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
 
     private DIY_CommuManager mCommuManager = null;
+    private DIY_PassByManager mPassByManager =null;
     private Handler handler;
     private Runnable logTask;
     private NotificationManager notificationManager;
@@ -97,25 +98,6 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     {
         OnNewLogGenerated(text);
     }
-    private void SubmitInfoToUE5()
-    {
-
-        //no more needed to do this!
-       OnSubmittingBypassData_GarbageNames(mCommuManager.mDeviceCountEncountered_WithGarbageName_Latest);
-
-
-       OnSubmittingBypassData_WithNames(mCommuManager.mDeviceCountEncountered_WithName_Latest);
-        OnSubmittingBaypassData_GameUser(mCommuManager.mDIYGameUserEncountered_WithName_Latest);
-
-
-       appendToLog("SubmitInfoToUE5 once"
-
-                       //+ GetCurrentNumStatus()
-               , DIY_CommuUtils.LogLevel.INFO);
-
-    }
-
-
 
     @Override
     public void onCreate() {
@@ -162,6 +144,8 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
         mCommuManager=new DIY_CommuManager(BoundActivity,BoundActivity.getApplicationContext());
         mCommuManager.setCommuManagerReportSchema(this);
+
+
 
         // 👉 定时任务：每秒更新通知内容
         handler = new Handler();
@@ -307,7 +291,18 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public void OnSubmitInfoToUE5()
     {
         DIY_CommuManagerReportSchema.super.OnSubmitInfoToUE5();
-        SubmitInfoToUE5();
+        //no more needed to do this!
+        OnSubmittingBypassData_GarbageNames(mCommuManager.mDeviceCountEncountered_WithGarbageName_Latest);
+
+
+        OnSubmittingBypassData_WithNames(mCommuManager.mDeviceCountEncountered_WithName_Latest);
+        OnSubmittingBaypassData_GameUser(mCommuManager.mDIYGameUserEncountered_WithName_Latest);
+
+
+        appendToLog("SubmitInfoToUE5 once"
+
+                //+ GetCurrentNumStatus()
+                , DIY_CommuUtils.LogLevel.INFO);
     }
 
     @Override

@@ -1,11 +1,16 @@
 package com.aroundmelib;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Environment;
@@ -14,11 +19,19 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DIY_PassByManager
 {
     private static final String TAG = "DIY_PassByManager";
 
+    private DIY_PassByManagerReportSchema mReportSchema=null;
+
+    public void setPassByManagerReportSchema(DIY_PassByManagerReportSchema inSchema)
+    {
+        mReportSchema = inSchema;
+    }
     WifiP2pManager manager;
     WifiP2pManager.Channel channel;
 
@@ -26,6 +39,8 @@ public class DIY_PassByManager
     private native void nativeOnImageSelected(String path);
     private Activity activity;
     private Uri Chosen_Uri;
+
+    private final List<WifiP2pDevice> mLastPeers = new ArrayList<>();
     public DIY_PassByManager(Activity activity)
     {
 
@@ -60,6 +75,35 @@ public class DIY_PassByManager
         intent.setType("image/*");
         activity.startActivityForResult(Intent.createChooser(intent, "Select Image"), DIY_CommuUtils.REQUEST_OPEN_PIC);
     }
+
+    WifiP2pManager.PeerListListener peerListListener =
+            new WifiP2pManager.PeerListListener() {
+
+                @Override
+                public void onPeersAvailable(WifiP2pDeviceList peers)
+                {
+
+                    if(mReportSchema!=null)
+                    {
+                        mReportSchema.onPeersAvailable(peers);
+                    }
+
+                }
+            };
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @SuppressLint("MissingPermission")
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action))
+            {
+                manager.requestPeers(channel, peerListListener);
+
+
+            }
+        }
+    };
 
     // 必须由持有的 Activity 的 onActivityResult 转发过来
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -154,7 +198,21 @@ public class DIY_PassByManager
         return null;
     }
 
+    public void onResume()
+    {
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        activity.registerReceiver(receiver, filter);
+
+    }
+
+
+    public void onPause()
+    {
+
+        activity.unregisterReceiver(receiver);
+    }
 
     /** 初始化 WiFi Direct 连接模块 */
     public void initialize() {

@@ -2,6 +2,7 @@ package com.aroundmelib.dbg;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,15 +31,19 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.aroundmelib.DIY_CommuManagerReportSchema;
 import com.aroundmelib.DIY_PassByManager;
+import com.aroundmelib.DIY_PassByManagerReportSchema;
 import com.aroundmelib.MainActivity;
 import com.aroundmelib.R;
 
 import java.util.ArrayList;
 
-public class WifiDirectDebugFragment extends Fragment {
+public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManagerReportSchema
+{
 
-    public WifiDirectDebugFragment() {
+    public WifiDirectDebugFragment()
+    {
     }
 
     private Button mButton_Pick;
@@ -56,69 +61,51 @@ public class WifiDirectDebugFragment extends Fragment {
     private ArrayAdapter<String> mPeerListAdapter;
     private ArrayList<String> mPeerDisplayList;
 
-    BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
 
-            if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action))
-            {
-                MainActivity Cur_Activity =
-                        (MainActivity) getActivity();
+    DIY_PassByManager GetDIY_PassByManagerInstace()
+    {
+        MainActivity Cur_Activity =
+                (MainActivity)getActivity();
 
-                DIY_PassByManager Cur_PassByManager =
-                        Cur_Activity.getDIY_PassByManagerInstace();
-
-                if(null!=Cur_PassByManager)
-                {
-                    Cur_PassByManager.GetWifiP2pManager().requestPeers(Cur_PassByManager.GetChannel(), peerListListener);
-
-                }
-
-
-            }
+        if(null!=Cur_Activity)
+        {
+            return Cur_Activity.getDIY_PassByManagerInstace();
         }
-    };
+
+        return null;
+
+    }
 
     @Override
     public void onResume()
     {
         super.onResume();
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        getActivity().registerReceiver(receiver, filter);
+        DIY_PassByManager Cur_PassByManager = GetDIY_PassByManagerInstace();
+
+        if(null!=Cur_PassByManager)
+        {
+            Cur_PassByManager.onResume();
+        }
+
     }
 
     @Override
-    public void onPause() {
+    public void onPause()
+    {
         super.onPause();
-        getActivity().unregisterReceiver(receiver);
+
+        DIY_PassByManager Cur_PassByManager = GetDIY_PassByManagerInstace();
+
+        if(null!=Cur_PassByManager)
+        {
+            Cur_PassByManager.onPause();
+        }
     }
 
 
 
-    WifiP2pManager.PeerListListener peerListListener =
-            new WifiP2pManager.PeerListListener() {
 
-                @Override
-                public void onPeersAvailable(WifiP2pDeviceList peers) {
-
-                    // 清空 UI 的设备列表
-                    mPeerDisplayList.clear();
-
-                    // 把扫描到的设备逐个加入 UI 列表
-                    for (WifiP2pDevice device : peers.getDeviceList()) {
-                        mPeerDisplayList.add(device.deviceName + "\n" + device.deviceAddress);
-                    }
-
-                    // 刷新 UI 显示
-                    mPeerListAdapter.notifyDataSetChanged();
-
-                    // 写入 debug log
-                    appendWfdLog("Peers found: " + peers.getDeviceList().size());
-                }
-            };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -146,6 +133,7 @@ public class WifiDirectDebugFragment extends Fragment {
         });
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -256,4 +244,25 @@ public class WifiDirectDebugFragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onPeersAvailable(WifiP2pDeviceList peers)
+    {
+        DIY_PassByManagerReportSchema.super.onPeersAvailable(peers);
+
+        // 清空 UI 的设备列表
+        mPeerDisplayList.clear();
+
+        // 把扫描到的设备逐个加入 UI 列表
+        for (WifiP2pDevice device : peers.getDeviceList()) {
+            mPeerDisplayList.add(device.deviceName + "\n" + device.deviceAddress);
+        }
+
+        // 刷新 UI 显示
+        mPeerListAdapter.notifyDataSetChanged();
+
+        // 写入 debug log
+        appendWfdLog("Peers found: " + peers.getDeviceList().size());
+
+    }
 }
