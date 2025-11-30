@@ -1,6 +1,7 @@
 package com.aroundmelib;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Looper;
 import android.util.Log;
 import java.util.UUID;
@@ -17,6 +18,41 @@ public class DIY_CommuUtils
         DEBUG,      // 调试信息
         SUCCESS     // 成功或确认信息
     }
+
+    public static class DIY_WfdPeer {
+
+        public String deviceName;
+        public String macAddress;
+        public int status;  // WifiP2pDevice status
+        public boolean isConnected;
+        public boolean isGroupOwner;
+        public long lastSeenTime;
+
+        public DIY_WfdPeer(WifiP2pDevice dev) {
+            update(dev);
+        }
+
+        public void update(WifiP2pDevice dev) {
+            deviceName = dev.deviceName;
+            macAddress = dev.deviceAddress;
+            status = dev.status;
+            isConnected = (dev.status == WifiP2pDevice.CONNECTED);
+            isGroupOwner = dev.isGroupOwner();
+        }
+
+        public String statusString() {
+            switch (status) {
+                case WifiP2pDevice.AVAILABLE: return "AVAILABLE";
+                case WifiP2pDevice.CONNECTED: return "CONNECTED";
+                case WifiP2pDevice.INVITED: return "INVITED";
+                case WifiP2pDevice.FAILED: return "FAILED";
+                case WifiP2pDevice.UNAVAILABLE: return "UNAVAILABLE";
+            }
+            return "UNKNOWN";
+        }
+    }
+
+
 
     // Base UUID 按照标准定义
     private static final long MSB = 0x0000000000001000L;

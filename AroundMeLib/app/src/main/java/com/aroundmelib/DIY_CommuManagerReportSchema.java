@@ -32,7 +32,7 @@ public interface DIY_CommuManagerReportSchema
     {
         return;
     }
-    default void onLogReport(String inText,DIY_CommuUtils.LogLevel inLogLevel)
+    default void onBLELogReport(String inText, DIY_CommuUtils.LogLevel inLogLevel)
     {
         return;
     }

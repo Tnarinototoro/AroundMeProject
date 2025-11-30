@@ -81,7 +81,9 @@
 
     <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_PassByManager.java"
               dst="$S(BuildDir)/src/com/aroundmelib/DIY_PassByManager.java" />
-
+	
+	<copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_PassByManagerReportSchema.java"
+              dst="$S(BuildDir)/src/com/aroundmelib/DIY_PassByManagerReportSchema.java" />
 
 
 </prebuildCopies>

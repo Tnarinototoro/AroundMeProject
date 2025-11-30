@@ -14,7 +14,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
+public class DIY_Service extends Service implements DIY_CommuManagerReportSchema, DIY_PassByManagerReportSchema
 {
     private static final String TAG = "DIY_Service";
     private static final String CHANNEL_ID = "DIYServiceChannel";
@@ -145,6 +145,9 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         mCommuManager=new DIY_CommuManager(BoundActivity,BoundActivity.getApplicationContext());
         mCommuManager.setCommuManagerReportSchema(this);
 
+
+        mPassByManager=new DIY_PassByManager(BoundActivity);
+        mPassByManager.setPassByManagerReportSchema(this);
 
 
         // 👉 定时任务：每秒更新通知内容
@@ -347,11 +350,18 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     }
 
     @Override
-    public void onLogReport(String inText, DIY_CommuUtils.LogLevel level)
+    public void onWIFILogReport(String inText, DIY_CommuUtils.LogLevel level)
     {
         appendToLog(inText, level);
 
     }
+    @Override
+    public void onBLELogReport(String inText, DIY_CommuUtils.LogLevel level)
+    {
+        appendToLog(inText, level);
+
+    }
+
 
 
 

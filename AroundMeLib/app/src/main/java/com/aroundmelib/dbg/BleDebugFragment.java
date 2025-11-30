@@ -478,7 +478,7 @@ public class BleDebugFragment extends Fragment implements DIY_CommuManagerReport
     }
 
     @Override
-    public void onLogReport(String inText, DIY_CommuUtils.LogLevel level)
+    public void onBLELogReport(String inText, DIY_CommuUtils.LogLevel level)
     {
         appendToLog(inText, level);
 

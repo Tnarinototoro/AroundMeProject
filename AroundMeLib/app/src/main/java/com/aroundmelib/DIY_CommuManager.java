@@ -174,7 +174,7 @@ public class DIY_CommuManager
     {
         if(mReportSchema!=null)
         {
-            mReportSchema.onLogReport(inText, DIY_CommuUtils.LogLevel.INFO);
+            mReportSchema.onBLELogReport(inText, DIY_CommuUtils.LogLevel.INFO);
         }
     }
     @SuppressLint("MissingPermission")
@@ -186,7 +186,7 @@ public class DIY_CommuManager
 
             if(mReportSchema!=null)
             {
-                mReportSchema.onLogReport("经典蓝牙 搜索 开始~", DIY_CommuUtils.LogLevel.SUCCESS);
+                mReportSchema.onBLELogReport("经典蓝牙 搜索 开始~", DIY_CommuUtils.LogLevel.SUCCESS);
             }
 
 
@@ -994,7 +994,7 @@ public class DIY_CommuManager
             {
                 if(mReportSchema!=null)
                 {
-                    mReportSchema.onLogReport("经典蓝牙 搜索结束",DIY_CommuUtils.LogLevel.SUCCESS);
+                    mReportSchema.onBLELogReport("经典蓝牙 搜索结束",DIY_CommuUtils.LogLevel.SUCCESS);
                 }
             }
 
@@ -1056,7 +1056,7 @@ public class DIY_CommuManager
             {
                 if(null!=mReportSchema)
                 {
-                    mReportSchema.onLogReport("硬件不支持 BLE 广播",DIY_CommuUtils.LogLevel.ERROR);
+                    mReportSchema.onBLELogReport("硬件不支持 BLE 广播",DIY_CommuUtils.LogLevel.ERROR);
                 }
 
 
@@ -1065,7 +1065,7 @@ public class DIY_CommuManager
             {
                 if(null!=mReportSchema)
                 {
-                    mReportSchema.onLogReport("硬件不支持 BLE机能",DIY_CommuUtils.LogLevel.ERROR);
+                    mReportSchema.onBLELogReport("硬件不支持 BLE机能",DIY_CommuUtils.LogLevel.ERROR);
                 }
 
 

@@ -1,16 +1,8 @@
 package com.aroundmelib.dbg;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,16 +20,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.aroundmelib.DIY_CommuManagerReportSchema;
+import com.aroundmelib.DIY_CommuUtils;
 import com.aroundmelib.DIY_PassByManager;
 import com.aroundmelib.DIY_PassByManagerReportSchema;
 import com.aroundmelib.MainActivity;
 import com.aroundmelib.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManagerReportSchema
 {
@@ -60,6 +52,8 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
     private ListView mPeerListView;
     private ArrayAdapter<String> mPeerListAdapter;
     private ArrayList<String> mPeerDisplayList;
+
+
 
 
     DIY_PassByManager GetDIY_PassByManagerInstace()
@@ -103,6 +97,12 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         }
     }
 
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+    }
 
 
 
@@ -160,6 +160,28 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
                 mPeerDisplayList
         );
         mPeerListView.setAdapter(mPeerListAdapter);
+
+        mPeerListView.setOnItemClickListener((parent, view1, position, id) ->
+        {
+
+            DIY_PassByManager mgr = GetDIY_PassByManagerInstace();
+            if (mgr == null) return;
+
+            DIY_CommuUtils.DIY_WfdPeer peer = mgr.getPeerByIndex(position);
+            if (peer == null) return;
+
+            if (mgr.isConnected()
+                    && peer.macAddress.equals(mgr.getConnectedDeviceMac()))
+            {
+                mgr.disconnect();
+                return;
+            }
+
+
+            appendWfdLog("Try connect to: " + position);
+
+            mgr.connectToPeer(peer.macAddress);
+        });
         mButton_Pick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -180,23 +202,9 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
 
             DIY_PassByManager Cur_PassByManager =
                     Cur_Activity.getDIY_PassByManagerInstace();
+            Cur_PassByManager.StartScanningPeers();
 
 
-            if(null!=Cur_PassByManager)
-            {
-                Cur_PassByManager.GetWifiP2pManager().discoverPeers(Cur_PassByManager.GetChannel(), new WifiP2pManager.ActionListener()
-                {
-                    @Override
-                    public void onSuccess() {
-                        appendWfdLog("DiscoverPeers started.");
-                    }
-
-                    @Override
-                    public void onFailure(int reason) {
-                        appendWfdLog("DiscoverPeers failed: " + reason);
-                    }
-                });
-            }
 
 
         });
@@ -246,23 +254,31 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
 
 
     @Override
-    public void onPeersAvailable(WifiP2pDeviceList peers)
+    public void onReportPeersInfo(WifiP2pDeviceList rawPeers, List<DIY_CommuUtils.DIY_WfdPeer> fullPeers)
     {
-        DIY_PassByManagerReportSchema.super.onPeersAvailable(peers);
-
-        // 清空 UI 的设备列表
         mPeerDisplayList.clear();
 
-        // 把扫描到的设备逐个加入 UI 列表
-        for (WifiP2pDevice device : peers.getDeviceList()) {
-            mPeerDisplayList.add(device.deviceName + "\n" + device.deviceAddress);
+        for (DIY_CommuUtils.DIY_WfdPeer p : fullPeers) {
+
+
+            String text =
+                    p.deviceName + (p.isConnected ? " [CONNECTED]" : "[NONE]") +
+                            (p.isGroupOwner ? " [GO]" : "[NONE]") +
+                            "\n" +
+                            p.macAddress + "\n" +
+                            "status=" + p.statusString();
+
+            mPeerDisplayList.add(text);
         }
 
-        // 刷新 UI 显示
         mPeerListAdapter.notifyDataSetChanged();
+        appendWfdLog("Peers: " + fullPeers.size());
+    }
 
-        // 写入 debug log
-        appendWfdLog("Peers found: " + peers.getDeviceList().size());
-
+    @Override
+    public void onWIFILogReport(String inText, DIY_CommuUtils.LogLevel inLogLevel)
+    {
+        DIY_PassByManagerReportSchema.super.onWIFILogReport(inText,inLogLevel);
+        appendWfdLog(inText);
     }
 }
