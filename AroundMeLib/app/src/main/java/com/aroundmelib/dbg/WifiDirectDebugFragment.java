@@ -123,7 +123,9 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         return port;
     }
 
-    public void appendWfdLog(String msg) {
+    public void appendWfdLog_UIOperation(String msg)
+    {
+
         if (mWfdLogText == null) return;
 
         mWfdLogText.append("\n" + msg);
@@ -178,7 +180,7 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
             }
 
 
-            appendWfdLog("Try connect to: " + position);
+            appendWfdLog_UIOperation("Try connect to: " + position);
 
             mgr.connectToPeer(peer.macAddress);
         });
@@ -206,7 +208,7 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         });
 
         mButtonScanPeers.setOnClickListener(v -> {
-            appendWfdLog("Start discovering peers...");
+            appendWfdLog_UIOperation("Start discovering peers...");
 
             MainActivity Cur_Activity =
                     (MainActivity) getActivity();
@@ -283,13 +285,13 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         }
 
         mPeerListAdapter.notifyDataSetChanged();
-        appendWfdLog("Peers: " + fullPeers.size());
+        appendWfdLog_UIOperation("Peers: " + fullPeers.size());
     }
 
     @Override
     public void onWIFILogReport(String inText, DIY_CommuUtils.LogLevel inLogLevel)
     {
         DIY_PassByManagerReportSchema.super.onWIFILogReport(inText,inLogLevel);
-        appendWfdLog(inText);
+        appendWfdLog_UIOperation(inText);
     }
 }
