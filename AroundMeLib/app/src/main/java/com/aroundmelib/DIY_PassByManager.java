@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -173,8 +174,12 @@ public class DIY_PassByManager
 
         manager.connect(channel, config, new WifiP2pManager.ActionListener() {
             @Override
-            public void onSuccess() {
-                Log.d(TAG, "connectToPeer success: " + mac);
+            public void onSuccess()
+            {
+                if (mReportSchema != null)
+                {
+                    mReportSchema.onWIFILogReport("onnectToPeer success: " + mac, DIY_CommuUtils.LogLevel.WARNING);
+                }
 
                 if (mReportSchema != null) {
                     mReportSchema.onWIFILogReport("Connect success, waiting group formation...",  DIY_CommuUtils.LogLevel.WARNING);
@@ -182,14 +187,121 @@ public class DIY_PassByManager
             }
 
             @Override
-            public void onFailure(int reason) {
-                Log.d(TAG, "connectToPeer FAILED: " + reason);
+            public void onFailure(int reason)
+            {
+
+                if(mReportSchema!=null)
+                {
+                    mReportSchema.onWIFILogReport("connectToPeer FAILED: " + reason, DIY_CommuUtils.LogLevel.ERROR);
+                }
+
+
                 if (mReportSchema != null) {
                     mReportSchema.onWIFILogReport("Connect failed: " + reason,  DIY_CommuUtils.LogLevel.WARNING);
                 }
             }
         });
+
     }
+
+
+    @SuppressLint("MissingPermission")
+    public void resetWifiDirectState() {
+
+        if (mReportSchema != null) {
+            mReportSchema.onWIFILogReport("==== RESET WiFi Direct ====", DIY_CommuUtils.LogLevel.WARNING);
+        }
+
+        // 1. 取消正在进行的连接
+        manager.cancelConnect(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("cancelConnect OK", DIY_CommuUtils.LogLevel.WARNING);
+                }
+
+                // 2. 移除 group
+                manager.removeGroup(channel, new WifiP2pManager.ActionListener() {
+                    @Override
+                    public void onSuccess() {
+
+                        if (mReportSchema != null) {
+                            mReportSchema.onWIFILogReport("removeGroup OK", DIY_CommuUtils.LogLevel.WARNING);
+                        }
+
+                        // 3. 停止 peer 扫描
+                        stopDiscoveryAndReset();
+                    }
+
+                    @Override
+                    public void onFailure(int reason) {
+                        if (mReportSchema != null) {
+                            mReportSchema.onWIFILogReport("removeGroup FAILED: " + reason, DIY_CommuUtils.LogLevel.ERROR);
+                        }
+
+                        stopDiscoveryAndReset();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("cancelConnect FAILED: " + reason, DIY_CommuUtils.LogLevel.ERROR);
+                }
+
+                // 不管 cancel 成功与否，都继续 reset
+                stopDiscoveryAndReset();
+            }
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void stopDiscoveryAndReset() {
+
+        manager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("stopPeerDiscovery OK", DIY_CommuUtils.LogLevel.WARNING);
+                }
+
+                finishReset();
+            }
+
+            @Override
+            public void onFailure(int reason) {
+
+                // stopDiscovery 失败也没关系
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("stopPeerDiscovery FAILED: " + reason, DIY_CommuUtils.LogLevel.ERROR);
+                }
+
+                finishReset();
+            }
+        });
+    }
+
+    private void finishReset() {
+
+        // 清空状态
+        isConnected = false;
+        connectedDeviceMac = null;
+
+        // 清空缓存
+        wfdPeerMap.clear();
+        if (wfdPeerListCache != null) {
+            wfdPeerListCache.clear();
+        }
+
+        // 通知 UI 更新
+        if (mReportSchema != null) {
+            mReportSchema.onReportPeersInfo(null, new ArrayList<>());
+            mReportSchema.onWIFILogReport("WiFi Direct State RESET done.", DIY_CommuUtils.LogLevel.SUCCESS);
+        }
+    }
+
     @SuppressLint("MissingPermission")
     public void StartScanningPeers()
     {
@@ -352,54 +464,134 @@ public class DIY_PassByManager
     };
     public void startServerSocket() {
         new Thread(() -> {
+            if (mReportSchema != null) {
+                mReportSchema.onWIFILogReport("[Server] === Start ServerSocket Thread ===", DIY_CommuUtils.LogLevel.INFO);
+            }
+
             try {
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Server] Creating ServerSocket on port 8988...", DIY_CommuUtils.LogLevel.INFO);
+                }
+
                 ServerSocket serverSocket = new ServerSocket(8988);
+
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Server] ServerSocket created. Waiting for client connection...", DIY_CommuUtils.LogLevel.INFO);
+                }
+
                 Socket client = serverSocket.accept();
 
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Server] Client connected! client=" + client.getInetAddress()
+                            + " port=" + client.getPort(), DIY_CommuUtils.LogLevel.SUCCESS);
+                }
+
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Server] BufferedReader created. Waiting for client message...", DIY_CommuUtils.LogLevel.INFO);
+                }
+
                 String line = in.readLine();
 
                 if (mReportSchema != null) {
-                    mReportSchema.onWIFILogReport("From client: " + line,  DIY_CommuUtils.LogLevel.SUCCESS);
+                    mReportSchema.onWIFILogReport("[Server] Received from client: " + line, DIY_CommuUtils.LogLevel.SUCCESS);
                 }
 
-                // 回一条
-                sendMsgThroughSocket(client,
-                        buildSimpleMsg("GO Response"));
+                // 回复消息
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Server] Sending response message to client...", DIY_CommuUtils.LogLevel.INFO);
+                }
+
+                sendMsgThroughSocket(client, buildSimpleMsg("GO Response"));
+
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Server] Response sent. Closing client socket...", DIY_CommuUtils.LogLevel.INFO);
+                }
 
                 client.close();
-                serverSocket.close();
-            } catch (Exception e)
-            {
+
                 if (mReportSchema != null) {
-                    mReportSchema.onWIFILogReport("ServerSocket error : " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+                    mReportSchema.onWIFILogReport("[Server] Client socket closed. Closing ServerSocket...", DIY_CommuUtils.LogLevel.INFO);
+                }
+
+                serverSocket.close();
+
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Server] ServerSocket closed. === End Server Thread ===", DIY_CommuUtils.LogLevel.SUCCESS);
+                }
+
+            } catch (Exception e) {
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Server] ServerSocket error : " + e.getMessage(),
+                            DIY_CommuUtils.LogLevel.ERROR);
                 }
             }
         }).start();
     }
+
     public void startClientSocket(String goIp) {
         new Thread(() -> {
-            try {
-                Socket socket = new Socket(goIp, 8988);
 
-                // 发一条消息
+            if (mReportSchema != null) {
+                mReportSchema.onWIFILogReport("[Client] === Start ClientSocket Thread ===", DIY_CommuUtils.LogLevel.INFO);
+                mReportSchema.onWIFILogReport("[Client] GO IP=" + goIp + " port=8988", DIY_CommuUtils.LogLevel.INFO);
+            }
+
+            Socket socket = null;
+
+            try {
+                socket = new Socket();
+
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Client] Binding socket to WiFi Direct interface...", DIY_CommuUtils.LogLevel.INFO);
+                }
+
+                socket.bind(null);   // ★★ 必须有
+
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Client] Connecting to GO...", DIY_CommuUtils.LogLevel.INFO);
+                }
+
+                socket.connect(new InetSocketAddress(goIp, 8988), 2000); // ★★ 必须有 timeout
+
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Client] Connected! localPort=" + socket.getLocalPort(), DIY_CommuUtils.LogLevel.SUCCESS);
+                }
+
+                // 发消息
                 sendMsgThroughSocket(socket, buildSimpleMsg("Client Hello"));
 
-                // 等待回包
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Client] Message sent. Waiting for GO response...", DIY_CommuUtils.LogLevel.INFO);
+                }
+
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String line = in.readLine();
 
                 if (mReportSchema != null) {
-                    mReportSchema.onWIFILogReport("From GO: " + line,  DIY_CommuUtils.LogLevel.SUCCESS);
+                    mReportSchema.onWIFILogReport("[Client] Received from GO: " + line, DIY_CommuUtils.LogLevel.SUCCESS);
                 }
 
-                socket.close();
-
             } catch (Exception e) {
-                Log.e(TAG, "Client socket error: " + e.getMessage());
+                if (mReportSchema != null) {
+                    mReportSchema.onWIFILogReport("[Client] Client socket error: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+                }
+            } finally {
+                if (socket != null) {
+                    try {
+                        socket.close();
+                        if (mReportSchema != null) {
+                            mReportSchema.onWIFILogReport("[Client] Socket closed.", DIY_CommuUtils.LogLevel.INFO);
+                        }
+                    } catch (Exception e) {
+                    }
+                }
             }
+
         }).start();
     }
+
+
     private String buildSimpleMsg(String extra) {
         long ts = System.currentTimeMillis();
 
@@ -515,11 +707,12 @@ public class DIY_PassByManager
                 final int index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(index);
             }
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
 
-            Log.w("DIY_PassByManager", "queryColumn failed: " + e.getMessage());
-        } finally {
+        } finally
+        {
             if (cursor != null) cursor.close();
         }
         return null;

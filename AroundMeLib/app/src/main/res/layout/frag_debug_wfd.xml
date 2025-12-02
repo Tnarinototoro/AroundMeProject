@@ -30,6 +30,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Scan WiFi Direct Peers" />
+        <Button
+            android:id="@+id/button_reset_wfd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reset WiFi Direct"/>
+
         <!-- TCP 端口配置 -->
         <LinearLayout
             android:layout_width="match_parent"

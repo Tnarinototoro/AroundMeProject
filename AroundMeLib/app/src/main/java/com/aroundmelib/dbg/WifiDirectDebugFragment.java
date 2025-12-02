@@ -53,7 +53,7 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
     private ArrayAdapter<String> mPeerListAdapter;
     private ArrayList<String> mPeerDisplayList;
 
-
+    Button resetBtn;
 
 
     DIY_PassByManager GetDIY_PassByManagerInstace()
@@ -182,6 +182,17 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
 
             mgr.connectToPeer(peer.macAddress);
         });
+
+        resetBtn = view.findViewById(R.id.button_reset_wfd);
+
+        resetBtn.setOnClickListener(v -> {
+            DIY_PassByManager mgr = GetDIY_PassByManagerInstace();
+            if (mgr != null)
+            {
+                mgr.resetWifiDirectState();
+            }
+        });
+
         mButton_Pick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
