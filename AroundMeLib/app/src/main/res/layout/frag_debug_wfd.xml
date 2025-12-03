@@ -124,6 +124,36 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <!-- 文本消息输入 + 发送按钮 -->
+            <LinearLayout
+                android:id="@+id/panel_send_controls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <EditText
+                    android:id="@+id/edit_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="输入要发送的消息"
+                    android:singleLine="true"
+                    android:padding="6dp"
+                    android:background="#222222"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#888888"
+                    android:textSize="14sp"/>
+
+                <Button
+                    android:id="@+id/button_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发送"
+                    android:layout_marginLeft="6dp"/>
+            </LinearLayout>
+
+
             <TextView
                 android:id="@+id/text_send_info"
                 android:layout_width="match_parent"

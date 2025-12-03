@@ -52,7 +52,8 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
     private ListView mPeerListView;
     private ArrayAdapter<String> mPeerListAdapter;
     private ArrayList<String> mPeerDisplayList;
-
+    EditText editMessage;
+    Button btnSend;
     Button resetBtn;
 
 
@@ -154,7 +155,6 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         mWfdHScroll = view.findViewById(R.id.wfd_horizontal_scroll);
         mButtonScanPeers = view.findViewById(R.id.button_scan_peers);
         mPeerListView = view.findViewById(R.id.list_peers);
-
         mPeerDisplayList = new ArrayList<>();
         mPeerListAdapter = new ArrayAdapter<>(
                 getActivity(),
@@ -262,7 +262,15 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         });
 
 
-
+        editMessage = view.findViewById(R.id.edit_message);
+        btnSend = view.findViewById(R.id.button_send);
+        btnSend.setOnClickListener(v ->
+        {
+            String msg = editMessage.getText().toString().trim();
+            if (!msg.isEmpty())
+            {
+            }
+        });
     }
 
 
