@@ -10,12 +10,9 @@
 #include "../Logs/DIY_LogHelper.h"
 #include "Engine/StreamableManager.h"
 #include "Engine/AssetManager.h"
-
+#include "AroundMe/Debug/DIY_GlobalDebugSettings.h"
 ADIY_MusicPlayer *ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;
 
-#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-int ADIY_MusicPlayer::Dbg_Music_Hour = {-1};
-#endif
 
 ADIY_MusicPlayer::ADIY_MusicPlayer()
 {
@@ -39,12 +36,14 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
     uint8 new_hour = cur_date_time.GetHour();
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-    if (ADIY_MusicPlayer::Dbg_Music_Hour >= 0)
+    int DbgHour = DIY_GlobalDebugSettings::sInstance.OverrideBGMHour;
+    if (DbgHour >= 0)
     {
-        new_hour = (int)ADIY_MusicPlayer::Dbg_Music_Hour;
+        new_hour = (int)DbgHour;
     }
 
 #endif
+
     // EASY_LOG_MAINPLAYER("cur new hour is %d", new_hour);
     SetCurrentHour(new_hour);
 

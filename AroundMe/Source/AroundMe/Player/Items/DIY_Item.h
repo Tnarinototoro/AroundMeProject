@@ -59,9 +59,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
     const FDIY_ItemDefualtConfig &GetItemDefualtConfig();
 
-#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-    static bool Dbg_Enable_ItemInfo_Widget;
-#endif
+
 protected:
 private:
     FDIY_ItemDefualtConfig config_copy;

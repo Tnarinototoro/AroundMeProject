@@ -25,9 +25,7 @@ public:
     ADIY_MainPlayer();
 
     
-#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-    static bool Dbg_Enable_PlayerInfo_Widget;
-#endif
+
 
 
 

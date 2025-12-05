@@ -11,6 +11,6 @@ public:
     virtual void DrawWindow(float DeltaTime) override;
 
 public:
-    bool bShowPlayerState{false};
+
 };
 #endif

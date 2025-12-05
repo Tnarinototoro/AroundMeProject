@@ -18,10 +18,8 @@
 #include "Components/WidgetComponent.h"
 #include "../UIWidgets/DIY_PlayerStateWidget.h"
 #include "Equipments/DIY_EquipmentManager.h"
+#include "AroundMe/Debug/DIY_GlobalDebugSettings.h"
 
-#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-bool ADIY_MainPlayer::Dbg_Enable_PlayerInfo_Widget = false;
-#endif
 
 // Sets default values
 ADIY_MainPlayer::ADIY_MainPlayer()
@@ -259,7 +257,7 @@ FSoftObjectPath ADIY_MainPlayer::GetHatMeshReferenceFromType(EHatType HatType)
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 void ADIY_MainPlayer::UpdatePlayerStateWidgetInfo(float inDeltaTime)
 {
-    if (!Dbg_Enable_PlayerInfo_Widget)
+    if (!DIY_GlobalDebugSettings::sInstance.bShowPlayerState)
     {
         if (PlayerState_WidgetComponent)
         {

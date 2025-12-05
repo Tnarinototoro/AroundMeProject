@@ -10,10 +10,7 @@
 #include "../Interactions/DIY_SolidnessProcessor.h"
 #include "../Interactions/DIY_TemperatureProcessor.h"
 #include "../Interactions/DIY_ConductivityProcessor.h"
-
-#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-bool ADIY_ItemBase::Dbg_Enable_ItemInfo_Widget = false;
-#endif
+#include "AroundMe/Debug/DIY_GlobalDebugSettings.h"
 
 void ADIY_ItemBase::UpdateHighLight()
 {
@@ -251,7 +248,8 @@ void ADIY_ItemBase::UpdateWidgetText_Internal(const FString &NewText)
 
 void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 {
-    if (!Dbg_Enable_ItemInfo_Widget)
+    
+    if (!DIY_GlobalDebugSettings::sInstance.bShowItemState)
     {
         if (ItemStateWidgetComponent)
         {
