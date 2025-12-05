@@ -12,7 +12,7 @@ FDIY_ImGuiContentProxy_Item::FDIY_ImGuiContentProxy_Item(FDIY_ImGuiProxy &InOwni
 void FDIY_ImGuiContentProxy_Item::DrawWindow(float DeltaTime)
 {
     ImGui::Text("ItemInfo");
-    ImGui::Checkbox("ShowItemInfo", &DIY_GlobalDebugSettings::sInstance.bShowItemState);
+    ImGui::Checkbox("ShowItemInfo", &FDIY_GlobalDebugSettings::sInstance.item.bShowItemState);
 
 }
 

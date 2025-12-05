@@ -23,7 +23,7 @@ void UDIY_KagoController::TickComponent(float DeltaTime, ELevelTick TickType, FA
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-    if (DIY_GlobalDebugSettings::sInstance.bShowKagoDebugInfo)
+    if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowKagoDebugInfo)
     {
         DrawDebugSphere(GetWorld(), HandHead_Releasing_Point->GetComponentLocation(), 10.f, 12, FColor::Green);
     }

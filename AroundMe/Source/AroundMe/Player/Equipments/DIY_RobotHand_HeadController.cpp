@@ -52,7 +52,7 @@ void UDIY_RobotHand_HeadController::UpdateParams(float inDeltatime)
             FVector real_forward_vec = -parent_hand_head_connection_point.GetRotation().GetForwardVector();
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-if(DIY_GlobalDebugSettings::sInstance.bShowHandHeadDebugInfo)
+if(FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
 {
 DrawDebugDirectionalArrow(
                 GetWorld(), parent_hand_head_connection_point.GetLocation(),
@@ -73,7 +73,7 @@ DrawDebugDirectionalArrow(
 
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-if(DIY_GlobalDebugSettings::sInstance.bShowHandHeadDebugInfo)
+if(FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
 {
             DrawDebugSphere(GetWorld(), parent_hand_head_connection_point.GetLocation(), 10.f, 12, FColor::Red);
             DrawDebugString(GetWorld(), parent_hand_head_connection_point.GetLocation(), "RightDirBone", nullptr, FColor::Red, 0.f);
@@ -109,10 +109,9 @@ void UDIY_RobotHand_HeadController::UpdateHandHeadStateMachine(float inDeltatime
 {
 
     FRotator cur_rotate = mEquipMentMesh->GetRelativeRotation();
-    
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-if(DIY_GlobalDebugSettings::sInstance.bShowHandHeadDebugInfo)
+if(FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
 {
     FString debug_str = FString::Printf(TEXT("%s SpinSpeed %f"),
                                         *UEnum::GetValueAsString(mCurrentState), CurrentSpinSpeed);

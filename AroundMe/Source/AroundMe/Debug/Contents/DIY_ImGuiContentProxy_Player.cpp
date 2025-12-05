@@ -12,7 +12,7 @@ FDIY_ImGuiContentProxy_Player::FDIY_ImGuiContentProxy_Player(FDIY_ImGuiProxy &In
 void FDIY_ImGuiContentProxy_Player::DrawWindow(float DeltaTime)
 {
     ImGui::Text("PlayerInfo");
-    ImGui::Checkbox("ShowPlayerInfo", &DIY_GlobalDebugSettings::sInstance.bShowPlayerState);
+    ImGui::Checkbox("ShowPlayerInfo", &FDIY_GlobalDebugSettings::sInstance.player.bShowPlayerState);
 }
 
 #endif
