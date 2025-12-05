@@ -12,16 +12,16 @@ FDIY_ImGuiContentProxy_Equip::FDIY_ImGuiContentProxy_Equip(FDIY_ImGuiProxy &InOw
 void FDIY_ImGuiContentProxy_Equip::DrawWindow(float DeltaTime)
 {
     ImGui::Text("PetControlRigPanel");
-    ImGui::Checkbox("ShowControlRigInfo", &DIY_GlobalDebugSettings::sInstance.bShowControlRigInfo);
-    ImGui::Checkbox("ShowKagoDebugInfo", &DIY_GlobalDebugSettings::sInstance.bShowKagoDebugInfo);
-    ImGui::Checkbox("ShowHandHeadDebugInfo", &DIY_GlobalDebugSettings::sInstance.bShowHandHeadDebugInfo);
-    ImGui::Checkbox("ShowRobotHandDebugInfo", &DIY_GlobalDebugSettings::sInstance.bShowRobotHandDebugInfo);
+    ImGui::Checkbox("ShowControlRigInfo", &FDIY_GlobalDebugSettings::sInstance.equipment.bShowControlRigInfo);
+    ImGui::Checkbox("ShowKagoDebugInfo", &FDIY_GlobalDebugSettings::sInstance.equipment.bShowKagoDebugInfo);
+    ImGui::Checkbox("ShowHandHeadDebugInfo", &FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo);
+    ImGui::Checkbox("ShowRobotHandDebugInfo", &FDIY_GlobalDebugSettings::sInstance.equipment.bShowRobotHandDebugInfo);
 
-    if (!DIY_GlobalDebugSettings::sInstance.bShowControlRigInfo)
+    if (!FDIY_GlobalDebugSettings::sInstance.equipment.bShowControlRigInfo)
     {
-        DIY_GlobalDebugSettings::sInstance.bShowKagoDebugInfo = false;
-        DIY_GlobalDebugSettings::sInstance.bShowHandHeadDebugInfo = false;
-        DIY_GlobalDebugSettings::sInstance.bShowRobotHandDebugInfo = false;
+        FDIY_GlobalDebugSettings::sInstance.equipment.bShowKagoDebugInfo = false;
+        FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo = false;
+        FDIY_GlobalDebugSettings::sInstance.equipment.bShowRobotHandDebugInfo = false;
     }
 }
 

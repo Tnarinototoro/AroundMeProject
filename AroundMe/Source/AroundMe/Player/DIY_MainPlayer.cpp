@@ -257,7 +257,7 @@ FSoftObjectPath ADIY_MainPlayer::GetHatMeshReferenceFromType(EHatType HatType)
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 void ADIY_MainPlayer::UpdatePlayerStateWidgetInfo(float inDeltaTime)
 {
-    if (!DIY_GlobalDebugSettings::sInstance.bShowPlayerState)
+    if (!FDIY_GlobalDebugSettings::sInstance.player.bShowPlayerState)
     {
         if (PlayerState_WidgetComponent)
         {

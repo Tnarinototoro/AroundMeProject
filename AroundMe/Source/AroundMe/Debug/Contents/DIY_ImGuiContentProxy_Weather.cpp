@@ -3,7 +3,7 @@
 #include "../DIY_ImGui.h"
 #include "../../GameUtilities/Weather/DIY_WeatherManager.h"
 #include "../../GameUtilities/Weather/DIY_UDSParamsStore.h"
-
+#include "../DIY_GlobalDebugSettings.h"
 FDIY_ImGuiContentProxy_Weather::FDIY_ImGuiContentProxy_Weather(FDIY_ImGuiProxy &InOwningProxy)
     : FDIY_ImGuiContentProxy_MenuWindow(InOwningProxy, DIY_ImGuiNames::MenuCategoryNameSystem, "Weather", "WeatherDebugPanel")
 {
@@ -13,7 +13,7 @@ FDIY_ImGuiContentProxy_Weather::FDIY_ImGuiContentProxy_Weather(FDIY_ImGuiProxy &
 void FDIY_ImGuiContentProxy_Weather::DrawWindow(float DeltaTime)
 {
     ImGui::Text("BasicControl");
-    ImGui::SliderInt("WeatherPresetType", &WeatherPresetType, 0, 20);
+    ImGui::SliderInt("WeatherPresetType", &FDIY_GlobalDebugSettings::sInstance.weather.WeatherPresetType, 0, 20);
 
      UDIY_WeatherManager* WeatherManager = UDIY_WeatherManager::Get(GetWorld());
 
@@ -32,7 +32,7 @@ void FDIY_ImGuiContentProxy_Weather::DrawWindow(float DeltaTime)
 
 
 
-   Param_store->SetParam_WeatherPresetType(WeatherPresetType);
+   Param_store->SetParam_WeatherPresetType(FDIY_GlobalDebugSettings::sInstance.weather.WeatherPresetType);
 
     
 

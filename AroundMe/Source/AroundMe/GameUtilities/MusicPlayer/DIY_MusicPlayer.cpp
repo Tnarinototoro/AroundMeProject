@@ -36,7 +36,7 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
     uint8 new_hour = cur_date_time.GetHour();
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-    int DbgHour = DIY_GlobalDebugSettings::sInstance.OverrideBGMHour;
+    int DbgHour = FDIY_GlobalDebugSettings::sInstance.musicplayer.OverrideBGMHour;
     if (DbgHour >= 0)
     {
         new_hour = (int)DbgHour;

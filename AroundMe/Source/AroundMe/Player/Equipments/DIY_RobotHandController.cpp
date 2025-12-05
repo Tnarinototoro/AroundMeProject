@@ -27,7 +27,7 @@ void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickTyp
         FVector HandEndLocation = GetHandEndWolrdLocation();
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-        if (DIY_GlobalDebugSettings::sInstance.bShowRobotHandDebugInfo)
+        if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowRobotHandDebugInfo)
         {
             DrawDebugSphere(GetWorld(), HandEndLocation, 10.f, 12, FColor::Green);
 
@@ -183,7 +183,7 @@ UDIY_RobotHand_HeadController *UDIY_RobotHandController::GetHeadController()
 void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
 {
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-    if (DIY_GlobalDebugSettings::sInstance.bShowRobotHandDebugInfo)
+    if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowRobotHandDebugInfo)
     {
         FString debug_str = FString::Printf(TEXT("%s"),
                                             *UEnum::GetValueAsString(mCurrentState));
@@ -250,7 +250,7 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
             Target_Hook->SetWorldLocation(cur_calculated_pos);
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-            if (DIY_GlobalDebugSettings::sInstance.bShowRobotHandDebugInfo)
+            if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowRobotHandDebugInfo)
             {
                 DrawDebugSphere(GetWorld(), cur_calculated_pos, 10.f, 12, FColor::Green);
             }
@@ -306,7 +306,7 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
         Target_Hook->SetWorldLocation(cur_calculated_pos);
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-        if (DIY_GlobalDebugSettings::sInstance.bShowRobotHandDebugInfo)
+        if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowRobotHandDebugInfo)
         {
             DrawDebugSphere(GetWorld(), cur_calculated_pos, 10.f, 12, FColor::Green);
         }

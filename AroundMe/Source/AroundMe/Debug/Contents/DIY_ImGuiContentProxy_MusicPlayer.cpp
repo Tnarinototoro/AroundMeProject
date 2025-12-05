@@ -11,7 +11,7 @@ FDIY_ImGuiContentProxy_MusicPlayer::FDIY_ImGuiContentProxy_MusicPlayer(FDIY_ImGu
 void FDIY_ImGuiContentProxy_MusicPlayer::DrawWindow(float DeltaTime)
 {
     ImGui::Text("BGM");
-    ImGui::SliderInt("Hour", &DIY_GlobalDebugSettings::sInstance.OverrideBGMHour, -1, 23);
+    ImGui::SliderInt("Hour", &FDIY_GlobalDebugSettings::sInstance.musicplayer.OverrideBGMHour, -1, 23);
 }
 
 #endif

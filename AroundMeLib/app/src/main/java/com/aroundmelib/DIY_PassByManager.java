@@ -486,10 +486,29 @@ public class DIY_PassByManager
             return;
         }
 
-        connWriter.println(msg);
-        logSafe("[Send " + (isGroupOwner ? "GO→Client" : "Client→GO") + "] " + msg,
-                DIY_CommuUtils.LogLevel.SUCCESS);
+        // ★★ 一定要在后台线程里发送，避免 NetworkOnMainThreadException
+        new Thread(() ->
+        {
+            try
+            {
+                // 可选：这里用 buildSimpleMsg 包一下协议
+                String payload = buildSimpleMsg(msg);
+                synchronized (connWriter)
+                {
+                    connWriter.println(payload);
+                }
+
+                logSafe("[Send " + (isGroupOwner ? "GO→Client" : "Client→GO") + "] " + payload,
+                        DIY_CommuUtils.LogLevel.SUCCESS);
+            }
+            catch (Exception e)
+            {
+                logSafe("[Send] 发送失败：" + e.getMessage(),
+                        DIY_CommuUtils.LogLevel.ERROR);
+            }
+        }).start();
     }
+
 
     public void startServerSocket()
     {

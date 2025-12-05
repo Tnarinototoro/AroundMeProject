@@ -12,7 +12,6 @@ public:
 
 public:
 
-    //0-20
-    int32 WeatherPresetType{0};
+
 };
 #endif

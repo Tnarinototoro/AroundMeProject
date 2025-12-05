@@ -249,7 +249,7 @@ void ADIY_ItemBase::UpdateWidgetText_Internal(const FString &NewText)
 void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 {
     
-    if (!DIY_GlobalDebugSettings::sInstance.bShowItemState)
+    if (!FDIY_GlobalDebugSettings::sInstance.item.bShowItemState)
     {
         if (ItemStateWidgetComponent)
         {

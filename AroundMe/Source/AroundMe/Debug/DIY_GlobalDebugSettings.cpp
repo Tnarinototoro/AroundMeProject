@@ -3,5 +3,5 @@
 
 
 
-DIY_GlobalDebugSettings DIY_GlobalDebugSettings::sInstance;
+FDIY_GlobalDebugSettings FDIY_GlobalDebugSettings::sInstance;
 #endif
