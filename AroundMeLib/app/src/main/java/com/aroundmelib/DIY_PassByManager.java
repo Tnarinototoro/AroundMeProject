@@ -37,6 +37,14 @@ public class DIY_PassByManager
     private static final String TAG = "DIY_PassByManager";
     private boolean isConnected = false;
     private String connectedDeviceMac = null;
+    // === 长连接通信用 ===
+    private Socket connSocket = null;          // 当前使用的长连接（无论 GO/Client）
+    private PrintWriter connWriter = null;
+    private BufferedReader connReader = null;
+    private Thread connReadThread = null;
+
+    private boolean isGroupOwner = false;      // 当前角色：GO = true, Client = false
+
 
     public boolean isConnected() { return isConnected; }
     public String getConnectedDeviceMac() { return connectedDeviceMac; }
@@ -468,114 +476,59 @@ public class DIY_PassByManager
 
         }
     };
+
+    public void sendChatMessage(String msg)
+    {
+        if (connWriter == null)
+        {
+            logSafe("[Send] 尚未建立连接，无法发送：" + msg,
+                    DIY_CommuUtils.LogLevel.ERROR);
+            return;
+        }
+
+        connWriter.println(msg);
+        logSafe("[Send " + (isGroupOwner ? "GO→Client" : "Client→GO") + "] " + msg,
+                DIY_CommuUtils.LogLevel.SUCCESS);
+    }
+
     public void startServerSocket()
     {
-        new Thread(() ->
-        {
+        new Thread(() -> {
+            logSafe("[Server] Waiting for client...", DIY_CommuUtils.LogLevel.INFO);
 
-            logSafe("[Server] === Start ServerSocket Thread ===", DIY_CommuUtils.LogLevel.INFO);
+            try {
+                ServerSocket ss = new ServerSocket(8988);
+                Socket client = ss.accept();
 
-            try
-            {
+                logSafe("[Server] Client connected: " + client.getInetAddress(), DIY_CommuUtils.LogLevel.SUCCESS);
 
-                logSafe("[Server] Creating ServerSocket on port 8988...", DIY_CommuUtils.LogLevel.INFO);
+                setupLongConnection(client, true); // ★ GO=true
 
-                ServerSocket serverSocket = new ServerSocket(8988);
-
-                logSafe("[Server] ServerSocket created. Waiting for client connection...", DIY_CommuUtils.LogLevel.INFO);
-
-                Socket client = serverSocket.accept();
-
-                logSafe("[Server] Client connected! client=" + client.getInetAddress()+  " port=" + client.getPort(), DIY_CommuUtils.LogLevel.SUCCESS);
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-
-
-                logSafe("[Server] Receiving from client...", DIY_CommuUtils.LogLevel.INFO);
-
-                String line;
-                while ((line = in.readLine()) != null)
-                {
-
-
-                    logSafe("[Server] Received from client: " + line, DIY_CommuUtils.LogLevel.SUCCESS);
-
-                    // 回包
-                    sendMsgThroughSocket(client, buildSimpleMsg("GO Response"));
-                }
-
-
-                logSafe("[Server] Client disconnected.",  DIY_CommuUtils.LogLevel.WARNING);
-
-                client.close();
-                serverSocket.close();
-
-
-                logSafe("[Server] === End Server Thread ===", DIY_CommuUtils.LogLevel.SUCCESS);
-
-            } catch (Exception e)
-            {
-
-                logSafe("[Server] ServerSocket error : " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+            } catch (Exception e) {
+                logSafe("[Server] error: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
             }
         }).start();
     }
+
 
     public void startClientSocket(String goIp) {
         new Thread(() -> {
-
-            logSafe("[Client] === Start ClientSocket Thread ===", DIY_CommuUtils.LogLevel.INFO);
-            logSafe("[Client] GO IP=" + goIp + " port=8988", DIY_CommuUtils.LogLevel.INFO);
-
-            Socket socket = null;
+            logSafe("[Client] Connecting to GO " + goIp, DIY_CommuUtils.LogLevel.INFO);
 
             try {
-                socket = new Socket();
-
-                logSafe("[Client] Binding socket to WiFi Direct interface...", DIY_CommuUtils.LogLevel.INFO);
-
-                socket.bind(null);   // ★★ 必须有
-
-                logSafe("[Client] Connecting to GO...", DIY_CommuUtils.LogLevel.INFO);
-
+                Socket socket = new Socket();
+                socket.bind(null);
                 socket.connect(new InetSocketAddress(goIp, 8988), 3000);
-                socket.setSoTimeout(5000); // ★★★ 防止 readLine() 卡死
 
-                logSafe("[Client] Connected! localPort=" + socket.getLocalPort(),
-                        DIY_CommuUtils.LogLevel.SUCCESS);
+                logSafe("[Client] Connected to GO!", DIY_CommuUtils.LogLevel.SUCCESS);
 
-                // 发消息
-                sendMsgThroughSocket(socket, buildSimpleMsg("Client Hello"));
+                setupLongConnection(socket, false); // ★ GO=false
 
-                logSafe("[Client] Message sent. Waiting for GO response...",
-                        DIY_CommuUtils.LogLevel.INFO);
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String line = in.readLine();
-
-                logSafe("[Client] Received from GO: " + line, DIY_CommuUtils.LogLevel.SUCCESS);
-
+            } catch (Exception e) {
+                logSafe("[Client] error: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
             }
-            catch (Exception e)
-            {
-                logSafe("[Client] Client socket error: " + e.getMessage(),
-                        DIY_CommuUtils.LogLevel.ERROR);
-            }
-            finally
-            {
-                if (socket != null)
-                {
-                    try {
-                        socket.close();
-                        logSafe("[Client] Socket closed.", DIY_CommuUtils.LogLevel.INFO);
-                    } catch (Exception ignored) {}
-                }
-            }
-
         }).start();
     }
-
 
     private String buildSimpleMsg(String extra) {
         long ts = System.currentTimeMillis();
@@ -585,6 +538,36 @@ public class DIY_PassByManager
                 + "\"timestamp\":" + ts + ","
                 + "\"extra\":\"" + extra + "\""
                 + "}\n";
+    }
+    private void setupLongConnection(Socket socket, boolean isGO) {
+        try {
+            this.isGroupOwner = isGO;
+            connSocket = socket;
+            connWriter = new PrintWriter(socket.getOutputStream(), true);
+            connReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            logSafe("[LongConn] 已建立长连接，角色 = " + (isGO ? "GO" : "Client"),
+                    DIY_CommuUtils.LogLevel.SUCCESS);
+
+            connReadThread = new Thread(() -> {
+                try {
+                    String line;
+                    while ((line = connReader.readLine()) != null) {
+                        logSafe("[Recv] " + line, DIY_CommuUtils.LogLevel.SUCCESS);
+                    }
+                    logSafe("[LongConn] 对端已断开连接", DIY_CommuUtils.LogLevel.WARNING);
+                }
+                catch (Exception e) {
+                    logSafe("[LongConn] 接收线程异常: " + e.getMessage(),
+                            DIY_CommuUtils.LogLevel.ERROR);
+                }
+            });
+
+            connReadThread.start();
+
+        } catch (Exception e) {
+            logSafe("[LongConn] 初始化失败: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+        }
     }
 
     private void sendMsgThroughSocket(Socket socket, String msg)

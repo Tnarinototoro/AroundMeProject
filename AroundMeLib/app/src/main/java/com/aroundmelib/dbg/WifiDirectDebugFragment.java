@@ -269,6 +269,10 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
             String msg = editMessage.getText().toString().trim();
             if (!msg.isEmpty())
             {
+                DIY_PassByManager mgr = GetDIY_PassByManagerInstace();
+                if (mgr != null) mgr.sendChatMessage(msg);
+
+                editMessage.setText("");
             }
         });
     }
