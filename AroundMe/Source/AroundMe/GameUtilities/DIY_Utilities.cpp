@@ -5,6 +5,8 @@
 #include "../Player/Items/DIY_ItemManager.h"
 #include "Weather/DIY_WeatherManager.h"
 #include "../Area/DIY_AreaManager.h"
+#include "NavigationSystem.h"            
+    
 
 bool UDIY_Utilities::bShouldLogToGameScreen = true;
 UDIY_ItemManagerSubsystem *UDIY_Utilities::DIY_GetItemManagerInstance(const UObject* WorldContextObject)
@@ -32,6 +34,19 @@ void UDIY_Utilities::DIY_PrintLogToScreen(float TimeToDisplay, const FString &De
     {
         GEngine->AddOnScreenDebugMessage(-1, TimeToDisplay, DisplayColor, DebugMessage);
     }
+}
+
+void UDIY_Utilities::ForceUpdateNavProxyInOctree(AActor *inActor)
+{
+    if (nullptr == inActor)
+        return;
+
+    UNavigationSystemV1 *NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(inActor->GetWorld());
+    if (NavSys)
+    {
+        NavSys->UpdateActorInNavOctree(*inActor);
+    }
+    
 }
 
 UDIY_Utilities::UDIY_Utilities()

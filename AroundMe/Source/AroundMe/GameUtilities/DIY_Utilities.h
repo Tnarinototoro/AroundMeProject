@@ -33,6 +33,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
     static void DIY_PrintLogToScreen(float TimeToDisplay, const FString &DebugMessage, FColor DisplayColor = FColor::Green);
 
+    UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
+    static void ForceUpdateNavProxyInOctree(class AActor* inActor);
+
     UDIY_Utilities();
 
 private:
