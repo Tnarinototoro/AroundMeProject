@@ -5,8 +5,38 @@
 #include "../Player/Items/DIY_ItemManager.h"
 #include "Weather/DIY_WeatherManager.h"
 #include "../Area/DIY_AreaManager.h"
-#include "NavigationSystem.h"            
-    
+#include "NavigationSystem.h"   
+#include "Navigation/NavLinkProxy.h"
+#include "NavigationSystem.h"
+#include "NavLinkCustomComponent.h"
+#include "NavLinkCustomInterface.h"
+
+// void ForceRefreshNavLink(AActor* InActor)
+// {
+//     if (!InActor) return;
+
+//     UNavigationSystemV1* NavSys =
+//         FNavigationSystem::GetCurrent<UNavigationSystemV1>(InActor->GetWorld());
+
+//     if (!NavSys) return;
+
+//     // 1. 刷新 Actor 在 NavOctree 中的数据（黑线的关键）
+//     NavSys->UpdateActorInNavOctree(*InActor);
+
+//     // 2. 如果是 NavLinkProxy，刷新 SmartLink
+//     if (ANavLinkProxy* NavProxy = Cast<ANavLinkProxy>(InActor))
+//     {
+//         if (UNavLinkCustomComponent* SmartLink = NavProxy->GetSmartLinkComp())
+//         {
+//             if (const INavLinkCustomInterface* LinkInterface =
+//                     Cast<INavLinkCustomInterface>(SmartLink))
+//             {
+//                 NavSys->UpdateCustomLink(LinkInterface);
+//             }
+//         }
+//     }
+// }
+
 
 bool UDIY_Utilities::bShouldLogToGameScreen = true;
 UDIY_ItemManagerSubsystem *UDIY_Utilities::DIY_GetItemManagerInstance(const UObject* WorldContextObject)
@@ -41,12 +71,24 @@ void UDIY_Utilities::ForceUpdateNavProxyInOctree(AActor *inActor)
     if (nullptr == inActor)
         return;
 
+    ANavLinkProxy* NavProxy = Cast<ANavLinkProxy>(inActor);
+    if (nullptr == NavProxy)
+        return;
+
     UNavigationSystemV1 *NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(inActor->GetWorld());
-    if (NavSys)
-    {
-        NavSys->UpdateActorInNavOctree(*inActor);
-    }
+    if(nullptr == NavSys)
+        return;
+    NavSys->UpdateActorInNavOctree(*inActor);
+
     
+    UNavLinkCustomComponent* SmartLink = NavProxy->GetSmartLinkComp();
+    if (nullptr == SmartLink)
+        return; 
+
+    //We can temporarily disable and enable the smart link to force the nav system to update it    
+    SmartLink->SetEnabled(false);
+    SmartLink->SetEnabled(true);
+   
 }
 
 UDIY_Utilities::UDIY_Utilities()
