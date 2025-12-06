@@ -21,9 +21,14 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -42,7 +47,12 @@ public class DIY_PassByManager
     private PrintWriter connWriter = null;
     private BufferedReader connReader = null;
     private Thread connReadThread = null;
+    private String lastSelectedImagePath = null;
 
+    public String getLastSelectedImagePath()
+    {
+        return lastSelectedImagePath;
+    }
     private boolean isGroupOwner = false;      // 当前角色：GO = true, Client = false
 
 
@@ -477,75 +487,218 @@ public class DIY_PassByManager
         }
     };
 
-    public void sendChatMessage(String msg)
+    public void sendFile(String filePath, String mimeType)
     {
-        if (connWriter == null)
+        if (connSocket == null || !connSocket.isConnected())
         {
-            logSafe("[Send] 尚未建立连接，无法发送：" + msg,
-                    DIY_CommuUtils.LogLevel.ERROR);
+            logSafe("[SendFile] Socket 未连接", DIY_CommuUtils.LogLevel.ERROR);
             return;
         }
 
-        // ★★ 一定要在后台线程里发送，避免 NetworkOnMainThreadException
         new Thread(() ->
         {
             try
             {
-                // 可选：这里用 buildSimpleMsg 包一下协议
-                String payload = buildSimpleMsg(msg);
-                synchronized (connWriter)
+                File file = new File(filePath);
+                if (!file.exists())
                 {
-                    connWriter.println(payload);
+                    logSafe("[SendFile] 文件不存在：" + filePath, DIY_CommuUtils.LogLevel.ERROR);
+                    return;
                 }
 
-                logSafe("[Send " + (isGroupOwner ? "GO→Client" : "Client→GO") + "] " + payload,
-                        DIY_CommuUtils.LogLevel.SUCCESS);
+                long fileSize = file.length();
+                String fileName = file.getName();
+
+                logSafe("[SendFile] 开始发送: " + fileName + " size=" + fileSize,
+                        DIY_CommuUtils.LogLevel.INFO);
+
+                OutputStream os = connSocket.getOutputStream();
+                BufferedOutputStream bos = new BufferedOutputStream(os);
+
+                // 发送 header
+                PrintWriter pw = new PrintWriter(bos);
+                pw.println("TYPE:FILE");
+                pw.println("MIME:" + mimeType);
+                pw.println("FILENAME:" + fileName);
+                pw.println("FILESIZE:" + fileSize);
+                pw.println(); // header end
+                pw.flush();
+
+                // 发送文件内容
+                FileInputStream fis = new FileInputStream(file);
+                byte[] buffer = new byte[4096];
+                int len;
+
+                while ((len = fis.read(buffer)) > 0)
+                {
+                    bos.write(buffer, 0, len);
+                }
+
+                bos.flush();
+                fis.close();
+
+                logSafe("[SendFile] 发送结束: " + fileName, DIY_CommuUtils.LogLevel.SUCCESS);
+
             }
             catch (Exception e)
             {
-                logSafe("[Send] 发送失败：" + e.getMessage(),
-                        DIY_CommuUtils.LogLevel.ERROR);
+                logSafe("[SendFile] 发送失败：" + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+            }
+
+        }).start();
+    }
+
+    public void sendImageFile(String imgPath)
+    {
+        sendFile(imgPath, "image/jpeg");
+    }
+    private File receiveFile(InputStream is, String filename, long fileSize) throws Exception
+    {
+        File outFile = new File(activity.getCacheDir(), filename);
+        FileOutputStream fos = new FileOutputStream(outFile);
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+
+        long remaining = fileSize;
+        byte[] buffer = new byte[4096];
+
+        while (remaining > 0)
+        {
+            int bytesRead = is.read(buffer, 0, (int)Math.min(buffer.length, remaining));
+            if (bytesRead == -1) break;
+
+            bos.write(buffer, 0, bytesRead);
+            remaining -= bytesRead;
+        }
+
+        bos.flush();
+        bos.close();
+        fos.close();
+
+        logSafe("[RecvFile] 保存成功 path=" + outFile.getAbsolutePath(),
+                DIY_CommuUtils.LogLevel.SUCCESS);
+
+        return outFile;
+    }
+    private void startReceiveLoop(Socket socket)
+    {
+        new Thread(() ->
+        {
+            try
+            {
+                InputStream is = socket.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+                String header;
+
+                while ((header = reader.readLine()) != null)
+                {
+                    if (header.startsWith("TYPE:TEXT"))
+                    {
+                        String jsonMsg = reader.readLine();
+                        logSafe("[RecvText] " + jsonMsg, DIY_CommuUtils.LogLevel.SUCCESS);
+
+                        if (mReportSchema != null)
+                            mReportSchema.onTextMessage(jsonMsg);
+                    }
+                    else if (header.startsWith("TYPE:FILE"))
+                    {
+                        String mime = reader.readLine().split(":",2)[1];
+                        String filename = reader.readLine().split(":",2)[1];
+                        long fileSize = Long.parseLong(reader.readLine().split(":",2)[1]);
+
+                        reader.readLine(); // 跳空行
+
+                        logSafe("[RecvFile] mime=" + mime + " name=" + filename + " size=" + fileSize,
+                                DIY_CommuUtils.LogLevel.INFO);
+
+                        File file = receiveFile(is, filename, fileSize);
+
+                        if (mime.startsWith("image") && mReportSchema != null)
+                            mReportSchema.onImageReceived(file);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                logSafe("[RecvLoop] 错误: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
             }
         }).start();
     }
+
+    public void sendChatMessage(String msg)
+    {
+        if (connWriter == null)
+        {
+            logSafe("[SendText] 连接未建立", DIY_CommuUtils.LogLevel.ERROR);
+            return;
+        }
+
+        String json = "{ \"text\": \"" + msg + "\" }\n";
+
+        new Thread(() ->
+        {
+            connWriter.println("TYPE:TEXT");
+            connWriter.println(json);
+            connWriter.flush();
+
+            logSafe("[SendText] → " + msg, DIY_CommuUtils.LogLevel.SUCCESS);
+
+        }).start();
+    }
+
 
 
     public void startServerSocket()
     {
-        new Thread(() -> {
-            logSafe("[Server] Waiting for client...", DIY_CommuUtils.LogLevel.INFO);
-
-            try {
+        new Thread(() ->
+        {
+            try
+            {
+                logSafe("[Server] 启动 ServerSocket 8988", DIY_CommuUtils.LogLevel.INFO);
                 ServerSocket ss = new ServerSocket(8988);
                 Socket client = ss.accept();
 
-                logSafe("[Server] Client connected: " + client.getInetAddress(), DIY_CommuUtils.LogLevel.SUCCESS);
+                connSocket = client;
+                connWriter = new PrintWriter(client.getOutputStream(), true);
 
-                setupLongConnection(client, true); // ★ GO=true
+                logSafe("[Server] Client 已连接", DIY_CommuUtils.LogLevel.SUCCESS);
 
-            } catch (Exception e) {
-                logSafe("[Server] error: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+                startReceiveLoop(client);
+
+            }
+            catch(Exception e)
+            {
+                logSafe("[Server] 错误: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
             }
         }).start();
     }
 
 
-    public void startClientSocket(String goIp) {
-        new Thread(() -> {
-            logSafe("[Client] Connecting to GO " + goIp, DIY_CommuUtils.LogLevel.INFO);
 
-            try {
+
+    public void startClientSocket(String goIp)
+    {
+        new Thread(() ->
+        {
+            try
+            {
                 Socket socket = new Socket();
                 socket.bind(null);
-                socket.connect(new InetSocketAddress(goIp, 8988), 3000);
+                socket.connect(new InetSocketAddress(goIp, 8988), 5000);
 
-                logSafe("[Client] Connected to GO!", DIY_CommuUtils.LogLevel.SUCCESS);
+                connSocket = socket;
+                connWriter = new PrintWriter(socket.getOutputStream(), true);
 
-                setupLongConnection(socket, false); // ★ GO=false
+                logSafe("[Client] 连接 GO 成功", DIY_CommuUtils.LogLevel.SUCCESS);
 
-            } catch (Exception e) {
-                logSafe("[Client] error: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+                startReceiveLoop(socket); // 必须添加
+
             }
+            catch(Exception e)
+            {
+                logSafe("[Client] 错误: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+            }
+
         }).start();
     }
 
@@ -619,7 +772,7 @@ public class DIY_PassByManager
         }
         logSafe("Selected image path/uri: " + path, DIY_CommuUtils.LogLevel.WARNING);
 
-
+        lastSelectedImagePath = path;   // <-- 新增
         //nativeOnImageSelected(path);
     }
 

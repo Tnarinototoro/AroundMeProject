@@ -2,6 +2,7 @@ package com.aroundmelib;
 
 import android.net.wifi.p2p.WifiP2pDeviceList;
 
+import java.io.File;
 import java.util.List;
 
 public interface DIY_PassByManagerReportSchema
@@ -14,5 +15,6 @@ public interface DIY_PassByManagerReportSchema
     {
         return;
     }
-
+    default void onTextMessage(String text){}
+    default void onImageReceived(File file){}
 }
