@@ -88,7 +88,19 @@ void UDIY_Utilities::ForceUpdateNavProxyInOctree(AActor *inActor)
     //We can temporarily disable and enable the smart link to force the nav system to update it    
     SmartLink->SetEnabled(false);
     SmartLink->SetEnabled(true);
+
    
+}
+
+void UDIY_Utilities::ForceRebuildNavigation(AActor* inActor)
+{
+    if (nullptr == inActor)
+        return;
+    
+    UNavigationSystemV1 *NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(inActor->GetWorld());
+    if(nullptr == NavSys)
+        return;
+    NavSys->Build();
 }
 
 UDIY_Utilities::UDIY_Utilities()
