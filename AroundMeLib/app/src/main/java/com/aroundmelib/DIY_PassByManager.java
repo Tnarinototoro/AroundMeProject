@@ -21,6 +21,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -502,125 +503,154 @@ public class DIY_PassByManager
                 File file = new File(filePath);
                 if (!file.exists())
                 {
-                    logSafe("[SendFile] 文件不存在：" + filePath, DIY_CommuUtils.LogLevel.ERROR);
+                    logSafe("[SendFile] 文件不存在: " + filePath, DIY_CommuUtils.LogLevel.ERROR);
                     return;
                 }
 
                 long fileSize = file.length();
                 String fileName = file.getName();
 
-                logSafe("[SendFile] 开始发送: " + fileName + " size=" + fileSize,
+                logSafe("[SendFile] 开始发送文件: " + fileName + " size=" + fileSize,
                         DIY_CommuUtils.LogLevel.INFO);
 
                 OutputStream os = connSocket.getOutputStream();
-                BufferedOutputStream bos = new BufferedOutputStream(os);
+                PrintWriter pw = new PrintWriter(os, true);
 
-                // 发送 header
-                PrintWriter pw = new PrintWriter(bos);
+                // ======== HEADER（文本）=======
                 pw.println("TYPE:FILE");
                 pw.println("MIME:" + mimeType);
                 pw.println("FILENAME:" + fileName);
                 pw.println("FILESIZE:" + fileSize);
-                pw.println(); // header end
+                pw.println(); // 空行结束 header
                 pw.flush();
 
-                // 发送文件内容
+                logSafe("[SendFile] Header 已发送", DIY_CommuUtils.LogLevel.INFO);
+
+                // ======== BODY（二进制流）=======
                 FileInputStream fis = new FileInputStream(file);
-                byte[] buffer = new byte[4096];
+                byte[] buffer = new byte[8192];
                 int len;
 
                 while ((len = fis.read(buffer)) > 0)
                 {
-                    bos.write(buffer, 0, len);
+                    os.write(buffer, 0, len);
                 }
 
-                bos.flush();
+                os.flush();
                 fis.close();
 
-                logSafe("[SendFile] 发送结束: " + fileName, DIY_CommuUtils.LogLevel.SUCCESS);
-
+                logSafe("[SendFile] 文件主体发送完毕", DIY_CommuUtils.LogLevel.SUCCESS);
             }
             catch (Exception e)
             {
-                logSafe("[SendFile] 发送失败：" + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+                logSafe("[SendFile] 发送失败: " + e.getMessage(),
+                        DIY_CommuUtils.LogLevel.ERROR);
             }
-
         }).start();
     }
+
 
     public void sendImageFile(String imgPath)
     {
         sendFile(imgPath, "image/jpeg");
     }
-    private File receiveFile(InputStream is, String filename, long fileSize) throws Exception
+    private File receiveFile(BufferedInputStream bis, String filename, long fileSize) throws Exception
     {
         File outFile = new File(activity.getCacheDir(), filename);
         FileOutputStream fos = new FileOutputStream(outFile);
-        BufferedOutputStream bos = new BufferedOutputStream(fos);
 
         long remaining = fileSize;
-        byte[] buffer = new byte[4096];
+        byte[] buffer = new byte[8192];
+
+        logSafe("[RecvFile] 开始接收二进制文件...", DIY_CommuUtils.LogLevel.INFO);
 
         while (remaining > 0)
         {
-            int bytesRead = is.read(buffer, 0, (int)Math.min(buffer.length, remaining));
-            if (bytesRead == -1) break;
+            int read = bis.read(buffer, 0, (int)Math.min(buffer.length, remaining));
+            if (read == -1) throw new Exception("对端中断连接");
 
-            bos.write(buffer, 0, bytesRead);
-            remaining -= bytesRead;
+            fos.write(buffer, 0, read);
+            remaining -= read;
+
+            logSafe("[RecvFile] 进度 = " + (fileSize - remaining) + "/" + fileSize,
+                    DIY_CommuUtils.LogLevel.INFO);
         }
 
-        bos.flush();
-        bos.close();
+        fos.flush();
         fos.close();
 
-        logSafe("[RecvFile] 保存成功 path=" + outFile.getAbsolutePath(),
+        logSafe("[RecvFile] 文件接收完成，保存至：" + outFile.getAbsolutePath(),
                 DIY_CommuUtils.LogLevel.SUCCESS);
 
         return outFile;
     }
+
+    private String readLine(BufferedInputStream bis) throws Exception
+    {
+        StringBuilder sb = new StringBuilder();
+        int c;
+
+        while ((c = bis.read()) != -1)
+        {
+            if (c == '\n') break;
+            if (c != '\r') sb.append((char)c);
+        }
+
+        if (c == -1 && sb.length() == 0) return null; // 连接结束
+        return sb.toString();
+    }
+
     private void startReceiveLoop(Socket socket)
     {
         new Thread(() ->
         {
             try
             {
-                InputStream is = socket.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                InputStream rawIs = socket.getInputStream();
+                BufferedInputStream bis = new BufferedInputStream(rawIs);
 
-                String header;
-
-                while ((header = reader.readLine()) != null)
+                while (true)
                 {
-                    if (header.startsWith("TYPE:TEXT"))
+                    String line = readLine(bis);
+                    if (line == null) break;
+
+                    if (line.startsWith("TYPE:TEXT"))
                     {
-                        String jsonMsg = reader.readLine();
-                        logSafe("[RecvText] " + jsonMsg, DIY_CommuUtils.LogLevel.SUCCESS);
+                        String json = readLine(bis);
+                        logSafe("[RecvText] -> " + json, DIY_CommuUtils.LogLevel.SUCCESS);
 
                         if (mReportSchema != null)
-                            mReportSchema.onTextMessage(jsonMsg);
+                            mReportSchema.onTextMessage(json);
                     }
-                    else if (header.startsWith("TYPE:FILE"))
+                    else if (line.startsWith("TYPE:FILE"))
                     {
-                        String mime = reader.readLine().split(":",2)[1];
-                        String filename = reader.readLine().split(":",2)[1];
-                        long fileSize = Long.parseLong(reader.readLine().split(":",2)[1]);
+                        String mime = readLine(bis).split(":",2)[1];
+                        String filename = readLine(bis).split(":",2)[1];
+                        long filesize = Long.parseLong(readLine(bis).split(":",2)[1]);
 
-                        reader.readLine(); // 跳空行
+                        readLine(bis); // 读掉空行
 
-                        logSafe("[RecvFile] mime=" + mime + " name=" + filename + " size=" + fileSize,
+                        logSafe("[RecvFile] HEADER OK mime=" + mime + " name=" + filename + " size=" + filesize,
                                 DIY_CommuUtils.LogLevel.INFO);
 
-                        File file = receiveFile(is, filename, fileSize);
+                        File file = receiveFile(bis, filename, filesize);
 
-                        if (mime.startsWith("image") && mReportSchema != null)
-                            mReportSchema.onImageReceived(file);
+                        if (file != null)
+                        {
+                            logSafe("[RecvFile] 文件接收并保存成功: " + file.getAbsolutePath(),
+                                    DIY_CommuUtils.LogLevel.SUCCESS);
+
+                            if (mime.startsWith("image") && mReportSchema != null)
+                                mReportSchema.onImageReceived(file);
+                        }
                     }
                 }
+
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                logSafe("[RecvLoop] 错误: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+                logSafe("[RecvLoop] 发生异常: " + e.getMessage(),
+                        DIY_CommuUtils.LogLevel.ERROR);
             }
         }).start();
     }

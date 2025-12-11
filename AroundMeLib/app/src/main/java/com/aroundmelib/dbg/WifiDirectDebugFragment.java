@@ -329,11 +329,25 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
     @Override
     public void onImageReceived(File file)
     {
-        requireActivity().runOnUiThread(() -> {
+        requireActivity().runOnUiThread(() ->
+        {
+            appendWfdLog_UIOperation("准备 decode 图片: " + file.getAbsolutePath());
+
             Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+            if (bmp == null)
+            {
+                appendWfdLog_UIOperation("❌ decodeFile 失败，图片损坏！");
+                return;
+            }
+
+            appendWfdLog_UIOperation("✔ decodeFile 成功，设置到 UI");
+
             ImageView recvView = getView().findViewById(R.id.image_receive);
             recvView.setImageBitmap(bmp);
+
+            appendWfdLog_UIOperation("✔ 图片已成功显示在 Receive 区域");
         });
     }
+
 
 }
