@@ -100,7 +100,12 @@ void UDIY_Utilities::ForceRebuildNavigation(AActor* inActor)
     UNavigationSystemV1 *NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(inActor->GetWorld());
     if(nullptr == NavSys)
         return;
-    NavSys->Build();
+
+    if(!NavSys->IsNavigationBuildInProgress())
+    {
+        NavSys->Build();
+    }
+    
 }
 
 UDIY_Utilities::UDIY_Utilities()
