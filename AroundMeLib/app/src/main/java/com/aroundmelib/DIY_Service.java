@@ -7,6 +7,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -99,6 +100,44 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         OnNewLogGenerated(text);
     }
 
+    public void handleActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(null==BoundActivity)
+        {
+            return;
+        }
+        if(null==mPassByManager)
+        {
+            return;
+        }
+        if(null==mCommuManager)
+        {
+            return;
+        }
+
+        if (requestCode == DIY_PermissionHelper.REQUEST_ENABLE_BT)
+        {
+            if (resultCode == Activity.RESULT_OK)
+            {
+                DIY_CommuUtils.PushToast(BoundActivity.getApplicationContext(), "✅ 蓝牙已开启");
+            }
+            else
+            {
+                DIY_CommuUtils.PushToast(BoundActivity.getApplicationContext(), "❌ 必须开启蓝牙才能使用 AroundMe");
+                DIY_PermissionHelper.showEnableBluetoothDialog(BoundActivity);
+            }
+        }
+        mPassByManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DIY_CommuUtils.REQUEST_OPEN_PIC && resultCode == Activity.RESULT_OK && data != null)
+        {
+            Uri selectedImage =mPassByManager.GetChosen_Uri();
+
+
+            appendToLog("图片已选择：" + selectedImage.toString(), DIY_CommuUtils.LogLevel.INFO);
+            //wifiFragment.Picked_imageView.setImageURI(selectedImage);
+
+        }
+    }
     @Override
     public void onCreate() {
         super.onCreate();

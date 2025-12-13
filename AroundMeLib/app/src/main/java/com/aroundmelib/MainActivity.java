@@ -167,24 +167,41 @@ public class MainActivity extends AppCompatActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == DIY_PermissionHelper.REQUEST_ENABLE_BT) {
-            if (resultCode == Activity.RESULT_OK) {
-                DIY_CommuUtils.PushToast(this, "✅ 蓝牙已开启");
-            } else {
-                DIY_CommuUtils.PushToast(this, "❌ 必须开启蓝牙才能使用 AroundMe");
-                DIY_PermissionHelper.showEnableBluetoothDialog(this);
+        //Service only Code
+        {
+            if(DIY_Service.Instance!=null)
+            {
+                DIY_Service.Instance.handleActivityResult(requestCode, resultCode, data);
             }
         }
-        mDIY_PassByManagerInstace.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == DIY_CommuUtils.REQUEST_OPEN_PIC && resultCode == Activity.RESULT_OK && data != null)
+
+        //main activity Code
         {
-            Uri selectedImage =mDIY_PassByManagerInstace.GetChosen_Uri();
+            if (requestCode == DIY_PermissionHelper.REQUEST_ENABLE_BT)
+            {
+                if (resultCode == Activity.RESULT_OK)
+                {
+                    DIY_CommuUtils.PushToast(this, "✅ 蓝牙已开启");
+                } else
+                {
+                    DIY_CommuUtils.PushToast(this, "❌ 必须开启蓝牙才能使用 AroundMe");
+                    DIY_PermissionHelper.showEnableBluetoothDialog(this);
+                }
+            }
+            mDIY_PassByManagerInstace.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == DIY_CommuUtils.REQUEST_OPEN_PIC && resultCode == Activity.RESULT_OK && data != null)
+            {
+                Uri selectedImage =mDIY_PassByManagerInstace.GetChosen_Uri();
 
 
-            appendToLog("图片已选择：" + selectedImage.toString(), DIY_CommuUtils.LogLevel.INFO);
-            wifiFragment.Picked_imageView.setImageURI(selectedImage);
-
+                appendToLog("图片已选择：" + selectedImage.toString(), DIY_CommuUtils.LogLevel.INFO);
+                wifiFragment.Picked_imageView.setImageURI(selectedImage);
+            }
         }
+
+
+
+
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
