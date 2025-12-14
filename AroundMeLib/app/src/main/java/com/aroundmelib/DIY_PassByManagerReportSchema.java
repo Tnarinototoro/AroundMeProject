@@ -15,6 +15,6 @@ public interface DIY_PassByManagerReportSchema
     {
         return;
     }
-    default void onTextMessage(String text){}
+
     default void onImageReceived(File file){}
 }

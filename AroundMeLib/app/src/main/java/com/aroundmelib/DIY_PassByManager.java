@@ -619,8 +619,7 @@ public class DIY_PassByManager
                         String json = readLine(bis);
                         logSafe("[RecvText] -> " + json, DIY_CommuUtils.LogLevel.SUCCESS);
 
-                        if (mReportSchema != null)
-                            mReportSchema.onTextMessage(json);
+
                     }
                     else if (line.startsWith("TYPE:FILE"))
                     {
