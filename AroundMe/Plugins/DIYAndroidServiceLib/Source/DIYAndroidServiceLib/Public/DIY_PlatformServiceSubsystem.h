@@ -56,6 +56,9 @@ public:
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAroundMeService_WithStringMsg, const FString&, inMsg);
 
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAroundMeService_WithIntMsg, int, inIntMsg);
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnImageTextureReceived, UTexture2D *,inTexture);
+
 public: // 蓝图可调用
     UFUNCTION(BlueprintCallable)
     void StartPlatformService();
@@ -66,6 +69,9 @@ public: // 蓝图可调用
     UFUNCTION(BlueprintCallable)
     void RequestAddGiveTask(int ItemID);
 
+	void OnImageBytesReceived(const TArray<uint8>& ImageBytes);
+    class UTexture2D* CreateTextureFromImageBytes(
+    const TArray<uint8>& ImageData);
 public: // 蓝图 Delegate
     UPROPERTY(BlueprintAssignable, Category = "PlatformService")
     FOnAroundMeService_SimpleTrigger OnDeviceDetected_Delegate_GarbageName_Provider;
@@ -86,4 +92,11 @@ public: // 蓝图 Delegate
 
     UPROPERTY(BlueprintAssignable, Category = "PlatformService")
     FOnAroundMeService_WithIntMsg OnItemGiftReceived_Delegate_Provider;
+    
+	UPROPERTY(BlueprintAssignable, Category = "PlatformService")
+	FOnImageTextureReceived OnImageTextureReceived;
+
+protected:
+	UPROPERTY()
+    class UTexture2D* LastReceivedImageTexture = nullptr;
 };

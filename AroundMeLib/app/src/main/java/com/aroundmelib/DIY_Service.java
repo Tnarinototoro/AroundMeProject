@@ -16,7 +16,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class DIY_Service extends Service implements DIY_CommuManagerReportSchema, DIY_PassByManagerReportSchema
@@ -44,7 +46,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
 
     public static native void OnItemGiftReceived(int received_item_id);
-
+    public static native void OnImageBytesForGame(byte[] imageBytes);
 
 
     // -------------------------
@@ -71,6 +73,35 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         Intent intent = new Intent(activity, DIY_Service.class);
         activity.stopService(intent);
         Log.d("DIY_Service", "Service stopped from UE");
+    }
+
+    private byte[] ReadBytesFromUri(Uri uri)
+    {
+        try
+        {
+            InputStream inputStream =
+                    getContentResolver().openInputStream(uri);
+
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            byte[] data = new byte[4096];
+            int nRead;
+
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1)
+            {
+                buffer.write(data, 0, nRead);
+            }
+
+            buffer.flush();
+            inputStream.close();
+
+            return buffer.toByteArray();
+        }
+        catch (Exception e)
+        {
+            appendToLog("Read image failed: " + e.getMessage(),
+                    DIY_CommuUtils.LogLevel.ERROR);
+            return null;
+        }
     }
 
     public static void RequestGiveAItem(int item_id)
@@ -156,6 +187,14 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
 
             appendToLog("图片已选择：" + selectedImage.toString(), DIY_CommuUtils.LogLevel.INFO);
+
+            byte[] imageBytes = ReadBytesFromUri(selectedImage);
+            if (imageBytes != null)
+            {
+                OnImageBytesForGame(imageBytes);
+            }
+            appendToLog("Pic Submitted to game instance!" , DIY_CommuUtils.LogLevel.INFO);
+
             //wifiFragment.Picked_imageView.setImageURI(selectedImage);
 
         }
