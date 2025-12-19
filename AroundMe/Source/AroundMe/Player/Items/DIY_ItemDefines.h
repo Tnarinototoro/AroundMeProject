@@ -68,6 +68,8 @@ struct FDIY_ItemDefualtConfig
     EItemID ItemID{EItemID::EItemID_Count};
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D* ItemSlotIcon;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float ItemMass{1.0f};
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float LinearDamping{1.0f};
