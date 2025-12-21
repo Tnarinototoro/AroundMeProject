@@ -26,17 +26,68 @@ void UDIY_CameraManager::AddCameraEntry(const FDIY_CameraEntry &Entry)
     CameraEntries.Add(Entry.CameraName,Entry);
 }
 
-int32 UDIY_CameraManager::RemoveCameraEntry(const FName &CamName)
+int32 UDIY_CameraManager::RemoveCameraEntry(FName CamName)
 {
     if(nullptr==FindCameraEntry(CamName))
     {
         return 0;
-        
     }
     return CameraEntries.Remove(CamName);
 }
 
-const FDIY_CameraEntry *UDIY_CameraManager::FindCameraEntry(const FName &CamName)
+void UDIY_CameraManager::SetCurrentInUseCameraEntry(FName CamName)
+{
+    CurrentCameraEntry.CameraName = CamName;
+}
+
+const FDIY_CameraEntry &UDIY_CameraManager::GetCurrentInUseCameraEntry() const
+{
+    return CurrentCameraEntry;
+}
+
+void UDIY_CameraManager::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    UpdateCameraEntries(DeltaTime);
+}
+
+void UDIY_CameraManager::UpdateCameraEntries(float DeltaTime)
+{
+    if (CurrentCameraEntry.CameraName == NAME_None)
+    {
+        return;
+    }
+
+    const FDIY_CameraEntry *FoundEntry = FindCameraEntry(CurrentCameraEntry.CameraName);
+    if (nullptr == FoundEntry)
+    {
+        return;
+    }
+
+    if (FoundEntry->CameraActor.IsValid() &&
+        CurrentCameraEntry.CameraActor.Get() != FoundEntry->CameraActor.Get())
+    {
+        CurrentCameraEntry.CamType = FoundEntry->CamType;
+        CurrentCameraEntry.CameraActor = FoundEntry->CameraActor;
+        CurrentCameraEntry.CameraLerpTime = FoundEntry->CameraLerpTime;
+        CurrentCameraEntry.BlendExp = FoundEntry->BlendExp;
+        CurrentCameraEntry.BlendFuncType = FoundEntry->BlendFuncType;
+        CurrentCameraEntry.bLockOutgoing = FoundEntry->bLockOutgoing;
+
+        APlayerController *PC = GetWorld()->GetFirstPlayerController();
+        ensureAlwaysMsgf(PC, TEXT("Player Controller is Null"));
+        PC->SetViewTargetWithBlend(
+            CurrentCameraEntry.CameraActor.Get(),
+            CurrentCameraEntry.CameraLerpTime,
+            CurrentCameraEntry.BlendFuncType,
+            CurrentCameraEntry.BlendExp,
+            CurrentCameraEntry.bLockOutgoing);
+        OnCameraInUseChanged.Broadcast(FoundEntry->CameraActor.Get());
+    }
+}
+
+const FDIY_CameraEntry *UDIY_CameraManager::FindCameraEntry(FName CamName)
 {
     if(CameraEntries.IsEmpty())
     {

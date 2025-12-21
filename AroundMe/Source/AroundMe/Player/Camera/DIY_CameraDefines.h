@@ -3,12 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/PlayerCameraManager.h"
 #include "DIY_CameraDefines.generated.h"
-
-
-
-
-
 
 
 UENUM(BlueprintType)
@@ -20,25 +16,30 @@ enum class EDIY_CameraType : uint8
     CamType_Count UMETA(Hidden)
 };
 
-
 USTRUCT(BlueprintType)
 struct FDIY_CameraEntry
 {
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FName CameraName{TEXT("None")};
+    FName CameraName{NAME_None};
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     EDIY_CameraType CamType{EDIY_CameraType::CamType_Count};
 
-    UPROPERTY()
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float CameraLerpTime{2.0f};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TEnumAsByte<EViewTargetBlendFunction> BlendFuncType{EViewTargetBlendFunction::VTBlend_Linear};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float BlendExp{0.0f};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool bLockOutgoing{false};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TWeakObjectPtr<class AActor> CameraActor{nullptr};
 
-
-
-
-    
-
-    
 };
