@@ -37,7 +37,15 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY Camera Manager")
     const FDIY_CameraEntry& GetCurrentInUseCameraEntry() const;
 
+    UFUNCTION(BlueprintCallable, Category = "DIY Camera Manager")
+    void SimpleToggleCamera(bool NextOrPrevious = true);
+
+    UFUNCTION(BlueprintCallable, Category = "DIY Camera Manager")
+    const TMap<FName, FDIY_CameraEntry>& GetAllCameraEntries() const;
+
     virtual void Tick(float DeltaTime) override;
+
+    static FString GetInfoString(const FDIY_CameraEntry& inEntry);
 
 protected:
     void UpdateCameraEntries(float DeltaTime);

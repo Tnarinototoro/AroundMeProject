@@ -25,6 +25,12 @@ struct FDIY_CameraEntry
     FName CameraName{NAME_None};
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FName PrevCameraName{NAME_None};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FName NextCameraName{NAME_None};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     EDIY_CameraType CamType{EDIY_CameraType::CamType_Count};
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)

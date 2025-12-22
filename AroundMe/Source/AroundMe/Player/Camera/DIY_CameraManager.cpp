@@ -45,11 +45,64 @@ const FDIY_CameraEntry &UDIY_CameraManager::GetCurrentInUseCameraEntry() const
     return CurrentCameraEntry;
 }
 
+void UDIY_CameraManager::SimpleToggleCamera(bool NextOrPrevious)
+{
+    if (CameraEntries.Num() <= 0)
+    {
+        return;
+    }
+
+    if (CurrentCameraEntry.CameraName == NAME_None)
+    {
+        return;
+    }
+
+    if (CurrentCameraEntry.CameraActor == nullptr)
+    {
+        return;
+    }
+
+    if (NextOrPrevious)
+    {
+        SetCurrentInUseCameraEntry(CurrentCameraEntry.NextCameraName);
+    }
+    else
+    {
+        SetCurrentInUseCameraEntry(CurrentCameraEntry.PrevCameraName);
+    }
+}
+
+const TMap<FName, FDIY_CameraEntry> &UDIY_CameraManager::GetAllCameraEntries() const
+{
+    return CameraEntries;
+}
+
 void UDIY_CameraManager::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
     UpdateCameraEntries(DeltaTime);
+}
+
+FString UDIY_CameraManager::GetInfoString(const FDIY_CameraEntry &InEntry)
+{
+    const FString CamName =  InEntry.CameraName.ToString();
+    const FString PrevName = InEntry.PrevCameraName.IsNone() ? TEXT("None") : InEntry.PrevCameraName.ToString();
+    const FString NextName = InEntry.NextCameraName.IsNone() ? TEXT("None") : InEntry.NextCameraName.ToString();
+
+    const FString CameActorName =
+        InEntry.CameraActor.IsValid()
+            ? InEntry.CameraActor->GetName()
+            : TEXT("InvalidCam");
+
+  
+
+    return FString::Printf(
+        TEXT("Camera[%s]  CamActor: %s Prev: %s  Next: %s "),
+        *CamName,
+        *CameActorName,
+        *PrevName,
+        *NextName);
 }
 
 void UDIY_CameraManager::UpdateCameraEntries(float DeltaTime)
@@ -74,7 +127,8 @@ void UDIY_CameraManager::UpdateCameraEntries(float DeltaTime)
         CurrentCameraEntry.BlendExp = FoundEntry->BlendExp;
         CurrentCameraEntry.BlendFuncType = FoundEntry->BlendFuncType;
         CurrentCameraEntry.bLockOutgoing = FoundEntry->bLockOutgoing;
-
+        CurrentCameraEntry.PrevCameraName = FoundEntry->PrevCameraName;
+        CurrentCameraEntry.NextCameraName = FoundEntry->NextCameraName;
         APlayerController *PC = GetWorld()->GetFirstPlayerController();
         ensureAlwaysMsgf(PC, TEXT("Player Controller is Null"));
         PC->SetViewTargetWithBlend(
