@@ -198,22 +198,25 @@ TSharedRef<SWidget> SDIY_CameraManagerPanel::GenerateCameraRow(TWeakObjectPtr<AD
                         .OptionsSource(&CameraNameOptions)
                         .OnGenerateWidget_Lambda([this](TSharedPtr<FName> Item)
                             {
-                                return SNew(SButton)
-                                    .ButtonStyle(FCoreStyle::Get(), "NoBorder")
-                                    .OnHovered_Lambda([this, Item]()
+                                return SNew(SBorder)
+                                    .Padding(FMargin(4.f))
+                                    .BorderImage(FCoreStyle::Get().GetBrush("NoBorder"))
+
+                                    // 👉 用 MouseMove 模拟 Hover
+                                    .OnMouseMove_Lambda([this, Item](const FGeometry&, const FPointerEvent&)
                                         {
                                             if (!Item.IsValid() || !GEditor)
                                             {
-                                                return;
+                                                return FReply::Unhandled();
                                             }
 
                                             if (ADIY_CameraBase* Cam = FindCameraByName(*Item))
                                             {
-                                                // 1️⃣ 选中 Actor
+                                                // 选中 Actor
                                                 /*GEditor->SelectNone(false, true);
                                                 GEditor->SelectActor(Cam, true, true);*/
 
-                                                // 2️⃣ 移动视角
+                                                // 移动视角
                                                 if (FViewport* Viewport = GEditor->GetActiveViewport())
                                                 {
                                                     if (FEditorViewportClient* VC =
@@ -225,6 +228,15 @@ TSharedRef<SWidget> SDIY_CameraManagerPanel::GenerateCameraRow(TWeakObjectPtr<AD
                                                     }
                                                 }
                                             }
+
+                                            // ⚠️ 关键：不吃事件
+                                            return FReply::Unhandled();
+                                        })
+
+                                    // ⚠️ 必须 Unhandled，否则左键又死
+                                    .OnMouseButtonDown_Lambda([](const FGeometry&, const FPointerEvent&)
+                                        {
+                                            return FReply::Unhandled();
                                         })
                                     [
                                         SNew(STextBlock)
@@ -232,9 +244,15 @@ TSharedRef<SWidget> SDIY_CameraManagerPanel::GenerateCameraRow(TWeakObjectPtr<AD
                                     ];
                             })
 
-                        .OnSelectionChanged_Lambda([Cam](TSharedPtr<FName> NewValue, ESelectInfo::Type)
+                        .OnSelectionChanged_Lambda([Cam](TSharedPtr<FName> NewValue, ESelectInfo::Type SelectInfo)
                             {
-                                if (NewValue.IsValid())
+                                if (!NewValue.IsValid())
+                                {
+                                    return;
+                                }
+
+                                if (SelectInfo == ESelectInfo::OnMouseClick ||
+                                    SelectInfo == ESelectInfo::OnKeyPress)
                                 {
                                     Cam->CameraEntry.PrevCameraName = *NewValue;
                                 }
@@ -253,26 +271,28 @@ TSharedRef<SWidget> SDIY_CameraManagerPanel::GenerateCameraRow(TWeakObjectPtr<AD
                     SNew(SComboBox<TSharedPtr<FName>>)
                         .OptionsSource(&CameraNameOptions)
 
+                        // === 下拉列表里的每一行 ===
                         .OnGenerateWidget_Lambda([this](TSharedPtr<FName> Item)
                             {
-                                return SNew(SButton)
-                                    .ButtonStyle(FCoreStyle::Get(), "NoBorder")
+                                return SNew(SBorder)
+                                    .Padding(FMargin(4.f))
+                                    .BorderImage(FCoreStyle::Get().GetBrush("NoBorder"))
 
-                                    // ⭐ Hover 时选中并对齐视角
-                                    .OnHovered_Lambda([this, Item]()
+                                    // Hover 预览（不吃事件）
+                                    .OnMouseMove_Lambda([this, Item](const FGeometry&, const FPointerEvent&)
                                         {
                                             if (!Item.IsValid() || !GEditor)
                                             {
-                                                return;
+                                                return FReply::Unhandled();
                                             }
 
                                             if (ADIY_CameraBase* Cam = FindCameraByName(*Item))
                                             {
                                                 // 选中 Actor
-                                               /* GEditor->SelectNone(false, true);
+                                                /*GEditor->SelectNone(false, true);
                                                 GEditor->SelectActor(Cam, true, true);*/
 
-                                                // 对齐视角
+                                                // 移动视角
                                                 if (FViewport* Viewport = GEditor->GetActiveViewport())
                                                 {
                                                     if (FEditorViewportClient* VC =
@@ -284,6 +304,14 @@ TSharedRef<SWidget> SDIY_CameraManagerPanel::GenerateCameraRow(TWeakObjectPtr<AD
                                                     }
                                                 }
                                             }
+
+                                            return FReply::Unhandled(); // ⚠️ 关键
+                                        })
+
+                                    // ⚠️ 不吃左键，否则 ComboBox 会坏
+                                    .OnMouseButtonDown_Lambda([](const FGeometry&, const FPointerEvent&)
+                                        {
+                                            return FReply::Unhandled();
                                         })
                                     [
                                         SNew(STextBlock)
@@ -291,15 +319,22 @@ TSharedRef<SWidget> SDIY_CameraManagerPanel::GenerateCameraRow(TWeakObjectPtr<AD
                                     ];
                             })
 
-                        .OnSelectionChanged_Lambda([Cam](TSharedPtr<FName> NewValue, ESelectInfo::Type)
+                        // === 真正确定选择（左键点击） ===
+                        .OnSelectionChanged_Lambda([Cam](TSharedPtr<FName> NewValue, ESelectInfo::Type SelectInfo)
                             {
-                                if (NewValue.IsValid())
+                                if (!NewValue.IsValid())
+                                {
+                                    return;
+                                }
+
+                                if (SelectInfo == ESelectInfo::OnMouseClick ||
+                                    SelectInfo == ESelectInfo::OnKeyPress)
                                 {
                                     Cam->CameraEntry.NextCameraName = *NewValue;
                                 }
                             })
-
                         [
+                            // 当前显示的值
                             SNew(STextBlock)
                                 .Text_Lambda([Cam]()
                                     {
@@ -307,6 +342,7 @@ TSharedRef<SWidget> SDIY_CameraManagerPanel::GenerateCameraRow(TWeakObjectPtr<AD
                                     })
                         ]
                 ]
+
 
         ];
 }
