@@ -26,13 +26,46 @@ void UDIY_CameraManager::AddCameraEntry(const FDIY_CameraEntry &Entry)
     CameraEntries.Add(Entry.CameraName,Entry);
 }
 
-int32 UDIY_CameraManager::RemoveCameraEntry(FName CamName)
+int32 UDIY_CameraManager::RemoveCameraEntry(FName RemovedCamName)
 {
-    if(nullptr==FindCameraEntry(CamName))
+    if (RemovedCamName.IsNone())
     {
         return 0;
     }
-    return CameraEntries.Remove(CamName);
+
+    // 1️⃣ 先移除自身
+    const int32 RemovedCount = CameraEntries.Remove(RemovedCamName);
+    if (RemovedCount == 0)
+    {
+        return RemovedCount;
+    }
+
+    // 2️⃣ 修复所有 Prev / Next 指向它的 Entry
+    for (TPair<FName, FDIY_CameraEntry>& Pair : CameraEntries)
+    {
+        FDIY_CameraEntry& Entry = Pair.Value;
+
+        if (Entry.PrevCameraName == RemovedCamName)
+        {
+            Entry.PrevCameraName = NAME_None;
+        }
+
+        if (Entry.NextCameraName == RemovedCamName)
+        {
+            Entry.NextCameraName = NAME_None;
+        }
+    }
+
+    // 3️⃣ 如果当前激活的是它，也要兜底
+    if (CurrentCameraEntry.CameraName == RemovedCamName)
+    {
+        CurrentCameraEntry.CameraName = NAME_None;
+        CurrentCameraEntry.CameraActor = nullptr;
+    }
+
+
+    
+    return RemovedCount;
 }
 
 void UDIY_CameraManager::SetCurrentInUseCameraEntry(FName CamName)

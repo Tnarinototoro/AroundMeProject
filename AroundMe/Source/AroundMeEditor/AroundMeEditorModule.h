@@ -8,13 +8,13 @@ class FAroundMeEditorModule : public IModuleInterface
 public:
     virtual void StartupModule() override;
     virtual void ShutdownModule() override;
-
+    void OnActorsDeleted();
     // menu setups
     void AddMenuEntry(FMenuBarBuilder &MenuBarBuilder);
     void FillDebugMenu_DIY(FMenuBuilder &MenuBuilder);
     void Fill_SubMenu_Music(FMenuBuilder &MenuBuilder);
     void Fill_SubMenu_Item(FMenuBuilder &MenuBuilder);
-
+    void OpenCameraManagerPanel();
     // sliders
     FText GetMusicHourSliderValueText() const;
     float GetMusicHourSliderValue() const;
