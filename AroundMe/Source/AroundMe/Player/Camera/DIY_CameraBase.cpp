@@ -39,7 +39,7 @@ void ADIY_CameraBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ADIY_CameraBase::Destroyed()
 {
-    if(UDIY_CameraManager* CM=UDIY_CameraManager::Get(this))
+    if (UDIY_CameraManager* CM = UDIY_CameraManager::Get(this))
     {
         CM->RemoveCameraEntry(CameraEntry.CameraName);
         if (CM->OnCameraInUseChanged.IsAlreadyBound(this, &ADIY_CameraBase::OnCameraInUseChanged))

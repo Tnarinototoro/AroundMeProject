@@ -25,6 +25,5 @@ protected:
 
     virtual void Destroyed() override;
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FDIY_CameraEntry DbgWatcherCameraEntry;
+
 };
