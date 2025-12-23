@@ -62,4 +62,24 @@ private:
     virtual FReply OnMouseMove(
         const FGeometry &MyGeometry,
         const FPointerEvent &MouseEvent) override;
+
+    virtual FReply OnMouseWheel(
+        const FGeometry &MyGeometry,
+        const FPointerEvent &MouseEvent) override;
+
+    float ZoomAmount = 1.0f;                // 缩放倍率
+    FVector2D ViewOffset = FVector2D(0, 0); // 画布偏移
+    FVector2D LastMousePos;                 // 用于计算平移差值
+
+    // 辅助：将逻辑坐标转为屏幕绘制坐标
+    FVector2D Project(FVector2D LogicPos) const
+    {
+        return (LogicPos + ViewOffset) * ZoomAmount;
+    }
+
+    // 辅助：将屏幕位置转回逻辑坐标（用于点击判定）
+    FVector2D Unproject(FVector2D ScreenPos) const
+    {
+        return (ScreenPos / ZoomAmount) - ViewOffset;
+    }
 };

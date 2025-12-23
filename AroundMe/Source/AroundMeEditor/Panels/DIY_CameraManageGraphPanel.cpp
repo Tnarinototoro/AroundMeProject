@@ -63,12 +63,12 @@ FVector2D SDIY_CameraManageGraphPanel::GetNodeCenter(ADIY_CameraBase *Cam) const
 {
     if (!Cam)
         return FVector2D::ZeroVector;
-
     if (const FVector2D *Pos = NodePositions.Find(Cam))
     {
-        return *Pos + FVector2D(50.f, 25.f);
+        // 节点原始尺寸是 100x50，中心偏移是 50x25
+        FVector2D LogicCenter = *Pos + FVector2D(50.f, 25.f);
+        return Project(LogicCenter); // 返回缩放后的屏幕位置
     }
-
     return FVector2D::ZeroVector;
 }
 
@@ -98,28 +98,30 @@ int32 SDIY_CameraManageGraphPanel::OnPaint(
 
     auto DrawDirectionalLine = [&](ADIY_CameraBase *From, ADIY_CameraBase *To, const FLinearColor &Color, float SideOffset)
     {
+        // 1. 获取已经缩放过的屏幕坐标
         FVector2D Start = GetNodeCenter(From);
         FVector2D End = GetNodeCenter(To);
 
         FVector2D Dir = End - Start;
         float Length = Dir.Size();
-        if (Length < 10.f)
+
+        // 这里的阈值也要考虑缩放，防止缩小时连线消失
+        if (Length < 5.f * ZoomAmount)
             return;
 
         FVector2D UnitDir = Dir / Length;
-        // 计算法向量 (垂直向量): (x, y) 的垂直向量是 (-y, x)
         FVector2D Normal(-UnitDir.Y, UnitDir.X);
 
-        // 1. 应用偏移：让起点和终点都沿法线方向平移
-        FVector2D OffsetVector = Normal * SideOffset;
+        // 2. 应用偏移（SideOffset 也要缩放）
+        FVector2D OffsetVector = Normal * (SideOffset * ZoomAmount);
         Start += OffsetVector;
         End += OffsetVector;
 
-        // 2. 箭头尖端退让 (防止箭头指到方块中心被遮挡)
-        // 假设方块半宽是 50，退让 55 像素
-        FVector2D ArrowTip = End - UnitDir * 55.f;
+        // 3. 箭头尖端退让
+        // 原本是 55 像素，现在随缩放调整
+        FVector2D ArrowTip = End - UnitDir * (55.f * ZoomAmount);
 
-        // 3. 画主干线
+        // 4. 画主干线
         TArray<FVector2D> Points;
         Points.Add(Start);
         Points.Add(ArrowTip);
@@ -132,11 +134,13 @@ int32 SDIY_CameraManageGraphPanel::OnPaint(
             ESlateDrawEffect::None,
             Color,
             true,
-            2.0f);
+            2.0f * ZoomAmount // 线宽随缩放变细或变粗
+        );
 
-        // 4. 画箭头小翅膀
-        const float ArrowLen = 12.f;
-        const float ArrowWid = 7.f;
+        // 5. 画箭头小翅膀 (尺寸全部乘上 ZoomAmount)
+        const float ArrowLen = 12.f * ZoomAmount;
+        const float ArrowWid = 7.f * ZoomAmount;
+
         FVector2D WingBase = ArrowTip - UnitDir * ArrowLen;
         FVector2D WingA = WingBase + Normal * ArrowWid;
         FVector2D WingB = WingBase - Normal * ArrowWid;
@@ -154,7 +158,8 @@ int32 SDIY_CameraManageGraphPanel::OnPaint(
             ESlateDrawEffect::None,
             Color,
             true,
-            2.5f);
+            2.5f * ZoomAmount // 箭头线宽也同步
+        );
     };
 
     // 在 OnPaint 循环中，针对 Next 和 Prev 分别计算偏移
@@ -205,7 +210,8 @@ int32 SDIY_CameraManageGraphPanel::OnPaint(
             1.5f);
     }
 
-    // 3️⃣ 画节点
+    // 在 OnPaint 内部循环画节点的部分：
+    // --- 在 OnPaint 内部循环画节点的部分 ---
     for (const TWeakObjectPtr<ADIY_CameraBase> &CamPtr : CameraActors)
     {
         ADIY_CameraBase *Cam = CamPtr.Get();
@@ -213,129 +219,220 @@ int32 SDIY_CameraManageGraphPanel::OnPaint(
             continue;
 
         const FVector2D Pos = NodePositions[Cam];
+        FVector2D ScreenPos = Project(Pos);
+        FVector2D ScreenSize = FVector2D(100.f, 50.f) * ZoomAmount;
 
+        // 1. 画背景方块
         FSlateDrawElement::MakeBox(
             OutDrawElements,
             LayerId + 2,
-            AllottedGeometry.ToPaintGeometry(Pos, FVector2D(100.f, 50.f)),
+            AllottedGeometry.ToPaintGeometry(ScreenSize, FSlateLayoutTransform(ScreenPos)),
             FCoreStyle::Get().GetBrush("WhiteBrush"),
             ESlateDrawEffect::None,
-            FLinearColor(0.2f, 0.2f, 0.2f));
+            FLinearColor(0.15f, 0.15f, 0.15f, 1.0f)); // 深色背景
 
+        // 2. 画标题（当前相机名）
         FSlateDrawElement::MakeText(
             OutDrawElements,
             LayerId + 3,
-            AllottedGeometry.ToPaintGeometry(Pos + FVector2D(8.f, 15.f), FVector2D(84.f, 20.f)),
+            AllottedGeometry.ToPaintGeometry(ScreenSize, FSlateLayoutTransform(ScreenPos + FVector2D(5.f, 5.f) * ZoomAmount)),
             Cam->CameraEntry.CameraName.ToString(),
-            FCoreStyle::GetDefaultFontStyle("Regular", 10),
+            FCoreStyle::GetDefaultFontStyle("Bold", FMath::FloorToInt(10 * ZoomAmount)),
             ESlateDrawEffect::None,
-            FLinearColor::White);
+            FLinearColor::Yellow); // 标题用黄色区分
+
+        // 3. 检查并显示“虚拟”连接
+        float VerticalOffset = 22.f * ZoomAmount; // 标题下方的起始高度
+
+        // 检查 Prev
+        FName PrevName = Cam->CameraEntry.PrevCameraName;
+        if (!PrevName.IsNone() && FindCameraByName(PrevName) == nullptr)
+        {
+            FString PrevText = FString::Printf(TEXT("P: %s"), *PrevName.ToString());
+            FSlateDrawElement::MakeText(
+                OutDrawElements,
+                LayerId + 3,
+                AllottedGeometry.ToPaintGeometry(ScreenSize, FSlateLayoutTransform(ScreenPos + FVector2D(5.f, VerticalOffset))),
+                PrevText,
+                FCoreStyle::GetDefaultFontStyle("Regular", FMath::FloorToInt(8 * ZoomAmount)),
+                ESlateDrawEffect::None,
+                FLinearColor::Red); // 找不到的 Prev 显示红色
+
+            VerticalOffset += 12.f * ZoomAmount; // 换行
+        }
+
+        // 检查 Next
+        FName NextName = Cam->CameraEntry.NextCameraName;
+        if (!NextName.IsNone() && FindCameraByName(NextName) == nullptr)
+        {
+            FString NextText = FString::Printf(TEXT("N: %s"), *NextName.ToString());
+            FSlateDrawElement::MakeText(
+                OutDrawElements,
+                LayerId + 3,
+                AllottedGeometry.ToPaintGeometry(ScreenSize, FSlateLayoutTransform(ScreenPos + FVector2D(5.f, VerticalOffset))),
+                NextText,
+                FCoreStyle::GetDefaultFontStyle("Regular", FMath::FloorToInt(8 * ZoomAmount)),
+                ESlateDrawEffect::None,
+                FLinearColor::Green); // 找不到的 Next 显示绿色
+        }
     }
 
     return LayerId + 4;
 }
 
+// 1. 鼠标按下：记录位置
 FReply SDIY_CameraManageGraphPanel::OnMouseButtonDown(const FGeometry &MyGeometry, const FPointerEvent &MouseEvent)
 {
-    if (MouseEvent.GetEffectingButton() != EKeys::LeftMouseButton)
-        return FReply::Unhandled();
+    LastMousePos = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
 
-    const FVector2D MousePos = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
-
-    for (int32 i = CameraActors.Num() - 1; i >= 0; --i)
+    if (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
     {
-        ADIY_CameraBase *Cam = CameraActors[i].Get();
-        if (!Cam)
-            continue;
+        // 修正：将鼠标点击位置转回“逻辑坐标”去判断是否点中了节点
+        FVector2D LogicMousePos = Unproject(LastMousePos);
 
-        const FVector2D Pos = NodePositions[Cam];
-        const FSlateRect Rect(Pos.X, Pos.Y, Pos.X + 100.f, Pos.Y + 50.f);
-
-        if (Rect.ContainsPoint(MousePos))
+        for (int32 i = CameraActors.Num() - 1; i >= 0; --i)
         {
-            DragStartCamera = Cam;
-            DragCurrentPos = MousePos;
+            ADIY_CameraBase *Cam = CameraActors[i].Get();
+            if (!Cam)
+                continue;
 
-            // --- 新增：切换编辑器视角 ---
-            if (GEditor)
+            const FVector2D Pos = NodePositions[Cam];
+            // 这里的 Rect 是逻辑坐标下的范围
+            const FSlateRect Rect(Pos.X, Pos.Y, Pos.X + 100.f, Pos.Y + 50.f);
+
+            if (Rect.ContainsPoint(LogicMousePos))
             {
-                // 让编辑器选中这个 Actor
-                GEditor->SelectNone(true, true);
-                GEditor->SelectActor(Cam, true, true);
-
-                // 尝试让视口对齐到该摄像机（类似按下 Shift+Actor）
-                // 这里的逻辑会让当前激活的 Level Viewport 锁定到该摄像机视角
-                if (FViewport *Viewport = GEditor->GetActiveViewport())
+                DragStartCamera = Cam;
+                DragCurrentPos = LastMousePos; // 记录屏幕位置用于拖拽计算
+                // --- 新增：切换编辑器视角 ---
+                if (GEditor)
                 {
-                    if (FEditorViewportClient *VC =
-                            static_cast<FEditorViewportClient *>(Viewport->GetClient()))
+                    // 让编辑器选中这个 Actor
+                    GEditor->SelectNone(true, true);
+                    GEditor->SelectActor(Cam, true, true);
+
+                    // 尝试让视口对齐到该摄像机（类似按下 Shift+Actor）
+                    // 这里的逻辑会让当前激活的 Level Viewport 锁定到该摄像机视角
+                    if (FViewport *Viewport = GEditor->GetActiveViewport())
                     {
-                        VC->SetViewLocation(Cam->GetActorLocation());
-                        VC->SetViewRotation(Cam->GetActorRotation());
-                        VC->Invalidate();
+                        if (FEditorViewportClient *VC =
+                                static_cast<FEditorViewportClient *>(Viewport->GetClient()))
+                        {
+                            VC->SetViewLocation(Cam->GetActorLocation());
+                            VC->SetViewRotation(Cam->GetActorRotation());
+                            VC->Invalidate();
+                        }
                     }
                 }
+                return FReply::Handled().CaptureMouse(SharedThis(this));
             }
-
-            return FReply::Handled().CaptureMouse(SharedThis(this));
         }
+    }
+
+    // 右键允许捕获，准备平移
+    if (MouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
+    {
+        return FReply::Handled().CaptureMouse(SharedThis(this));
     }
 
     return FReply::Unhandled();
 }
-
+// 2. 鼠标移动：处理平移和节点拖拽
 FReply SDIY_CameraManageGraphPanel::OnMouseMove(const FGeometry &MyGeometry, const FPointerEvent &MouseEvent)
 {
-    if (DragStartCamera.IsValid())
+    FVector2D CurrentMousePos = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
+    FVector2D Delta = CurrentMousePos - LastMousePos;
+
+    // 右键平移画布
+    if (MouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
     {
-        const FVector2D MousePos = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
-        FVector2D Delta = MousePos - DragCurrentPos;
-
-        if (NodePositions.Contains(DragStartCamera))
-        {
-            // 1. 更新本地 UI 缓存
-            NodePositions[DragStartCamera] += Delta;
-        }
-
-        DragCurrentPos = MousePos;
+        ViewOffset += Delta / ZoomAmount;
+        LastMousePos = CurrentMousePos;
         return FReply::Handled();
     }
+
+    // 左键拖拽节点
+    if (DragStartCamera.IsValid())
+    {
+        if (NodePositions.Contains(DragStartCamera))
+        {
+            // 节点移动量也要考虑缩放
+            NodePositions[DragStartCamera] += Delta / ZoomAmount;
+        }
+        LastMousePos = CurrentMousePos;
+        DragCurrentPos = CurrentMousePos;
+        return FReply::Handled();
+    }
+
+    LastMousePos = CurrentMousePos;
     return FReply::Unhandled();
 }
-
 FReply SDIY_CameraManageGraphPanel::OnMouseButtonUp(const FGeometry &MyGeometry, const FPointerEvent &MouseEvent)
 {
-    if (!DragStartCamera.IsValid())
-        return FReply::Unhandled();
-
-    const FVector2D MousePos = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
-
-    // 检查是否落在了另一个节点上以触发连线
-    for (const TWeakObjectPtr<ADIY_CameraBase> &CamPtr : CameraActors)
+    // 1. 如果是左键抬起，处理连线逻辑
+    if (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
     {
-        ADIY_CameraBase *TargetCam = CamPtr.Get();
-        if (!TargetCam || TargetCam == DragStartCamera.Get())
-            continue;
-
-        const FVector2D Pos = NodePositions[TargetCam];
-        const FSlateRect Rect(Pos.X, Pos.Y, Pos.X + 100.f, Pos.Y + 50.f);
-
-        if (Rect.ContainsPoint(MousePos))
+        if (DragStartCamera.IsValid())
         {
-            ConnectCameras(DragStartCamera.Get(), TargetCam);
-            break;
+            const FVector2D MousePos = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
+
+            for (const TWeakObjectPtr<ADIY_CameraBase> &CamPtr : CameraActors)
+            {
+                ADIY_CameraBase *TargetCam = CamPtr.Get();
+                if (!TargetCam || TargetCam == DragStartCamera.Get())
+                    continue;
+
+                // 注意：这里判定连线时也要考虑缩放转换后的位置，或者使用 Unproject
+                const FVector2D Pos = Project(NodePositions[TargetCam]);
+                const FSlateRect Rect(Pos.X, Pos.Y, Pos.X + 100.f * ZoomAmount, Pos.Y + 50.f * ZoomAmount);
+
+                if (Rect.ContainsPoint(MousePos))
+                {
+                    ConnectCameras(DragStartCamera.Get(), TargetCam);
+                    break;
+                }
+            }
+            DragStartCamera.Reset();
         }
     }
 
-    DragStartCamera.Reset();
+    // 2. 核心修复：无论抬起的是左键还是右键，只要捕获了鼠标，就一定要释放
+    // 只有释放了 Capture，鼠标才能去点击窗口的其他部分（如右上角 X 或上方列表）
+    return FReply::Handled().ReleaseMouseCapture();
+}
 
-        return FReply::Handled().ReleaseMouseCapture();
+FReply SDIY_CameraManageGraphPanel::OnMouseWheel(const FGeometry &MyGeometry, const FPointerEvent &MouseEvent)
+{
+    const float ZoomStep = 0.1f;
+    const float OldZoom = ZoomAmount;
+
+    // 计算缩放前的逻辑坐标 (鼠标指向哪里)
+    FVector2D MousePos = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
+    FVector2D LogicMouseBefore = (MousePos / OldZoom) - ViewOffset;
+
+    // 应用新缩放
+    ZoomAmount = FMath::Clamp(ZoomAmount + MouseEvent.GetWheelDelta() * ZoomStep, 0.2f, 2.0f);
+
+    // 计算为了保持鼠标指向不变，所需的 ViewOffset 补偿量
+    // 算法公式：ViewOffset_New = (MousePos / Zoom_New) - LogicMouseBefore
+    ViewOffset = (MousePos / ZoomAmount) - LogicMouseBefore;
+
+    return FReply::Handled();
 }
 
 void SDIY_CameraManageGraphPanel::SaveNodePositionsToJson()
 {
     TSharedPtr<FJsonObject> RootObject = MakeShareable(new FJsonObject());
 
+    // --- 1. 保存视角状态 ---
+    RootObject->SetNumberField("ZoomAmount", ZoomAmount);
+    TSharedPtr<FJsonObject> OffsetObj = MakeShareable(new FJsonObject());
+    OffsetObj->SetNumberField("X", ViewOffset.X);
+    OffsetObj->SetNumberField("Y", ViewOffset.Y);
+    RootObject->SetObjectField("ViewOffset", OffsetObj);
+
+    // --- 2. 保存节点位置 ---
+    TSharedPtr<FJsonObject> NodesObj = MakeShareable(new FJsonObject());
     for (auto &Pair : NodePositions)
     {
         if (Pair.Key.IsValid())
@@ -344,18 +441,20 @@ void SDIY_CameraManageGraphPanel::SaveNodePositionsToJson()
             TSharedPtr<FJsonObject> PosObj = MakeShareable(new FJsonObject());
             PosObj->SetNumberField("X", Pair.Value.X);
             PosObj->SetNumberField("Y", Pair.Value.Y);
-            RootObject->SetObjectField(CamName, PosObj);
+            NodesObj->SetObjectField(CamName, PosObj);
         }
     }
+    RootObject->SetObjectField("Nodes", NodesObj); // 将节点放入子层级，避免与全局属性冲突
 
+    // 序列化与文件写入
     FString OutputString;
     TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&OutputString);
     FJsonSerializer::Serialize(RootObject.ToSharedRef(), Writer);
 
-    // 存放在项目 Config 目录下，取名为 CameraGraphPos.json
     FString SavePath = FPaths::ProjectConfigDir() / TEXT("CameraGraphPos.json");
     FFileHelper::SaveStringToFile(OutputString, *SavePath);
 }
+
 void SDIY_CameraManageGraphPanel::LoadNodePositionsFromJson()
 {
     FString SavePath = FPaths::ProjectConfigDir() / TEXT("CameraGraphPos.json");
@@ -368,16 +467,34 @@ void SDIY_CameraManageGraphPanel::LoadNodePositionsFromJson()
 
         if (FJsonSerializer::Deserialize(Reader, RootObject) && RootObject.IsValid())
         {
-            for (auto &Pair : NodePositions)
+            // 1. 读取视角状态 - 全部增加 TEXT() 宏
+            if (RootObject->HasField(TEXT("ZoomAmount"))) // 修正点
             {
-                if (Pair.Key.IsValid())
+                ZoomAmount = RootObject->GetNumberField(TEXT("ZoomAmount")); // 修正点
+            }
+
+            if (RootObject->HasField(TEXT("ViewOffset"))) // 修正点
+            {
+                TSharedPtr<FJsonObject> OffsetObj = RootObject->GetObjectField(TEXT("ViewOffset")); // 修正点
+                ViewOffset.X = OffsetObj->GetNumberField(TEXT("X"));                                // 修正点
+                ViewOffset.Y = OffsetObj->GetNumberField(TEXT("Y"));                                // 修正点
+            }
+
+            // 2. 读取节点位置
+            if (RootObject->HasField(TEXT("Nodes"))) // 修正点
+            {
+                TSharedPtr<FJsonObject> NodesObj = RootObject->GetObjectField(TEXT("Nodes")); // 修正点
+                for (auto &Pair : NodePositions)
                 {
-                    FString CamName = Pair.Key->CameraEntry.CameraName.ToString();
-                    if (RootObject->HasField(CamName))
+                    if (Pair.Key.IsValid())
                     {
-                        TSharedPtr<FJsonObject> PosObj = RootObject->GetObjectField(CamName);
-                        Pair.Value.X = PosObj->GetNumberField("X");
-                        Pair.Value.Y = PosObj->GetNumberField("Y");
+                        FString CamName = Pair.Key->CameraEntry.CameraName.ToString();
+                        if (NodesObj->HasField(CamName)) // 这里不需要 TEXT 因为 CamName 已经是 FString
+                        {
+                            TSharedPtr<FJsonObject> PosObj = NodesObj->GetObjectField(CamName);
+                            Pair.Value.X = PosObj->GetNumberField(TEXT("X")); // 修正点
+                            Pair.Value.Y = PosObj->GetNumberField(TEXT("Y")); // 修正点
+                        }
                     }
                 }
             }
