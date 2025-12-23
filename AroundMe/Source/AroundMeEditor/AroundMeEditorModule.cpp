@@ -6,6 +6,7 @@
 #include "Modules/ModuleManager.h"
 #include "Widgets/Input/SSlider.h"
 #include "Panels/DIY_CameraManagerPanel.h"
+#include "Panels/DIY_CameraManageGraphPanel.h"
 #include "AroundMe/Player/Camera/DIY_CameraBase.h"
 void FAroundMeEditorModule::StartupModule()
 {
@@ -39,7 +40,7 @@ void FAroundMeEditorModule::AddMenuEntry(FMenuBarBuilder& MenuBarBuilder)
         "DIY_Debug");
 }
 
-void FAroundMeEditorModule::FillDebugMenu_DIY(FMenuBuilder& MenuBuilder)
+void FAroundMeEditorModule::FillDebugMenu_DIY(FMenuBuilder &MenuBuilder)
 {
 
     MenuBuilder.AddSubMenu(
@@ -61,6 +62,15 @@ void FAroundMeEditorModule::FillDebugMenu_DIY(FMenuBuilder& MenuBuilder)
             FExecuteAction::CreateRaw(
                 this,
                 &FAroundMeEditorModule::OpenCameraManagerPanel)));
+
+    MenuBuilder.AddMenuEntry(
+        FText::FromString("DIY Camera Manager Graph"),
+        FText::FromString("Open Camera Graph Debug Window"),
+        FSlateIcon(),
+        FUIAction(
+            FExecuteAction::CreateRaw(
+                this,
+                &FAroundMeEditorModule::OpenCameraManagerGraphPanel)));
 }
 
 void FAroundMeEditorModule::Fill_SubMenu_Music(FMenuBuilder& MenuBuilder)
@@ -109,6 +119,22 @@ void FAroundMeEditorModule::OpenCameraManagerPanel()
 
     Window->SetContent(
         SNew(SDIY_CameraManagerPanel)
+    );
+
+    FSlateApplication::Get().AddWindow(Window);
+#endif
+}
+void FAroundMeEditorModule::OpenCameraManagerGraphPanel()
+{
+#if WITH_EDITOR
+    TSharedRef<SWindow> Window = SNew(SWindow)
+        .Title(FText::FromString("DIY Camera Manager Graph"))
+        .ClientSize(FVector2D(900, 600))
+        .SupportsMinimize(false)
+        .SupportsMaximize(false);
+
+    Window->SetContent(
+        SNew(SDIY_CameraManageGraphPanel)
     );
 
     FSlateApplication::Get().AddWindow(Window);

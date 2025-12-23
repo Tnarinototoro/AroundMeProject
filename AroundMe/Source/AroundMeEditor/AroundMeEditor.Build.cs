@@ -17,6 +17,8 @@ public class AroundMeEditor : ModuleRules
             "EditorStyle",
             "LevelEditor",
             "InputCore",
+            "Json",
+            "JsonUtilities",
             "AroundMe",
             "AIModule"
         });

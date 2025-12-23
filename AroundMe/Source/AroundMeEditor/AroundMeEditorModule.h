@@ -15,6 +15,7 @@ public:
     void Fill_SubMenu_Music(FMenuBuilder &MenuBuilder);
     void Fill_SubMenu_Item(FMenuBuilder &MenuBuilder);
     void OpenCameraManagerPanel();
+    void OpenCameraManagerGraphPanel();
     // sliders
     FText GetMusicHourSliderValueText() const;
     float GetMusicHourSliderValue() const;
