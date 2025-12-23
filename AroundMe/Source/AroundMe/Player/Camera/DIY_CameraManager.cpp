@@ -97,11 +97,17 @@ void UDIY_CameraManager::SimpleToggleCamera(bool NextOrPrevious)
 
     if (NextOrPrevious)
     {
-        SetCurrentInUseCameraEntry(CurrentCameraEntry.NextCameraName);
+        if (CurrentCameraEntry.NextCameraName != NAME_None)
+        {
+            SetCurrentInUseCameraEntry(CurrentCameraEntry.NextCameraName);
+        }
     }
     else
     {
-        SetCurrentInUseCameraEntry(CurrentCameraEntry.PrevCameraName);
+        if (CurrentCameraEntry.PrevCameraName != NAME_None)
+        {
+            SetCurrentInUseCameraEntry(CurrentCameraEntry.PrevCameraName);
+        }
     }
 }
 
