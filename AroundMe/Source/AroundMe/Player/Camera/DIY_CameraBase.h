@@ -19,6 +19,8 @@ protected:
 
     virtual void Destroyed() override;
    
+    UFUNCTION()
+    void OnCameraInUseChanged(class AActor *NewCameraActor);
 
 public:
     ADIY_CameraBase();

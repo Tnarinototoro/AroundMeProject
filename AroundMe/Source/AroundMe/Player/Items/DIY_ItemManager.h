@@ -37,10 +37,10 @@ public:
     int32 Get_ItemNumInBackPack_Statistics(EItemID inItemID);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    const FDIY_CraftingReceipt& GetReceiptFromItemID(EItemID inItemID);
+    const FDIY_CraftingReceipt& GetReceiptFromItemID(EItemID inItemID) const;
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    const FDIY_ItemDefualtConfig& GetConfigFromItemID(EItemID inItemID);
+    const FDIY_ItemDefualtConfig& GetConfigFromItemID(EItemID inItemID) const;
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     bool TryRequestSpawningItem_CraftPlatform(EItemID inItemID, FVector inLocation, FRotator inRotator);
@@ -51,8 +51,38 @@ protected:
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;
 
-    
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemManager")
+private:
+    void SpawnItemByID_Internal(EItemID ItemID, const FVector& Location, const FRotator& Rotation);
+    void OnItemRequestRecycle(AActor* inActor);
+    void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig);
+    void SpawnActorFromClass(UClass* inClass, const FVector& Location, const FRotator& Rotation, const FDIY_ItemDefualtConfig& inConfig);
+
+    TMap<EItemID, TArray<AActor*>> ItemPools;
+    TArray<FDIY_ItemStatisticInfo> ItemStatistics;
+
+private:
+    TSubclassOf<class UDIY_ItemManagerSubsystemHelperBase> SubsystemHelperClass;
+
+public:
+    UPROPERTY(Transient, BlueprintReadOnly)
+    class UDIY_ItemManagerSubsystemHelperBase *SubsystemHelper;
+};
+
+
+
+// Subsystem helper
+UCLASS(Abstract, Blueprintable, MinimalAPI, meta = (ShowWorldContextPin))
+class UDIY_ItemManagerSubsystemHelperBase : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	friend class UDIY_ItemManagerSubsystem;
+
+	//virtual class UWorld* GetWorld() const override;
+
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemManager")
     UDataTable* ItemDataTable;
 
 
@@ -62,15 +92,28 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
     UTexture2D* EmptyItemSlotIcon;
 
-    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
-    TArray<UTexture2D*> ItemIcons;
+protected:
+	
 
-private:
-    void SpawnItemByID_Internal(EItemID ItemID, const FVector& Location, const FRotator& Rotation);
-    void OnItemRequestRecycle(AActor* inActor);
-    void OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig);
-    void SpawnActorFromClass(UClass* inClass, const FVector& Location, const FRotator& Rotation, const FDIY_ItemDefualtConfig& inConfig);
+	
 
-    TMap<EItemID, TArray<AActor*>> ItemPools;
-    TArray<FDIY_ItemStatisticInfo> ItemStatistics;
+public:
+	void Initialize();
+
+public:
+
+
+#if 1	// test.
+	// Test Function 1
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void TestFunction1();
+
+	// Test Function 2
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void TestFunction2(const int32& MyInt);
+
+	// Test Function 3
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	FString TestFunction3();
+#endif
 };

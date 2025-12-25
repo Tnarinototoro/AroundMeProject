@@ -54,6 +54,11 @@ public:
         //0-20
         int32 WeatherPresetType{ 0 };
     }weather;
+
+    struct Camera
+    {
+        bool ShowAllCameraEntries{false};
+    }camera;
   
 
 

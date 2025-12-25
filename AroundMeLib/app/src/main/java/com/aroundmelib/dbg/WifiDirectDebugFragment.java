@@ -2,6 +2,8 @@ package com.aroundmelib.dbg;
 
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import com.aroundmelib.DIY_PassByManagerReportSchema;
 import com.aroundmelib.MainActivity;
 import com.aroundmelib.R;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -267,14 +270,30 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         btnSend.setOnClickListener(v ->
         {
             String msg = editMessage.getText().toString().trim();
+
+            DIY_PassByManager mgr = GetDIY_PassByManagerInstace();
+            if (mgr == null) return;
+
+            // ① 有文本 → 发送文本
             if (!msg.isEmpty())
             {
-                DIY_PassByManager mgr = GetDIY_PassByManagerInstace();
-                if (mgr != null) mgr.sendChatMessage(msg);
-
-                editMessage.setText("");
+                mgr.sendChatMessage(msg);
+                editMessage.setText(""); // 清空输入框
+                return;
             }
+
+            // ② 无文本 → 尝试发送文件（例如已选中的图片）
+            String imgPath = mgr.getLastSelectedImagePath();
+            if (imgPath == null)
+            {
+                appendWfdLog_UIOperation("没有可发送的图片文件，请先选择图片");
+                return;
+            }
+
+            appendWfdLog_UIOperation("尝试发送图片: " + imgPath);
+            mgr.sendImageFile(imgPath);
         });
+
     }
 
 
@@ -306,4 +325,29 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         DIY_PassByManagerReportSchema.super.onWIFILogReport(inText,inLogLevel);
         appendWfdLog_UIOperation(inText);
     }
+
+    @Override
+    public void onImageReceived(File file)
+    {
+        requireActivity().runOnUiThread(() ->
+        {
+            appendWfdLog_UIOperation("准备 decode 图片: " + file.getAbsolutePath());
+
+            Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+            if (bmp == null)
+            {
+                appendWfdLog_UIOperation("❌ decodeFile 失败，图片损坏！");
+                return;
+            }
+
+            appendWfdLog_UIOperation("✔ decodeFile 成功，设置到 UI");
+
+            ImageView recvView = getView().findViewById(R.id.image_receive);
+            recvView.setImageBitmap(bmp);
+
+            appendWfdLog_UIOperation("✔ 图片已成功显示在 Receive 区域");
+        });
+    }
+
+
 }

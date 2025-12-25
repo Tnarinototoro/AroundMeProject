@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
+#include "DIY_CameraDefines.h"
 #include "DIY_MainPlayerCameraController.generated.h"
 
 UCLASS(ClassGroup=(Player), meta=(BlueprintSpawnableComponent))
@@ -16,7 +17,11 @@ public:
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;
+	
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	UFUNCTION()
+	void OnCameraInUseChanged(class AActor* NewCameraActor);
 public:    
 	enum UpDownCameraType
 	{
@@ -53,19 +58,15 @@ public:
 	UPROPERTY(BlueprintReadOnly,EditDefaultsOnly, Category = "DIY_MainPlayerCameraController")
 	class UCameraComponent* FollowCamera;
 
-	UPROPERTY(BlueprintReadWrite, //EditAnywhere,
-		EditDefaultsOnly,
-		Category = "DIY_MainPlayerCameraController")
-		float UpDownCameraLerpSpeed{ 2.0f };
+	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly,Category = "DIY_MainPlayerCameraController")
+	float UpDownCameraLerpSpeed{ 2.0f };
 
-	UPROPERTY(BlueprintReadWrite,
-		EditDefaultsOnly,
-		//EditAnywhere,
-		Category = "DIY_MainPlayerCameraController")
-		float UpDownCameraLerpTriggerThresHold{ 1.0f };
+	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly,Category = "DIY_MainPlayerCameraController")
+	float UpDownCameraLerpTriggerThresHold{ 1.0f };
 
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FDIY_CameraEntry PlayerCameraEntry;
 
     void HandleMouseMoveForUpDownCam(const FVector2D & Value); 
 

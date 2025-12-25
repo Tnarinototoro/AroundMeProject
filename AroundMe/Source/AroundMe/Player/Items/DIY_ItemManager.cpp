@@ -31,7 +31,7 @@ void UDIY_ItemManagerSubsystem::RequestSpawnItem(EItemID ItemID, const FVector &
         int32 item_id = static_cast<int32>(ItemID);
 
         FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
-        const FDIY_ItemDataTableRow *Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
+        const FDIY_ItemDataTableRow *Row = SubsystemHelper->ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
         if (Row != nullptr)
         {
 
@@ -90,68 +90,72 @@ void UDIY_ItemManagerSubsystem::RequestRecycleItem(AActor *Item)
 UTexture2D *UDIY_ItemManagerSubsystem::GetItemIconTexture(int32 inITemID) const
 {
 
-    ensureMsgf(DefualtItemSlotIcon != nullptr && nullptr != EmptyItemSlotIcon, TEXT("please set up defualt and empty slot icon for backup"));
+    ensureMsgf(SubsystemHelper->DefualtItemSlotIcon != nullptr && nullptr != SubsystemHelper->EmptyItemSlotIcon, TEXT("please set up defualt and empty slot icon for backup"));
     if (inITemID >= (int32)EItemID::EItemID_Count)
     {
 
-        return DefualtItemSlotIcon;
+        return SubsystemHelper->DefualtItemSlotIcon;
     }
     if (inITemID < 0)
     {
 
-        return EmptyItemSlotIcon;
+        return SubsystemHelper->EmptyItemSlotIcon;
     }
 
-    if (inITemID >= ItemIcons.Num())
+    UTexture2D *icon = GetConfigFromItemID((EItemID)inITemID).ItemSlotIcon;
+
+    //no valid icon found, set the defualt one!
+    if (nullptr == icon)
     {
+        icon = SubsystemHelper->DefualtItemSlotIcon;
     }
-    UTexture2D *icon = ItemIcons[inITemID];
-
-    ensureMsgf(nullptr != icon, TEXT("Icon setup is not well done"));
-    EASY_LOG_MAINPLAYER("GetItemIconTexture item id %d  Image Path is %s", inITemID, *icon->GetFullName());
     return icon;
 }
 
 UDIY_ItemManagerSubsystem::UDIY_ItemManagerSubsystem()
 {
-    
-
- // --- DataTable ---
-    static ConstructorHelpers::FObjectFinder<UDataTable> DT_ItemDepot(
-        TEXT("/Game/Blueprint/Items/DataTable/DT_DIY_ItemDepot.DT_DIY_ItemDepot"));
-    if (DT_ItemDepot.Succeeded())
+    static ConstructorHelpers::FClassFinder<UDIY_ItemManagerSubsystemHelperBase> 
+    BluePrintFile(TEXT("/Game/Blueprint/Subsystem/DIY_ItemManagerHelper_BP"));
+    if (BluePrintFile.Class)
     {
-        ItemDataTable = DT_ItemDepot.Object;
+        SubsystemHelperClass = (UClass *)BluePrintFile.Class;
     }
+}
 
-    // --- Default Slot Icon ---
-    static ConstructorHelpers::FObjectFinder<UTexture2D> DefaultIconObj(
-        TEXT("/Game/Blueprint/Items/ItemParts/UITextures/ICON_TEST.ICON_TEST"));
-    if (DefaultIconObj.Succeeded())
-    {
-        DefualtItemSlotIcon = DefaultIconObj.Object;
-    }
+void UDIY_ItemManagerSubsystem::Initialize(FSubsystemCollectionBase &Collection)
+{
+    Super::Initialize(Collection);
 
-    // --- Empty Slot Icon ---
-    static ConstructorHelpers::FObjectFinder<UTexture2D> EmptyIconObj(
-        TEXT("/Game/Blueprint/Items/ItemParts/UITextures/Slot_Empty.Slot_Empty"));
-    if (EmptyIconObj.Succeeded())
+   
+    // init current statistics
     {
-        EmptyItemSlotIcon = EmptyIconObj.Object;
-    }
-
-    ItemIcons.Reset();
-    
-    static ConstructorHelpers::FObjectFinder<UTexture2D> AppleIconObj(
-        TEXT("/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon"));
-    if (AppleIconObj.Succeeded())
-    {
-        for(uint32 id = 0; id < (uint32)EItemID::EItemID_Count; ++id)
+        ItemStatistics.Reset((int32)EItemID::EItemID_Count);
+        FDIY_ItemStatisticInfo tmp_item{};
+        for (uint32 id = 0; id < (uint32)EItemID::EItemID_Count; ++id)
         {
-            ItemIcons.Add(AppleIconObj.Object);
+
+            tmp_item.ItemID = (EItemID)id;
+            tmp_item.ItemNumInBackPack = 0;
+            ItemStatistics.Add(tmp_item);
         }
     }
 
+    SubsystemHelper = nullptr;
+
+    ensureAlwaysMsgf(SubsystemHelperClass,
+                     TEXT("UDIY_ItemManagerSubsystem::Initialize: SubsystemHelperClass is null!"));
+    UObject *outer = this; // BP で WorldContext 指定するときに Self を指定できるように親と接続しておく.
+    // UObject* outer = GetTransientPackage();
+    SubsystemHelper = NewObject<UDIY_ItemManagerSubsystemHelperBase>(outer, SubsystemHelperClass);
+    SubsystemHelper->Initialize();
+}
+
+void UDIY_ItemManagerSubsystem::Deinitialize()
+{
+
+    SubsystemHelper = nullptr;
+    Super::Deinitialize();
+    
 }
 
 UDIY_ItemManagerSubsystem *UDIY_ItemManagerSubsystem::Get(UWorld *World)
@@ -168,7 +172,7 @@ void UDIY_ItemManagerSubsystem::SpawnItemByID_Internal(EItemID ItemID, const FVe
 
     int32 item_id = static_cast<int32>(ItemID);
     FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
-    const FDIY_ItemDataTableRow *Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
+    const FDIY_ItemDataTableRow *Row = SubsystemHelper->ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
 
     if (Row)
     {
@@ -270,22 +274,22 @@ void UDIY_ItemManagerSubsystem::RequestChange_ItemNumInBackPack_Statistics(EItem
     OnItemsNumInBackPack_Changed.Broadcast((int32)inItemID);
 }
 
-const FDIY_CraftingReceipt &UDIY_ItemManagerSubsystem::GetReceiptFromItemID(EItemID inItemID)
+const FDIY_CraftingReceipt &UDIY_ItemManagerSubsystem::GetReceiptFromItemID(EItemID inItemID) const
 {
     ensureMsgf((int32)inItemID < (int32)EItemID::EItemID_Count, TEXT("item id exceeding boundary"));
     int32 item_id = static_cast<int32>(inItemID);
     FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
-    const FDIY_ItemDataTableRow *Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
+    const FDIY_ItemDataTableRow *Row = SubsystemHelper->ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
 
     return Row->CurrentItemReceipt;
 }
 
-const FDIY_ItemDefualtConfig &UDIY_ItemManagerSubsystem::GetConfigFromItemID(EItemID inItemID)
+const FDIY_ItemDefualtConfig &UDIY_ItemManagerSubsystem::GetConfigFromItemID(EItemID inItemID) const
 {
     ensureMsgf((int32)inItemID < (int32)EItemID::EItemID_Count, TEXT("item id exceeding boundary"));
     int32 item_id = static_cast<int32>(inItemID);
     FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
-    const FDIY_ItemDataTableRow *Row = ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
+    const FDIY_ItemDataTableRow *Row = SubsystemHelper->ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
 
     return Row->ItemDefualtConfig;
 }
@@ -320,25 +324,8 @@ bool UDIY_ItemManagerSubsystem::TryRequestSpawningItem_CraftPlatform(EItemID inI
     return true;
 }
 
-void UDIY_ItemManagerSubsystem::Initialize(FSubsystemCollectionBase &Collection)
+
+void UDIY_ItemManagerSubsystemHelperBase::Initialize()
 {
-    Super::Initialize(Collection);
 
-   
-    // init current statistics
-    {
-        ItemStatistics.Reset((int32)EItemID::EItemID_Count);
-        FDIY_ItemStatisticInfo tmp_item{};
-        for (uint32 id = 0; id < (uint32)EItemID::EItemID_Count; ++id)
-        {
-
-            tmp_item.ItemID = (EItemID)id;
-            tmp_item.ItemNumInBackPack = 0;
-            ItemStatistics.Add(tmp_item);
-        }
-    }
-}
-
-void UDIY_ItemManagerSubsystem::Deinitialize()
-{
 }

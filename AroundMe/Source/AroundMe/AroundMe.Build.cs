@@ -22,6 +22,7 @@ public class AroundMe : ModuleRules
             "DeveloperSettings",
             "AIModule",
             "RuntimeVertexPainter",
+            "NavigationSystem",
             "GameplayTags",
             "ImGui",
             "Json"

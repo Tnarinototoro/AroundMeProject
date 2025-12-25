@@ -27,6 +27,8 @@ public class DIYPlatformService : ModuleRules
             new string[]
             {
                 "Core",
+                "CoreUObject",
+                "Engine",
 				// ... add other public dependencies that you statically link with here ...
 			}
             );
@@ -39,6 +41,9 @@ public class DIYPlatformService : ModuleRules
                 "Engine",
                 "Slate",
                 "SlateCore",
+                "ImageWrapper",
+                "RenderCore",
+                "RHI",
 				// ... add private dependencies that you statically link with here ...	
 			}
             );

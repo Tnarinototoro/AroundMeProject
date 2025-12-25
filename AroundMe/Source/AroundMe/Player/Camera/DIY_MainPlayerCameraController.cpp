@@ -3,6 +3,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "DIY_CameraManager.h"
 
 UDIY_MainPlayerCameraController::UDIY_MainPlayerCameraController()
 {
@@ -55,6 +56,73 @@ void UDIY_MainPlayerCameraController::BeginPlay()
         cur_controller->SetControlRotation(NewRotator);
     }
 
+    AActor* Owner = GetOwner();
+
+    if (nullptr != Owner)
+    {
+        
+        PlayerCameraEntry.CameraActor = Owner;
+        if (UDIY_CameraManager* CM = UDIY_CameraManager::Get(this))
+        {
+            ensureAlwaysMsgf(PlayerCameraEntry.CameraActor.IsValid(), TEXT("Camera Entry Failed with empty camera actor with name %s"), *PlayerCameraEntry.CameraName.ToString());
+            CM->AddCameraEntry(PlayerCameraEntry);
+             if(!CM->OnCameraInUseChanged.IsAlreadyBound(this,&UDIY_MainPlayerCameraController::OnCameraInUseChanged))
+             {
+                 CM->OnCameraInUseChanged.AddDynamic(this,&UDIY_MainPlayerCameraController::OnCameraInUseChanged);
+             }
+
+        }
+    }
+
+    
+
+}
+
+void UDIY_MainPlayerCameraController::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    if (UDIY_CameraManager* CM = UDIY_CameraManager::Get(this))
+    {
+        CM->RemoveCameraEntry(PlayerCameraEntry.CameraName);
+        if (CM->OnCameraInUseChanged.IsAlreadyBound(this, &UDIY_MainPlayerCameraController::OnCameraInUseChanged))
+        {
+            CM->OnCameraInUseChanged.RemoveDynamic(this, &UDIY_MainPlayerCameraController::OnCameraInUseChanged);
+        }
+    }
+
+    Super::EndPlay(EndPlayReason);
+}
+
+void UDIY_MainPlayerCameraController::OnCameraInUseChanged(AActor* NewCameraActor)
+{
+    if (nullptr == NewCameraActor)
+        return;
+
+    AActor* Owner = this->GetOwner();
+
+    if (Owner == nullptr)
+    { 
+        return;
+    }
+
+    if (Owner->IsActorBeingDestroyed())
+    {
+        return;
+    }
+
+    if (Owner->IsPendingKillPending())
+    {
+        return;
+    }
+
+
+    if (NewCameraActor == Owner)
+    {
+        Owner->EnableInput(GetWorld()->GetFirstPlayerController());
+    }
+    else
+    {
+        Owner->DisableInput(GetWorld()->GetFirstPlayerController());
+    }
 }
 
 void UDIY_MainPlayerCameraController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)

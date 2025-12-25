@@ -15,7 +15,7 @@ void FDIY_ImGuiContentProxy_Weather::DrawWindow(float DeltaTime)
     ImGui::Text("BasicControl");
     ImGui::SliderInt("WeatherPresetType", &FDIY_GlobalDebugSettings::sInstance.weather.WeatherPresetType, 0, 20);
 
-     UDIY_WeatherManager* WeatherManager = UDIY_WeatherManager::Get(GetWorld());
+    UDIY_WeatherManager* WeatherManager = UDIY_WeatherManager::Get(GetWorld());
 
     if(nullptr == WeatherManager)
     {

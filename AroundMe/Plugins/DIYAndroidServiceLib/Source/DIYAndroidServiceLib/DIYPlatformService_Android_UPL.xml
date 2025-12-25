@@ -4,14 +4,19 @@
 		<addPermission android:name="android.permission.BLUETOOTH"/>
 		<addPermission android:name="android.permission.BLUETOOTH_ADMIN"/>
 		<addPermission android:name="android.permission.BLUETOOTH_SCAN"/>
-		<addPermission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 		<addPermission android:name="android.permission.BLUETOOTH_CONNECT"/>
+		<addPermission android:name="android.permission.BLUETOOTH_ADVERTISE"/>
+		<addPermission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+		<addPermission android:name="android.permission.FOREGROUND_SERVICE"/>
+		<addPermission android:name="android.permission.NEARBY_WIFI_DEVICES"/>
+		<addPermission android:name="android.permission.POST_NOTIFICATIONS"/>
+		<addPermission android:name="android.permission.ACCESS_NETWORK_STATE" />
+		<addPermission android:name="android.permission.CHANGE_NETWORK_STATE" />
 		<addPermission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 		<addPermission android:name="android.permission.ACCESS_WIFI_STATE"/>
 		<addPermission android:name="android.permission.CHANGE_WIFI_STATE"/>
-		<addPermission android:name="android.permission.BLUETOOTH_ADVERTISE"/>
 		<addPermission android:name="android.permission.INTERNET"/>
-        <addPermission android:name="android.permission.POST_NOTIFICATIONS"/>
+        
 		<insert>
 			<uses-feature android:name="android.hardware.location.gps" />
 		</insert>
@@ -265,14 +270,13 @@
 		<insert>
 			<![CDATA[
 
-if (requestCode == DIY_PermissionHelper.REQUEST_ENABLE_BT) {
-        if (resultCode == Activity.RESULT_OK) {
-            DIY_CommuUtils.PushToast(this, "✅ 蓝牙已开启");
-        } else {
-            DIY_CommuUtils.PushToast(this, "❌ 必须开启蓝牙才能使用 AroundMe");
-            DIY_PermissionHelper.showEnableBluetoothDialog(this);
+ //Service only Code
+        {
+            if(DIY_Service.Instance!=null)
+            {
+                DIY_Service.Instance.handleActivityResult(requestCode, resultCode, data);
+            }
         }
-    }
 			]]>
 		</insert>
 	</gameActivityOnActivityResultAdditions>

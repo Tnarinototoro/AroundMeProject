@@ -6,7 +6,8 @@ public class AroundMeEditor : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] {
+        PublicDependencyModuleNames.AddRange(new string[]
+        {
             "Core",
             "CoreUObject",
             "Engine",
@@ -15,10 +16,20 @@ public class AroundMeEditor : ModuleRules
             "SlateCore",
             "EditorStyle",
             "LevelEditor",
+            "InputCore",
+            "Json",
+            "JsonUtilities",
             "AroundMe",
             "AIModule"
         });
 
-        PrivateDependencyModuleNames.AddRange(new string[] { });
+        PrivateDependencyModuleNames.AddRange(new string[]
+        {
+            "Slate",
+            "SlateCore",
+            "EditorStyle",     // UE5 可用 AppStyle，但老的也行
+            "UnrealEd",
+            "LevelEditor",
+        });
     }
 }

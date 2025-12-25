@@ -1,13 +1,14 @@
 #include "DIY_PlatformServiceSubsystem.h"
+#include "IImageWrapper.h"
+#include "IImageWrapperModule.h"
+#include "DIY_CommuLog.h"
+#include "Misc/Parse.h"
+
+
 #if PLATFORM_ANDROID
 #include "Android/AndroidApplication.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidJavaEnv.h"
-#endif
-
-#include "DIY_CommuLog.h"
-#include "Misc/Parse.h"
-#if PLATFORM_ANDROID
 #include "Android/DIY_CommuManager.h"
 #elif PLATFORM_IOS
 //#include "DIY_CommuDevice.h"
@@ -95,11 +96,65 @@ bool UDIYPlatformServiceSubsystem::IsUUIDValid(const FString& UUID)
     if (UUID.Len() == 36 && !FGuid::ParseExact(UUID, EGuidFormats::DigitsWithHyphens, Guid)) return false;
     return Guid.IsValid();
 }
+void UDIYPlatformServiceSubsystem::OnImageBytesReceived(
+    const TArray<uint8> &ImageBytes)
+{
+    UTexture2D *Texture = CreateTextureFromImageBytes(ImageBytes);
 
+    if (!Texture)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Failed to create texture from image bytes"));
+        return;
+    }
 
+    // ‚ë† ‰øùÂ≠òÂà∞ SubsystemÔºàÈùûÂ∏∏ÈáçË¶ÅÔºåÈò≤ GCÔºâ
+    LastReceivedImageTexture = Texture;
+
+    // ‚ë° ÈÄöÁü•Ê∏∏Êàè‰∏ñÁïå
+    OnImageTextureReceived.Broadcast(Texture);
+}
+UTexture2D* UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(
+    const TArray<uint8>& ImageData)
+{
+    IImageWrapperModule& ImageWrapperModule =
+        FModuleManager::LoadModuleChecked<IImageWrapperModule>("ImageWrapper");
+
+    EImageFormat ImageFormat =
+        ImageWrapperModule.DetectImageFormat(ImageData.GetData(), ImageData.Num());
+
+    TSharedPtr<IImageWrapper> Wrapper =
+        ImageWrapperModule.CreateImageWrapper(ImageFormat);
+
+    if (!Wrapper.IsValid() ||
+        !Wrapper->SetCompressed(ImageData.GetData(), ImageData.Num()))
+    {
+        return nullptr;
+    }
+
+    TArray<uint8> RawData;
+    Wrapper->GetRaw(ERGBFormat::BGRA, 8, RawData);
+
+    UTexture2D* Texture =
+        UTexture2D::CreateTransient(
+            Wrapper->GetWidth(),
+            Wrapper->GetHeight(),
+            PF_B8G8R8A8);
+
+    Texture->SRGB = true;
+
+    void* TextureData =
+        Texture->GetPlatformData()->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
+
+    FMemory::Memcpy(TextureData, RawData.GetData(), RawData.Num());
+
+    Texture->GetPlatformData()->Mips[0].BulkData.Unlock();
+    Texture->UpdateResource();
+
+    return Texture;
+}
 UDIYPlatformServiceSubsystem* UDIYPlatformServiceSubsystem::Get(UWorld* OptionalWorld)
 {
-    // »Áπ˚ JNI ªÿµ˜¥´»Î¡À world£®OptionalWorld£©£¨æÕ”≈œ» π”√
+    
     if (OptionalWorld)
     {
         if (UGameInstance* GI = OptionalWorld->GetGameInstance())
@@ -107,8 +162,6 @@ UDIYPlatformServiceSubsystem* UDIYPlatformServiceSubsystem::Get(UWorld* Optional
             return GI->GetSubsystem<UDIYPlatformServiceSubsystem>();
         }
     }
-
-    // ∑Ò‘Ú fallback µΩÀ—À˜ Engine µƒ GameWorld
     if (!GEngine)
     {
         return nullptr;
@@ -303,6 +356,32 @@ extern "C"
                     { Subsys->OnItemGiftReceived_Delegate_Provider.Broadcast(ConvertedInt); });
             }
             
+        }
+    }
+
+    JNIEXPORT void JNICALL
+    Java_com_aroundmelib_DIY_1Service_OnImageBytesForGame(
+        JNIEnv *Env,
+        jclass,
+        jbyteArray ImageBytes)
+    {
+        if (!ImageBytes)
+            return;
+
+        jsize Length = Env->GetArrayLength(ImageBytes);
+        TArray<uint8> Bytes;
+        Bytes.SetNumUninitialized(Length);
+
+        Env->GetByteArrayRegion(
+            ImageBytes,
+            0,
+            Length,
+            reinterpret_cast<jbyte *>(Bytes.GetData()));
+
+        if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
+        {
+            AsyncTask(ENamedThreads::GameThread, [Subsys, Bytes = MoveTemp(Bytes)]() mutable
+                      { Subsys->OnImageBytesReceived(Bytes); });
         }
     }
 }

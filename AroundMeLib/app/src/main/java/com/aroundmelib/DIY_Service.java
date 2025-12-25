@@ -7,17 +7,25 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class DIY_Service extends Service implements DIY_CommuManagerReportSchema, DIY_PassByManagerReportSchema
 {
     private static final String TAG = "DIY_Service";
     private static final String CHANNEL_ID = "DIYServiceChannel";
+    public static final String ACTION_PICK_IMAGE = "DIY_ACTION_PICK_IMAGE";
     public static DIY_Service Instance = null;
     public static Activity BoundActivity = null;
 
@@ -38,7 +46,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
 
     public static native void OnItemGiftReceived(int received_item_id);
-
+    public static native void OnImageBytesForGame(byte[] imageBytes);
 
 
     // -------------------------
@@ -65,6 +73,35 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         Intent intent = new Intent(activity, DIY_Service.class);
         activity.stopService(intent);
         Log.d("DIY_Service", "Service stopped from UE");
+    }
+
+    private byte[] ReadBytesFromUri(Uri uri)
+    {
+        try
+        {
+            InputStream inputStream =
+                    getContentResolver().openInputStream(uri);
+
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            byte[] data = new byte[4096];
+            int nRead;
+
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1)
+            {
+                buffer.write(data, 0, nRead);
+            }
+
+            buffer.flush();
+            inputStream.close();
+
+            return buffer.toByteArray();
+        }
+        catch (Exception e)
+        {
+            appendToLog("Read image failed: " + e.getMessage(),
+                    DIY_CommuUtils.LogLevel.ERROR);
+            return null;
+        }
     }
 
     public static void RequestGiveAItem(int item_id)
@@ -98,7 +135,70 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     {
         OnNewLogGenerated(text);
     }
+    private void RequestPickImageInternal()
+    {
+        if (BoundActivity == null)
+        {
+            appendToLog("Choose Image failed: no bound activity",
+                    DIY_CommuUtils.LogLevel.ERROR);
+            return;
+        }
 
+        BoundActivity.runOnUiThread(() ->
+        {
+            if (mPassByManager != null)
+            {
+                mPassByManager.openImagePicker();
+            }
+        });
+    }
+
+    public void handleActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(null==BoundActivity)
+        {
+            return;
+        }
+        if(null==mPassByManager)
+        {
+            return;
+        }
+        if(null==mCommuManager)
+        {
+            return;
+        }
+
+        if (requestCode == DIY_PermissionHelper.REQUEST_ENABLE_BT)
+        {
+            if (resultCode == Activity.RESULT_OK)
+            {
+                DIY_CommuUtils.PushToast(BoundActivity.getApplicationContext(), "✅ 蓝牙已开启");
+            }
+            else
+            {
+                DIY_CommuUtils.PushToast(BoundActivity.getApplicationContext(), "❌ 必须开启蓝牙才能使用 AroundMe");
+                DIY_PermissionHelper.showEnableBluetoothDialog(BoundActivity);
+            }
+        }
+        mPassByManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DIY_CommuUtils.REQUEST_OPEN_PIC && resultCode == Activity.RESULT_OK && data != null)
+        {
+            Uri selectedImage =mPassByManager.GetChosen_Uri();
+
+
+            appendToLog("图片已选择：" + selectedImage.toString(), DIY_CommuUtils.LogLevel.INFO);
+
+            byte[] imageBytes = ReadBytesFromUri(selectedImage);
+            if (imageBytes != null)
+            {
+                OnImageBytesForGame(imageBytes);
+            }
+            appendToLog("Pic Submitted to game instance!" , DIY_CommuUtils.LogLevel.INFO);
+
+            //wifiFragment.Picked_imageView.setImageURI(selectedImage);
+
+        }
+    }
     @Override
     public void onCreate() {
         super.onCreate();
@@ -130,11 +230,26 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
                         PendingIntent.FLAG_UPDATE_CURRENT
         );
 
+        Intent pickImageIntent = new Intent(this, DIY_Service.class);
+        pickImageIntent.setAction(ACTION_PICK_IMAGE);
+
+        PendingIntent pickImagePendingIntent = PendingIntent.getService(
+                this,
+                1,
+                pickImageIntent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
+                        PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT :
+                        PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+
         // 👉 创建带“停止”按钮的通知
         Notification notification = new Notification.Builder(this, CHANNEL_ID)
                 .setContentTitle("DIY Service")
                 .setContentText("Service started, counting...")
                 .setSmallIcon(android.R.drawable.ic_menu_gallery)
+                .addAction(new Notification.Action.Builder(
+                        null, "Choose Image", pickImagePendingIntent).build())
                 .addAction(new Notification.Action.Builder(
                         null, "Stop Service", stopPendingIntent).build())
                 .build();
@@ -171,6 +286,8 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
                         ))
                         .setSmallIcon(android.R.drawable.ic_menu_gallery)
                         .addAction(new Notification.Action.Builder(
+                                null, "Choose Image", pickImagePendingIntent).build())
+                        .addAction(new Notification.Action.Builder(
                                 null, "Stop Service", stopPendingIntent).build())
                         .build();
 
@@ -186,12 +303,26 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         handler.post(logTask);
     }
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        // 👉 点击通知按钮后触发
-        if (intent != null && "STOP_SERVICE".equals(intent.getAction())) {
-            Log.d(TAG, "Stop button clicked, stopping service.");
-            stopSelf();
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+
+        if (intent != null)
+        {
+            String action = intent.getAction();
+
+            if ("STOP_SERVICE".equals(action))
+            {
+                Log.d(TAG, "Stop button clicked, stopping service.");
+                stopSelf();
+            }
+            else if (ACTION_PICK_IMAGE.equals(action))
+            {
+                Log.d(TAG, "Choose Image button clicked.");
+                RequestPickImageInternal();
+            }
         }
+
+
         return START_STICKY; // 保持运行，系统杀掉后会尽量重启
     }
 
@@ -349,6 +480,11 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
     }
 
+
+
+
+
+
     @Override
     public void onWIFILogReport(String inText, DIY_CommuUtils.LogLevel level)
     {
@@ -363,6 +499,28 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     }
 
 
+    @Override
+    public void onImageReceived(File file)
+    {
+       /* requireActivity().runOnUiThread(() ->
+        {
+            appendWfdLog_UIOperation("准备 decode 图片: " + file.getAbsolutePath());
+
+            Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+            if (bmp == null)
+            {
+                appendWfdLog_UIOperation("❌ decodeFile 失败，图片损坏！");
+                return;
+            }
+
+            appendWfdLog_UIOperation("✔ decodeFile 成功，设置到 UI");
+
+            ImageView recvView = getView().findViewById(R.id.image_receive);
+            recvView.setImageBitmap(bmp);
+
+            appendWfdLog_UIOperation("✔ 图片已成功显示在 Receive 区域");
+        });*/
+    }
 
 
 
