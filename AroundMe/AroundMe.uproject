@@ -116,6 +116,13 @@
 		{
 			"Name": "WebBrowserWidget",
 			"Enabled": true
+		},
+		{
+			"Name": "MobileFSR",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Android"
+			]
 		}
 	]
 }
