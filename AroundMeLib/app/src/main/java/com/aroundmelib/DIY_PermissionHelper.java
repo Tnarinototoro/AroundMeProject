@@ -76,6 +76,8 @@ public class DIY_PermissionHelper {
         perms.add(Manifest.permission.CHANGE_NETWORK_STATE);
         perms.add(Manifest.permission.NEARBY_WIFI_DEVICES);
 
+        perms.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        perms.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
 
         return perms.toArray(new String[0]);

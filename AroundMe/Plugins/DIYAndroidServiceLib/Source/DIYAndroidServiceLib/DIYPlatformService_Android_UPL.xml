@@ -16,6 +16,8 @@
 		<addPermission android:name="android.permission.ACCESS_WIFI_STATE"/>
 		<addPermission android:name="android.permission.CHANGE_WIFI_STATE"/>
 		<addPermission android:name="android.permission.INTERNET"/>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
         
 		<insert>
 			<uses-feature android:name="android.hardware.location.gps" />
