@@ -25,7 +25,9 @@ public class AroundMe : ModuleRules
             "NavigationSystem",
             "GameplayTags",
             "ImGui",
-            "Json"
+            "Json",
+            "HTTP",
+            "JsonUtilities"
         });
 
 
