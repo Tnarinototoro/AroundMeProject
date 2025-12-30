@@ -23,8 +23,6 @@ public:
     virtual void Tick(float DeltaTime) override;
 
 private:
-    static ADIY_MusicPlayer *gMusicPlayerInstance;
-
     uint8 HourOfToday{0};
 
 protected:
@@ -38,16 +36,9 @@ protected:
     void OnMusicFinished();
 
     uint32 GenerateDateCorrespondingMusicIndex();
+    const class UDataTable *GetMusicDataTable();
 
 public:
-#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-    static int Dbg_Music_Hour;
-#endif
-    static ADIY_MusicPlayer *GetMusicPlayer();
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="DIY_MusicPlayer")
-    UDataTable* MusicDataTable;
-
-
     UPROPERTY()
     UAudioComponent *AudioComponent;
 
