@@ -20,7 +20,7 @@ struct FDIY_PetWorldContext
     float LightIntensity = 1.0f; // 光照强度
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FGameplayTag CurrentWeather; // 使用之前说的 Env.Weather.XXX
+    FGameplayTag CurrentWeather; // 使用之前说的 Env.Weather.XXX 天气类型
 
     // --- 2. 社交与进度 (Social & Progress) ---
     UPROPERTY(EditAnywhere, BlueprintReadWrite)

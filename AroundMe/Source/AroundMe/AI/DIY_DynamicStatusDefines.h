@@ -30,5 +30,5 @@ struct FDIY_DynamicStatus
     // --- 3. 辅助计算方法 ---
 
     // 快速判断是否有病
-    bool IsSick() const { return HealthTags.HasTag(FGameplayTag::RequestGameplayTag("Status.Physical")); }
+    bool IsSick() const;
 };
