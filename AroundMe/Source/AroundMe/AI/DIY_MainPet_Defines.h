@@ -20,15 +20,15 @@ enum class EDIY_MainPetBehavior_MainMode : uint8
 UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
 enum class EDIY_BornNature : uint8
 {
-    // --- 基础维度 (Base Dimensions) ---
+    
     None = 0,
-    E_Mask = 1 << 0, // Extraversion (位0: 1=E, 0=I)
-    N_Mask = 1 << 1, // Intuition    (位1: 1=N, 0=S)
-    F_Mask = 1 << 2, // Feeling      (位2: 1=F, 0=T)
-    P_Mask = 1 << 3, // Perceiving   (位3: 1=P, 0=J)
+    E_Mask = 1 << 0, // Extraversion 
+    N_Mask = 1 << 1, // Intuition   
+    F_Mask = 1 << 2, // Feeling      
+    P_Mask = 1 << 3, // Perceiving   
 
-    // --- 16种人格穷举 (16 Types) ---
-    // 逻辑：字母存在即加 Mask，不存在即为 0
+
+    
     ISTJ = 0,
     ISFJ = F_Mask,
     INFJ = N_Mask | F_Mask,

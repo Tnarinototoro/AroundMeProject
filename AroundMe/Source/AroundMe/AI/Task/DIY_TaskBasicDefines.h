@@ -11,9 +11,9 @@ struct FDIY_FixedRoutineTaskConfig
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere)
-    float E_Bias = 0.0f; // 正数代表偏向 E，负数代表偏向 I
+    float E_Bias = 0.0f; 
 
     UPROPERTY(EditAnywhere)
-    float N_Bias = 0.0f; // 正数代表偏向 N，负数代表偏向 S
-    // ...以此类推
+    float N_Bias = 0.0f; 
+    
 };
