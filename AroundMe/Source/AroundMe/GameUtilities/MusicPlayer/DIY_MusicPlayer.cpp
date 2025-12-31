@@ -11,8 +11,8 @@
 #include "Engine/StreamableManager.h"
 #include "Engine/AssetManager.h"
 #include "AroundMe/Debug/DIY_GlobalDebugSettings.h"
-ADIY_MusicPlayer *ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;
-
+#include "../Sound/DIY_SoundManager.h"
+#include "../Time/DIY_TimeManager.h"
 
 ADIY_MusicPlayer::ADIY_MusicPlayer()
 {
@@ -33,6 +33,12 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     FDateTime cur_date_time = FDateTime::Now();
+
+    if (UDIY_TimeManager *TimeManager = UDIY_TimeManager::Get(GetWorld()))
+    {
+        cur_date_time = TimeManager->GetCurrentLocal();
+    }
+
     uint8 new_hour = cur_date_time.GetHour();
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
@@ -64,22 +70,16 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
     }
 }
 
-ADIY_MusicPlayer *ADIY_MusicPlayer::GetMusicPlayer()
-{
-    checkf(nullptr != gMusicPlayerInstance, TEXT("music player is got too early"));
-
-    return ADIY_MusicPlayer::gMusicPlayerInstance;
-}
-
 void ADIY_MusicPlayer::BeginPlay()
 {
     Super::BeginPlay();
     checkf(AudioComponent != nullptr, TEXT("Audio component shall be setup properly to start game"));
+    const UDataTable *MusicDataTable = GetMusicDataTable();
     if (MusicDataTable)
     {
         MusicDataTable->ForeachRow<FDIY_SoundTrackRow>(
             TEXT("BuildMusicRowMap"),
-            [this](const FName& RowName, const FDIY_SoundTrackRow& Row)
+            [this](const FName &RowName, const FDIY_SoundTrackRow &Row)
             {
                 TrackToRowName.Add(Row.TrackID, RowName);
             });
@@ -87,10 +87,6 @@ void ADIY_MusicPlayer::BeginPlay()
     AudioComponent->OnAudioFinished.AddUniqueDynamic(this, &ADIY_MusicPlayer::OnMusicFinished);
     PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
 
-    checkf(ADIY_MusicPlayer::gMusicPlayerInstance == nullptr, TEXT("More than one music player instance is created now which is not allowed"));
-
-    ADIY_MusicPlayer::gMusicPlayerInstance = this;
-    UDIY_Utilities::DIY_PrintLogToScreen(1.0f, FString{"Music player  Instance Created!"});
     // LoadMusicFromDirectory();
 }
 
@@ -101,16 +97,14 @@ void ADIY_MusicPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
     {
         AudioComponent->OnAudioFinished.RemoveDynamic(this, &ADIY_MusicPlayer::OnMusicFinished);
     }
-    ADIY_MusicPlayer::gMusicPlayerInstance = nullptr;
 }
 
 void ADIY_MusicPlayer::OnMusicFinished()
 {
-    if(AudioComponent&&IsValid(AudioComponent)&&!AudioComponent->IsGarbageEliminationEnabled())
+    if (AudioComponent && IsValid(AudioComponent) && !AudioComponent->IsGarbageEliminationEnabled())
     {
-         PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
+        PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
     }
-   
 }
 
 uint32 ADIY_MusicPlayer::GenerateDateCorrespondingMusicIndex()
@@ -119,6 +113,18 @@ uint32 ADIY_MusicPlayer::GenerateDateCorrespondingMusicIndex()
     uint32 base_index = 0;
     // const FDateTime &now_time = FDateTime::Now();
     return HourOfToday + base_index;
+}
+
+const UDataTable *ADIY_MusicPlayer::GetMusicDataTable()
+{
+    if (UDIY_SoundManager *SoundManager = UDIY_SoundManager::Get(this->GetWorld()))
+    {
+        if (SoundManager->SubsystemHelper)
+        {
+            return SoundManager->SubsystemHelper->MusicDataTable;
+        }
+    }
+    return nullptr;
 }
 
 void ADIY_MusicPlayer::LoadMusicFromDirectory()
@@ -169,33 +175,35 @@ void ADIY_MusicPlayer::LoadMusicFromDirectory()
 
 void ADIY_MusicPlayer::PlayMusicByIndex(ESoundTrackID Index)
 {
-     if (!MusicDataTable)
+
+    const UDataTable *MusicDataTable = GetMusicDataTable();
+
+    if (nullptr == MusicDataTable)
     {
         UE_LOG(LogTemp, Warning, TEXT("MusicDataTable is null"));
         return;
     }
 
-    const FName* RowName = TrackToRowName.Find(Index);
+    const FName *RowName = TrackToRowName.Find(Index);
     if (!RowName)
     {
         UE_LOG(LogTemp, Warning, TEXT("No RowName mapped for TrackID %s"),
-            *UEnum::GetValueAsString(Index));
+               *UEnum::GetValueAsString(Index));
         return;
     }
 
-    FDIY_SoundTrackRow* Row = MusicDataTable->FindRow<FDIY_SoundTrackRow>(*RowName, TEXT(""));
+    FDIY_SoundTrackRow *Row = MusicDataTable->FindRow<FDIY_SoundTrackRow>(*RowName, TEXT(""));
     if (!Row || Row->SoundAsset.IsNull())
     {
         UE_LOG(LogTemp, Warning, TEXT("Row missing or SoundAsset null for %s"), *RowName->ToString());
         return;
     }
 
-
     const TSoftObjectPtr<USoundBase> SoundSoft = Row->SoundAsset;
 
-    FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
+    FStreamableManager &Streamable = UAssetManager::GetStreamableManager();
     Streamable.RequestAsyncLoad(SoundSoft.ToSoftObjectPath(), [this, SoundSoft, Index]()
-    {
+                                {
         USoundBase* LoadedSound = SoundSoft.Get();
         if (LoadedSound && AudioComponent)
         {
@@ -203,30 +211,7 @@ void ADIY_MusicPlayer::PlayMusicByIndex(ESoundTrackID Index)
             AudioComponent->FadeIn(3.0f, 0.6f);
             mCurrentPlayingSoundTrack = (int32)Index;
             UE_LOG(LogTemp, Log, TEXT("Now playing (lazy): %s"), *LoadedSound->GetName());
-        }
-    });
-
-    // USoundBase *SoundToPlay = (*MusicTracks.Find(Index));
-    // if (SoundToPlay)
-    // {
-    //     if (SoundToPlay && AudioComponent)
-    //     {
-
-    //         AudioComponent->SetSound(SoundToPlay);
-    //         AudioComponent->FadeIn(3.0f, 0.6f);
-    //         mCurrentPlayingSoundTrack = (int32)Index;
-
-    //         UE_LOG(LogTemp, Warning, TEXT("Now playing: %s"), *SoundToPlay->GetName());
-    //     }
-    //     else
-    //     {
-    //         UE_LOG(LogTemp, Warning, TEXT("Sound resource is null"));
-    //     }
-    // }
-    // else
-    // {
-    //     UE_LOG(LogTemp, Warning, TEXT("Sound index is invalid"));
-    // }
+        } });
 }
 
 void ADIY_MusicPlayer::PlayMusicCorrespondingToTime()

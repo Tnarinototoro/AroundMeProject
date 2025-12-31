@@ -63,20 +63,32 @@ public class DIY_PermissionHelper {
     public static String[] getRequiredPermissions() {
         List<String> perms = new ArrayList<>();
 
-        // Android 13+ 通知需要运行时权限
-        perms.add(Manifest.permission.POST_NOTIFICATIONS);
-        perms.add(Manifest.permission.BLUETOOTH_SCAN);
-        perms.add(Manifest.permission.BLUETOOTH_CONNECT);
-        perms.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        // 基础权限
         perms.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        perms.add(Manifest.permission.ACCESS_WIFI_STATE);
-        perms.add(Manifest.permission.CHANGE_WIFI_STATE);
 
-        perms.add(Manifest.permission.ACCESS_NETWORK_STATE);
-        perms.add(Manifest.permission.CHANGE_NETWORK_STATE);
-        perms.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+        // --- 蓝牙/Wi-Fi 适配 ---
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            perms.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+            perms.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            perms.add(Manifest.permission.BLUETOOTH_SCAN);
+            perms.add(Manifest.permission.BLUETOOTH_CONNECT);
+            perms.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        }
 
+        // --- 重点：存储权限适配 ---
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13+ 必须请求具体的媒体权限，否则 READ_EXTERNAL_STORAGE 无效
+            perms.add(Manifest.permission.READ_MEDIA_IMAGES);
+            perms.add(Manifest.permission.READ_MEDIA_VIDEO);
+            perms.add(Manifest.permission.READ_MEDIA_AUDIO);
+        } else {
+            // Android 12 及以下系统
+            perms.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            perms.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
 
         return perms.toArray(new String[0]);
     }
@@ -133,8 +145,10 @@ public class DIY_PermissionHelper {
             return true;
         }
 
-        if (!deniedAndDontAsk.isEmpty()) {
-            DIY_CommuUtils.PushToast(activity, "部分权限被永久拒绝，请到设置中开启");
+        if (!deniedAndDontAsk.isEmpty())
+        {
+            String message = "已拒绝以下权限：" + deniedAndDontAsk;
+            DIY_CommuUtils.PushToast(activity, message+"部分权限被永久拒绝，请到设置中开启");
             showGoToSettingsDialog(activity);
             return false;
         }
