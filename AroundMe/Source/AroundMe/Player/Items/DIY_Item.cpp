@@ -109,6 +109,11 @@ const FDIY_ItemDefualtConfig &ADIY_ItemBase::GetItemDefualtConfig()
 {
     return this->config_copy;
 }
+void ADIY_ItemBase::GetOwnedGameplayTags_Implementation(FGameplayTagContainer &TagContainer) const
+{
+    TagContainer = AllTags;
+}
+
 void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
 {
     config_copy = inConfig;
@@ -119,6 +124,9 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
         UDIY_InteractionUtility::SetFlag(BulkInteractionFlags, (uint8)cur_flag);
         EASY_LOG_MAINPLAYER("Actor spawned with flag %s", *UEnum::GetValueAsString(cur_flag));
     }
+    AllTags.Reset();
+    AllTags.AppendTags(inConfig.InitGameplayTags);
+    config_copy.InitGameplayTags.AppendTags(inConfig.InitGameplayTags);
     // for (EDIY_InteractItemFlag cur_flag : inConfig.ConfiguredFlags)
     // {
 
@@ -248,7 +256,7 @@ void ADIY_ItemBase::UpdateWidgetText_Internal(const FString &NewText)
 
 void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
 {
-    
+
     if (!FDIY_GlobalDebugSettings::sInstance.item.bShowItemState)
     {
         if (ItemStateWidgetComponent)
