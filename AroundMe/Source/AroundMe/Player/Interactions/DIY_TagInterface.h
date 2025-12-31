@@ -5,7 +5,7 @@
 #include "GameplayTagContainer.h"
 #include "DIY_TagInterface.generated.h"
 
-UINTERFACE(MinimalAPI, Blueprintable)
+UINTERFACE(MinimalAPI, NotBlueprintable)
 class UDIY_TagInterface : public UInterface
 {
     GENERATED_BODY()
@@ -16,7 +16,7 @@ class IDIY_TagInterface
     GENERATED_BODY()
 
 public:
-    /** 获取物体拥有的所有标签 */
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "TagInterface")
-    void GetOwnedGameplayTags(FGameplayTagContainer &TagContainer) const;
+    /** 蓝图可以调，C++ 也可以调，但蓝图不能 Override */
+    UFUNCTION(BlueprintCallable, Category = "TagInterface")
+    virtual void GetOwnedGameplayTags(FGameplayTagContainer &TagContainer) const = 0;
 };

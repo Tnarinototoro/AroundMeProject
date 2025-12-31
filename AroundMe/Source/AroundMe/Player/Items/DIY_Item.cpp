@@ -109,7 +109,7 @@ const FDIY_ItemDefualtConfig &ADIY_ItemBase::GetItemDefualtConfig()
 {
     return this->config_copy;
 }
-void ADIY_ItemBase::GetOwnedGameplayTags_Implementation(FGameplayTagContainer &TagContainer) const
+void ADIY_ItemBase::GetOwnedGameplayTags(FGameplayTagContainer &TagContainer) const
 {
     TagContainer = AllTags;
 }

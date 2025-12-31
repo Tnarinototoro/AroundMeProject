@@ -60,8 +60,8 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
     const FDIY_ItemDefualtConfig &GetItemDefualtConfig();
 
-   
-    virtual void GetOwnedGameplayTags_Implementation(FGameplayTagContainer &TagContainer) const override;
+    UFUNCTION(BlueprintCallable, Category = "TagInterface")
+    virtual void GetOwnedGameplayTags(FGameplayTagContainer &TagContainer) const override;
 
 protected:
     // 运行时动态增减的标签（比如：点位被占用、机器损坏）
