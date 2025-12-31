@@ -24,6 +24,7 @@ public:
 
 private:
     uint8 HourOfToday{0};
+    float CurrentMusicPlayedTime{0.0f};
 
 protected:
     virtual void BeginPlay() override;
@@ -40,7 +41,7 @@ protected:
 
 public:
     UPROPERTY()
-    UAudioComponent *AudioComponent;
+    TWeakObjectPtr<UAudioComponent> AudioComponent;
 
     // 功能：加载音乐
     void LoadMusicFromDirectory();
