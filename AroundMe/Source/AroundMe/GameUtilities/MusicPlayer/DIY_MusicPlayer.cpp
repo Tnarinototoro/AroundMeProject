@@ -66,7 +66,11 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
                     HourOfToday,
                     cur_date_time.GetMinute(),
                     cur_date_time.GetSecond(),
-                    *UEnum::GetValueAsString(GetCurrentMusicTrackID()))));
+                    AudioComponent->GetSound() ? *AudioComponent->GetSound()->GetName() : TEXT("None")
+
+                        )
+
+                    ));
     }
 }
 
@@ -97,14 +101,18 @@ void ADIY_MusicPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
     {
         AudioComponent->OnAudioFinished.RemoveDynamic(this, &ADIY_MusicPlayer::OnMusicFinished);
     }
+
+    if (AudioComponent && IsValid(AudioComponent))
+    {
+        AudioComponent->Stop();
+    }
 }
 
 void ADIY_MusicPlayer::OnMusicFinished()
 {
-    if (AudioComponent && IsValid(AudioComponent) && !AudioComponent->IsGarbageEliminationEnabled())
-    {
-        PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
-    }
+    EASY_LOG_MAINPLAYER(" ADIY_MusicPlayer Music finished called!");
+    PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
+    EASY_LOG_MAINPLAYER(" ADIY_MusicPlayer Music finished called and played music also called!");
 }
 
 uint32 ADIY_MusicPlayer::GenerateDateCorrespondingMusicIndex()
@@ -204,8 +212,12 @@ void ADIY_MusicPlayer::PlayMusicByIndex(ESoundTrackID Index)
     FStreamableManager &Streamable = UAssetManager::GetStreamableManager();
     Streamable.RequestAsyncLoad(SoundSoft.ToSoftObjectPath(), [this, SoundSoft, Index]()
                                 {
+        if (!IsValid(this) || IsUnreachable())
+        {
+            return;
+        }
         USoundBase* LoadedSound = SoundSoft.Get();
-        if (LoadedSound && AudioComponent)
+        if (LoadedSound && AudioComponent && IsValid(AudioComponent)&&!AudioComponent->IsGarbageEliminationEnabled())
         {
             AudioComponent->SetSound(LoadedSound);
             AudioComponent->FadeIn(3.0f, 0.6f);
