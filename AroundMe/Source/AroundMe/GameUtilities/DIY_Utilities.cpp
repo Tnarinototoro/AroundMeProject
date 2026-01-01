@@ -5,7 +5,7 @@
 #include "../Player/Items/DIY_ItemManager.h"
 #include "Weather/DIY_WeatherManager.h"
 #include "../Area/DIY_AreaManager.h"
-#include "NavigationSystem.h"   
+#include "NavigationSystem.h"
 #include "Navigation/NavLinkProxy.h"
 #include "NavigationSystem.h"
 #include "NavLinkCustomComponent.h"
@@ -37,13 +37,13 @@
 //     }
 // }
 
-
 bool UDIY_Utilities::bShouldLogToGameScreen = true;
-UDIY_ItemManagerSubsystem *UDIY_Utilities::DIY_GetItemManagerInstance(const UObject* WorldContextObject)
+UDIY_ItemManagerSubsystem *UDIY_Utilities::DIY_GetItemManagerInstance(const UObject *WorldContextObject)
 {
 
-    if (!WorldContextObject) return nullptr;
-    UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject);
+    if (!WorldContextObject)
+        return nullptr;
+    UWorld *World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject);
     return UDIY_ItemManagerSubsystem::Get(World);
 }
 
@@ -71,43 +71,46 @@ void UDIY_Utilities::ForceUpdateNavProxyInOctree(AActor *inActor)
     if (nullptr == inActor)
         return;
 
-    ANavLinkProxy* NavProxy = Cast<ANavLinkProxy>(inActor);
+    ANavLinkProxy *NavProxy = Cast<ANavLinkProxy>(inActor);
     if (nullptr == NavProxy)
         return;
 
     UNavigationSystemV1 *NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(inActor->GetWorld());
-    if(nullptr == NavSys)
+    if (nullptr == NavSys)
         return;
     NavSys->UpdateActorInNavOctree(*inActor);
 
-    
-    UNavLinkCustomComponent* SmartLink = NavProxy->GetSmartLinkComp();
+    UNavLinkCustomComponent *SmartLink = NavProxy->GetSmartLinkComp();
     if (nullptr == SmartLink)
-        return; 
+        return;
 
-    //We can temporarily disable and enable the smart link to force the nav system to update it    
+    // We can temporarily disable and enable the smart link to force the nav system to update it
     SmartLink->SetEnabled(false);
     SmartLink->SetEnabled(true);
-
-   
 }
 
-void UDIY_Utilities::ForceRebuildNavigation(AActor* inActor)
+void UDIY_Utilities::ForceRebuildNavigation(AActor *inActor)
 {
     if (nullptr == inActor)
         return;
-    
+
     UNavigationSystemV1 *NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(inActor->GetWorld());
-    if(nullptr == NavSys)
+    if (nullptr == NavSys)
         return;
 
-    if(!NavSys->IsNavigationBuildInProgress())
+    if (!NavSys->IsNavigationBuildInProgress())
     {
         NavSys->Build();
     }
-    
 }
 
 UDIY_Utilities::UDIY_Utilities()
 {
+}
+
+bool UDIY_Utilities::HasTagHelper(const FGameplayTagContainer &Container, FName TagName)
+{
+    // 关键点：使用 RequestGameplayTag，如果标签不存在它会返回无效标签
+    // 虽然有性能开销，但在重构期这种写法最快
+    return Container.HasTag(FGameplayTag::RequestGameplayTag(TagName));
 }

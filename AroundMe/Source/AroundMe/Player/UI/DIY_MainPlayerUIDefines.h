@@ -17,15 +17,22 @@ enum class EMainPlayerUISectionID : uint8
 USTRUCT(BlueprintType)
 struct FDIY_BackPackItemSlotInfo
 {
-
     GENERATED_BODY()
-    // attribute
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    EItemID itemID{EItemID::EItemID_Count};
+    FPrimaryAssetId itemID; // 成员变量名
 
-    uint16 ItemCount{0};
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 ItemCount{0}; // 注意：uint16 不支持 BlueprintReadWrite，建议改用 int32
 
-    FDIY_BackPackItemSlotInfo(EItemID inItemID, uint16 inItemCount = 0) : itemID(inItemID), ItemCount(inItemCount) {}
+    // 修正后的构造函数
+    FDIY_BackPackItemSlotInfo(FPrimaryAssetId InID, int32 InCount = 0)
+        : itemID(InID), ItemCount(InCount) // 使用成员变量名 itemID
+    {
+    }
 
-    FDIY_BackPackItemSlotInfo() {}
+    FDIY_BackPackItemSlotInfo()
+        : itemID(FPrimaryAssetId()), ItemCount(0)
+    {
+    }
 };

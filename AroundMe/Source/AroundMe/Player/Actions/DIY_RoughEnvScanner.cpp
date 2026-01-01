@@ -5,6 +5,7 @@
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "GameFramework/Actor.h"
 #include "../Interactions/DIY_InteractionUtility.h"
+#include "AroundMe/GameUtilities/DIY_Utilities.h"
 
 UDIY_RoughEnvScanner::UDIY_RoughEnvScanner()
 {
@@ -13,24 +14,17 @@ UDIY_RoughEnvScanner::UDIY_RoughEnvScanner()
     SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     SetCollisionObjectType(ECollisionChannel::ECC_WorldStatic);
     SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-    
-   
-    
 }
-  void UDIY_RoughEnvScanner::BeginPlay()
+void UDIY_RoughEnvScanner::BeginPlay()
 {
     Super::BeginPlay();
 
     this->OnComponentBeginOverlap.AddDynamic(this, &UDIY_RoughEnvScanner::ProcessBeginOverlapEvent);
     this->OnComponentEndOverlap.AddDynamic(this, &UDIY_RoughEnvScanner::ProcessEndOverlapEvent);
 
-    
-    GetOverlappingActors(mDetectedActors,TSubclassOf<ADIY_ItemBase>());
+    GetOverlappingActors(mDetectedActors, TSubclassOf<ADIY_ItemBase>());
 
     GetNearest_DetectedActor();
-
-    
-    
 }
 
 void UDIY_RoughEnvScanner::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -43,127 +37,114 @@ void UDIY_RoughEnvScanner::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 AActor *UDIY_RoughEnvScanner::GetNearest_DetectedActor() const
 {
-    if(mDetectedActors.Num() == 0)
+    if (mDetectedActors.Num() == 0)
     {
         return nullptr;
     }
 
-    AActor* OwnerActor=GetOwner();
+    AActor *OwnerActor = GetOwner();
 
-    if(OwnerActor == nullptr)
+    if (OwnerActor == nullptr)
     {
         return nullptr;
     }
 
     float nearest_distance = FLT_MAX;
 
-    AActor* nearest_actor = nullptr;
+    AActor *nearest_actor = nullptr;
 
-    FVector OwnerActorForwardVector =OwnerActor->GetActorForwardVector();
+    FVector OwnerActorForwardVector = OwnerActor->GetActorForwardVector();
 
-
-    
-    for(AActor* CurActor : mDetectedActors)
+    for (AActor *CurActor : mDetectedActors)
     {
-        if(!IsValid(CurActor))
+        if (!IsValid(CurActor))
         {
             continue;
-
         }
-        ADIY_ItemBase* ItemActor = Cast<ADIY_ItemBase>(CurActor);
-        if(nullptr==ItemActor)
+        ADIY_ItemBase *ItemActor = Cast<ADIY_ItemBase>(CurActor);
+
+        if (nullptr == ItemActor)
         {
-            if (!ItemActor->CheckItemFlag(EDIY_InteractItemFlag::Can_Be_PickUped) && !ItemActor->CheckItemFlag(EDIY_InteractItemFlag::Can_Be_Drilled))
+
+            if (!UDIY_Utilities::HasTagHelper(ItemActor->GetOwnedGameplayTags(), "DIY.Interact.Pickable") &&
+                !UDIY_Utilities::HasTagHelper(ItemActor->GetOwnedGameplayTags(), "DIY.Interact.Drillable"))
                 continue;
         }
 
         float cur_distance = CurActor->GetDistanceTo(OwnerActor);
-        if(cur_distance >= nearest_distance)
+        if (cur_distance >= nearest_distance)
         {
             continue;
         }
         FVector CurActorToOwnerActor = CurActor->GetActorLocation() - OwnerActor->GetActorLocation();
-        //added to avoid selecting item behind the player
-        if(CurActorToOwnerActor.Dot(OwnerActorForwardVector) <= 0.0f)
+        // added to avoid selecting item behind the player
+        if (CurActorToOwnerActor.Dot(OwnerActorForwardVector) <= 0.0f)
         {
             continue;
         }
-        
-        
+
         nearest_distance = cur_distance;
-        nearest_actor=CurActor;
-        
+        nearest_actor = CurActor;
     }
-    if(nullptr!=nearest_actor)
+    if (nullptr != nearest_actor)
     {
-        DrawDebugSphere(GetWorld(), nearest_actor->GetActorLocation(), 100.0f,12,FColor::Black,false,0.1f);
+        DrawDebugSphere(GetWorld(), nearest_actor->GetActorLocation(), 100.0f, 12, FColor::Black, false, 0.1f);
     }
-    
+
     return nearest_actor;
-   
 }
 
 void UDIY_RoughEnvScanner::RemoveAllInvalidActors()
 {
-    mDetectedActors.RemoveAll([](AActor* CurActor)
-    {
-    return !IsValid(CurActor);
-    });
+    mDetectedActors.RemoveAll([](AActor *CurActor)
+                              { return !IsValid(CurActor); });
 }
 
 void UDIY_RoughEnvScanner::ProcessBeginOverlapEvent(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-    EASY_LOG_MAINPLAYER("Item %s begin overlap with %s",*this->GetName(),*OtherActor->GetName());
-    AActor* OwnerActor = GetOwner();
+    EASY_LOG_MAINPLAYER("Item %s begin overlap with %s", *this->GetName(), *OtherActor->GetName());
+    AActor *OwnerActor = GetOwner();
 
-    if(nullptr==OwnerActor)
+    if (nullptr == OwnerActor)
     {
-        ensureMsgf(false,TEXT("DIY_RoughEnvScanner::ProcessBeginOverlapEvent: OwnerActor is null"));
+        ensureMsgf(false, TEXT("DIY_RoughEnvScanner::ProcessBeginOverlapEvent: OwnerActor is null"));
         return;
     }
 
-    
-    ADIY_ItemBase* ItemActor = Cast<ADIY_ItemBase>(OtherActor);
+    ADIY_ItemBase *ItemActor = Cast<ADIY_ItemBase>(OtherActor);
 
-    //ignore non item actor
-    if(nullptr==ItemActor)
+    // ignore non item actor
+    if (nullptr == ItemActor)
     {
         return;
     }
 
-    //aalready  detected
-    if(mDetectedActors.Contains(OtherActor))
+    // aalready  detected
+    if (mDetectedActors.Contains(OtherActor))
     {
         return;
     }
 
     mDetectedActors.Add(OtherActor);
     RemoveAllInvalidActors();
-    
-    DrawDebugSphere(GetWorld(),OtherActor->GetActorLocation(),100.0f,12,FColor::Green,false,1.0f);
-   
 
-   
+    DrawDebugSphere(GetWorld(), OtherActor->GetActorLocation(), 100.0f, 12, FColor::Green, false, 1.0f);
 }
 
 void UDIY_RoughEnvScanner::ProcessEndOverlapEvent(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex)
 {
-   
-     ADIY_ItemBase* ItemActor = Cast<ADIY_ItemBase>(OtherActor);
 
-    //ignore non item actor
-    if(nullptr==ItemActor)
+    ADIY_ItemBase *ItemActor = Cast<ADIY_ItemBase>(OtherActor);
+
+    // ignore non item actor
+    if (nullptr == ItemActor)
     {
         return;
     }
-    
-    
-    DrawDebugSphere(GetWorld(),OtherActor->GetActorLocation(),100.0f,12,FColor::Red,false,1.0f);
-    
-    
+
+    DrawDebugSphere(GetWorld(), OtherActor->GetActorLocation(), 100.0f, 12, FColor::Red, false, 1.0f);
+
     mDetectedActors.RemoveSingleSwap(ItemActor);
-    
+
     RemoveAllInvalidActors();
-
-
 }

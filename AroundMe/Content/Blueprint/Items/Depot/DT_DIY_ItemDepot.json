@@ -1,0 +1,922 @@
+[
+	{
+		"Name": "NewRow",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_ButterFlyNet",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 20,
+			"LinearDamping": 0,
+			"AngualrDamping": 0,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 1000,
+				"self_emissive_AddonTemperature_LastingDuration_config": 10,
+				"self_combustible_temperature": 200,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 100,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.3
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"React_To_Temperature"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/DIY_ButterFlyNet",
+				"AssetName": "DIY_ButterFlyNet"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 300,
+			"InputElements": [
+				{
+					"ItemID": "EItemID_Apple",
+					"CurrentItemNumReq": 2
+				},
+				{
+					"ItemID": "EItemID_Tree",
+					"CurrentItemNumReq": 3
+				}
+			]
+		}
+	},
+	{
+		"Name": "NewRow_0",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_PickAxe",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 200,
+			"LinearDamping": 1,
+			"AngualrDamping": 10,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 3000,
+				"self_emissive_AddonTemperature_LastingDuration_config": 20,
+				"self_combustible_temperature": 1000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 200,
+				"cutting_damage_susceptibility": 1,
+				"blunt_damage_susceptibility": 0.2,
+				"sphereness": 0.2
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0.9,
+				"Metal_Self_Purity": 0.7
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"Has_Any_Conductivity",
+				"React_To_Temperature"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_PickAxe",
+				"AssetName": "BP_Item_PickAxe"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 700,
+			"InputElements": [
+				{
+					"ItemID": "EItemID_Stone",
+					"CurrentItemNumReq": 2
+				},
+				{
+					"ItemID": "EItemID_Tree",
+					"CurrentItemNumReq": 1
+				}
+			]
+		}
+	},
+	{
+		"Name": "NewRow_1",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_FishingPod",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 40,
+			"LinearDamping": 1,
+			"AngualrDamping": 10,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 1200,
+				"self_emissive_AddonTemperature_LastingDuration_config": 20,
+				"self_combustible_temperature": 500,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 80,
+				"cutting_damage_susceptibility": 1,
+				"blunt_damage_susceptibility": 1,
+				"sphereness": 0.1
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"React_To_Temperature"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_Fishing_pod",
+				"AssetName": "BP_Item_Fishing_pod"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 900,
+			"InputElements": [
+				{
+					"ItemID": "EItemID_Grass",
+					"CurrentItemNumReq": 2
+				},
+				{
+					"ItemID": "EItemID_Stone",
+					"CurrentItemNumReq": 1
+				},
+				{
+					"ItemID": "EItemID_WaterMelon",
+					"CurrentItemNumReq": 3
+				}
+			]
+		}
+	},
+	{
+		"Name": "NewRow_2",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_WoodCuttingAxe",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 100,
+			"LinearDamping": 1,
+			"AngualrDamping": 10,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 2000,
+				"self_emissive_AddonTemperature_LastingDuration_config": 30,
+				"self_combustible_temperature": 1000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 200,
+				"cutting_damage_susceptibility": 1.2,
+				"blunt_damage_susceptibility": 0.4,
+				"sphereness": 0.2
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0.76,
+				"Metal_Self_Purity": 0.5
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"Has_Any_Conductivity",
+				"React_To_Temperature"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/Item_WoodCuttingAxe",
+				"AssetName": "Item_WoodCuttingAxe"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 200,
+			"InputElements": [
+				{
+					"ItemID": "EItemID_Tree",
+					"CurrentItemNumReq": 4
+				},
+				{
+					"ItemID": "EItemID_Stone",
+					"CurrentItemNumReq": 4
+				}
+			]
+		}
+	},
+	{
+		"Name": "NewRow_3",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_PokeBall",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 10,
+			"LinearDamping": 0.6,
+			"AngualrDamping": 0.5,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Metalic.PYM_Metalic'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 2000,
+				"self_emissive_AddonTemperature_LastingDuration_config": 8,
+				"self_combustible_temperature": 1538,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 60,
+				"cutting_damage_susceptibility": 0.1,
+				"blunt_damage_susceptibility": 0.7,
+				"sphereness": 1
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0.9,
+				"Metal_Self_Purity": 0.9
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"Has_Any_Conductivity",
+				"React_To_Temperature",
+				"Can_Be_PickUped"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [
+					{
+						"TagName": "DIY.Item.Food.Spinach"
+					}
+				],
+				"ParentTags": [
+					{
+						"TagName": "DIY.Item.Food"
+					},
+					{
+						"TagName": "DIY.Item"
+					},
+					{
+						"TagName": "DIY"
+					}
+				]
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_PokeBall",
+				"AssetName": "BP_PokeBall"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 1000,
+			"InputElements": [
+				{
+					"ItemID": "EItemID_Stone",
+					"CurrentItemNumReq": 5
+				}
+			]
+		}
+	},
+	{
+		"Name": "NewRow_4",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_Shovel",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 90,
+			"LinearDamping": 1,
+			"AngualrDamping": 10,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 2000,
+				"self_emissive_AddonTemperature_LastingDuration_config": 10,
+				"self_combustible_temperature": 1538,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 150,
+				"cutting_damage_susceptibility": 1,
+				"blunt_damage_susceptibility": 0.6,
+				"sphereness": 0.35
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0.89,
+				"Metal_Self_Purity": 0.3
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"Has_Any_Conductivity",
+				"React_To_Temperature"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/Item_Shovel",
+				"AssetName": "Item_Shovel"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 900,
+			"InputElements": [
+				{
+					"ItemID": "EItemID_Stone",
+					"CurrentItemNumReq": 5
+				}
+			]
+		}
+	},
+	{
+		"Name": "NewRow_5",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_DIY_Crafting_ITemPlatform",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 10000,
+			"LinearDamping": 1,
+			"AngualrDamping": 10,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 0,
+				"self_emissive_AddonTemperature_LastingDuration_config": 9999,
+				"self_combustible_temperature": 2000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 50,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.6
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Static",
+				"Has_CraftingPlatform_Function"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_DIY_Crafting_ItemPlatform",
+				"AssetName": "BP_Item_DIY_Crafting_ItemPlatform"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 0,
+			"InputElements": []
+		}
+	},
+	{
+		"Name": "NewRow_6",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_Apple",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 1,
+			"LinearDamping": 1,
+			"AngualrDamping": 1,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 0,
+				"self_emissive_AddonTemperature_LastingDuration_config": 9999,
+				"self_combustible_temperature": 2000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 50,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.6
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"React_To_Temperature",
+				"Has_Any_Conductivity",
+				"Can_Be_PickUped"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_Apple",
+				"AssetName": "BP_Item_Apple"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 0,
+			"InputElements": []
+		}
+	},
+	{
+		"Name": "NewRow_7",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_WaterMelon",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 1,
+			"LinearDamping": 1,
+			"AngualrDamping": 1,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 0,
+				"self_emissive_AddonTemperature_LastingDuration_config": 9999,
+				"self_combustible_temperature": 2000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 50,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.6
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"React_To_Temperature",
+				"Has_Any_Conductivity",
+				"Can_Be_PickUped"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_WaterMelon",
+				"AssetName": "BP_Item_WaterMelon"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 0,
+			"InputElements": []
+		}
+	},
+	{
+		"Name": "NewRow_8",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_Grass",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 1,
+			"LinearDamping": 1,
+			"AngualrDamping": 1,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 0,
+				"self_emissive_AddonTemperature_LastingDuration_config": 9999,
+				"self_combustible_temperature": 2000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 50,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.6
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"React_To_Temperature",
+				"Has_Any_Conductivity",
+				"Can_Be_PickUped"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_Grass",
+				"AssetName": "BP_Item_Grass"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 0,
+			"InputElements": []
+		}
+	},
+	{
+		"Name": "NewRow_9",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_MushRoom",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 10,
+			"LinearDamping": 1,
+			"AngualrDamping": 1,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 0,
+				"self_emissive_AddonTemperature_LastingDuration_config": 9999,
+				"self_combustible_temperature": 2000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 50,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.6
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"React_To_Temperature",
+				"Has_Any_Conductivity",
+				"Can_Be_PickUped"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_MushRoom",
+				"AssetName": "BP_Item_MushRoom"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 0,
+			"InputElements": []
+		}
+	},
+	{
+		"Name": "NewRow_10",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_Stone",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 5000,
+			"LinearDamping": 1,
+			"AngualrDamping": 1,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 0,
+				"self_emissive_AddonTemperature_LastingDuration_config": 9999,
+				"self_combustible_temperature": 3000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 50,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.6
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"React_To_Temperature",
+				"Can_Be_Drilled"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_Stone",
+				"AssetName": "BP_Item_Stone"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 0,
+			"InputElements": []
+		}
+	},
+	{
+		"Name": "NewRow_11",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_Tree",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 1,
+			"LinearDamping": 1,
+			"AngualrDamping": 1,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 0,
+				"self_emissive_AddonTemperature_LastingDuration_config": 9999,
+				"self_combustible_temperature": 2000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 50,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.6
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Static",
+				"Can_Be_Destroyed",
+				"React_To_Temperature",
+				"Has_Any_Conductivity"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_Tree",
+				"AssetName": "BP_Item_Tree"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 0,
+			"InputElements": []
+		}
+	},
+	{
+		"Name": "NewRow_12",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_WashPotion",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 1,
+			"LinearDamping": 1,
+			"AngualrDamping": 1,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 3000,
+				"self_emissive_AddonTemperature_LastingDuration_config": 15,
+				"self_combustible_temperature": 2000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 50,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.6
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Obey_Physics_Rules",
+				"Can_Be_Destroyed",
+				"React_To_Temperature",
+				"Has_Any_Conductivity",
+				"Can_Be_PickUped"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_WashPotion",
+				"AssetName": "BP_Item_WashPotion"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 0,
+			"InputElements": []
+		}
+	},
+	{
+		"Name": "NewRow_13",
+		"ItemDefualtConfig":
+		{
+			"ItemID": "EItemID_MineralRock",
+			"ItemSlotIcon": "/Script/Engine.Texture2D'/Game/Blueprint/Items/ItemParts/UITextures/apple_icon.apple_icon'",
+			"ItemMass": 200,
+			"LinearDamping": 1,
+			"AngualrDamping": 1,
+			"ItemPhysicsMtl": "/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/Items/ITem_PhysicsMaterials/PYM_Wood.PYM_Wood'",
+			"PossibleTempAndMoistConfig":
+			{
+				"self_emissive_AddonTemperature_config": 3000,
+				"self_emissive_AddonTemperature_LastingDuration_config": 15,
+				"self_combustible_temperature": 2000,
+				"self_thaw_temparature": 26,
+				"self_frozen_temperature": -1
+			},
+			"PossibleSolidnessConfig":
+			{
+				"fresh_born_solidness": 50,
+				"cutting_damage_susceptibility": 2,
+				"blunt_damage_susceptibility": 0.1,
+				"sphereness": 0.6
+			},
+			"PossibleConductivityConfig":
+			{
+				"MetalSelf_Conductivity": 0,
+				"Metal_Self_Purity": 0
+			},
+			"ConfiguredFlags": [
+				"Can_Be_Destroyed",
+				"Can_Be_Drilled",
+				"Static"
+			],
+			"InitGameplayTags":
+			{
+				"GameplayTags": [],
+				"ParentTags": []
+			}
+		},
+		"ItemPath":
+		{
+			"AssetPath":
+			{
+				"PackageName": "/Game/Blueprint/Items/Depot/BP_Item_MineralRock",
+				"AssetName": "BP_Item_MineralRock"
+			},
+			"SubPathString": ""
+		},
+		"CurrentItemReceipt":
+		{
+			"ReqEtherEnergyCoinNum": 0,
+			"InputElements": []
+		}
+	}
+]

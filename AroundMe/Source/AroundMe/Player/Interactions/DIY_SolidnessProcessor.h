@@ -34,7 +34,7 @@ public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
-    virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig *inConfig) override;
+    virtual void OnInitWithConfigCopy(const FDIY_ItemDefaultConfig *inConfig) override;
     virtual void OnResetComponentValues() override;
     inline float GetFinal_Durability() const
     {

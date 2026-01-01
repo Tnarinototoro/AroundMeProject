@@ -52,7 +52,7 @@ void SDIY_TagDebugPanel::RefreshTagList(AActor *Actor)
     // 直接尝试 Cast 到你的接口
     if (IDIY_TagInterface *DIYInterface = Cast<IDIY_TagInterface>(Actor))
     {
-        DIYInterface->GetOwnedGameplayTags(CurrentContainer);
+        CurrentContainer = DIYInterface->GetOwnedGameplayTags();
     }
     else if (IGameplayTagAssetInterface *OfficialInterface = Cast<IGameplayTagAssetInterface>(Actor))
     {

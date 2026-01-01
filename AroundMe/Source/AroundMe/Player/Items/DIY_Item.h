@@ -46,22 +46,18 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DIY_ItemBase")
     float HighLightColorTranklingInterval{1.0f};
 
-    void InitWithConfig(const FDIY_ItemDefualtConfig &inConfig);
+    void InitItem(FPrimaryAssetId inItemID);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
-    EItemID GetItemID() const { return config_copy.ItemID; }
+    FPrimaryAssetId GetItemID() const { return ItemID; }
 
     // force override means to force change to target state and execute the first execution event equal to current state
     bool SwitchCycleState(EItemLifeCycleState targetState, bool ForceOverride = false);
 
-    UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
-    bool CheckItemFlag(EDIY_InteractItemFlag inFlag);
-
-    UFUNCTION(BlueprintCallable, Category = "DIY_ItemBase")
-    const FDIY_ItemDefualtConfig &GetItemDefualtConfig();
+    const FDIY_ItemDefaultConfig *GetItemDefaultConfig();
 
     UFUNCTION(BlueprintCallable, Category = "TagInterface")
-    virtual void GetOwnedGameplayTags(FGameplayTagContainer &TagContainer) const override;
+    virtual const FGameplayTagContainer &GetOwnedGameplayTags() const override;
 
 protected:
     // 运行时动态增减的标签（比如：点位被占用、机器损坏）
@@ -69,9 +65,9 @@ protected:
     FGameplayTagContainer AllTags;
 
 private:
-    FDIY_ItemDefualtConfig config_copy;
-    int32 BulkInteractionFlags{0};
-
+    FPrimaryAssetId ItemID; //(用于存档和识别)
+    UPROPERTY()
+    class UDIY_ItemAsset *ItemData; //(在 BeginPlay 时通过 ID 赋值，用于运行时极速访问)
     EItemLifeCycleState CurrentLifeState{EItemLifeCycleState::EItemState_SpanwedJustNow};
 
     class UDIY_ConductivityProcessor *Possible_Conductivity_Processor{nullptr};

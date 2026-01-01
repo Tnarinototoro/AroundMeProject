@@ -140,7 +140,8 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
 
             if (cur_item != nullptr)
             {
-                is_pickable = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Obey_Physics_Rules);
+
+                is_pickable = UDIY_Utilities::HasTagHelper(cur_item->GetOwnedGameplayTags(), "DIY.Physics.Simulate");
             }
             if (nullptr != detected_actor && is_pickable)
             {
@@ -174,7 +175,8 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
 
             if (nullptr != cur_item)
             {
-                is_crafting_item_pltform = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Has_CraftingPlatform_Function);
+
+                is_crafting_item_pltform = UDIY_Utilities::HasTagHelper(cur_item->GetOwnedGameplayTags(), "DIY.Interact.CraftingStation");
             }
 
             if (is_crafting_item_pltform)
@@ -185,7 +187,8 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
 
             if (cur_item != nullptr)
             {
-                is_pickable = cur_item->CheckItemFlag(EDIY_InteractItemFlag::Obey_Physics_Rules);
+
+                is_pickable = UDIY_Utilities::HasTagHelper(cur_item->GetOwnedGameplayTags(), "DIY.Physics.Simulate");
             }
             static bool execute_pick_up{true};
             if (execute_pick_up)
@@ -196,10 +199,7 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
                     {
                         AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(detected_actor, "hand_rSocket");
 
-
-                        
                         AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->SwitchActionState(EMainPlayerActingStateType::State_PickingUp);
-                       
                     }
                 }
 
@@ -368,7 +368,7 @@ void UDIY_MainPlayerInputController::HandleKey_E_Input(const FInputActionValue &
         else
         {
             ADIY_ItemBase *cur_detected_item = Cast<ADIY_ItemBase>(detected_actor);
-            if (cur_detected_item != nullptr && cur_detected_item->GetItemID() != EItemID::EItemID_Count)
+            if (cur_detected_item != nullptr)
             {
                 AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestAddItemToBackPack(detected_actor);
                 AcquireOwnerActorOwnedUDIY_ItemDetector()->ClearDetectedActor();

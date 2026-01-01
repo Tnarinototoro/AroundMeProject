@@ -5,13 +5,15 @@
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "DrawDebugHelpers.h"
 #include "../Interactions/DIY_InteractionUtility.h"
+#include "AroundMe/GameUtilities/DIY_Utilities.h"
 #include "Components/WidgetComponent.h"
 #include "../../UIWidgets/DIY_ItemStateWidget.h"
 #include "../Interactions/DIY_SolidnessProcessor.h"
 #include "../Interactions/DIY_TemperatureProcessor.h"
 #include "../Interactions/DIY_ConductivityProcessor.h"
 #include "AroundMe/Debug/DIY_GlobalDebugSettings.h"
-
+#include "Engine/AssetManager.h"
+#include "DIY_ItemAsset.h"
 void ADIY_ItemBase::UpdateHighLight()
 {
     if (BasicStaticMeshComponent)
@@ -101,32 +103,25 @@ void ADIY_ItemBase::PauseTrinkling()
     BasicStaticMeshComponent->SetRenderCustomDepth(false);
     isEnabledHighLighting = false;
 }
-bool ADIY_ItemBase::CheckItemFlag(EDIY_InteractItemFlag inFlag)
+
+const FDIY_ItemDefaultConfig *ADIY_ItemBase::GetItemDefaultConfig()
 {
-    return UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)inFlag);
+    return &ItemData->DefaultConfig;
 }
-const FDIY_ItemDefualtConfig &ADIY_ItemBase::GetItemDefualtConfig()
+const FGameplayTagContainer &ADIY_ItemBase::GetOwnedGameplayTags() const
 {
-    return this->config_copy;
-}
-void ADIY_ItemBase::GetOwnedGameplayTags(FGameplayTagContainer &TagContainer) const
-{
-    TagContainer = AllTags;
+    return AllTags;
 }
 
-void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
+void ADIY_ItemBase::InitItem(FPrimaryAssetId inItemID)
 {
-    config_copy = inConfig;
-    BulkInteractionFlags = 0;
-    for (EDIY_InteractItemFlag cur_flag : config_copy.ConfiguredFlags)
-    {
+    ItemID = inItemID;
 
-        UDIY_InteractionUtility::SetFlag(BulkInteractionFlags, (uint8)cur_flag);
-        EASY_LOG_MAINPLAYER("Actor spawned with flag %s", *UEnum::GetValueAsString(cur_flag));
-    }
+    ItemData = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(ItemID);
+    ensureAlwaysMsgf(ItemData, TEXT(" %s ItemData is null"), *ItemID.ToString());
     AllTags.Reset();
-    AllTags.AppendTags(inConfig.InitGameplayTags);
-    config_copy.InitGameplayTags.AppendTags(inConfig.InitGameplayTags);
+    AllTags.AppendTags(ItemData->DefaultConfig.InitGameplayTags);
+
     // for (EDIY_InteractItemFlag cur_flag : inConfig.ConfiguredFlags)
     // {
 
@@ -134,20 +129,20 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
     //     EASY_LOG_MAINPLAYER("xxxx Actor spawned with flag %s", *UEnum::GetValueAsString(cur_flag));
     // }
 
-    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Obey_Physics_Rules))
+    if (UDIY_Utilities::HasTagHelper(AllTags, "DIY.Physics.Simulate"))
     {
         BasicStaticMeshComponent->SetCollisionProfileName(TEXT("DIY_Item_Pres"));
         BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
         BasicStaticMeshComponent->SetSimulatePhysics(true);
-        BasicStaticMeshComponent->SetMassOverrideInKg(NAME_None, config_copy.ItemMass, true);
-        BasicStaticMeshComponent->SetPhysMaterialOverride(config_copy.ItemPhysicsMtl);
+        BasicStaticMeshComponent->SetMassOverrideInKg(NAME_None, ItemData->DefaultConfig.ItemMass, true);
+        BasicStaticMeshComponent->SetPhysMaterialOverride(ItemData->DefaultConfig.ItemPhysicsMtl);
 
-        BasicStaticMeshComponent->SetLinearDamping(config_copy.LinearDamping);
-        BasicStaticMeshComponent->SetAngularDamping(config_copy.AngualrDamping);
+        BasicStaticMeshComponent->SetLinearDamping(ItemData->DefaultConfig.LinearDamping);
+        BasicStaticMeshComponent->SetAngularDamping(ItemData->DefaultConfig.AngualrDamping);
         EASY_LOG_MAINPLAYER("Actor successgully spawned with physics configs adopted");
     }
 
-    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Static))
+    if (UDIY_Utilities::HasTagHelper(AllTags, "DIY.Physics.Static"))
     {
         BasicStaticMeshComponent->SetCollisionProfileName(TEXT("DIY_Item_Pres"));
         BasicStaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -161,14 +156,12 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
 
     BasicStaticMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 
-    checkf(BulkInteractionFlags >= 0, TEXT("flags are invalid"));
-
-    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Can_Be_Destroyed))
+    if (UDIY_Utilities::HasTagHelper(AllTags, "DIY.Physics.Destructible"))
     {
         Possible_Solidness_Processor = FindComponentByClass<UDIY_SolidnessProcessor>();
         if (nullptr != Possible_Solidness_Processor)
         {
-            Possible_Solidness_Processor->OnInitWithConfigCopy(&config_copy);
+            Possible_Solidness_Processor->OnInitWithConfigCopy(&ItemData->DefaultConfig);
             Possible_Solidness_Processor->OnResetComponentValues();
         }
         else
@@ -177,19 +170,19 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
             if (Possible_Solidness_Processor)
             {
                 Possible_Solidness_Processor->RegisterComponent();
-                Possible_Solidness_Processor->OnInitWithConfigCopy(&config_copy);
+                Possible_Solidness_Processor->OnInitWithConfigCopy(&ItemData->DefaultConfig);
 
                 AddInstanceComponent(Possible_Solidness_Processor);
             }
         }
     }
 
-    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::React_To_Temperature))
+    if (UDIY_Utilities::HasTagHelper(AllTags, "DIY.Material.TemperatureSensitive"))
     {
         Possible_Temperature_Processor = FindComponentByClass<UDIY_TemperatureProcessor>();
         if (nullptr != Possible_Temperature_Processor)
         {
-            Possible_Solidness_Processor->OnInitWithConfigCopy(&config_copy);
+            Possible_Solidness_Processor->OnInitWithConfigCopy(&ItemData->DefaultConfig);
             Possible_Solidness_Processor->OnResetComponentValues();
         }
         else
@@ -199,19 +192,19 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
             if (Possible_Temperature_Processor)
             {
                 Possible_Temperature_Processor->RegisterComponent();
-                Possible_Temperature_Processor->OnInitWithConfigCopy(&config_copy);
+                Possible_Temperature_Processor->OnInitWithConfigCopy(&ItemData->DefaultConfig);
                 AddInstanceComponent(Possible_Temperature_Processor);
             }
         }
     }
 
-    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Has_Any_Conductivity))
+    if (UDIY_Utilities::HasTagHelper(AllTags, "DIY.Material.Conductive"))
     {
         Possible_Conductivity_Processor = FindComponentByClass<UDIY_ConductivityProcessor>();
 
         if (nullptr != Possible_Conductivity_Processor)
         {
-            Possible_Conductivity_Processor->OnInitWithConfigCopy(&config_copy);
+            Possible_Conductivity_Processor->OnInitWithConfigCopy(&ItemData->DefaultConfig);
             Possible_Conductivity_Processor->OnResetComponentValues();
         }
         else
@@ -221,7 +214,7 @@ void ADIY_ItemBase::InitWithConfig(const FDIY_ItemDefualtConfig &inConfig)
             if (Possible_Conductivity_Processor)
             {
                 Possible_Conductivity_Processor->RegisterComponent();
-                Possible_Conductivity_Processor->OnInitWithConfigCopy(&config_copy);
+                Possible_Conductivity_Processor->OnInitWithConfigCopy(&ItemData->DefaultConfig);
                 AddInstanceComponent(Possible_Conductivity_Processor);
             }
         }
@@ -271,8 +264,8 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
     FString updated_text{};
 
     updated_text += FString::Printf(TEXT("ItemID: %s \n"),
-                                    *UEnum::GetValueAsString(config_copy.ItemID));
-    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::React_To_Temperature) && nullptr != Possible_Temperature_Processor)
+                                    *ItemID.ToString());
+    if (UDIY_Utilities::HasTagHelper(AllTags, "DIY.Material.TemperatureSensitive") && nullptr != Possible_Temperature_Processor)
     {
         updated_text += FString::Printf(TEXT("Temp: State %s \n temp %f \n moist %f \n self_burn %f \n self_freeze %f \n self_thaw %f \n"),
                                         *UEnum::GetValueAsString(Possible_Temperature_Processor->GetCurrentState()),
@@ -283,7 +276,7 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
                                         Possible_Temperature_Processor->GetTemperatureAndMoistAttrs().self_thaw_temparature);
     }
 
-    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Has_Any_Conductivity) && nullptr != Possible_Conductivity_Processor)
+    if (UDIY_Utilities::HasTagHelper(AllTags, "DIY.Material.Conductive") && nullptr != Possible_Conductivity_Processor)
     {
         updated_text += FString::Printf(TEXT("Conduc: State %s \n  AmpereInten %f \n Metalic %f \n Purity %f \n"),
                                         *UEnum::GetValueAsString(Possible_Conductivity_Processor->GetCurrentConductivityState()),
@@ -295,7 +288,7 @@ void ADIY_ItemBase::UpdateStateWidgetInfo(float inDeltaTime)
         );
     }
 
-    if (UDIY_InteractionUtility::IsFlagSet(BulkInteractionFlags, (uint8)EDIY_InteractItemFlag::Can_Be_Destroyed) && nullptr != Possible_Solidness_Processor)
+    if (UDIY_Utilities::HasTagHelper(AllTags, "DIY.Physics.Destructible") && nullptr != Possible_Solidness_Processor)
     {
         updated_text += FString::Printf(TEXT("Solid: State %s \n Durab %f \n Sphereness %f \n Solidness %f \n Suscep_Cut %f Suscep_Blunt %f \n"),
 

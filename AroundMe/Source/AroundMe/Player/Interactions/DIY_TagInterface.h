@@ -18,5 +18,5 @@ class IDIY_TagInterface
 public:
     /** 蓝图可以调，C++ 也可以调，但蓝图不能 Override */
     UFUNCTION(BlueprintCallable, Category = "TagInterface")
-    virtual void GetOwnedGameplayTags(FGameplayTagContainer &TagContainer) const = 0;
+    virtual const FGameplayTagContainer &GetOwnedGameplayTags() const = 0;
 };

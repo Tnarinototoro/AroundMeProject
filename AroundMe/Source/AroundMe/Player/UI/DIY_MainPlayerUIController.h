@@ -120,7 +120,7 @@ public:
     void ToggleCraftingPlatformSlotSelected(uint32 inCol_x, uint32 inRow_y, bool isSelected);
     bool IsCraftingPlatformUiOpened() const;
     void RequestVisibility_CraftingPlatform(ESlateVisibility invisibility);
-    EItemID GetCurrentTargetCraftingItemID() const;
+    FPrimaryAssetId GetCurrentTargetCraftingItemID() const;
 
 private:
     TArray<class UUserWidget *> mAllWidgets;
@@ -132,6 +132,8 @@ private:
 
     uint32 Item_Current_SubMenu_ChoosenIndex{0};
 
+    int32 ItemTolTalNumber{-1};
+
     // col_x and row_y must be in valid range
     void SelectBackPackSlotOn(uint32 col_x, uint32 row_y, bool is_multi_selecting = false);
     void SelectCraftingPlatformSlotOn(uint32 col_x, uint32 row_y, bool is_multi_selecting = false);
@@ -142,12 +144,7 @@ private:
         return (col_x >= 0 && col_x < BackPack_GridColNum) && (BackPack_GridRowNum > row_y && row_y >= 0);
     }
 
-    bool isCraftingPlatformPosInValidRange(int32 col_x, int32 row_y) const
-    {
-        if (col_x < 0 || row_y < 0)
-            return false;
-        return ItemCraftingPlatform_GridColNum * row_y + col_x < (int32)EItemID::EItemID_Count;
-    }
+    bool isCraftingPlatformPosInValidRange(int32 col_x, int32 row_y) const;
 
     void ClampPlatformPoseToValid(int32 &col_x, int32 &row_y);
     bool isCurrentSlectedSlotInRange() const { return isBackPackPosInRange(BackPack_CurrentSelectedSlot_Col_index, BackPack_CurrentSelectedSlot_Row_index); }
@@ -155,14 +152,16 @@ private:
     bool isCurrentSlectedSlotInRange_ItemCraftingPlatform() const { return isCraftingPlatformPosInValidRange(CraftingPlatform_CurrentSelectedCol, CraftingPlatform_CurrentSelectedRow); }
     TArray<FDIY_BackPackItemSlotInfo> StoredBackPackSlotItemInfo;
 
-    TMap<int, int> ItemInfoHelperMap;
+    TMap<FPrimaryAssetId, int> ItemInfoHelperMap;
 
-    int QuicklyFindBackPackItemSlotIndex_FromItemID(EItemID inItemID);
+    TArray<FPrimaryAssetId> AllCachedItemIDs;
+
+    int QuicklyFindBackPackItemSlotIndex_FromItemID(FPrimaryAssetId InItemID);
 
     int32 CraftingPlatform_CurrentSelectedRow{-1};
     int32 CraftingPlatform_CurrentSelectedCol{-1};
 
     bool need_change_crafting_item_info{false};
 
-    void OnItemBackPackNumChanged(int32 itemID);
+    void OnItemBackPackNumChanged(FPrimaryAssetId InItemID);
 };

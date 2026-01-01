@@ -4,9 +4,8 @@
 #include "UObject/Interface.h"
 #include "DIY_InteractionCommonInterFace.generated.h"
 
-struct FDIY_ItemDefualtConfig;
+struct FDIY_ItemDefaultConfig;
 // This class does not need to be modified.
-
 
 UINTERFACE(MinimalAPI)
 class UDIY_InteractionCommonInterFace : public UInterface
@@ -23,9 +22,7 @@ class AROUNDME_API IDIY_InteractionCommonInterFace
 
 public:
     // initilization of component attrs
-    virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig *inConfig) = 0;
+    virtual void OnInitWithConfigCopy(const FDIY_ItemDefaultConfig *inConfig) = 0;
     // Reset values of components
     virtual void OnResetComponentValues() = 0;
-
-   
 };

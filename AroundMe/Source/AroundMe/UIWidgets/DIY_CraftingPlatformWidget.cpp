@@ -50,11 +50,14 @@ void UDIY_CraftingPlatformWidget::NativeOnInitialized()
     CraftConsoleWidget->AddToViewport(1);
 }
 
-void UDIY_CraftingPlatformWidget::InitializeItemCraftingPlatformWidget(int32 RowsDisplayed_Limit, int32 Rows, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize)
+void UDIY_CraftingPlatformWidget::InitializeItemCraftingPlatformWidget(const TArray<FPrimaryAssetId> &InAllItemIDs, int32 RowsDisplayed_Limit, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize)
 {
+    CachedItemIDs = InAllItemIDs; // 保存顺序
+    ItemTotalNum = InAllItemIDs.Num();
+    checkf(ItemTotalNum >= 0, TEXT("ItemTotalNum must be greater than 0"));
     RowNum_Displayed_Limit = RowsDisplayed_Limit;
     ColNum = Cols;
-    RowNum = FMath::CeilToInt32(((float)EItemID::EItemID_Count) / ColNum);
+    RowNum = FMath::CeilToInt32((float)(ItemTotalNum) / ColNum);
     IconImageSlotSize = inImageIconSlotSize;
     TextSlotFontSize = inTextSlotFontSize;
 
@@ -77,7 +80,7 @@ void UDIY_CraftingPlatformWidget::CreateAllReceipts()
     }
 
     // final row
-    AddReceiptRow(RowNum - 1, (int32)EItemID::EItemID_Count % ColNum);
+    AddReceiptRow(RowNum - 1, ItemTotalNum % ColNum);
 }
 
 void UDIY_CraftingPlatformWidget::AddReceiptRow(int32 RowIndex, int32 actual_num)
@@ -85,9 +88,19 @@ void UDIY_CraftingPlatformWidget::AddReceiptRow(int32 RowIndex, int32 actual_num
     UDIY_CraftReceiptRowWidget *ReceiptRow = CreateWidget<UDIY_CraftReceiptRowWidget>(this, UDIY_CraftReceiptRowWidget::StaticClass());
     if (ReceiptRow)
     {
-        ReceiptRow->InitializeReceipt(RowIndex, actual_num, IconImageSlotSize, TextSlotFontSize);
+        ReceiptRow->InitializeReceipt(&CachedItemIDs, RowIndex, actual_num, IconImageSlotSize, TextSlotFontSize);
         ScrollBox->AddChild(ReceiptRow);
     }
+}
+
+FPrimaryAssetId UDIY_CraftingPlatformWidget::GetAssetIDAt(int32 Row, int32 Col) const
+{
+    int32 Index = Row * ColNum + Col;
+    if (CachedItemIDs.IsValidIndex(Index))
+    {
+        return CachedItemIDs[Index];
+    }
+    return FPrimaryAssetId(); // 返回无效 ID
 }
 
 void UDIY_CraftingPlatformWidget::RequestScrollOffset(float inDesiredOffset)

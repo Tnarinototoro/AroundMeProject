@@ -8,6 +8,7 @@
 #include "../Items/DIY_Item.h"
 #include "../../GameUtilities/DIY_Utilities.h"
 #include "../Items/DIY_ItemManager.h"
+#include "Engine/AssetManager.h"
 
 UDIY_MainPlayerUIController::UDIY_MainPlayerUIController()
 {
@@ -18,6 +19,12 @@ void UDIY_MainPlayerUIController::BeginPlay()
 {
     Super::BeginPlay();
 
+    AllCachedItemIDs.Empty();
+
+    // 【重构】不再依赖枚举计数，而是向 AssetManager 查询该类型的总数
+    UAssetManager::Get().GetPrimaryAssetIdList(FPrimaryAssetType("Item"), AllCachedItemIDs);
+    ItemTolTalNumber = AllCachedItemIDs.Num();
+    checkf(ItemTolTalNumber > 0, TEXT("No Item Asset Found"));
     for (int type = 0; type < (int)EMainPlayerUISectionID::EMainPlayerUISectionID_Count; ++type)
     {
         switch (type)
@@ -84,9 +91,15 @@ void UDIY_MainPlayerUIController::BeginPlay()
             mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_CraftingPlatformWidget::StaticClass());
             UDIY_CraftingPlatformWidget *item_crafting_platform_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[type]);
             ensureMsgf(item_crafting_platform_widget != nullptr, TEXT("UDIY_PlatformServiceStateWidget null"));
-            item_crafting_platform_widget->InitializeItemCraftingPlatformWidget(ItemCraftingPlatform_GridRowMax_DisplayedNumLimit, ItemCraftingPlatform_GridRowNum, ItemCraftingPlatform_GridColNum, ItemCraftingPlatform_SlotIconSize, ItemCraftingPlatform_TextSlotFontSize);
+            item_crafting_platform_widget->InitializeItemCraftingPlatformWidget(AllCachedItemIDs,
+                                                                                ItemCraftingPlatform_GridRowMax_DisplayedNumLimit,
+                                                                                ItemCraftingPlatform_GridColNum,
+                                                                                ItemCraftingPlatform_SlotIconSize,
+                                                                                ItemCraftingPlatform_TextSlotFontSize);
 
-            item_crafting_platform_widget->SetAnchorsInViewport(FAnchors(ItemCraftingPlatform_Anchors_InViewPort.X, ItemCraftingPlatform_Anchors_InViewPort.Y));
+            item_crafting_platform_widget->SetAnchorsInViewport(
+                FAnchors(ItemCraftingPlatform_Anchors_InViewPort.X,
+                         ItemCraftingPlatform_Anchors_InViewPort.Y));
             item_crafting_platform_widget->SetAlignmentInViewport(ItemCraftingPlatform_Align_InViewPort);
 
             // item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
@@ -157,16 +170,15 @@ void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReas
     }
     UDIY_ItemManagerSubsystem::OnItemsNumInBackPack_Changed.RemoveAll(this);
 }
-void UDIY_MainPlayerUIController::OnItemBackPackNumChanged(int32 itemID)
+void UDIY_MainPlayerUIController::OnItemBackPackNumChanged(FPrimaryAssetId InItemID)
 {
 
-    
-    int* slot_index_possible = ItemInfoHelperMap.Find((int)itemID);
+    int *slot_index_possible = ItemInfoHelperMap.Find(InItemID);
 
-    if(nullptr==slot_index_possible)
-    return;
-    int slot_index=*slot_index_possible;
-   
+    if (nullptr == slot_index_possible)
+        return;
+    int slot_index = *slot_index_possible;
+
     if (slot_index < 0)
         return;
     // change slot appearance
@@ -174,10 +186,13 @@ void UDIY_MainPlayerUIController::OnItemBackPackNumChanged(int32 itemID)
     int row_y = slot_index / BackPack_GridColNum;
     int col_x = slot_index % BackPack_GridColNum;
 
-    item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->Get_ItemNumInBackPack_Statistics((EItemID)itemID)));
+    item_backpack_widget->RequestChangeSlotCountText(
+        row_y,
+        col_x,
+        FText::AsNumber(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->Get_ItemNumInBackPack_Statistics(InItemID)));
 
     item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(row_y, col_x, ESlateVisibility::Visible);
-    EASY_LOG_MAINPLAYER("OnItemBackPackNumChanged %d", itemID);
+    EASY_LOG_MAINPLAYER("OnItemBackPackNumChanged %s", *InItemID.ToString());
 }
 void UDIY_MainPlayerUIController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
@@ -292,7 +307,7 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
 
     if (nullptr == current_item)
         return false;
-    EItemID current_item_id = current_item->GetItemID();
+    FPrimaryAssetId current_item_id = current_item->GetItemID();
     int possible_already_existing_slot_index = QuicklyFindBackPackItemSlotIndex_FromItemID(current_item_id);
 
     // not existing
@@ -304,15 +319,15 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
         {
             StoredBackPackSlotItemInfo.Add(FDIY_BackPackItemSlotInfo(current_item_id, 1));
             int slot_index = StoredBackPackSlotItemInfo.Num() - 1;
-            ItemInfoHelperMap.Add((int)current_item_id, slot_index);
+            ItemInfoHelperMap.Add(current_item_id, slot_index);
             // change slot appearance
             UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[(int)EMainPlayerUISectionID::BackPack]);
             int row_y = slot_index / BackPack_GridColNum;
             int col_x = slot_index % BackPack_GridColNum;
 
             // item_backpack_widget->RequestChangeSlotCountText(row_y, col_x, FText::AsNumber(1));
-            EASY_LOG_MAINPLAYER("current item id %d added", current_item_id);
-            item_backpack_widget->RequestChangeSlotImage(row_y, col_x, UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(int32(current_item_id)));
+            EASY_LOG_MAINPLAYER("current item id %s added", *current_item_id.ToString());
+            item_backpack_widget->RequestChangeSlotImage(row_y, col_x, UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(current_item_id));
             // item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(row_y, col_x, ESlateVisibility::Visible);
             UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestRecycleItem(current_item);
             UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestChange_ItemNumInBackPack_Statistics(current_item_id, 1);
@@ -335,16 +350,19 @@ bool UDIY_MainPlayerUIController::RequestAddItemToBackPack(AActor *inItem)
 
         // item_backpack_widget->RequestChangeSlotCountText(existing_row_y, existing_col_x, FText::AsNumber(cur_item_info.ItemCount));
         // item_backpack_widget->RequestVisibility_BackpackUI_CountText_At_Slot(existing_row_y, existing_col_x, ESlateVisibility::Visible);
-        item_backpack_widget->RequestChangeSlotImage(existing_row_y, existing_col_x, UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(int32(current_item_id)));
+        item_backpack_widget->RequestChangeSlotImage(
+            existing_row_y,
+            existing_col_x,
+            UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(current_item_id));
         UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestRecycleItem(current_item);
         UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestChange_ItemNumInBackPack_Statistics(current_item_id, 1);
         return true;
     }
 }
 
-int UDIY_MainPlayerUIController::QuicklyFindBackPackItemSlotIndex_FromItemID(EItemID inItemID)
+int UDIY_MainPlayerUIController::QuicklyFindBackPackItemSlotIndex_FromItemID(FPrimaryAssetId InItemID)
 {
-    int *slot_index = ItemInfoHelperMap.Find(int(inItemID));
+    int *slot_index = ItemInfoHelperMap.Find(InItemID);
     if (nullptr != slot_index)
     {
         return *slot_index;
@@ -503,17 +521,26 @@ void UDIY_MainPlayerUIController::RequestMoveCurrentSelectedCursor_CraftingPlatf
         final_row_y);
 }
 
+bool UDIY_MainPlayerUIController::isCraftingPlatformPosInValidRange(int32 col_x, int32 row_y) const
+{
+    if (col_x < 0 || row_y < 0)
+        return false;
+
+    int32 Index = ItemCraftingPlatform_GridColNum * row_y + col_x;
+    return Index < ItemTolTalNumber;
+}
+
 void UDIY_MainPlayerUIController::ClampPlatformPoseToValid(int32 &col_x, int32 &row_y)
 {
-    int32 item_count = (int32)EItemID::EItemID_Count;
+    int32 item_count = ItemTolTalNumber;
 
-    int32 row_num = FMath::CeilToInt32(((float)EItemID::EItemID_Count) / ItemCraftingPlatform_GridColNum);
+    int32 row_num = FMath::CeilToInt32(((float)ItemTolTalNumber) / ItemCraftingPlatform_GridColNum);
     col_x = FMath::Clamp<int32>(col_x, 0, ItemCraftingPlatform_GridColNum - 1);
     row_y = FMath::Clamp<int32>(row_y, 0, row_num - 1);
 
     if (row_y == row_num - 1)
     {
-        col_x = FMath::Clamp<int32>(col_x, 0, (int32)EItemID::EItemID_Count % ItemCraftingPlatform_GridColNum - 1);
+        col_x = FMath::Clamp<int32>(col_x, 0, (int32)ItemTolTalNumber % ItemCraftingPlatform_GridColNum - 1);
     }
 }
 void UDIY_MainPlayerUIController::UpdateScrollOffset_CraftingPlatform()
@@ -633,26 +660,27 @@ void UDIY_MainPlayerUIController::SelectCraftingPlatformSlotOn(uint32 col_x, uin
         ensureMsgf(nullptr != cur_crafting_platform_widget, TEXT("cur_crafting_platform_widget is null"));
         cur_crafting_platform_widget->RequestUpdateShowConsoleWidget(true);
 
-        cur_crafting_platform_widget->RequestChangeConsoleWidgetImage(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(row_y * ItemCraftingPlatform_GridColNum + col_x));
-        FString final_Receipt_String{};
-        int32 cur_item_id = row_y * ItemCraftingPlatform_GridColNum + col_x;
+        FPrimaryAssetId cur_item_id = cur_crafting_platform_widget->GetAssetIDAt(row_y, col_x);
 
-        FDIY_CraftingReceipt cur_receipt = UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetReceiptFromItemID((EItemID)cur_item_id);
-        final_Receipt_String += FString::Printf(TEXT("Target:%s \n"), *UEnum::GetValueAsString((EItemID)cur_item_id));
+        cur_crafting_platform_widget->RequestChangeConsoleWidgetImage(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(cur_item_id));
+        FString final_Receipt_String{};
+
+        const FDIY_CraftingReceipt *cur_receipt = UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetReceiptFromItemID(cur_item_id);
+        final_Receipt_String += FString::Printf(TEXT("Target:%s \n"), *cur_item_id.ToString());
 
         bool okay_to_craft = true;
-        for (const FDIY_CraftingReceipt_Element &cur_element : cur_receipt.InputElements)
+        for (const FDIY_CraftingReceipt_Element &cur_element : cur_receipt->InputElements)
         {
             int32 cur_element_req_num = cur_element.CurrentItemNumReq;
             int32 cur_element_existing_num = UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->Get_ItemNumInBackPack_Statistics(cur_element.ItemID);
-            final_Receipt_String += FString::Printf(TEXT("%s:(%d/%d)\n"), *UEnum::GetValueAsString(cur_element.ItemID), cur_element_existing_num, cur_element_req_num);
+            final_Receipt_String += FString::Printf(TEXT("%s:(%d/%d)\n"), *cur_element.ItemID.ToString(), cur_element_existing_num, cur_element_req_num);
 
             if (cur_element_existing_num < cur_element_req_num)
                 okay_to_craft = false;
         }
-        if (cur_receipt.InputElements.Num() > 0)
+        if (cur_receipt->InputElements.Num() > 0)
         {
-            final_Receipt_String += FString::Printf(TEXT("Coins:%d \n"), cur_receipt.ReqEtherEnergyCoinNum);
+            final_Receipt_String += FString::Printf(TEXT("Coins:%d \n"), cur_receipt->ReqEtherEnergyCoinNum);
         }
         else
         {
@@ -664,7 +692,10 @@ void UDIY_MainPlayerUIController::SelectCraftingPlatformSlotOn(uint32 col_x, uin
     }
 }
 
-EItemID UDIY_MainPlayerUIController::GetCurrentTargetCraftingItemID() const
+FPrimaryAssetId UDIY_MainPlayerUIController::GetCurrentTargetCraftingItemID() const
 {
-    return (EItemID)(ItemCraftingPlatform_GridColNum * CraftingPlatform_CurrentSelectedRow + CraftingPlatform_CurrentSelectedCol);
+    UDIY_CraftingPlatformWidget *cur_crafting_platform_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform]);
+    ensureMsgf(nullptr != cur_crafting_platform_widget, TEXT("cur_crafting_platform_widget is null"));
+
+    return cur_crafting_platform_widget->GetAssetIDAt(CraftingPlatform_CurrentSelectedRow, CraftingPlatform_CurrentSelectedCol);
 }
