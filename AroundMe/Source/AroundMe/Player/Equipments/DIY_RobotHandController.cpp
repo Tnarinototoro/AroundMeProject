@@ -16,6 +16,7 @@ UDIY_RobotHandController::UDIY_RobotHandController()
 
 void UDIY_RobotHandController::BeginPlay()
 {
+    Super::BeginPlay();
 }
 
 void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)

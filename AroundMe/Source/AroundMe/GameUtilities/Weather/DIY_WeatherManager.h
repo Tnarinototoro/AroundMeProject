@@ -11,12 +11,7 @@ class AROUNDME_API UDIY_WeatherManager : public UDIY_WorldSubsystem
 
 public:
     UFUNCTION(BlueprintCallable, Category="Weather", meta=(WorldContext="WorldContextObject"))
-    static UDIY_WeatherManager* Get(const UObject* WorldContextObject)
-    {
-        if (!WorldContextObject) return nullptr;
-        UWorld* World = WorldContextObject->GetWorld();
-        return World ? World->GetSubsystem<UDIY_WeatherManager>() : nullptr;
-    }
+    static UDIY_WeatherManager* Get(const UObject* WorldContextObject);
 
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;

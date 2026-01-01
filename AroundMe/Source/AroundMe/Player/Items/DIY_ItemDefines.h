@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
 #include "../Interactions/DIY_EmergentInteractDefines.h"
+#include "GameplayTagContainer.h"
 #include "DIY_ItemDefines.generated.h"
 
 UENUM(BlueprintType)
@@ -68,7 +69,7 @@ struct FDIY_ItemDefualtConfig
     EItemID ItemID{EItemID::EItemID_Count};
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UTexture2D* ItemSlotIcon;
+    UTexture2D *ItemSlotIcon;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float ItemMass{1.0f};
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -90,6 +91,9 @@ struct FDIY_ItemDefualtConfig
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TArray<EDIY_InteractItemFlag> ConfiguredFlags;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FGameplayTagContainer InitGameplayTags;
 };
 
 USTRUCT(BlueprintType)

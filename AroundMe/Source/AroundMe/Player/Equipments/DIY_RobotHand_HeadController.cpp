@@ -12,6 +12,7 @@ UDIY_RobotHand_HeadController::UDIY_RobotHand_HeadController()
 
 void UDIY_RobotHand_HeadController::BeginPlay()
 {
+    Super::BeginPlay();
     SwitchToNextState(EDIY_RobotHand_Head_State_Type::Idle);
 }
 
@@ -52,14 +53,13 @@ void UDIY_RobotHand_HeadController::UpdateParams(float inDeltatime)
             FVector real_forward_vec = -parent_hand_head_connection_point.GetRotation().GetForwardVector();
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-if(FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
-{
-DrawDebugDirectionalArrow(
-                GetWorld(), parent_hand_head_connection_point.GetLocation(),
-                parent_hand_head_connection_point.GetLocation() + real_forward_vec * 200.f, 10.0f, FColor::Red, false, 0.f, 0, 1.0f);
-}
+            if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
+            {
+                DrawDebugDirectionalArrow(
+                    GetWorld(), parent_hand_head_connection_point.GetLocation(),
+                    parent_hand_head_connection_point.GetLocation() + real_forward_vec * 200.f, 10.0f, FColor::Red, false, 0.f, 0, 1.0f);
+            }
 #endif
-            
 
             FRotator cur_rotate = mEquipMentMesh->GetRelativeRotationFromWorld(FRotationMatrix::MakeFromX(real_forward_vec).ToQuat()).Rotator();
 
@@ -71,17 +71,13 @@ DrawDebugDirectionalArrow(
             // you have to set relative rotation directly
             mEquipMentMesh->SetRelativeRotation(cur_rotate);
 
-
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-if(FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
-{
-            DrawDebugSphere(GetWorld(), parent_hand_head_connection_point.GetLocation(), 10.f, 12, FColor::Red);
-            DrawDebugString(GetWorld(), parent_hand_head_connection_point.GetLocation(), "RightDirBone", nullptr, FColor::Red, 0.f);
-}
+            if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
+            {
+                DrawDebugSphere(GetWorld(), parent_hand_head_connection_point.GetLocation(), 10.f, 12, FColor::Red);
+                DrawDebugString(GetWorld(), parent_hand_head_connection_point.GetLocation(), "RightDirBone", nullptr, FColor::Red, 0.f);
+            }
 #endif
-        
-
-          
         }
     }
 
@@ -111,14 +107,14 @@ void UDIY_RobotHand_HeadController::UpdateHandHeadStateMachine(float inDeltatime
     FRotator cur_rotate = mEquipMentMesh->GetRelativeRotation();
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
-if(FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
-{
-    FString debug_str = FString::Printf(TEXT("%s SpinSpeed %f"),
-                                        *UEnum::GetValueAsString(mCurrentState), CurrentSpinSpeed);
-    DrawDebugString(GetWorld(), this->mEquipMentMesh->GetComponentLocation(), debug_str, nullptr, FColor::Green, 0.f);
-}
-#endif                                   
-    
+    if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
+    {
+        FString debug_str = FString::Printf(TEXT("%s SpinSpeed %f"),
+                                            *UEnum::GetValueAsString(mCurrentState), CurrentSpinSpeed);
+        DrawDebugString(GetWorld(), this->mEquipMentMesh->GetComponentLocation(), debug_str, nullptr, FColor::Green, 0.f);
+    }
+#endif
+
     switch (mCurrentState)
     {
     case EDIY_RobotHand_Head_State_Type::Idle:
