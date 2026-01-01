@@ -19,8 +19,8 @@ ADIY_MusicPlayer::ADIY_MusicPlayer()
     PrimaryActorTick.bCanEverTick = true;
     PrimaryActorTick.TickInterval = 1.0f;
     AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
-    AudioComponent->bAllowSpatialization = false; // 关闭空间化以实现2D音效
-    AudioComponent->bIsUISound = true;            // 设置为UI声音，通常用于2D背景音乐
+    AudioComponent->bAllowSpatialization = true; // 关闭空间化以实现2D音效
+    AudioComponent->bIsUISound = false;          // 设置为UI声音，通常用于2D背景音乐
     AudioComponent->SetupAttachment(RootComponent);
 }
 
@@ -53,20 +53,29 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
     // EASY_LOG_MAINPLAYER("cur new hour is %d", new_hour);
     SetCurrentHour(new_hour);
 
+    if (mCurrentPlayingSoundTrack >= 0)
+    {
+        CurrentMusicPlayedTime += DeltaTime;
+    }
+
     UDIY_MainPlayerUIController *cur_ui_controller = AcquireOwnerActorOwnedUDIY_MainPlayerUIController();
     if (nullptr != cur_ui_controller)
     {
         cur_ui_controller->RequestUpdateStateInfoText_MusicPlayer(
             FText::FromString(
                 FString::Printf(
-                    TEXT("%d/%d/%d \n %d:%d:%d \n Track: %s"),
+                    TEXT("%d/%d/%d \n %d:%d:%d \n Track: %s \n PlayingTime: %f Duration: %f"),
                     cur_date_time.GetYear(),
                     cur_date_time.GetMonth(),
                     cur_date_time.GetDay(),
                     HourOfToday,
                     cur_date_time.GetMinute(),
                     cur_date_time.GetSecond(),
-                    *UEnum::GetValueAsString(GetCurrentMusicTrackID()))));
+                    AudioComponent->GetSound() ? *AudioComponent->GetSound()->GetName() : TEXT("None"),
+                    CurrentMusicPlayedTime,
+                    AudioComponent->GetSound() ? AudioComponent->GetSound()->GetDuration() : 0.0f)
+
+                    ));
     }
 }
 
@@ -92,19 +101,20 @@ void ADIY_MusicPlayer::BeginPlay()
 
 void ADIY_MusicPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+
     Super::EndPlay(EndPlayReason);
     if (AudioComponent->OnAudioFinished.IsAlreadyBound(this, &ADIY_MusicPlayer::OnMusicFinished))
     {
         AudioComponent->OnAudioFinished.RemoveDynamic(this, &ADIY_MusicPlayer::OnMusicFinished);
     }
+    StopMusic();
 }
 
 void ADIY_MusicPlayer::OnMusicFinished()
 {
-    if (AudioComponent && IsValid(AudioComponent) && !AudioComponent->IsGarbageEliminationEnabled())
-    {
-        PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
-    }
+    EASY_LOG_MAINPLAYER(" ADIY_MusicPlayer Music finished called!");
+    PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
+    EASY_LOG_MAINPLAYER(" ADIY_MusicPlayer Music finished called and played music also called!");
 }
 
 uint32 ADIY_MusicPlayer::GenerateDateCorrespondingMusicIndex()
@@ -204,12 +214,17 @@ void ADIY_MusicPlayer::PlayMusicByIndex(ESoundTrackID Index)
     FStreamableManager &Streamable = UAssetManager::GetStreamableManager();
     Streamable.RequestAsyncLoad(SoundSoft.ToSoftObjectPath(), [this, SoundSoft, Index]()
                                 {
+        if (!IsValid(this) || IsUnreachable())
+        {
+            return;
+        }
         USoundBase* LoadedSound = SoundSoft.Get();
-        if (LoadedSound && AudioComponent)
+        if (LoadedSound && AudioComponent.IsValid())
         {
             AudioComponent->SetSound(LoadedSound);
             AudioComponent->FadeIn(3.0f, 0.6f);
             mCurrentPlayingSoundTrack = (int32)Index;
+            CurrentMusicPlayedTime=0.f;
             UE_LOG(LogTemp, Log, TEXT("Now playing (lazy): %s"), *LoadedSound->GetName());
         } });
 }
@@ -221,9 +236,11 @@ void ADIY_MusicPlayer::PlayMusicCorrespondingToTime()
 
 void ADIY_MusicPlayer::StopMusic()
 {
-    if (AudioComponent && AudioComponent->IsPlaying())
+    if (AudioComponent.IsValid() && AudioComponent->IsPlaying())
     {
         AudioComponent->Stop();
+        CurrentMusicPlayedTime = 0.f;
+        mCurrentPlayingSoundTrack = -1;
     }
 }
 

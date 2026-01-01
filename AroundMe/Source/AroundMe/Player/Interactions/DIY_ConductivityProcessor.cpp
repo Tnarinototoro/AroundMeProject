@@ -45,7 +45,7 @@ void UDIY_ConductivityProcessor::TickComponent(float DeltaTime, ELevelTick TickT
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UDIY_ConductivityProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfig *inConfig)
+void UDIY_ConductivityProcessor::OnInitWithConfigCopy(const FDIY_ItemDefaultConfig *inConfig)
 {
     copy_conduct_Attr = inConfig->PossibleConductivityConfig;
 }

@@ -175,7 +175,7 @@ void UDIY_ItemBackPackWidget::CreateGrid()
                 if (Border && IconImage && CountText)
                 {
                     //@TODO set icon image
-                    IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(-1));
+                    IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(UDIY_Utilities::GetInvalidAssetID()));
                     CountText->SetText(FText::AsNumber(0));
                     // CountText->SetVisibility(ESlateVisibility::Hidden);
                     Border->SetBrushColor(FLinearColor::Transparent);
@@ -237,14 +237,12 @@ void UDIY_ItemBackPackWidget::ShowSubMenuAt(int32 Row, int32 Col)
     // 将Local坐标转换为Viewport坐标
     USlateBlueprintLibrary::LocalToViewport(GetWorld(), BorderGeometry, FVector2D(0.f, 0.f), PixelPosition, ViewportPosition);
 
-    //EASY_LOG_MAINPLAYER("Border screen position X: %f, Y: %f", ViewportPosition.X, ViewportPosition.Y);
+    // EASY_LOG_MAINPLAYER("Border screen position X: %f, Y: %f", ViewportPosition.X, ViewportPosition.Y);
 
     ViewportPosition.X -= ItemSubMenuWidget->GetDesiredSize().X;
 
     ItemSubMenuWidget->SetPositionInViewport(ViewportPosition, false);
     ItemSubMenuWidget->SetVisibility(ESlateVisibility::Visible);
-   
-    
 }
 
 void UDIY_ItemBackPackWidget::HideSubMenu()
@@ -271,12 +269,12 @@ int32 UDIY_ItemBackPackWidget::GetItemSubMenuCommandsNum() const
 FString UDIY_ItemBackPackWidget::GetItemSubMenuCommandStringAt(uint32 inIndex)
 {
     ensureMsgf(ItemSubMenuWidget != nullptr, TEXT("Item Sub menu is not created properly! "));
-   
+
     return ItemSubMenuWidget->GetCommandStringAt(inIndex);
 }
 bool UDIY_ItemBackPackWidget::IsItemSubMenuShown_Impl() const
 {
-    ensureMsgf(ItemSubMenuWidget!=nullptr,TEXT("Item Sub menu is not created properly! "));
+    ensureMsgf(ItemSubMenuWidget != nullptr, TEXT("Item Sub menu is not created properly! "));
 
     return ItemSubMenuWidget->IsVisible();
 }

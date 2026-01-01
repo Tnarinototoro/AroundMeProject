@@ -13,6 +13,7 @@ UDIY_BagController::UDIY_BagController()
 
 void UDIY_BagController::BeginPlay()
 {
+    Super::BeginPlay();
 }
 
 void UDIY_BagController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)

@@ -8,17 +8,14 @@
 #include "Engine/AssetManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "DIY_Item.h"
-
+#include "DIY_ItemAsset.h"
 #include "../../GameUtilities/Logs/DIY_LogHelper.h"
 #include "../../GameUtilities/DIY_Utilities.h"
 #include "../../System/Util/DIY_SysUtil.h"
 
-
 FOnItemsNumInBackPack_Changed UDIY_ItemManagerSubsystem::OnItemsNumInBackPack_Changed = {};
 
-
-
-void UDIY_ItemManagerSubsystem::RequestSpawnItem(EItemID ItemID, const FVector &Location, const FRotator &Rotation)
+void UDIY_ItemManagerSubsystem::RequestSpawnItem(FPrimaryAssetId ItemID, const FVector &Location, const FRotator &Rotation)
 {
     TArray<AActor *> *Pool = ItemPools.Find(ItemID);
     if (nullptr != Pool && Pool->Num() > 0)
@@ -26,25 +23,14 @@ void UDIY_ItemManagerSubsystem::RequestSpawnItem(EItemID ItemID, const FVector &
         AActor *Item = Pool->Pop();
         Item->SetActorLocationAndRotation(Location, Rotation, false, nullptr, ETeleportType::ResetPhysics);
         Item->SetActorHiddenInGame(false);
-
-        const FDIY_ItemDefualtConfig *cur_config{nullptr};
-        int32 item_id = static_cast<int32>(ItemID);
-
-        FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
-        const FDIY_ItemDataTableRow *Row = SubsystemHelper->ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
-        if (Row != nullptr)
+        ADIY_ItemBase *ItemBase = Cast<ADIY_ItemBase>(Item);
+        if (ItemBase)
         {
+            ItemBase->InitItem(ItemBase->GetItemID());
+            ItemBase->SetActorTickEnabled(true);
 
-            cur_config = &(Row->ItemDefualtConfig);
-            ADIY_ItemBase *ItemBase = Cast<ADIY_ItemBase>(Item);
-            if (ItemBase)
-            {
-                ItemBase->InitWithConfig(*cur_config);
-                ItemBase->SetActorTickEnabled(true);
-
-                EASY_LOG_MAINPLAYER("item %s successfully spawned from items pool", *UEnum::GetValueAsString(ItemID));
-                return;
-            }
+            EASY_LOG_MAINPLAYER("item %s successfully spawned from items pool", *ItemBase->GetItemID().ToString());
+            return;
         }
     }
 
@@ -64,7 +50,7 @@ void UDIY_ItemManagerSubsystem::RequestRecycleItem(AActor *Item)
         return;
     }
 
-    EItemID ItemID = ItemBase->GetItemID();
+    FPrimaryAssetId ItemID = ItemBase->GetItemID();
 
     // // Disable physics simulation
     // ItemBase->SetActorEnableCollision(false);
@@ -84,38 +70,41 @@ void UDIY_ItemManagerSubsystem::RequestRecycleItem(AActor *Item)
     // Add the actor to the pool
     TArray<AActor *> &Pool = ItemPools.FindOrAdd(ItemID);
     Pool.Add(Item);
-    EASY_LOG_MAINPLAYER("item %s recycled to the objects pool", *UEnum::GetValueAsString(ItemID));
+    EASY_LOG_MAINPLAYER("item %s recycled to the objects pool", *ItemID.ToString());
 }
 
-UTexture2D *UDIY_ItemManagerSubsystem::GetItemIconTexture(int32 inITemID) const
+UTexture2D *UDIY_ItemManagerSubsystem::GetItemIconTexture(FPrimaryAssetId inITemID) const
 {
 
-    ensureMsgf(SubsystemHelper->DefualtItemSlotIcon != nullptr && nullptr != SubsystemHelper->EmptyItemSlotIcon, TEXT("please set up defualt and empty slot icon for backup"));
-    if (inITemID >= (int32)EItemID::EItemID_Count)
-    {
+    ensureMsgf(SubsystemHelper->DefaultItemSlotIcon != nullptr && nullptr != SubsystemHelper->EmptyItemSlotIcon, TEXT("please set up defualt and empty slot icon for backup"));
 
-        return SubsystemHelper->DefualtItemSlotIcon;
-    }
-    if (inITemID < 0)
+    const UDIY_ItemAsset *ItemResource = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(inITemID);
+
+    if (!inITemID.IsValid())
     {
 
         return SubsystemHelper->EmptyItemSlotIcon;
     }
+    if (nullptr == ItemResource)
+    {
 
-    UTexture2D *icon = GetConfigFromItemID((EItemID)inITemID).ItemSlotIcon;
+        return SubsystemHelper->DefaultItemSlotIcon;
+    }
 
-    //no valid icon found, set the defualt one!
+    UTexture2D *icon = ItemResource->DefaultConfig.ItemSlotIcon;
+
+    // no valid icon found, set the defualt one!
     if (nullptr == icon)
     {
-        icon = SubsystemHelper->DefualtItemSlotIcon;
+        icon = SubsystemHelper->DefaultItemSlotIcon;
     }
     return icon;
 }
 
 UDIY_ItemManagerSubsystem::UDIY_ItemManagerSubsystem()
 {
-    static ConstructorHelpers::FClassFinder<UDIY_ItemManagerSubsystemHelperBase> 
-    BluePrintFile(TEXT("/Game/Blueprint/Subsystem/DIY_ItemManagerHelper_BP"));
+    static ConstructorHelpers::FClassFinder<UDIY_ItemManagerSubsystemHelperBase>
+        BluePrintFile(TEXT("/Game/Blueprint/Subsystem/DIY_ItemManagerHelper_BP"));
     if (BluePrintFile.Class)
     {
         SubsystemHelperClass = (UClass *)BluePrintFile.Class;
@@ -126,19 +115,26 @@ void UDIY_ItemManagerSubsystem::Initialize(FSubsystemCollectionBase &Collection)
 {
     Super::Initialize(Collection);
 
-   
-    // init current statistics
-    {
-        ItemStatistics.Reset((int32)EItemID::EItemID_Count);
-        FDIY_ItemStatisticInfo tmp_item{};
-        for (uint32 id = 0; id < (uint32)EItemID::EItemID_Count; ++id)
-        {
+    // 1. 获取单例
+    UAssetManager &AssetManager = UAssetManager::Get();
 
-            tmp_item.ItemID = (EItemID)id;
-            tmp_item.ItemNumInBackPack = 0;
-            ItemStatistics.Add(tmp_item);
+    // 2. 准备你的 Lambda 逻辑
+    auto InitStatsLambda = [this]()
+    {
+        TArray<FPrimaryAssetId> AllItemIDs;
+        UAssetManager::Get().GetPrimaryAssetIdList(FPrimaryAssetType("Item"), AllItemIDs);
+
+        this->ItemStatistics.Empty(AllItemIDs.Num());
+        for (const FPrimaryAssetId &ID : AllItemIDs)
+        {
+            this->ItemStatistics.Add(ID, FDIY_ItemStatisticInfo());
         }
-    }
+        UE_LOG(LogTemp, Log, TEXT("DIY_ItemManager: Initialized Statistics for %d items."), AllItemIDs.Num());
+    };
+
+    // 3. 修正后的委托调用语法
+    // 注意：CallOrRegister_OnCompletedInitialScan 接受的是一个 FSimpleDelegate
+    AssetManager.CallOrRegister_OnCompletedInitialScan(FSimpleDelegate::CreateLambda(InitStatsLambda));
 
     SubsystemHelper = nullptr;
 
@@ -155,66 +151,53 @@ void UDIY_ItemManagerSubsystem::Deinitialize()
 
     SubsystemHelper = nullptr;
     Super::Deinitialize();
-    
 }
 
 UDIY_ItemManagerSubsystem *UDIY_ItemManagerSubsystem::Get(UWorld *World)
 {
-   
-    return DIY_SysUtil::GetGameInstanceSubsystem<UDIY_ItemManagerSubsystem>(World);;
+
+    return DIY_SysUtil::GetGameInstanceSubsystem<UDIY_ItemManagerSubsystem>(World);
 }
 
-void UDIY_ItemManagerSubsystem::SpawnItemByID_Internal(EItemID ItemID, const FVector &Location, const FRotator &Rotation)
+void UDIY_ItemManagerSubsystem::SpawnItemByID_Internal(FPrimaryAssetId ItemID, const FVector &Location, const FRotator &Rotation)
 {
 
-    FSoftObjectPath ItemPath{nullptr};
-    const FDIY_ItemDefualtConfig *cur_config{nullptr};
+    // 1. 通过 AssetManager 获取 DataAsset
+    const UDIY_ItemAsset *ItemResource = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(ItemID);
 
-    int32 item_id = static_cast<int32>(ItemID);
-    FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
-    const FDIY_ItemDataTableRow *Row = SubsystemHelper->ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
-
-    if (Row)
+    if (!ItemResource)
     {
-        FString PathString = Row->ItemPath.ToString();
-
-        cur_config = &(Row->ItemDefualtConfig);
-        if (!PathString.EndsWith(TEXT("_C")))
-        {
-            PathString.Append(TEXT("_C"));
-        }
-        ItemPath = FSoftObjectPath(PathString);
-        EASY_LOG_MAINPLAYER("Path Got from Looking Into the table");
-    }
-    else
-    {
-        EASY_LOG_MAINPLAYER("Item ID not found in DataTable: %d", static_cast<int32>(ItemID));
-    }
-
-    ensureMsgf(ItemPath.IsValid() && cur_config != nullptr, TEXT("item id %d config not found in item depot please check the csv/datatable"), static_cast<int32>(ItemID));
-    TSoftObjectPtr<UClass> ClassToLoad(ItemPath);
-    UClass *LoadedClass = ClassToLoad.Get();
-    if (LoadedClass)
-    {
-
-        SpawnActorFromClass(LoadedClass, Location, Rotation, *cur_config);
-        EASY_LOG_MAINPLAYER("Spawned From Editor Cache");
-
+        // 记得现在打印 ID 要用 ToString()
+        EASY_LOG_MAINPLAYER("Item ID not found: %s", *ItemID.ToString());
         return;
     }
 
+    // 2. 直接获取 TSoftClassPtr
+    // 它内部其实已经包含了路径，而且知道这是一个类（自带 _C 处理）
+    TSoftClassPtr<AActor> ItemClassPtr = ItemResource->ItemActorClass;
+    const FDIY_ItemDefaultConfig &Config = ItemResource->DefaultConfig;
+
+    // 3. 检查是否已经加载 (编辑器缓存或已在内存)
+    if (UClass *LoadedClass = ItemClassPtr.Get())
+    {
+        SpawnActorFromClass(LoadedClass, Location, Rotation, ItemID);
+        EASY_LOG_MAINPLAYER("Spawned directly from memory");
+        return;
+    }
+
+    // 4. 异步加载 (不再需要手动转 FSoftObjectPath)
+    // TSoftClassPtr 可以隐式转换为 FSoftObjectPath
     UAssetManager::GetStreamableManager().RequestAsyncLoad(
-        ItemPath,
+        ItemClassPtr.ToSoftObjectPath(),
         FStreamableDelegate::CreateUObject(this,
                                            &UDIY_ItemManagerSubsystem::OnItemClassLoaded,
                                            ItemID,
-                                           ItemPath,
+                                           ItemClassPtr.ToSoftObjectPath(), // 传给回调保持一致
                                            Location,
-                                           Rotation,
-                                           *cur_config));
+                                           Rotation));
 }
 
-void UDIY_ItemManagerSubsystem::OnItemClassLoaded(EItemID ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, FDIY_ItemDefualtConfig inConfig)
+void UDIY_ItemManagerSubsystem::OnItemClassLoaded(FPrimaryAssetId ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation)
 {
     TSoftObjectPtr<UClass> ClassToLoad(ItemPath);
     UClass *LoadedClass = ClassToLoad.Get();
@@ -222,7 +205,7 @@ void UDIY_ItemManagerSubsystem::OnItemClassLoaded(EItemID ItemID, FSoftObjectPat
     if (LoadedClass)
     {
 
-        SpawnActorFromClass(LoadedClass, Location, Rotation, inConfig);
+        SpawnActorFromClass(LoadedClass, Location, Rotation, ItemID);
 
         EASY_LOG_MAINPLAYER("Spawned From Loading");
     }
@@ -233,7 +216,7 @@ void UDIY_ItemManagerSubsystem::OnItemClassLoaded(EItemID ItemID, FSoftObjectPat
     }
 }
 
-void UDIY_ItemManagerSubsystem::SpawnActorFromClass(UClass *ActorClass, const FVector &Location, const FRotator &Rotation, const FDIY_ItemDefualtConfig &inConfig)
+void UDIY_ItemManagerSubsystem::SpawnActorFromClass(UClass *ActorClass, const FVector &Location, const FRotator &Rotation, FPrimaryAssetId ItemID)
 {
     if (UWorld *World = GetWorld())
     {
@@ -243,7 +226,7 @@ void UDIY_ItemManagerSubsystem::SpawnActorFromClass(UClass *ActorClass, const FV
             ADIY_ItemBase *tmp_item = Cast<ADIY_ItemBase>(SpawnedActor);
             if (nullptr != tmp_item)
             {
-                tmp_item->InitWithConfig(inConfig);
+                tmp_item->InitItem(ItemID);
 
                 tmp_item->SetActorTickEnabled(true);
                 EASY_LOG_MAINPLAYER("Actor spawned successfully with config");
@@ -261,51 +244,72 @@ void UDIY_ItemManagerSubsystem::OnItemRequestRecycle(class AActor *inActor)
     RequestRecycleItem(inActor);
 }
 
-void UDIY_ItemManagerSubsystem::RequestChange_ItemNumInBackPack_Statistics(EItemID inItemID, int32 inDeltaNum)
+void UDIY_ItemManagerSubsystem::RequestChange_ItemNumInBackPack_Statistics(FPrimaryAssetId InItemID, int32 InDeltaNum)
 {
-    if ((int32)inItemID >= (int32)EItemID::EItemID_Count)
+
+    // 1. 基本合法性检查
+    if (!InItemID.IsValid() || InDeltaNum == 0)
         return;
 
-    if (inDeltaNum == 0)
-        return;
-    ensureMsgf(inItemID == ItemStatistics[(int32)inItemID].ItemID, TEXT("add item to different depo statistics"));
+    // 2. 直接从 Map 中查找
+    if (FDIY_ItemStatisticInfo *Stat = ItemStatistics.Find(InItemID))
+    {
+        Stat->ItemNumInBackPack += InDeltaNum;
 
-    ItemStatistics[(int32)inItemID].ItemNumInBackPack += inDeltaNum;
-    OnItemsNumInBackPack_Changed.Broadcast((int32)inItemID);
+        // 3. 广播变化（注意：现在广播的是 FPrimaryAssetId）
+        OnItemsNumInBackPack_Changed.Broadcast(InItemID);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Attempted to change statistics for unregistered ItemID: %s"), *InItemID.ToString());
+    }
 }
 
-const FDIY_CraftingReceipt &UDIY_ItemManagerSubsystem::GetReceiptFromItemID(EItemID inItemID) const
+const FDIY_CraftingReceipt *UDIY_ItemManagerSubsystem::GetReceiptFromItemID(FPrimaryAssetId InItemID) const
 {
-    ensureMsgf((int32)inItemID < (int32)EItemID::EItemID_Count, TEXT("item id exceeding boundary"));
-    int32 item_id = static_cast<int32>(inItemID);
-    FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
-    const FDIY_ItemDataTableRow *Row = SubsystemHelper->ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
 
-    return Row->CurrentItemReceipt;
+    const UDIY_ItemAsset *ItemResource = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(InItemID);
+
+    // 如果资产存在，返回其中的 Receipt；如果不存在，返回一个空的静态实例防止崩溃
+    if (ItemResource)
+    {
+        return &ItemResource->CraftingReceipt;
+    }
+
+    ensureAlwaysMsgf(false, TEXT("[UDIY_ItemManagerSubsystem::GetReceiptFromItemID] Invalid from %s"), *InItemID.ToString());
+
+    return nullptr;
 }
 
-const FDIY_ItemDefualtConfig &UDIY_ItemManagerSubsystem::GetConfigFromItemID(EItemID inItemID) const
+const FDIY_ItemDefaultConfig *UDIY_ItemManagerSubsystem::GetConfigFromItemID(FPrimaryAssetId InItemID) const
 {
-    ensureMsgf((int32)inItemID < (int32)EItemID::EItemID_Count, TEXT("item id exceeding boundary"));
-    int32 item_id = static_cast<int32>(inItemID);
-    FName RowName = (item_id == 0) ? FName(TEXT("NewRow")) : FName(*FString::Printf(TEXT("NewRow_%d"), item_id - 1));
-    const FDIY_ItemDataTableRow *Row = SubsystemHelper->ItemDataTable->FindRow<FDIY_ItemDataTableRow>(RowName, TEXT(""), true);
+    const UDIY_ItemAsset *ItemResource = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(InItemID);
 
-    return Row->ItemDefualtConfig;
+    if (ItemResource)
+    {
+        return &ItemResource->DefaultConfig;
+    }
+
+    ensureAlwaysMsgf(false, TEXT("[UDIY_ItemManagerSubsystem::GetConfigFromItemID] Invalid from %s"), *InItemID.ToString());
+
+    return nullptr;
 }
 
-int32 UDIY_ItemManagerSubsystem::Get_ItemNumInBackPack_Statistics(EItemID inItemID)
+int32 UDIY_ItemManagerSubsystem::Get_ItemNumInBackPack_Statistics(FPrimaryAssetId InItemID)
 {
-    ensureMsgf(inItemID == ItemStatistics[(int32)inItemID].ItemID, TEXT("add item to different depo statistics"));
-    return ItemStatistics[(int32)inItemID].ItemNumInBackPack;
+    if (FDIY_ItemStatisticInfo *Stat = ItemStatistics.Find(InItemID))
+    {
+        return Stat->ItemNumInBackPack;
+    }
+    return -1;
 }
 
-bool UDIY_ItemManagerSubsystem::TryRequestSpawningItem_CraftPlatform(EItemID inItemID, FVector inLocation, FRotator inRotator = {0.f, 0.f, 0.f})
+bool UDIY_ItemManagerSubsystem::TryRequestSpawningItem_CraftPlatform(FPrimaryAssetId inItemID, FVector inLocation, FRotator inRotator = {0.f, 0.f, 0.f})
 {
 
-    FDIY_CraftingReceipt cur_receipt = GetReceiptFromItemID(inItemID);
+    const FDIY_CraftingReceipt *cur_receipt = GetReceiptFromItemID(inItemID);
 
-    for (const FDIY_CraftingReceipt_Element &cur_ele : cur_receipt.InputElements)
+    for (const FDIY_CraftingReceipt_Element &cur_ele : cur_receipt->InputElements)
     {
         int32 cur_ele_req_num = cur_ele.CurrentItemNumReq;
         int32 cur_ele_num_in_backpack = Get_ItemNumInBackPack_Statistics(cur_ele.ItemID);
@@ -316,7 +320,7 @@ bool UDIY_ItemManagerSubsystem::TryRequestSpawningItem_CraftPlatform(EItemID inI
 
     RequestSpawnItem(inItemID, inLocation, inRotator);
 
-    for (const FDIY_CraftingReceipt_Element &cur_ele : cur_receipt.InputElements)
+    for (const FDIY_CraftingReceipt_Element &cur_ele : cur_receipt->InputElements)
     {
         RequestChange_ItemNumInBackPack_Statistics(cur_ele.ItemID, -cur_ele.CurrentItemNumReq);
     }
@@ -324,8 +328,6 @@ bool UDIY_ItemManagerSubsystem::TryRequestSpawningItem_CraftPlatform(EItemID inI
     return true;
 }
 
-
 void UDIY_ItemManagerSubsystemHelperBase::Initialize()
 {
-
 }

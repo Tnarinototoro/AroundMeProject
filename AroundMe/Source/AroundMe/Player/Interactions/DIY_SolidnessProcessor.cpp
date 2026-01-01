@@ -22,7 +22,7 @@ void UDIY_SolidnessProcessor::TickComponent(float DeltaTime, ELevelTick TickType
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UDIY_SolidnessProcessor::OnInitWithConfigCopy(const FDIY_ItemDefualtConfig *inConfig)
+void UDIY_SolidnessProcessor::OnInitWithConfigCopy(const FDIY_ItemDefaultConfig *inConfig)
 {
     solidness_attr = inConfig->PossibleSolidnessConfig;
 }

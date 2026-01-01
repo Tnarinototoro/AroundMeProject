@@ -9,7 +9,7 @@
 #include "DIY_TemperatureProcessor.generated.h"
 
 UENUM(BlueprintType)
-enum class ETemperatureRelatedState:uint8
+enum class ETemperatureRelatedState : uint8
 {
     TS_Normal,
     TS_Burning,
@@ -26,11 +26,10 @@ class AROUNDME_API UDIY_TemperatureProcessor : public UActorComponent, public ID
     GENERATED_BODY()
 
 public:
-   
     // Todo enum Temperature
 
     UDIY_TemperatureProcessor();
-    virtual void OnInitWithConfigCopy(const FDIY_ItemDefualtConfig *inConfig) override;
+    virtual void OnInitWithConfigCopy(const FDIY_ItemDefaultConfig *inConfig) override;
     virtual void OnResetComponentValues() override;
 
 protected:

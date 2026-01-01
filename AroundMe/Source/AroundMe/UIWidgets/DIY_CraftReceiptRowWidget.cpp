@@ -11,10 +11,12 @@
 #include "Components/HorizontalBoxSlot.h"
 #include "../GameUtilities/Logs/DIY_LogHelper.h"
 int32 UDIY_CraftReceiptRowWidget::col_num_setup = -1;
-void UDIY_CraftReceiptRowWidget::InitializeReceipt(int32 cur_row_index, int32 ColNum, const FVector2D &IconImageSlotSize, float TextSlotFontSize)
+void UDIY_CraftReceiptRowWidget::InitializeReceipt(const TArray<FPrimaryAssetId> *inParentCachedItemIDs, int32 cur_row_index, int32 ColNum, const FVector2D &IconImageSlotSize, float TextSlotFontSize)
 {
     HorizontalBox = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass(), TEXT("HorizontalBox"));
     saved_cur_row_index = cur_row_index;
+    ParentCachedItemIDs = inParentCachedItemIDs;
+    ensureAlwaysMsgf(ParentCachedItemIDs, TEXT("ParentCachedItemIDs is null"));
     if (HorizontalBox)
     {
         WidgetTree->RootWidget = HorizontalBox;
@@ -38,7 +40,13 @@ void UDIY_CraftReceiptRowWidget::AddSlot(int32 SlotIndex, const FVector2D &IconI
         if (Border && IconImage && CountText)
         {
 
-            IconImage->SetBrushFromTexture(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(SlotIndex + UDIY_CraftReceiptRowWidget::col_num_setup * saved_cur_row_index));
+            IconImage->SetBrushFromTexture(
+                UDIY_Utilities::DIY_GetItemManagerInstance(
+                    GetWorld())
+                    ->GetItemIconTexture(
+                        GetAssetIDAtThisRowWithCol(SlotIndex))
+
+            );
 
             CountText->SetText(FText::AsNumber(SlotIndex));
             Border->SetBrushColor(FLinearColor::Transparent);
@@ -94,4 +102,19 @@ class UTextBlock *UDIY_CraftReceiptRowWidget::GetSlotCountText(int32 col) const
 class UCanvasPanel *UDIY_CraftReceiptRowWidget::GetSlotCanvas(int32 col) const
 {
     return Cast<UCanvasPanel>(HorizontalBox->GetChildAt(col));
+}
+
+FPrimaryAssetId UDIY_CraftReceiptRowWidget::GetAssetIDAtThisRowWithCol(int32 Col) const
+{
+    if (ParentCachedItemIDs == nullptr)
+    {
+        return FPrimaryAssetId();
+    }
+
+    int32 RealSlotIndex = UDIY_CraftReceiptRowWidget::col_num_setup * saved_cur_row_index + Col;
+    if (Col >= 0 && RealSlotIndex >= 0 && RealSlotIndex < ParentCachedItemIDs->Num())
+    {
+        return (*ParentCachedItemIDs)[Col];
+    }
+    return FPrimaryAssetId();
 }

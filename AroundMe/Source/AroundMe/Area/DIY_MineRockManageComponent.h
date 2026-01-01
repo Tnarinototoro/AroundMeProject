@@ -30,6 +30,10 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     FVector2D MineralRockArray_Grid_Random_Offset_Percent;
 
+    // 关键点：使用 AllowedTypes = "Item" 限制下拉列表
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowedTypes = "Item"))
+    FPrimaryAssetId RockItemID;
+
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;

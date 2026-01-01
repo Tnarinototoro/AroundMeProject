@@ -83,7 +83,7 @@ void UDIY_CraftingPlatformConsoleWidget::CreateConsoleWidget()
     cur_slot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Center);
     cur_slot->SetVerticalAlignment(EVerticalAlignment::VAlign_Center);
     cur_slot->SetPadding(FMargin(0, 20));
-    RequestChangeConsolWidgetImage(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(-1));
+    RequestChangeConsolWidgetImage(UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetItemIconTexture(UDIY_Utilities::GetInvalidAssetID()));
 
     cur_slot = BackGroundVerticalBox->AddChildToVerticalBox(ReceiptText);
     cur_slot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Center);

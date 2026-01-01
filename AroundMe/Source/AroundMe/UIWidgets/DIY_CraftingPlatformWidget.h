@@ -11,8 +11,10 @@ class AROUNDME_API UDIY_CraftingPlatformWidget : public UUserWidget
 
 public:
     UFUNCTION(BlueprintCallable, Category = "UI_ItemCraftingPlatform")
-    void InitializeItemCraftingPlatformWidget(int32 RowsDisplayed_Limit, int32 Rows, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize);
+    void InitializeItemCraftingPlatformWidget(const TArray<FPrimaryAssetId> &InAllItemIDs, int32 RowsDisplayed_Limit, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize);
 
+    // 新增：通过坐标反查 AssetID
+    FPrimaryAssetId GetAssetIDAt(int32 Row, int32 Col) const;
     int32 GetTotalRows() const { return RowNum; }
     int32 GetDisplayedRowsLimit_Num() const { return RowNum_Displayed_Limit; }
     void RequestScrollOffset(float inOffset);
@@ -48,7 +50,9 @@ private:
     int32 RowNum_Displayed_Limit;
     int32 RowNum;
     int32 ColNum;
-
+    int32 ItemTotalNum{-1};
+UPROPERTY()
+    TArray<FPrimaryAssetId> CachedItemIDs;
     FVector2D IconImageSlotSize{0.0f, 0.0f};
     float TextSlotFontSize{10.0f};
 

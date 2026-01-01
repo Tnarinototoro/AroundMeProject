@@ -48,7 +48,7 @@ void UDIY_MineRockManageComponent::GenerateMineralRocks()
                 cur_rock_pos.Z = GetComponentLocation().Z;
 
                 // EASY_LOG_MAINPLAYER("PPPPPPPPPPPPPPPPPOSX %f Y %f Forwardvecroe %s right vector %s", _pos_X, _pos_Y, *GetForwardVector().ToString(), *GetRightVector().ToString());
-                UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestSpawnItem(EItemID::EItemID_MineralRock, cur_rock_pos, FRotator{0.f, 0.f, 0.f});
+                UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->RequestSpawnItem(RockItemID, cur_rock_pos, FRotator{0.f, 0.f, 0.f});
             }
         }
     }

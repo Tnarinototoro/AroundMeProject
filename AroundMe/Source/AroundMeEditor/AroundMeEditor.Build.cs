@@ -30,6 +30,9 @@ public class AroundMeEditor : ModuleRules
             "EditorStyle",     // UE5 可用 AppStyle，但老的也行
             "UnrealEd",
             "LevelEditor",
+            "Settings",
+            "GameplayTags",
+            "GameplayTagsEditor", // SGameplayTagPicker 所在的模块
         });
     }
 }

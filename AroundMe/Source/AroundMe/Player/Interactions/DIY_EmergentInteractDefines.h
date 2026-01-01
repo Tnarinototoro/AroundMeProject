@@ -5,25 +5,6 @@
 #include "DIY_EmergentInteractDefines.generated.h"
 
 UENUM(BlueprintType)
-enum class EDIY_InteractItemFlag : uint8
-{
-    Static UMETA(Description = "Moveable?"),
-    Obey_Physics_Rules UMETA(Description = "Will obey physics rules?"),
-
-    Living_Thing UMETA(Description = "Whether this is a living thing? including animals plants"),
-    Can_Be_Destroyed UMETA(Description = "Obeys physical rules ? solidness related"),
-    React_To_Temperature UMETA(Description = "React to temperature?"),
-    Has_Any_Conductivity UMETA(Description = "conductivity good then electricity comes in"),
-    Has_CraftingPlatform_Function UMETA(Description = "item crafting platform type"),
-    Can_Be_PickUped UMETA(Description = "Can be picked up by the pet npc or any other npc?"),
-    Can_Be_Drilled UMETA(Description = "Can be drilled by hero drill hand head")
-  
-    
-
-
-};
-
-UENUM(BlueprintType)
 enum class EDIY_DamageInfoFlag : uint8
 {
     Is_Fire_Damage,
