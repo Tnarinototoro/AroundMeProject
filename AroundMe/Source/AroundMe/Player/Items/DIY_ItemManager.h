@@ -76,7 +76,7 @@ public:
     // virtual class UWorld* GetWorld() const override;
 
 public:
-        UPROPERTY(EditDefaultsOnly, Category = "BackPack")
+    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
     UTexture2D *DefaultItemSlotIcon;
 
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")

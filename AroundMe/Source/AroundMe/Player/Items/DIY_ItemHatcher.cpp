@@ -6,12 +6,18 @@
 
 ADIY_ItemHatcher::ADIY_ItemHatcher()
 {
-    PrimaryActorTick.bCanEverTick = false;
+    // 允许 Tick 必须不然 没办法editor tick
+    PrimaryActorTick.bCanEverTick = true;
+    PrimaryActorTick.bStartWithTickEnabled = true;
+
+#if WITH_EDITOR
+
+#endif
 
     USceneComponent *SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
     RootComponent = SceneRoot;
 
-#if WITH_EDITOR
+#if WITH_EDITORONLY_DATA
     PreviewActorPtr = nullptr;
 #endif
 }
@@ -20,18 +26,37 @@ ADIY_ItemHatcher::ADIY_ItemHatcher()
 void ADIY_ItemHatcher::OnConstruction(const FTransform &Transform)
 {
     Super::OnConstruction(Transform);
-    RefreshPreviewActor();
+    // 构造脚本保底刷新
+    RefreshPreview();
 }
 
-void ADIY_ItemHatcher::RefreshPreviewActor()
+void ADIY_ItemHatcher::Tick(float DeltaTime)
 {
-    // 修正逻辑：只有当 ID 没变 且 预览 Actor 确实已经存在时，才直接返回
+    Super::Tick(DeltaTime);
+
+    // 逻辑：只要模型没了或者 ID 变了，就刷新
+    if (ItemIDToSpawn.IsValid())
+    {
+        if (!PreviewActorPtr || !PreviewActorPtr->IsValidLowLevel() || LastPreviewID != ItemIDToSpawn)
+        {
+            RefreshPreview();
+        }
+    }
+    else if (PreviewActorPtr)
+    {
+        ClearPreview();
+    }
+}
+
+void ADIY_ItemHatcher::RefreshPreview()
+{
+    // 如果 ID 没变且模型还在，不重复生成（防止 Tick 每一帧都 Spawn）
     if (LastPreviewID == ItemIDToSpawn && PreviewActorPtr && PreviewActorPtr->IsValidLowLevel())
     {
         return;
     }
 
-    ClearPreviewActor();
+    ClearPreview();
     LastPreviewID = ItemIDToSpawn;
 
     if (!ItemIDToSpawn.IsValid())
@@ -39,43 +64,48 @@ void ADIY_ItemHatcher::RefreshPreviewActor()
 
     UAssetManager &AssetManager = UAssetManager::Get();
     FSoftObjectPath AssetPath = AssetManager.GetPrimaryAssetPath(ItemIDToSpawn);
-    if (!AssetPath.IsValid())
-        return;
 
     TSoftObjectPtr<UDIY_ItemAsset> ItemAssetPtr(AssetPath);
     UDIY_ItemAsset *ItemAsset = ItemAssetPtr.LoadSynchronous();
 
     if (ItemAsset)
     {
-        UClass *ActualActorClass = ItemAsset->ItemActorClass.LoadSynchronous();
-        if (!ActualActorClass)
+        UClass *ActorClass = ItemAsset->ItemActorClass.LoadSynchronous();
+        if (!ActorClass)
+        {
+            UE_LOG(LogTemp, Error, TEXT("[Hatcher] ID %s found but ActorClass is null!"), *ItemIDToSpawn.ToString());
             return;
+        }
 
         FActorSpawnParameters SpawnParams;
         SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
         SpawnParams.ObjectFlags |= RF_Transient;
 
-        PreviewActorPtr = GetWorld()->SpawnActor<AActor>(ActualActorClass, GetActorLocation(), GetActorRotation(), SpawnParams);
+        PreviewActorPtr = GetWorld()->SpawnActor<AActor>(ActorClass, GetActorLocation(), GetActorRotation(), SpawnParams);
 
         if (PreviewActorPtr)
         {
             PreviewActorPtr->SetActorEnableCollision(false);
-
-            TArray<UPrimitiveComponent *> PrimitiveComps;
-            PreviewActorPtr->GetComponents<UPrimitiveComponent>(PrimitiveComps);
-            for (UPrimitiveComponent *Comp : PrimitiveComps)
+            TArray<UPrimitiveComponent *> Comps;
+            PreviewActorPtr->GetComponents<UPrimitiveComponent>(Comps);
+            for (UPrimitiveComponent *C : Comps)
             {
-                Comp->SetSimulatePhysics(false);
-                Comp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-                Comp->SetCollisionResponseToAllChannels(ECR_Ignore);
+                C->SetSimulatePhysics(false);
+                C->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+                C->SetCollisionResponseToAllChannels(ECR_Ignore);
             }
-
             PreviewActorPtr->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+
+            UE_LOG(LogTemp, Warning, TEXT("[Hatcher] Successfully Spawned Preview for: %s"), *ItemIDToSpawn.ToString());
         }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("[Hatcher] Failed to load DataAsset for ID: %s"), *ItemIDToSpawn.ToString());
     }
 }
 
-void ADIY_ItemHatcher::ClearPreviewActor()
+void ADIY_ItemHatcher::ClearPreview()
 {
     if (PreviewActorPtr && PreviewActorPtr->IsValidLowLevel())
     {
@@ -83,46 +113,25 @@ void ADIY_ItemHatcher::ClearPreviewActor()
         PreviewActorPtr = nullptr;
     }
 }
-
-void ADIY_ItemHatcher::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-    ClearPreviewActor();
-    Super::EndPlay(EndPlayReason);
-}
-
-void ADIY_ItemHatcher::PostLoad()
-{
-    Super::PostLoad();
-    RefreshPreviewActor(); // 关卡加载后自动触发预览
-}
-
-void ADIY_ItemHatcher::PostActorCreated()
-{
-    Super::PostActorCreated();
-    RefreshPreviewActor(); // 拖入场景后自动触发预览
-}
-
 #endif
 
 void ADIY_ItemHatcher::BeginPlay()
 {
+    // 运行时彻底关掉 Tick
+    PrimaryActorTick.SetTickFunctionEnable(false);
+
 #if WITH_EDITOR
-    ClearPreviewActor();
+    ClearPreview();
 #endif
 
     Super::BeginPlay();
 
     if (ItemIDToSpawn.IsValid())
     {
-        UDIY_ItemManagerSubsystem *ItemManager = UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld());
-        if (ItemManager)
+        auto *Mgr = UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld());
+        if (Mgr)
         {
-
-            // 运行时通过你的 Manager 逻辑生成实物
-            ItemManager->RequestSpawnItem(
-                ItemIDToSpawn,
-                GetActorLocation(),
-                GetActorRotation());
+            Mgr->RequestSpawnItem(ItemIDToSpawn, GetActorLocation(), GetActorRotation());
         }
     }
 
