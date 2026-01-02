@@ -179,77 +179,75 @@ void FAroundMeEditorModule::SyncAIRoutineTags()
         }
     }
 
-    // 2. 从 DIY_Tags.ini 读取现有的配置行
+    // 2. 读取现有配置
     TArray<FString> ConfigLines;
     GConfig->GetArray(TEXT("/Script/GameplayTags.GameplayTagsList"), TEXT("GameplayTagList"), ConfigLines, AbsoluteConfigPath);
 
-    TArray<FString> FinalLines;
-    TArray<FString> ExistingAutoTags;
-    bool bHasChanged = false;
+    // 备份一份原始数据用于对比
+    TArray<FString> OriginalLines = ConfigLines;
 
-    // 3. 处理现有行：保留“手动注释行”和“非管理前缀行”
+    TArray<FString> FinalLines;
+    // 3. 处理现有行：只保留非自动生成的行
     for (const FString &Line : ConfigLines)
     {
-        // 提取 Tag 名字的逻辑 (匹配 Tag="xxx")
-        FString TagName;
-        if (FParse::Value(*Line, TEXT("Tag="), TagName))
+        if (!Line.Contains(TEXT("Auto-Generated")))
         {
-            TagName = TagName.TrimQuotes();
-
-            // 如果是 DIY.AI.Routine 开头的标签
-            if (TagName.StartsWith(TagPrefix))
-            {
-                // 重点：如果这一行包含 "Auto-Generated"，说明它是我们之前自动生成的，先剔除
-                // 或者，如果它不在你列出的那些“固定目录标签”里，也可以剔除
-                if (Line.Contains(TEXT("Auto-Generated")))
-                {
-                    bHasChanged = true;
-                    continue; // 剔除旧的自动生成行
-                }
-            }
+            FinalLines.Add(Line);
         }
-        FinalLines.Add(Line); // 保留手动定义的目录标签和其他 DIY 标签
     }
 
-    // 4. 添加新扫描到的标签
+    // 4. 添加扫描到的标签
     for (const FString &NewTag : NewGeneratedTags)
     {
-        // 检查是否已经存在于 FinalLines 中（防止重复添加目录标签）
-        bool bAlreadyExists = false;
-        for (const FString &FinalLine : FinalLines)
+        FString NewLine = FString::Printf(TEXT("(Tag=\"%s\",DevComment=\"Auto-Generated\")"), *NewTag);
+        // 只有真正不重复时才添加
+        if (!FinalLines.Contains(NewLine))
         {
-            if (FinalLine.Contains(FString::Printf(TEXT("Tag=\"%s\""), *NewTag)))
+            FinalLines.Add(NewLine);
+        }
+    }
+
+    // 【关键改进】：对比 FinalLines 和 OriginalLines 是否完全一致
+    // 我们需要先排序或者确保顺序一致，否则即使内容一样顺序不同也会判定为变化
+    FinalLines.Sort();
+    OriginalLines.Sort();
+
+    bool bActuallyChanged = false;
+    if (FinalLines.Num() != OriginalLines.Num())
+    {
+        bActuallyChanged = true;
+    }
+    else
+    {
+        for (int32 i = 0; i < FinalLines.Num(); ++i)
+        {
+            if (FinalLines[i] != OriginalLines[i])
             {
-                bAlreadyExists = true;
+                bActuallyChanged = true;
                 break;
             }
         }
-
-        if (!bAlreadyExists)
-        {
-            FString NewLine = FString::Printf(TEXT("(Tag=\"%s\",DevComment=\"Auto-Generated\")"), *NewTag);
-            FinalLines.Add(NewLine);
-            bHasChanged = true;
-        }
     }
 
-    // 5. 只有在文件内容真正变化时才写入，并给出明确反馈
-    if (bHasChanged)
+    // 5. 只有内容真正不一致时才写入磁盘
+    if (bActuallyChanged)
     {
         GConfig->SetArray(TEXT("/Script/GameplayTags.GameplayTagsList"), TEXT("GameplayTagList"), FinalLines, AbsoluteConfigPath);
         GConfig->Flush(false, AbsoluteConfigPath);
 
-        // 刷新编辑器
+        GConfig->UnloadFile(AbsoluteConfigPath);
+        GConfig->LoadFile(AbsoluteConfigPath);
+
         UGameplayTagsManager::Get().EditorRefreshGameplayTagTree();
 
-        FNotificationInfo Info(FText::Format(FText::FromString("Tags Updated! Added {0} new items to DIY_Tags.ini"), FText::AsNumber(NewGeneratedTags.Num())));
+        FNotificationInfo Info(FText::Format(FText::FromString("Sync Success! Added/Updated {0} Tags."), FText::AsNumber(NewGeneratedTags.Num())));
         Info.ExpireDuration = 3.0f;
         FSlateNotificationManager::Get().AddNotification(Info);
     }
     else
     {
-        // 明确通知用户没有变化
-        FNotificationInfo Info(FText::FromString("Sync Complete: No new StateTrees found. DIY_Tags.ini is up to date."));
+        // 现在点击第二次，应该会正确进入这里了
+        FNotificationInfo Info(FText::FromString("Sync Complete: Everything is already up to date."));
         Info.ExpireDuration = 2.0f;
         FSlateNotificationManager::Get().AddNotification(Info);
     }
