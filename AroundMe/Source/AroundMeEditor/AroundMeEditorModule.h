@@ -19,6 +19,7 @@ public:
 
     /** 核心同步逻辑入口 */
     void SyncAIRoutineTags();
+    void SyncRoutineAssetsFromLeafTags();
 
     /** * 辅助函数：将绝对路径转换为符合 DIY.AI.Routine 规范的 Tag 字符串
      * @param InPackagePath 资源的包路径，例如 /Game/Blueprint/.../Routine/Work/Fishing

@@ -14,11 +14,17 @@
 #include "SGameplayTagPicker.h"
 #include "GameplayTagsEditorModule.h"
 #include "AssetRegistry/AssetRegistryModule.h"
-#include "GameplayTagsManager.h"
 #include "GameplayTagsSettings.h"
 #include "SourceControlHelpers.h"
 #include "Framework/Notifications/NotificationManager.h"
 #include "Widgets/Notifications/SNotificationList.h"
+#include "AssetToolsModule.h"
+#include "ObjectTools.h"
+#include "FileHelpers.h"
+#include "AroundMe/AI/Assets/DIY_PetRoutineAsset.h"
+#include "UObject/SavePackage.h" // 必须包含这个，否则 FSavePackageArgs 是未定义的
+#include "UObject/Package.h"
+
 void FAroundMeEditorModule::StartupModule()
 {
 #if WITH_EDITOR
@@ -69,6 +75,11 @@ void FAroundMeEditorModule::FillDebugMenu_DIY(FMenuBuilder &MenuBuilder)
             FText::FromString("Synchronize GameplayTags based on StateTree assets in Routine folder"),
             FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Refresh"),
             FUIAction(FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::SyncAIRoutineTags)));
+        MenuBuilder.AddMenuEntry(
+            FText::FromString("Auto Generate RoutineConfig Assets"),
+            FText::FromString("Help Auto Generate Default Routine Assets"),
+            FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Refresh"),
+            FUIAction(FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::SyncRoutineAssetsFromLeafTags)));
     }
     MenuBuilder.EndSection();
 
@@ -240,17 +251,128 @@ void FAroundMeEditorModule::SyncAIRoutineTags()
 
         UGameplayTagsManager::Get().EditorRefreshGameplayTagTree();
 
-        FNotificationInfo Info(FText::Format(FText::FromString("Sync Success! Added/Updated {0} Tags."), FText::AsNumber(NewGeneratedTags.Num())));
-        Info.ExpireDuration = 3.0f;
-        FSlateNotificationManager::Get().AddNotification(Info);
+        ShowNotify(FText::Format(FText::FromString("Sync Success! Added/Updated {0} Tags."), FText::AsNumber(NewGeneratedTags.Num())), 3.0f);
     }
     else
     {
-        // 现在点击第二次，应该会正确进入这里了
-        FNotificationInfo Info(FText::FromString("Sync Complete: Everything is already up to date."));
-        Info.ExpireDuration = 2.0f;
-        FSlateNotificationManager::Get().AddNotification(Info);
+        ShowNotify(FText::FromString("Sync Complete: Everything is already up to date."), 2.0f);
     }
+}
+void FAroundMeEditorModule::SyncRoutineAssetsFromLeafTags()
+{
+    const FString BaseTagPrefix = TEXT("DIY.AI.Routine");
+    const FString RootContentPath = TEXT("/Game/Blueprint/Core/Player/AI/Data/Routine");
+
+    UGameplayTagsManager &TagManager = UGameplayTagsManager::Get();
+    FAssetToolsModule &AssetToolsModule = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools");
+    FAssetRegistryModule &AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+
+    FGameplayTag RootTag = TagManager.RequestGameplayTag(*BaseTagPrefix);
+    FGameplayTagContainer AllRoutineTags = TagManager.RequestGameplayTagChildren(RootTag);
+
+    TSet<FString> ValidObjectPaths;
+    int32 CreatedCount = 0;
+    int32 ExistingCount = 0;
+
+    // --- 第一步：创建缺失的叶子资产 ---
+    for (const FGameplayTag &Tag : AllRoutineTags)
+    {
+        // 判定是否为叶子节点
+        FGameplayTagContainer Children = TagManager.RequestGameplayTagChildren(Tag);
+        if (Children.Num() > 0)
+            continue;
+
+        FString FullTagString = Tag.ToString();
+        FString RelativePathStr = FullTagString.RightChop(BaseTagPrefix.Len() + 1);
+
+        TArray<FString> PathParts;
+        RelativePathStr.ParseIntoArray(PathParts, TEXT("."));
+
+        if (PathParts.Num() == 0)
+            continue;
+
+        FString AssetName = PathParts.Last();
+        FString FolderPath = RootContentPath;
+        for (int32 i = 0; i < PathParts.Num() - 1; ++i)
+        {
+            FolderPath /= PathParts[i];
+        }
+
+        FString FullObjectPath = FolderPath / AssetName;
+        ValidObjectPaths.Add(FullObjectPath);
+
+        // 检查资产是否已存在
+        FAssetData ExistingAsset = AssetRegistryModule.Get().GetAssetByObjectPath(FSoftObjectPath(*(FullObjectPath + "." + AssetName)));
+
+        if (!ExistingAsset.IsValid())
+        {
+            // 创建
+            UDIY_PetRoutineAsset *NewAsset = Cast<UDIY_PetRoutineAsset>(
+                AssetToolsModule.Get().CreateAsset(AssetName, FolderPath, UDIY_PetRoutineAsset::StaticClass(), nullptr));
+
+            if (NewAsset)
+            {
+                // 1. 同步 Tag
+                NewAsset->RoutineConfig.RoutineTag = Tag;
+
+                // 2. 自动赋予 SavedAssetID (模仿你 ItemAsset 的逻辑)
+                NewAsset->SavedAssetID = NewAsset->GetPrimaryAssetId();
+
+                // 3. 保存
+                UPackage *Package = NewAsset->GetPackage();
+                FString const PackageFileName = FPackageName::LongPackageNameToFilename(Package->GetName(), FPackageName::GetAssetPackageExtension());
+
+                FSavePackageArgs SaveArgs;
+                SaveArgs.TopLevelFlags = RF_Public | RF_Standalone;
+                SaveArgs.Error = GError;
+
+                UPackage::SavePackage(Package, NewAsset, *PackageFileName, SaveArgs);
+
+                CreatedCount++;
+            }
+        }
+        else
+        {
+            ExistingCount++;
+        }
+    }
+
+    // --- 第二步：清理多余资产 ---
+    TArray<FAssetData> FoundAssets;
+    AssetRegistryModule.Get().GetAssetsByPath(*RootContentPath, FoundAssets, true);
+
+    TArray<FAssetData> AssetsToDelete;
+    for (const FAssetData &AssetData : FoundAssets)
+    {
+        if (AssetData.AssetClassPath.GetAssetName() == TEXT("DIY_PetRoutineAsset"))
+        {
+            FString CurrentAssetPath = AssetData.PackagePath.ToString() / AssetData.AssetName.ToString();
+            if (!ValidObjectPaths.Contains(CurrentAssetPath))
+            {
+                AssetsToDelete.Add(AssetData);
+            }
+        }
+    }
+
+    int32 DeletedCount = AssetsToDelete.Num();
+    if (DeletedCount > 0)
+    {
+        ObjectTools::DeleteAssets(AssetsToDelete, true);
+    }
+
+    // --- 第三步：通过 ShowNotify 发送精准报告 ---
+    FString ReportMsg;
+    if (CreatedCount == 0 && DeletedCount == 0)
+    {
+        ReportMsg = FString::Printf(TEXT("Sync Complete: All %d assets are up to date."), ExistingCount);
+    }
+    else
+    {
+        ReportMsg = FString::Printf(TEXT("Sync Done: Created %d new, Removed %d old, Kept %d existing."),
+                                    CreatedCount, DeletedCount, ExistingCount);
+    }
+
+    ShowNotify(FText::FromString(ReportMsg), 3.0f);
 }
 void FAroundMeEditorModule::ShowNotify(const FText &Msg, float Duration)
 {
