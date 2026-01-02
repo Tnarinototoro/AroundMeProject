@@ -126,8 +126,45 @@ struct FDIY_AIPhysical
     float Health = 0.0f;
 };
 
+/**
+ * FDIY_PetJudgingProfile: AI大脑背景配置(决策权重)
+ */
 USTRUCT(BlueprintType)
-struct FDIY_PetStatus
+struct FDIY_PetJudgingProfile
+{
+    GENERATED_BODY()
+
+    /** 性格权重: 决定AI多大程度上按照天性行事。建议 [0.0 - 2.0] */
+    UPROPERTY(EditAnywhere, Category = "GlobalWeights")
+    float PersonalityWeight = 1.0f;
+
+    /** 生存权重: 决定AI多大程度上受生理需求支配。建议 [1.0 - 5.0] */
+    UPROPERTY(EditAnywhere, Category = "GlobalWeights")
+    float SurvivalWeight = 1.5f;
+
+    /** 节律权重: 守时程度。 */
+    UPROPERTY(EditAnywhere, Category = "GlobalWeights")
+    float RhythmWeight = 1.0f;
+
+    /** 经验/标签权重。 */
+    UPROPERTY(EditAnywhere, Category = "GlobalWeights")
+    float ExperienceWeight = 1.0f;
+
+    /** 欲望放大倍率曲线:
+     * X轴: 生理数值 [-1.0, 1.0]
+     * Y轴: 放大倍率 [1.0 - 20.0+]
+     * 建议配置为 U 型：在 -1.0 和 1.0 处数值极高，在 0.0 处为 1.0。
+     */
+    UPROPERTY(EditAnywhere, Category = "Drives")
+    FRuntimeFloatCurve PhysioUrgencyCurve;
+
+    /** 决策切换门槛: 只有新意图比当前高出此分才切换，防止行为抖动。 */
+    UPROPERTY(EditAnywhere, Category = "Mind Control")
+    float DecisionSwitchThreshold = 10.0f;
+};
+
+USTRUCT(BlueprintType)
+struct FDIY_PetSoulContext
 {
     GENERATED_BODY()
 
@@ -138,6 +175,10 @@ struct FDIY_PetStatus
     /** 动态生理状态：会随时间、环境或特殊事件发生缓慢偏移 */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Body", meta = (ToolTip = "Dynamic Survive Situation"))
     FDIY_AIPhysical Survive;
+
+    /** 动态判断配置：会随时间、环境或特殊事件发生缓慢偏移 */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Body", meta = (ToolTip = "Judging Profile"))
+    FDIY_PetJudgingProfile JudgingProfile;
 
     /** * 状态标签容器：统一存储健康(病、伤)、经历(恐惧、喜好)及规则禁忌(不吸烟)。
      * BrainCenterST 会遍历此容器，对比 Routine 配置中的 TagScoreModifiers 进行调分。
@@ -216,41 +257,4 @@ struct FDIY_RoutineConfig
     /** 标签修正: Key(标签) -> Value(分数)。如: Status.Mental.Anxiety -> -100.0 */
     UPROPERTY(EditAnywhere, Category = "Scoring|Tags")
     TMap<FGameplayTag, float> TagScoreModifiers;
-};
-
-/**
- * FDIY_PetJudgingProfile: AI大脑背景配置(决策权重)
- */
-USTRUCT(BlueprintType)
-struct FDIY_PetJudgingProfile
-{
-    GENERATED_BODY()
-
-    /** 性格权重: 决定AI多大程度上按照天性行事。建议 [0.0 - 2.0] */
-    UPROPERTY(EditAnywhere, Category = "GlobalWeights")
-    float PersonalityWeight = 1.0f;
-
-    /** 生存权重: 决定AI多大程度上受生理需求支配。建议 [1.0 - 5.0] */
-    UPROPERTY(EditAnywhere, Category = "GlobalWeights")
-    float SurvivalWeight = 1.5f;
-
-    /** 节律权重: 守时程度。 */
-    UPROPERTY(EditAnywhere, Category = "GlobalWeights")
-    float RhythmWeight = 1.0f;
-
-    /** 经验/标签权重。 */
-    UPROPERTY(EditAnywhere, Category = "GlobalWeights")
-    float ExperienceWeight = 1.0f;
-
-    /** 欲望放大倍率曲线:
-     * X轴: 生理数值 [-1.0, 1.0]
-     * Y轴: 放大倍率 [1.0 - 20.0+]
-     * 建议配置为 U 型：在 -1.0 和 1.0 处数值极高，在 0.0 处为 1.0。
-     */
-    UPROPERTY(EditAnywhere, Category = "Drives")
-    FRuntimeFloatCurve PhysioUrgencyCurve;
-
-    /** 决策切换门槛: 只有新意图比当前高出此分才切换，防止行为抖动。 */
-    UPROPERTY(EditAnywhere, Category = "Mind Control")
-    float DecisionSwitchThreshold = 10.0f;
 };

@@ -62,9 +62,8 @@ public:
      */
     UFUNCTION(BlueprintPure, Category = "Pet|AI|Utility")
     static float CalculateRoutineScore(
-        const FDIY_PetStatus &PetStatus,
+        const FDIY_PetSoulContext &PetSoulContext,
         const FDIY_RoutineConfig &RoutineConfig,
-        const FDIY_PetJudgingProfile &Profile,
         int32 CurrentHour,
         FDIY_RoutineScoreDetails &OutDetails);
 };

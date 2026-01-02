@@ -17,18 +17,10 @@ class UDIY_PetMemoryComponent : public UActorComponent
 public:
     UDIY_PetMemoryComponent();
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
-    FDIY_PetStatus CurrentStatus;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Context")
+    FDIY_PetSoulContext CurrentPetContext;
     // --- 4. 实时环境感知快照 (World Context) ---
     // 由系统每隔一段时间更新一次，供 State Tree 查询
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
     FDIY_PetWorldContext LastWorldSnapshot;
-
-        /** [测试资产 1]: 大脑背景配置 (权重与放大曲线) */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TestAssets")
-    FDIY_PetJudgingProfile DebugJudgingProfile;
-
-    /** [测试资产 2]: 任务字典 (Key为RoutineTag, Value为配置) */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TestAssets")
-    TMap<FGameplayTag, FDIY_RoutineConfig> DebugRoutineLibrary;
 };
