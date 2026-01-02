@@ -3,8 +3,24 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "DIY_MainPet_Defines.h"
-#include "Task/DIY_TaskBasicDefines.h"
 #include "DIY_PetAIUtility.generated.h"
+
+USTRUCT(BlueprintType)
+struct FDIY_RoutineScoreDetails
+{
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadOnly)
+    float NatureScore = 0.0f;
+    UPROPERTY(BlueprintReadOnly)
+    float SurvivalScore = 0.0f;
+    UPROPERTY(BlueprintReadOnly)
+    float RhythmScore = 0.0f;
+    UPROPERTY(BlueprintReadOnly)
+    float TagScore = 0.0f;
+    UPROPERTY(BlueprintReadOnly)
+    float TotalScore = 0.0f;
+};
 
 UCLASS()
 class AROUNDME_API UDIY_PetAIUtility : public UBlueprintFunctionLibrary
@@ -41,14 +57,14 @@ public:
         return (((uint8)Nature & (uint8)Mask) != 0) ? 1.0f : -1.0f;
     }
 
-    UFUNCTION(BlueprintPure, Category = "Pet|Nature")
-    float CalculateFixedRoutinePreference_BornNature(EDIY_BornNature PetNature, const FDIY_FixedRoutineTaskConfig &Config)
-    {
-        float Score = 100.0f;
-
-        Score += UDIY_PetAIUtility::GetDimensionBias(PetNature, EDIY_BornNature::E_Mask) * Config.E_Bias;
-        Score += UDIY_PetAIUtility::GetDimensionBias(PetNature, EDIY_BornNature::N_Mask) * Config.N_Bias;
-
-        return Score;
-    }
+    /**
+     * 核心评估函数：计算某个 Routine 在当前 AI 状态下的吸引力
+     */
+    UFUNCTION(BlueprintPure, Category = "Pet|AI|Utility")
+    static float CalculateRoutineScore(
+        const FDIY_PetStatus &PetStatus,
+        const FDIY_RoutineConfig &RoutineConfig,
+        const FDIY_PetJudgingProfile &Profile,
+        int32 CurrentHour,
+        FDIY_RoutineScoreDetails &OutDetails);
 };
