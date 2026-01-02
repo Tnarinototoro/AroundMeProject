@@ -203,15 +203,39 @@ struct FDIY_RoutineConfig
 
     // --- 性格匹配倾向 (Affinity) ---
     // 范围: 建议 [-100.0, 100.0]
-    // 举例: 聚会任务 E_Affinity = 80。对外向(1.0)AI贡献80分，对内向(-1.0)AI贡献-80分。
+    // 核心逻辑: 最终分 += (Characteristic.Dimension * Routine.Affinity) * JudgingProfile.PersonalityWeight
+    // 策划意义: 定义该行为对哪种天性的 AI 更有吸引力。
 
-    UPROPERTY(EditAnywhere, Category = "Scoring|Nature")
+    /** 外向匹配度 (Extraversion Affinity)
+     * > 0: 吸引外向型(E)。如：主动找玩家索要零食、在开阔地乱跑。
+     * < 0: 吸引内向型(I)。如：独自躲在角落睡觉、避开玩家视线。
+     * 例子：设置为 80.0，外向度 1.0 的 AI 获得 80 分；外向度 -1.0(即内向) 的 AI 扣 80 分。
+     */
+    UPROPERTY(EditAnywhere, Category = "Scoring|Nature", meta = (UIMin = "-100.0", UIMax = "100.0"))
     float E_Affinity = 0.0f;
-    UPROPERTY(EditAnywhere, Category = "Scoring|Nature")
+
+    /** 直觉匹配度 (Intuition Affinity)
+     * > 0: 吸引直觉型(N)。偏向随机、探索、新奇、无目的的捣乱。
+     * < 0: 吸引实感型(S)。偏向重复、具体、有实际产出的任务（如搬运、进食）。
+     * 例子：设置为 50.0，直觉型 AI 更倾向于去研究一个新刷出的奇怪物件。
+     */
+    UPROPERTY(EditAnywhere, Category = "Scoring|Nature", meta = (UIMin = "-100.0", UIMax = "100.0"))
     float N_Affinity = 0.0f;
-    UPROPERTY(EditAnywhere, Category = "Scoring|Nature")
+
+    /** 情感匹配度 (Feeling Affinity)
+     * > 0: 吸引情感型(F)。偏向社交反馈、情感波动、寻求关注。
+     * < 0: 吸引理智型(T)。偏向高效率、低风险、机械化的生存行为。
+     * 策划提示：傲娇 AI 通常 F 维极高，将此项设为正值可大幅提升其参与情感互动的潜在欲望。
+     */
+    UPROPERTY(EditAnywhere, Category = "Scoring|Nature", meta = (UIMin = "-100.0", UIMax = "100.0"))
     float F_Affinity = 0.0f;
-    UPROPERTY(EditAnywhere, Category = "Scoring|Nature")
+
+    /** 感知匹配度 (Perceiving Affinity)
+     * > 0: 吸引感知型(P)。偏向打破常规、即兴行为、切换当前状态。
+     * < 0: 吸引判断型(J). 偏向维持现状、按部就班、完成既定计划。
+     * 策划提示：贱萌行为通常具有极高的 P_Affinity，因为它们通常是临时起意的干扰行为。
+     */
+    UPROPERTY(EditAnywhere, Category = "Scoring|Nature", meta = (UIMin = "-100.0", UIMax = "100.0"))
     float P_Affinity = 0.0f;
 
     // --- 生理偏好匹配 (Physiological Affinity) ---
@@ -237,7 +261,7 @@ struct FDIY_RoutineConfig
     float Health_Affinity = 0.0f;
 
     // --- 执行后的影响 (Impact) ---
-    // 范围: [-1.0, 1.0] (每秒/每分钟改变量)
+    // 范围: [-1.0, 1.0] 该任务完成后的影响
 
     UPROPERTY(EditAnywhere, Category = "Impact")
     float FullnessImpact = 0.0f;
@@ -251,9 +275,10 @@ struct FDIY_RoutineConfig
     /** 节律时段白送分: 建议 [0.0 - 100.0]。符合时间段就送。 */
     UPROPERTY(EditAnywhere, Category = "Scoring|Rhythm")
     float InTimeSlotBonus = 50.0f;
-    // --- D. 节律与标签 ---
+    // --- 偏爱时段---
     UPROPERTY(EditAnywhere, Category = "Scoring|Rhythm")
     TArray<FDIY_TimeRange> PreferredTimeSlots;
+
     /** 标签修正: Key(标签) -> Value(分数)。如: Status.Mental.Anxiety -> -100.0 */
     UPROPERTY(EditAnywhere, Category = "Scoring|Tags")
     TMap<FGameplayTag, float> TagScoreModifiers;
