@@ -17,10 +17,13 @@ class UDIY_PetMemoryComponent : public UActorComponent
 public:
     UDIY_PetMemoryComponent();
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Context")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory", meta = (AllowedTypes = "Soul"))
+    FPrimaryAssetId DefaultSoul;
+
+    UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "Context")
     FDIY_PetSoulContext CurrentPetContext;
     // --- 4. 实时环境感知快照 (World Context) ---
     // 由系统每隔一段时间更新一次，供 State Tree 查询
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+    UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "Status")
     FDIY_PetWorldContext LastWorldSnapshot;
 };
