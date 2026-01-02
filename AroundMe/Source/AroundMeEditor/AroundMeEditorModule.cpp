@@ -71,12 +71,12 @@ void FAroundMeEditorModule::FillDebugMenu_DIY(FMenuBuilder &MenuBuilder)
     MenuBuilder.BeginSection("AIHelper", FText::FromString("AI Routine Helper"));
     {
         MenuBuilder.AddMenuEntry(
-            FText::FromString("Sync AI Routine Tags"),
+            FText::FromString("Sync Tags And Resrt Editor"),
             FText::FromString("Synchronize GameplayTags based on StateTree assets in Routine folder"),
             FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Refresh"),
             FUIAction(FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::SyncAIRoutineTags)));
         MenuBuilder.AddMenuEntry(
-            FText::FromString("Auto Generate RoutineConfig Assets"),
+            FText::FromString("Auto Generate Routine Assets, Must After SyncTags Restart completed"),
             FText::FromString("Help Auto Generate Default Routine Assets"),
             FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Refresh"),
             FUIAction(FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::SyncRoutineAssetsFromLeafTags)));
@@ -169,14 +169,11 @@ void FAroundMeEditorModule::OpenTagDebugPanel()
 
 void FAroundMeEditorModule::SyncAIRoutineTags()
 {
-    // 定义需要自动扫描的路径和 Tag 前缀
+    // --- 以下是你提供的稳健代码，完全保持不动 ---
     const FString SearchPath = TEXT("/Game/Blueprint/Core/Player/AI/StateTrees/Routine");
     const FString TagPrefix = TEXT("DIY.AI.Routine");
-
-    // 定位 DIY_Tags.ini
     FString AbsoluteConfigPath = FPaths::ProjectConfigDir() + TEXT("Tags/DIY_Tags.ini");
 
-    // 1. 扫描文件夹获取当前存在的资源对应的 Tag 列表
     FAssetRegistryModule &AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
     TArray<FAssetData> AssetDataList;
     AssetRegistryModule.Get().GetAssetsByPath(*SearchPath, AssetDataList, true);
@@ -190,15 +187,11 @@ void FAroundMeEditorModule::SyncAIRoutineTags()
         }
     }
 
-    // 2. 读取现有配置
     TArray<FString> ConfigLines;
     GConfig->GetArray(TEXT("/Script/GameplayTags.GameplayTagsList"), TEXT("GameplayTagList"), ConfigLines, AbsoluteConfigPath);
-
-    // 备份一份原始数据用于对比
     TArray<FString> OriginalLines = ConfigLines;
 
     TArray<FString> FinalLines;
-    // 3. 处理现有行：只保留非自动生成的行
     for (const FString &Line : ConfigLines)
     {
         if (!Line.Contains(TEXT("Auto-Generated")))
@@ -207,19 +200,33 @@ void FAroundMeEditorModule::SyncAIRoutineTags()
         }
     }
 
-    // 4. 添加扫描到的标签
-    for (const FString &NewTag : NewGeneratedTags)
+    // --- 为了计算删除数量，额外记录一下旧的自动标签 ---
+    TSet<FString> OldAutoTags;
+    for (const FString &Line : OriginalLines)
     {
-        FString NewLine = FString::Printf(TEXT("(Tag=\"%s\",DevComment=\"Auto-Generated\")"), *NewTag);
-        // 只有真正不重复时才添加
-        if (!FinalLines.Contains(NewLine))
+        if (Line.Contains(TEXT("Auto-Generated")))
         {
-            FinalLines.Add(NewLine);
+            FString TagName;
+            if (FParse::Value(*Line, TEXT("Tag="), TagName))
+            {
+                OldAutoTags.Add(TagName.Replace(TEXT("\""), TEXT("")));
+            }
         }
     }
 
-    // 【关键改进】：对比 FinalLines 和 OriginalLines 是否完全一致
-    // 我们需要先排序或者确保顺序一致，否则即使内容一样顺序不同也会判定为变化
+    int32 AddedCount = 0;
+    for (const FString &NewTag : NewGeneratedTags)
+    {
+        FString NewLine = FString::Printf(TEXT("(Tag=\"%s\",DevComment=\"Auto-Generated\")"), *NewTag);
+        if (!FinalLines.Contains(NewLine))
+        {
+            FinalLines.Add(NewLine);
+            // 如果旧列表里没有这个 Tag，说明是新增
+            if (!OldAutoTags.Contains(NewTag))
+                AddedCount++;
+        }
+    }
+
     FinalLines.Sort();
     OriginalLines.Sort();
 
@@ -240,7 +247,7 @@ void FAroundMeEditorModule::SyncAIRoutineTags()
         }
     }
 
-    // 5. 只有内容真正不一致时才写入磁盘
+    // --- 逻辑执行与重启提示 ---
     if (bActuallyChanged)
     {
         GConfig->SetArray(TEXT("/Script/GameplayTags.GameplayTagsList"), TEXT("GameplayTagList"), FinalLines, AbsoluteConfigPath);
@@ -249,9 +256,29 @@ void FAroundMeEditorModule::SyncAIRoutineTags()
         GConfig->UnloadFile(AbsoluteConfigPath);
         GConfig->LoadFile(AbsoluteConfigPath);
 
-        UGameplayTagsManager::Get().EditorRefreshGameplayTagTree();
+        // 计算删除数量：旧的自动标签里，有多少个不在这次新生成的列表里
+        int32 RemovedCount = 0;
+        TSet<FString> NewTagsSet(NewGeneratedTags);
+        for (const FString &OldTag : OldAutoTags)
+        {
+            if (!NewTagsSet.Contains(OldTag))
+                RemovedCount++;
+        }
 
-        ShowNotify(FText::Format(FText::FromString("Sync Success! Added/Updated {0} Tags."), FText::AsNumber(NewGeneratedTags.Num())), 3.0f);
+        // 1. 发送详细通知
+        FString NotifyStr = FString::Printf(TEXT("Sync Success! Added: %d, Removed: %d"), AddedCount, RemovedCount);
+        ShowNotify(FText::FromString(NotifyStr), 5.0f);
+
+        // 2. 弹出重启确认框
+        FText Title = FText::FromString(TEXT("Tags Updated"));
+        FString Msg = FString::Printf(TEXT("%s\n\nEditor must be restarted to refresh the Tag Manager. Restart now?"), *NotifyStr);
+
+        if (FMessageDialog::Open(EAppMsgType::YesNo, FText::FromString(Msg), Title) == EAppReturnType::Yes)
+        {
+            // 重启前保存资产，防止白干
+            FEditorFileUtils::SaveDirtyPackages(true, true, true);
+            FUnrealEdMisc::Get().RestartEditor(false);
+        }
     }
     else
     {
