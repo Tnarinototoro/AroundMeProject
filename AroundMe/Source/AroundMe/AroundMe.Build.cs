@@ -27,7 +27,8 @@ public class AroundMe : ModuleRules
             "ImGui",
             "Json",
             "HTTP",
-            "JsonUtilities"
+            "JsonUtilities",
+            "StateTreeModule"
         });
 
 

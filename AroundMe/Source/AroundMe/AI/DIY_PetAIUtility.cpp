@@ -24,9 +24,9 @@ float UDIY_PetAIUtility::CalculateRoutineScore(
 
     // 2. 获取当前的动态放大倍率
     // 如果当前饱腹度是 -0.9 (饿疯了)，采样曲线得到一个倍率，比如 8.0
-    float FullnessMultiplier = PetSoulContext.JudgingProfile.PhysioUrgencyCurve.ExternalCurve->GetFloatValue(PetSoulContext.Survive.Fullness);
-    float VitalityMultiplier = PetSoulContext.JudgingProfile.PhysioUrgencyCurve.ExternalCurve->GetFloatValue(PetSoulContext.Survive.Vitality);
-    float HealthMultiplier = PetSoulContext.JudgingProfile.PhysioUrgencyCurve.ExternalCurve->GetFloatValue(PetSoulContext.Survive.Health);
+    float FullnessMultiplier = PetSoulContext.JudgingProfile.PhysioUrgencyCurve.GetRichCurveConst()->Eval(PetSoulContext.Survive.Fullness);
+    float VitalityMultiplier = PetSoulContext.JudgingProfile.PhysioUrgencyCurve.GetRichCurveConst()->Eval(PetSoulContext.Survive.Vitality);
+    float HealthMultiplier = PetSoulContext.JudgingProfile.PhysioUrgencyCurve.GetRichCurveConst()->Eval(PetSoulContext.Survive.Health);
 
     // 3. 应用放大并汇总
     OutDetails.SurvivalScore = ((RawFullnessScore * FullnessMultiplier) +

@@ -279,7 +279,40 @@ struct FDIY_RoutineConfig
     UPROPERTY(EditAnywhere, Category = "Scoring|Rhythm")
     TArray<FDIY_TimeRange> PreferredTimeSlots;
 
+    /** 节律关联 主要是 描述 这个任务 最多能执行多少次 -1 表示 无限制 随便执行 >=0的情况代表剩余可被选中为任务的次数*/
+    UPROPERTY(EditAnywhere, Category = "Scoring|Rhythm")
+    int32 MaxExecutableTimes = -1;
+
     /** 标签修正: Key(标签) -> Value(分数)。如: Status.Mental.Anxiety -> -100.0 */
     UPROPERTY(EditAnywhere, Category = "Scoring|Tags")
     TMap<FGameplayTag, float> TagScoreModifiers;
+};
+
+/** 任务在内存中的实例状态 */
+USTRUCT(BlueprintType)
+struct FDIY_RoutineInstance
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FGameplayTag RoutineTag;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowedTypes = "Routine"))
+    FPrimaryAssetId OriginalRoutineAssetID;
+
+    /** 实时计算的吸引力分数 */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    float CurrentScore = 0.0f;
+
+    /** 该任务已持续执行的时间 */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    float ElapsedTime = 0.0f;
+
+    /** 该任务是否是由于“生理紧急情况”压栈进去的 */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    bool bIsInterrupt = false;
+
+    // MaxExecutableTimes 缓存今日剩余次数
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    int32 CurrentPossibleExecutingTimes = 1;
 };
