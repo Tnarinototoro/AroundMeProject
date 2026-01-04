@@ -20,7 +20,6 @@
 #include "Equipments/DIY_EquipmentManager.h"
 #include "AroundMe/Debug/DIY_GlobalDebugSettings.h"
 
-
 // Sets default values
 ADIY_MainPlayer::ADIY_MainPlayer()
 {
@@ -268,5 +267,17 @@ void ADIY_MainPlayer::UpdatePlayerStateWidgetInfo(float inDeltaTime)
     }
 
     PlayerState_WidgetComponent->SetVisibility(true);
+    if (UDIY_PlayerStateWidget *CurStateWidget = Cast<UDIY_PlayerStateWidget>(PlayerState_WidgetComponent->GetUserWidgetObject()))
+    {
+        FVector PawnVelocity = this->GetVelocity();
+
+        CurStateWidget->UpdateText(
+            FString::Printf(
+                TEXT("Velocity:%f \n Vec X:%.1f Y:%.1f Z:%.1f"),
+                PawnVelocity.Length(),
+                PawnVelocity.X,
+                PawnVelocity.Y,
+                PawnVelocity.Z));
+    }
 }
 #endif

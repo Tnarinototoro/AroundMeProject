@@ -300,7 +300,7 @@ struct FDIY_RoutineInstance
     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowedTypes = "Routine"))
     FPrimaryAssetId OriginalRoutineAssetID;
 
-    /** 实时计算的吸引力分数 */
+    /** 实时计算的吸引力分数 <0基本代表 不用想了 不会做的 目前这样 >=0才有可能被选中 0基本上 是意味着 没啥指向性 随便做不做 */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     float CurrentScore = 0.0f;
 
