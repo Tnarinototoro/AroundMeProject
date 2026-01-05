@@ -20,7 +20,8 @@ public class AroundMeEditor : ModuleRules
             "Json",
             "JsonUtilities",
             "AroundMe",
-            "AIModule"
+            "AIModule",
+            "PropertyEditor"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[]

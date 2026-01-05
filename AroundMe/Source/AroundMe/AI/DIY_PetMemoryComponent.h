@@ -9,8 +9,9 @@
 #include "DIY_PetWorldContext.h"
 #include "DIY_PetMemoryComponent.generated.h"
 
+// 这里的 AROUNDME_API 必须存在，它告诉编译器将此类导出，以便 Editor 模块可以链接它
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class UDIY_PetMemoryComponent : public UActorComponent
+class AROUNDME_API UDIY_PetMemoryComponent : public UActorComponent
 {
     GENERATED_BODY()
 
@@ -43,7 +44,7 @@ public:
     UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "Status")
     float CurrentRoutineElapsedTime = 0.0f;
 
-       // --- 动态数据 ---
+    // --- 动态数据 ---
     /** 1. 工作记忆栈 (Stack)：
      * 顶端 [Last Index] 是当前正在做的。
      * 下面的任务被“挂起”，等待顶端完成后恢复。
