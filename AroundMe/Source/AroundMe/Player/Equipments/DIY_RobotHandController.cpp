@@ -42,7 +42,7 @@ void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickTyp
 
 FVector UDIY_RobotHandController::GetHandEndWolrdLocation() const
 {
-    return mEquipMentMesh->GetBoneTransform("armhead_l_00").GetLocation();
+    return mEquipMentMesh->GetBoneTransform("armhead_00").GetLocation();
 }
 
 EDIY_RobotHand_State_Type UDIY_RobotHandController::GetCurrentState() const
@@ -271,7 +271,7 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
             mCurrentPickedUpItem = mCurrentTargetPickUpItem;
             mCurrentTargetPickUpItem = nullptr;
 
-            AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(mCurrentPickedUpItem, FName("armhead_l_00"), mEquipMentMesh);
+            AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(mCurrentPickedUpItem, FName("armhead_00"), mEquipMentMesh);
 
             SwitchToNextState(EDIY_RobotHand_State_Type::Moving_ToDumpPoint);
 
