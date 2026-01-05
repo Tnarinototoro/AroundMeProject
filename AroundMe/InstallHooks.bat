@@ -19,6 +19,7 @@ if not exist "%PROJECT_FILE%" (
 )
 
 
+
 REM -------- locate .git/hooks --------
 set GIT_ROOT=%PROJECT_DIR%..
 set HOOKS_DIR=%GIT_ROOT%\.git\hooks
