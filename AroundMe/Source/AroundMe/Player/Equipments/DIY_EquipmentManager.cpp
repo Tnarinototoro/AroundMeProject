@@ -237,9 +237,9 @@ void UDIY_EquipmentManager::InitAllEquipments()
             AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head] = CreateDefaultSubobject<UDIY_RobotHand_HeadController>(TEXT("Left_Hand_Head"));
 
             // FAttachmentTransformRules rule(EAttachmentRule::KeepRelative,false);
-            // cur_scene_compo->AttachToComponent(GetEuqipmentEntityAs_SceneCompo(EEquipmentsIndex::Left_Hand),rule,TEXT("armhead_l_00"));
+            // cur_scene_compo->AttachToComponent(GetEuqipmentEntityAs_SceneCompo(EEquipmentsIndex::Left_Hand),rule,TEXT("armhead_00"));
 
-            AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->mEquipMentMesh->SetupAttachment(AllEquipments[(int)EEquipmentsIndex::Left_Hand]->mEquipMentMesh, TEXT("armhead_l_00"));
+            AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->mEquipMentMesh->SetupAttachment(AllEquipments[(int)EEquipmentsIndex::Left_Hand]->mEquipMentMesh, TEXT("armhead_00"));
 
             AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->mEquipIndex = EEquipmentsIndex::Left_Hand_Head;
             AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->mEquipName = TEXT("Left_Hand_Head");
@@ -252,9 +252,9 @@ void UDIY_EquipmentManager::InitAllEquipments()
             AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head] = CreateDefaultSubobject<UDIY_RobotHand_HeadController>(TEXT("Right_Hand_Head"));
 
             // FAttachmentTransformRules rule(EAttachmentRule::KeepRelative,false);
-            // cur_scene_compo->AttachToComponent(GetEuqipmentEntityAs_SceneCompo(EEquipmentsIndex::Right_Hand),rule,TEXT("armhead_l_00"));
+            // cur_scene_compo->AttachToComponent(GetEuqipmentEntityAs_SceneCompo(EEquipmentsIndex::Right_Hand),rule,TEXT("armhead_00"));
 
-            AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->mEquipMentMesh->SetupAttachment(AllEquipments[(int)EEquipmentsIndex::Right_Hand]->mEquipMentMesh, TEXT("armhead_l_00"));
+            AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->mEquipMentMesh->SetupAttachment(AllEquipments[(int)EEquipmentsIndex::Right_Hand]->mEquipMentMesh, TEXT("armhead_00"));
 
             AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->mEquipIndex = EEquipmentsIndex::Right_Hand_Head;
             AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->mEquipName = TEXT("Right_Hand_Head");

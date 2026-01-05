@@ -328,26 +328,33 @@ echo exit /b 0
 
 
 echo Creating pre-commit.cmd...
-REM *** 重点修改：不再使用括号包裹，改为逐行写入，防止语法错误导致的闪退 ***
 set "PC_FILE=%HOOKS_DIR%\pre-commit.cmd"
 
+REM --- 使用逐行写入，确保 100% 不触发安装脚本的语法错误 ---
 echo @echo off > "%PC_FILE%"
+echo setlocal >> "%PC_FILE%"
+echo set "GIT_EXE=%GIT_EXE%" >> "%PC_FILE%"
+echo cd /d "%%~dp0" >> "%PC_FILE%"
+echo cd /d "..\.." >> "%PC_FILE%"
 echo echo [pre-commit] Checking cloud status... >> "%PC_FILE%"
-echo for /f "tokens=*" %%%%i in ('git rev-parse --abbrev-ref HEAD') do set BRANCH=%%%%i >> "%PC_FILE%"
-echo git fetch origin %%BRANCH%% --quiet >> "%PC_FILE%"
-echo set BEHIND=0 >> "%PC_FILE%"
-echo for /f %%%%i in ('git rev-list --count HEAD..origin/%%BRANCH%%') do set BEHIND=%%%%i >> "%PC_FILE%"
+echo set "BRANCH=" >> "%PC_FILE%"
+echo for /f "tokens=*" %%%%i in ('^""%%GIT_EXE%%" rev-parse --abbrev-ref HEAD 2^>nul^"') do set "BRANCH=%%%%i" >> "%PC_FILE%"
+echo if "%%BRANCH%%"=="" exit /b 0 >> "%PC_FILE%"
+echo "%%GIT_EXE%%" fetch origin %%BRANCH%% --quiet >> "%PC_FILE%"
+echo set "BEHIND=0" >> "%PC_FILE%"
+echo for /f "tokens=*" %%%%j in ('^""%%GIT_EXE%%" rev-list --count HEAD..origin/%%BRANCH%% 2^>nul^"') do set "BEHIND=%%%%j" >> "%PC_FILE%"
+
 echo if %%BEHIND%% GTR 0 ( >> "%PC_FILE%"
 echo     echo. >> "%PC_FILE%"
 echo     echo [ALERT] Cloud has %%BEHIND%% new updates. >> "%PC_FILE%"
-echo     echo [ACTION] Launching Update Window... >> "%PC_FILE%"
-echo     start "Git Auto-Sync" cmd.exe /k ^"^"echo Cloud has updates, pulling now... ^& git pull --rebase origin %%BRANCH%% ^& echo. ^& echo Update Finished. Review changes and commit again. ^& pause ^& exit^"^" >> "%PC_FILE%"
+echo     start "Git Auto-Sync" cmd.exe /k "^"^"%%GIT_EXE%%^" pull --rebase origin %%BRANCH%% ^& echo. ^& echo Update Finished. ^& pause ^& exit^" >> "%PC_FILE%"
 echo     exit /b 1 >> "%PC_FILE%"
 echo ) else ( >> "%PC_FILE%"
 echo     echo [OK] Local is up-to-date. >> "%PC_FILE%"
+echo     REM --- 如果是手动双击运行的(没有父进程git), 则暂停一下看结果 ---
+echo     echo %%CMDCMDLINE%% ^| findstr /i "%%~nx0" ^>nul ^&^& pause >> "%PC_FILE%"
 echo     exit /b 0 >> "%PC_FILE%"
 echo ) >> "%PC_FILE%"
-
 
 REM =============================================
 REM             PRINT FILE CONTENTS
