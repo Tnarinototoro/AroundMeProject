@@ -300,13 +300,14 @@ endlocal & (
 )
 
 REM =============================================
-REM       CREATE CMD FILES (POPUP BUILD)
+REM        CREATE CMD FILES (WITH AUTO-SELF-UPDATE)
 REM =============================================
 
 echo Creating post-merge.cmd...
 (
 echo @echo off
-echo echo [post-merge] Launching UE Build Window...
+echo echo [post-merge] Updating Hooks and Launching UE Build...
+echo pushd "%%~dp0" ^&^& cd /d "..\..\AroundMe" ^&^& start /b "" cmd /c "InstallHooks.bat" ^&^& popd
 echo start "UE Build" cmd.exe /k ^"^"%BUILD_BAT%^" AroundMeEditor Win64 Development ^"%PROJECT_FILE%^" -WaitMutex ^&^& echo Build OK ^|^| echo Build Failed^"
 echo exit /b 0
 ) > "%HOOKS_DIR%\post-merge.cmd"
@@ -314,7 +315,8 @@ echo exit /b 0
 echo Creating post-checkout.cmd...
 (
 echo @echo off
-echo echo [post-checkout] Launching UE Build Window...
+echo echo [post-checkout] Updating Hooks and Launching UE Build...
+echo pushd "%%~dp0" ^&^& cd /d "..\..\AroundMe" ^&^& start /b "" cmd /c "InstallHooks.bat" ^&^& popd
 echo start "UE Build" cmd.exe /k ^"^"%BUILD_BAT%^" AroundMeEditor Win64 Development ^"%PROJECT_FILE%^" -WaitMutex ^&^& echo Build OK ^|^| echo Build Failed^"
 echo exit /b 0
 ) > "%HOOKS_DIR%\post-checkout.cmd"
@@ -322,7 +324,9 @@ echo exit /b 0
 echo Creating pre-push.cmd...
 (
 echo @echo off
-echo echo [pre-push] Launching UE Build Window...
+echo echo [pre-push] Updating Hooks and Launching UE Build...
+REM --- 新增：推送前也自动执行一次安装脚本更新 ---
+echo pushd "%%~dp0" ^&^& cd /d "..\..\AroundMe" ^&^& start /b "" cmd /c "InstallHooks.bat" ^&^& popd
 echo start "UE Build" cmd.exe /k ^"^"%BUILD_BAT%^" AroundMeEditor Win64 Development ^"%PROJECT_FILE%^" -WaitMutex ^&^& echo Build OK ^|^| echo Build Failed^"
 echo exit /b 0
 ) > "%HOOKS_DIR%\pre-push.cmd"
@@ -331,7 +335,6 @@ echo exit /b 0
 echo Creating pre-commit.cmd...
 set "PC_FILE=%HOOKS_DIR%\pre-commit.cmd"
 
-REM --- 使用逐行写入，确保 100% 不触发安装脚本的语法错误 ---
 echo @echo off > "%PC_FILE%"
 echo setlocal >> "%PC_FILE%"
 echo set "GIT_EXE=%GIT_EXE%" >> "%PC_FILE%"
