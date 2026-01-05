@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
+static const FName PetMemoryDebugTabName("PetMemoryDebug");
 class FAroundMeEditorModule : public IModuleInterface
 {
 public:
@@ -13,9 +14,12 @@ public:
     void AddMenuEntry(FMenuBarBuilder &MenuBarBuilder);
     void FillDebugMenu_DIY(FMenuBuilder &MenuBuilder);
     void OpenCameraManagerPanel();
+    void OpenIconsBrowser();
     void OpenGameplayTagProjectSettings();
     void OpenGameplayTagManagerWindow();
     void OpenTagDebugPanel();
+
+private:
 
     /** 核心同步逻辑入口 */
     void SyncAIRoutineTags();
@@ -27,4 +31,9 @@ public:
      */
     FString ConvertPathToTag(const FString &InPackagePath, const FString &InAssetName);
     void ShowNotify(const FText &Msg, float Duration);
+
+    void OpenPetMemoryDebugPanel();
+
+    // 2. 添加 Tab 生成回调
+    TSharedRef<SDockTab> OnSpawnPetMemoryDebugTab(const FSpawnTabArgs &SpawnTabArgs);
 };
