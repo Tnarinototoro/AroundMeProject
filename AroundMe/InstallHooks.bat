@@ -260,10 +260,12 @@ REM =============================================
 set POSTMERGE_UNIX=%HOOKS_DIR%\post-merge.cmd
 set POSTCHECKOUT_UNIX=%HOOKS_DIR%\post-checkout.cmd
 set PREPUSH_UNIX=%HOOKS_DIR%\pre-push.cmd
+set PRECOMMIT_UNIX=%HOOKS_DIR%\pre-commit.cmd
 
 set POSTMERGE_UNIX=%POSTMERGE_UNIX:\=/%/
 set POSTCHECKOUT_UNIX=%POSTCHECKOUT_UNIX:\=/%/
 set PREPUSH_UNIX=%PREPUSH_UNIX:\=/%/
+set PRECOMMIT_UNIX=%PRECOMMIT_UNIX:\=/%/
 
 REM =============================================
 REM      WRITE SH HOOKS (SAFE VERSION)
@@ -289,7 +291,12 @@ endlocal & (
     "%PRINTLF%" "%PREPUSH_UNIX%\n" >> "%HOOKS_DIR%\pre-push"
 )
 
-
+echo Creating pre-commit...
+setlocal DisableDelayedExpansion
+"%PRINTLF%" "#!/bin/sh\n" > "%HOOKS_DIR%\pre-commit"
+endlocal & (
+    "%PRINTLF%" "%PRECOMMIT_UNIX%\n" >> "%HOOKS_DIR%\pre-commit"
+)
 
 REM =============================================
 REM       CREATE CMD FILES (POPUP BUILD)
@@ -320,13 +327,35 @@ echo exit /b 0
 ) > "%HOOKS_DIR%\pre-push.cmd"
 
 
+echo Creating pre-commit.cmd...
+REM *** 重点修改：不再使用括号包裹，改为逐行写入，防止语法错误导致的闪退 ***
+set "PC_FILE=%HOOKS_DIR%\pre-commit.cmd"
+
+echo @echo off > "%PC_FILE%"
+echo echo [pre-commit] Checking cloud status... >> "%PC_FILE%"
+echo for /f "tokens=*" %%%%i in ('git rev-parse --abbrev-ref HEAD') do set BRANCH=%%%%i >> "%PC_FILE%"
+echo git fetch origin %%BRANCH%% --quiet >> "%PC_FILE%"
+echo set BEHIND=0 >> "%PC_FILE%"
+echo for /f %%%%i in ('git rev-list --count HEAD..origin/%%BRANCH%%') do set BEHIND=%%%%i >> "%PC_FILE%"
+echo if %%BEHIND%% GTR 0 ( >> "%PC_FILE%"
+echo     echo. >> "%PC_FILE%"
+echo     echo [ALERT] Cloud has %%BEHIND%% new updates. >> "%PC_FILE%"
+echo     echo [ACTION] Launching Update Window... >> "%PC_FILE%"
+echo     start "Git Auto-Sync" cmd.exe /k ^"^"echo Cloud has updates, pulling now... ^& git pull --rebase origin %%BRANCH%% ^& echo. ^& echo Update Finished. Review changes and commit again. ^& pause ^& exit^"^" >> "%PC_FILE%"
+echo     exit /b 1 >> "%PC_FILE%"
+echo ) else ( >> "%PC_FILE%"
+echo     echo [OK] Local is up-to-date. >> "%PC_FILE%"
+echo     exit /b 0 >> "%PC_FILE%"
+echo ) >> "%PC_FILE%"
+
+
 REM =============================================
 REM             PRINT FILE CONTENTS
 REM =============================================
 echo.
 echo =============== CREATED FILE CONTENTS ===============
 
-for %%F in (post-merge post-checkout pre-push) do (
+for %%F in (post-merge post-checkout pre-push pre-commit) do (
     echo ---- %%F ----
     type "%HOOKS_DIR%\%%F"
     echo.
