@@ -57,6 +57,7 @@ void UDIY_RobotHand_HeadController::UpdateParams(float inDeltatime)
             {
                 DrawDebugDirectionalArrow(
                     GetWorld(), parent_hand_head_connection_point.GetLocation(),
+
                     parent_hand_head_connection_point.GetLocation() + real_forward_vec * 200.f, 10.0f, FColor::Red, false, 0.f, 0, 1.0f);
             }
 #endif
