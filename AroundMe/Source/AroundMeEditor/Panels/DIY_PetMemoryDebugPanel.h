@@ -3,6 +3,7 @@
 #include "AroundMe/AI/DIY_MainPet_Defines.h"
 #include "AroundMe/AI/DIY_PetMemoryComponent.h"
 #include "Widgets/SCompoundWidget.h"
+#include "IDetailsView.h" // 包含头文件
 
 /** AI 调试面板：监控 MemoryComponent 状态 */
 class SDIY_PetMemoryDebugPanel : public SCompoundWidget
@@ -27,11 +28,11 @@ private:
     TSharedRef<ITableRow> OnGenerateRowForActor(TWeakObjectPtr<AActor> InActor, const TSharedRef<STableViewBase> &OwnerTable);
 
     TSharedRef<SWidget> CreateRoutineCard(const FDIY_RoutineInstance &Instance, bool bIsActive);
-        /** 当列表项被点击 */
-        void OnActorSelectionChanged(TWeakObjectPtr<AActor> InActor, ESelectInfo::Type SelectInfo);
+    /** 当列表项被点击 */
+    void OnActorSelectionChanged(TWeakObjectPtr<AActor> InActor, ESelectInfo::Type SelectInfo);
 
-    /** 获取基础属性显示的文本 (Soul, Context 等) */
-    FText GetMemoryBaseInfoText() const;
+    // 细节面板组件
+    TSharedPtr<IDetailsView> DetailsView;
 
 private:
     /** 数据源：场景中所有带 MemoryComponent 的 Actor */

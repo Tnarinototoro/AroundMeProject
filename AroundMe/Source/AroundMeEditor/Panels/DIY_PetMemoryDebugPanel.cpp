@@ -8,49 +8,55 @@
 #include "Engine/AssetManager.h"
 #include "Widgets/Colors/SColorBlock.h"
 #include "Widgets/Images/SImage.h"
+
 void SDIY_PetMemoryDebugPanel::Construct(const FArguments &InArgs)
 {
+    // 加载属性编辑器模块
+    FPropertyEditorModule &EditModule = FModuleManager::Get().LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+
+    // 配置细节面板参数
+    FDetailsViewArgs DetailsViewArgs;
+    DetailsViewArgs.bAllowSearch = true;      // 显示搜索框
+    DetailsViewArgs.bHideSelectionTip = true; // 隐藏“请选择对象”的提示
+    DetailsViewArgs.bLockable = false;
+    DetailsViewArgs.bSearchInitialKeyFocus = true;
+    DetailsViewArgs.bUpdatesFromSelection = false; // 我们手动控制选中对象，不跟场景全局选中同步
+    DetailsViewArgs.bShowOptions = false;
+    DetailsViewArgs.bShowModifiedPropertiesOption = false;
+
+    // 创建 DetailsView 实例
+    DetailsView = EditModule.CreateDetailView(DetailsViewArgs);
+
     ChildSlot
         [SNew(SHorizontalBox)
 
-         // --- 左侧：Actor 列表 (占 30% 宽度) ---
+         // --- 左侧：Actor 列表 ---
          + SHorizontalBox::Slot()
                .FillWidth(0.3f)
                .Padding(5)
-                   [SNew(SVerticalBox) + SVerticalBox::Slot().AutoHeight()[SNew(STextBlock).Text(FText::FromString("Pet Instances:")).Font(FAppStyle::GetFontStyle("BoldFont"))] +
-                    SVerticalBox::Slot().FillHeight(1.0f)
-                        [SAssignNew(ActorListView, SListView<TWeakObjectPtr<AActor>>).ListItemsSource(&FoundActors).OnGenerateRow(this, &SDIY_PetMemoryDebugPanel::OnGenerateRowForActor).OnSelectionChanged(this, &SDIY_PetMemoryDebugPanel::OnActorSelectionChanged)]]
+                   [SNew(SVerticalBox) + SVerticalBox::Slot().AutoHeight()[SNew(STextBlock).Text(FText::FromString("Pet Instances:")).Font(FAppStyle::GetFontStyle("BoldFont"))] + SVerticalBox::Slot().FillHeight(1.0f)[SAssignNew(ActorListView, SListView<TWeakObjectPtr<AActor>>).ListItemsSource(&FoundActors).OnGenerateRow(this, &SDIY_PetMemoryDebugPanel::OnGenerateRowForActor).OnSelectionChanged(this, &SDIY_PetMemoryDebugPanel::OnActorSelectionChanged)]]
 
-         // --- 右侧：详细信息区 (占 70% 宽度) ---
+         // --- 右侧：详细信息区 ---
          + SHorizontalBox::Slot()
                .FillWidth(0.7f)
                .Padding(5)
-                   [SNew(SScrollBox) + SScrollBox::Slot()
-                                           [SNew(SVerticalBox)
+                   [SNew(SVerticalBox)
 
-                                            // 1. 基础参数部分
-                                            + SVerticalBox::Slot().AutoHeight().Padding(0, 0, 0, 10)
-                                                  [SNew(SBorder)
-                                                       .BorderImage(FAppStyle::GetBrush("ToolPanel.GroupBorder"))
-                                                           [SNew(STextBlock)
-                                                                .Text(this, &SDIY_PetMemoryDebugPanel::GetMemoryBaseInfoText)
-                                                                .AutoWrapText(true)]]
+                    // 1. 自动属性查看区 (替代了原本的 GetMemoryBaseInfoText)
+                    + SVerticalBox::Slot()
+                          .FillHeight(0.6f) // 给属性分配更多空间
+                          .Padding(0, 0, 0, 10)
+                              [SNew(SBorder)
+                                   .BorderImage(FAppStyle::GetBrush("ToolPanel.GroupBorder"))
+                                       [DetailsView.ToSharedRef() // 这里直接放入 DetailsView
+    ]]
 
-                                            // 2. Working Stack (卡片形式)
-                                            + SVerticalBox::Slot().AutoHeight()
-                                                  [SNew(STextBlock).Text(FText::FromString("--- Working Stack (Top is Active) ---")).Font(FAppStyle::GetFontStyle("BoldFont"))] +
-                                            SVerticalBox::Slot().AutoHeight()
-                                                [SAssignNew(WorkingStackBox, SVerticalBox) // 动态填充
-    ]
-
-                                            // 3. Daily Task Pool
-                                            + SVerticalBox::Slot().AutoHeight().Padding(0, 10, 0, 0)
-                                                  [SNew(STextBlock).Text(FText::FromString("--- Daily Task Pool ---")).Font(FAppStyle::GetFontStyle("BoldFont"))] +
-                                            SVerticalBox::Slot().AutoHeight()
-                                                [SAssignNew(DailyPoolBox, SVerticalBox) // 动态填充
-    ]]]];
+                    // 2. 任务列表区 (保持滚动展示)
+                    + SVerticalBox::Slot()
+                          .FillHeight(0.4f)
+                              [SNew(SScrollBox) + SScrollBox::Slot()
+                                                      [SNew(SVerticalBox) + SVerticalBox::Slot().AutoHeight()[SNew(STextBlock).Text(FText::FromString("--- Working Stack ---")).Font(FAppStyle::GetFontStyle("BoldFont"))] + SVerticalBox::Slot().AutoHeight()[SAssignNew(WorkingStackBox, SVerticalBox)] + SVerticalBox::Slot().AutoHeight().Padding(0, 10, 0, 0)[SNew(STextBlock).Text(FText::FromString("--- Daily Task Pool ---")).Font(FAppStyle::GetFontStyle("BoldFont"))] + SVerticalBox::Slot().AutoHeight()[SAssignNew(DailyPoolBox, SVerticalBox)]]]]];
 }
-
 void SDIY_PetMemoryDebugPanel::Tick(const FGeometry &AllottedGeometry, const double InCurrentTime, const float InDeltaTime)
 {
     // 1. 定期刷新 Actor 列表 (每秒一次)
@@ -144,9 +150,20 @@ void SDIY_PetMemoryDebugPanel::OnActorSelectionChanged(TWeakObjectPtr<AActor> In
     {
         SelectedComponent = ActorPtr->FindComponentByClass<UDIY_PetMemoryComponent>();
 
+        // 核心功能：更新细节面板显示的对象
+        if (DetailsView.IsValid())
+        {
+            // 如果 SelectedComponent 是有效的 UObject，面板会自动解析它的 UPROPERTY
+            DetailsView->SetObject(SelectedComponent.Get());
+        }
+
+        // 镜头聚焦逻辑
         TArray<AActor *> ActorsToFocus;
         ActorsToFocus.Add(ActorPtr);
         GEditor->MoveViewportCamerasToActor(ActorsToFocus, false);
+
+        // 强制立即刷新一次 UI
+        RebuildMemoryWidgets();
     }
 }
 
@@ -206,23 +223,6 @@ TSharedRef<SWidget> SDIY_PetMemoryDebugPanel::CreateRoutineCard(const FDIY_Routi
                       // 第四行：运行时动态信息 (剩余执行次数)
                       + SVerticalBox::Slot().AutoHeight().Padding(0, 2)
                             [SNew(SHorizontalBox) + SHorizontalBox::Slot().AutoWidth()[SNew(STextBlock).Text(FText::FromString(TEXT("Remaining Count: "))).Font(FAppStyle::GetFontStyle("SmallFont"))] + SHorizontalBox::Slot().AutoWidth()[SNew(STextBlock).Text(FText::AsNumber(Instance.CurrentPossibleExecutingTimes)).Font(FAppStyle::GetFontStyle("SmallFont")).ColorAndOpacity(Instance.CurrentPossibleExecutingTimes == 0 ? FLinearColor::Red : FLinearColor::White)]]]];
-}
-
-FText SDIY_PetMemoryDebugPanel::GetMemoryBaseInfoText() const
-{
-    if (!SelectedComponent.IsValid())
-        return FText::FromString("No Pet Selected");
-
-    const auto &Context = SelectedComponent->CurrentWorldContext;
-    return FText::FromString(FString::Printf(TEXT(
-                                                 "Soul: %s\n"
-                                                 "Temp: %.1f | Humidity: %.1f\n"
-                                                 "Affection: %.1f | Hour: %d\n"
-                                                 "Flow Threshold: %.1f"),
-                                             *SelectedComponent->DefaultSoul.ToString(),
-                                             Context.Temperature, Context.Humidity,
-                                             Context.UserAffection, Context.CurrentHour,
-                                             SelectedComponent->BasicEnterFlowThreshold));
 }
 
 TSharedRef<ITableRow> SDIY_PetMemoryDebugPanel::OnGenerateRowForActor(TWeakObjectPtr<AActor> InActor,
