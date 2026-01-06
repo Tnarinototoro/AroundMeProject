@@ -3,8 +3,9 @@
 #include "AroundMe/AI/DIY_MainPet_Defines.h"
 #include "AroundMe/AI/DIY_PetMemoryComponent.h"
 #include "Widgets/SCompoundWidget.h"
-#include "IDetailsView.h" // 包含头文件
-
+#include "IDetailsView.h"            // 包含头文件
+#include "Widgets/Layout/SWrapBox.h" // <--- 必须添加这个
+#include "IStructureDetailsView.h"
 /** AI 调试面板：监控 MemoryComponent 状态 */
 class SDIY_PetMemoryDebugPanel : public SCompoundWidget
 {
@@ -16,6 +17,8 @@ public:
 
     // 每帧刷新，用于实时更新运行时的内存数值
     virtual void Tick(const FGeometry &AllottedGeometry, const double InCurrentTime, const float InDeltaTime) override;
+    float GetCardScale() const { return CardScale; }
+    void OnCardScaleChanged(float NewValue);
 
 private:
     /** 刷新左侧 Actor 列表 */
@@ -48,9 +51,15 @@ private:
     /** 刷新计时器，不必每帧搜寻 Actor，每秒搜一次即可 */
     float NextRefreshSearchTime = 0.0f;
 
-    TSharedPtr<SVerticalBox> WorkingStackBox;
-    TSharedPtr<SVerticalBox> DailyPoolBox;
+    TSharedPtr<SWrapBox> WorkingStackBox;
+    TSharedPtr<SWrapBox> DailyPoolBox;
+
     int32 LastStackCount, LastPoolCount = -1;
     FName LastActiveTag = NAME_None;
+
+    float CardScale = 1.0f; // 缩放比例
+    float BaseCardWidth = 240.0f;
+    float BaseCardHeight = 360.0f;
+
     void RebuildMemoryWidgets();
 };

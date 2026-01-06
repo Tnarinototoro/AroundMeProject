@@ -16,6 +16,29 @@ enum class EDIY_MainPetBehavior_MainMode : uint8
 
 };
 
+USTRUCT(BlueprintType)
+struct FDIY_RoutineScoreDetails
+{
+    GENERATED_BODY()
+
+    // 性格模块得分
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    float NatureScore = 0.0f;
+    // 生理模块得分
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    float SurvivalScore = 0.0f;
+    // 节律模块得分
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    float RhythmScore = 0.0f;
+    // 经验 记忆 flag部分追加 得分
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    float TagScore = 0.0f;
+
+    // 总得分
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    float TotalScore = 0.0f;
+};
+
 /** 定义Routine的首选小时段 */
 USTRUCT(BlueprintType)
 struct FDIY_TimeRange
@@ -302,7 +325,7 @@ struct FDIY_RoutineInstance
 
     /** 实时计算的吸引力分数 <0基本代表 不用想了 不会做的 目前这样 >=0才有可能被选中 0基本上 是意味着 没啥指向性 随便做不做 */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    float CurrentScore = 0.0f;
+    FDIY_RoutineScoreDetails CurrentScore{};
 
     /** 该任务已持续执行的时间 */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

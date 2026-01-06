@@ -102,7 +102,7 @@ void UDIY_PetMemoryComponent::AddRoutineInstanceEntryToPool(UDIY_PetRoutineAsset
         FDIY_RoutineInstance NewInstance;
         NewInstance.RoutineTag = RoutineData->RoutineConfig.RoutineTag;
         NewInstance.OriginalRoutineAssetID = AssetID;
-        NewInstance.CurrentScore = InitialScore;
+        NewInstance.CurrentScore = OutDetails;
         NewInstance.ElapsedTime = 0.0f;
         NewInstance.bIsInterrupt = false;
         NewInstance.CurrentPossibleExecutingTimes = RoutineData->RoutineConfig.MaxExecutableTimes;
@@ -111,7 +111,7 @@ void UDIY_PetMemoryComponent::AddRoutineInstanceEntryToPool(UDIY_PetRoutineAsset
 
         // 排序保持分值由高到低
         DailyTaskPool.Sort([](const FDIY_RoutineInstance &A, const FDIY_RoutineInstance &B)
-                           { return A.CurrentScore > B.CurrentScore; });
+                           { return A.CurrentScore.TotalScore > B.CurrentScore.TotalScore; });
     }
 }
 
@@ -170,18 +170,17 @@ void UDIY_PetMemoryComponent::ReEvaluateDailyPool()
         if (!RoutineData)
             continue;
 
-        FDIY_RoutineScoreDetails DummyDetails;
         // 根据当前 Context 和 WorldContext 实时调分
-        Instance.CurrentScore = UDIY_PetAIUtility::CalculateRoutineScore(
+        UDIY_PetAIUtility::CalculateRoutineScore(
             CurrentPetContext,
             RoutineData->RoutineConfig,
             CurrentWorldContext.CurrentHour,
-            DummyDetails);
+            Instance.CurrentScore);
     }
 
     // 依然建议排个序，虽然是轮盘赌，但排序后逻辑更清晰，且方便调试观察
     DailyTaskPool.Sort([](const FDIY_RoutineInstance &A, const FDIY_RoutineInstance &B)
-                       { return A.CurrentScore > B.CurrentScore; });
+                       { return A.CurrentScore.TotalScore > B.CurrentScore.TotalScore; });
 }
 
 /**
@@ -204,9 +203,9 @@ bool UDIY_PetMemoryComponent::ChooseRandomValidRoutineFromPool(FDIY_RoutineInsta
     float TotalScore = 0.0f;
     for (const FDIY_RoutineInstance &Instance : DailyTaskPool)
     {
-        if (Instance.CurrentScore > 0.0f)
+        if (Instance.CurrentScore.TotalScore > 0.0f)
         {
-            TotalScore += Instance.CurrentScore;
+            TotalScore += Instance.CurrentScore.TotalScore;
         }
     }
 
@@ -225,13 +224,13 @@ bool UDIY_PetMemoryComponent::ChooseRandomValidRoutineFromPool(FDIY_RoutineInsta
     for (const FDIY_RoutineInstance &Instance : DailyTaskPool)
     {
         // 忽略负分或零分的无效任务
-        if (Instance.CurrentScore <= 0.0f)
+        if (Instance.CurrentScore.TotalScore <= 0.0f)
         {
             continue;
         }
 
         // 累加当前任务所占的“扇形区域”
-        CurrentRange += Instance.CurrentScore;
+        CurrentRange += Instance.CurrentScore.TotalScore;
 
         // 如果随机点落在了当前的范围内，说明选中了该任务
         if (RandomPoint <= CurrentRange)
@@ -296,6 +295,6 @@ void UDIY_PetMemoryComponent::MoveRoutineFromStackTopToPool()
 
         // 重新排下序
         DailyTaskPool.Sort([](const FDIY_RoutineInstance &A, const FDIY_RoutineInstance &B)
-                           { return A.CurrentScore > B.CurrentScore; });
+                           { return A.CurrentScore.TotalScore > B.CurrentScore.TotalScore; });
     }
 }

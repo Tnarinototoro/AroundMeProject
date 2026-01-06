@@ -5,22 +5,6 @@
 #include "DIY_MainPet_Defines.h"
 #include "DIY_PetAIUtility.generated.h"
 
-USTRUCT(BlueprintType)
-struct FDIY_RoutineScoreDetails
-{
-    GENERATED_BODY()
-
-    UPROPERTY(BlueprintReadOnly)
-    float NatureScore = 0.0f;
-    UPROPERTY(BlueprintReadOnly)
-    float SurvivalScore = 0.0f;
-    UPROPERTY(BlueprintReadOnly)
-    float RhythmScore = 0.0f;
-    UPROPERTY(BlueprintReadOnly)
-    float TagScore = 0.0f;
-    UPROPERTY(BlueprintReadOnly)
-    float TotalScore = 0.0f;
-};
 
 UCLASS()
 class AROUNDME_API UDIY_PetAIUtility : public UBlueprintFunctionLibrary
