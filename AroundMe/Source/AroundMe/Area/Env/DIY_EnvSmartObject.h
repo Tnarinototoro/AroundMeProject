@@ -32,4 +32,17 @@ protected:
     /** 交互插槽：定义 AI 站立的位置和朝向 */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<USceneComponent> InteractionSlot;
+
+#if WITH_EDITORONLY_DATA
+    /** 标识 Slot 位置的圆环/圆球 */
+    UPROPERTY()
+    TObjectPtr<class USphereComponent> SlotVisualizer;
+
+    /** 标识 Slot 朝向的箭头 */
+    UPROPERTY()
+    TObjectPtr<class UArrowComponent> SlotArrow;
+#endif
+
+public:
+
 };
