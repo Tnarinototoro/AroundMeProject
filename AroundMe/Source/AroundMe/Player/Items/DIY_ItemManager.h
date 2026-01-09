@@ -43,6 +43,19 @@ public:
 
     static FOnItemsNumInBackPack_Changed OnItemsNumInBackPack_Changed;
 
+	
+	UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    float GetCurrentEnergyTotalEarned() const;
+
+	UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    bool TryAddEnergyTotalEarned(float inDeltaEnergy);
+	UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    float GetEnergyTotalEarnedLimit() const;
+
+	UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    float GetCurrentTotalEnergy() const;
+
+
 protected:
     virtual void Initialize(FSubsystemCollectionBase &Collection) override;
     virtual void Deinitialize() override;
@@ -55,6 +68,8 @@ private:
 
     TMap<FPrimaryAssetId, TArray<AActor *>> ItemPools;
     TMap<FPrimaryAssetId, FDIY_ItemStatisticInfo> ItemStatistics;
+
+	float CurrentEnergyTotalEarned{ 0.f };
 
 private:
     TSubclassOf<class UDIY_ItemManagerSubsystemHelperBase> SubsystemHelperClass;
@@ -81,6 +96,9 @@ public:
 
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
     UTexture2D *EmptyItemSlotIcon;
+
+    UPROPERTY(EditDefaultsOnly, Category = "BackPack")
+    float EnergyTotalEarnedLimit{999999.f};
 
 protected:
 public:

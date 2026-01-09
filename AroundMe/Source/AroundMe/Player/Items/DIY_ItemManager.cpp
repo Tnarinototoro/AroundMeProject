@@ -328,6 +328,38 @@ bool UDIY_ItemManagerSubsystem::TryRequestSpawningItem_CraftPlatform(FPrimaryAss
     return true;
 }
 
+float UDIY_ItemManagerSubsystem::GetCurrentEnergyTotalEarned() const
+{
+    return CurrentEnergyTotalEarned;
+}
+
+bool UDIY_ItemManagerSubsystem::TryAddEnergyTotalEarned(float inDeltaEnergy)
+{
+    if (CurrentEnergyTotalEarned + inDeltaEnergy > SubsystemHelper->EnergyTotalEarnedLimit)
+    {
+        CurrentEnergyTotalEarned = SubsystemHelper->EnergyTotalEarnedLimit;
+        return false;
+    }
+    if (CurrentEnergyTotalEarned + inDeltaEnergy < 0.f)
+    {
+        CurrentEnergyTotalEarned = 0.f;
+        return false;
+    }
+
+    CurrentEnergyTotalEarned += inDeltaEnergy;
+    return true;
+}
+
+float UDIY_ItemManagerSubsystem::GetEnergyTotalEarnedLimit() const
+{
+    return SubsystemHelper->EnergyTotalEarnedLimit;
+}
+
+float UDIY_ItemManagerSubsystem::GetCurrentTotalEnergy() const
+{
+    return CurrentEnergyTotalEarned;
+}
+
 void UDIY_ItemManagerSubsystemHelperBase::Initialize()
 {
 }
