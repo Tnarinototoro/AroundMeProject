@@ -10,6 +10,7 @@ ADIY_EnvArea::ADIY_EnvArea()
 
     // 设置碰撞预设为 Trigger
     AreaCollision->SetCollisionProfileName(TEXT("Trigger"));
+    AreaCollision->SetLineThickness(20.f);
 }
 
 void ADIY_EnvArea::BeginPlay()
@@ -17,6 +18,7 @@ void ADIY_EnvArea::BeginPlay()
     Super::BeginPlay();
     AreaCollision->OnComponentBeginOverlap.AddDynamic(this, &ADIY_EnvArea::OnOverlapBegin);
     AreaCollision->OnComponentEndOverlap.AddDynamic(this, &ADIY_EnvArea::OnOverlapEnd);
+    
 }
 
 void ADIY_EnvArea::OnOverlapBegin(UPrimitiveComponent *OverlappedComp, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
