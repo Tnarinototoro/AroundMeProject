@@ -52,8 +52,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     float GetEnergyTotalEarnedLimit() const;
 
-	UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    float GetCurrentTotalEnergy() const;
 
 
 protected:
@@ -61,10 +59,10 @@ protected:
     virtual void Deinitialize() override;
 
 private:
-    void SpawnItemByID_Internal(FPrimaryAssetId ItemID, const FVector &Location, const FRotator &Rotation);
+    void SpawnItemByID_Internal(FPrimaryAssetId ItemID, FVector Location, FRotator Rotation);
     void OnItemRequestRecycle(AActor *inActor);
     void OnItemClassLoaded(FPrimaryAssetId ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation);
-    void SpawnActorFromClass(UClass *inClass, const FVector &Location, const FRotator &Rotation, FPrimaryAssetId ItemID);
+    void SpawnActorFromClass(UClass *inClass, FVector Location, FRotator Rotation, FPrimaryAssetId ItemID);
 
     TMap<FPrimaryAssetId, TArray<AActor *>> ItemPools;
     TMap<FPrimaryAssetId, FDIY_ItemStatisticInfo> ItemStatistics;

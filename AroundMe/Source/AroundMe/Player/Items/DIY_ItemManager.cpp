@@ -159,7 +159,7 @@ UDIY_ItemManagerSubsystem *UDIY_ItemManagerSubsystem::Get(UWorld *World)
     return DIY_SysUtil::GetGameInstanceSubsystem<UDIY_ItemManagerSubsystem>(World);
 }
 
-void UDIY_ItemManagerSubsystem::SpawnItemByID_Internal(FPrimaryAssetId ItemID, const FVector &Location, const FRotator &Rotation)
+void UDIY_ItemManagerSubsystem::SpawnItemByID_Internal(FPrimaryAssetId ItemID, FVector Location, FRotator  Rotation)
 {
 
     // 1. 通过 AssetManager 获取 DataAsset
@@ -167,8 +167,15 @@ void UDIY_ItemManagerSubsystem::SpawnItemByID_Internal(FPrimaryAssetId ItemID, c
 
     if (!ItemResource)
     {
+        UAssetManager::Get().LoadPrimaryAsset(ItemID, TArray<FName>(), FStreamableDelegate::CreateUObject(
+            this,
+            &UDIY_ItemManagerSubsystem::SpawnItemByID_Internal,
+            ItemID,
+            Location,
+            Rotation
+        ));
         // 记得现在打印 ID 要用 ToString()
-        EASY_LOG_MAINPLAYER("Item ID not found: %s", *ItemID.ToString());
+        EASY_LOG_MAINPLAYER("Quick Get Item ID not found: %s Try Load it", *ItemID.ToString());
         return;
     }
 
@@ -216,7 +223,8 @@ void UDIY_ItemManagerSubsystem::OnItemClassLoaded(FPrimaryAssetId ItemID, FSoftO
     }
 }
 
-void UDIY_ItemManagerSubsystem::SpawnActorFromClass(UClass *ActorClass, const FVector &Location, const FRotator &Rotation, FPrimaryAssetId ItemID)
+
+void UDIY_ItemManagerSubsystem::SpawnActorFromClass(UClass *ActorClass, FVector Location, FRotator Rotation, FPrimaryAssetId ItemID)
 {
     if (UWorld *World = GetWorld())
     {
@@ -355,10 +363,6 @@ float UDIY_ItemManagerSubsystem::GetEnergyTotalEarnedLimit() const
     return SubsystemHelper->EnergyTotalEarnedLimit;
 }
 
-float UDIY_ItemManagerSubsystem::GetCurrentTotalEnergy() const
-{
-    return CurrentEnergyTotalEarned;
-}
 
 void UDIY_ItemManagerSubsystemHelperBase::Initialize()
 {
