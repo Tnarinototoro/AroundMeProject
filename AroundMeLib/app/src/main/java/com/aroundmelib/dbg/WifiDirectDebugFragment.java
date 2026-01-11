@@ -114,7 +114,7 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_debug_wfd, container, false);
+        return inflater.inflate(R.layout.diy_frag_debug_wfd, container, false);
     }
 
     public int getConfiguredPort() {

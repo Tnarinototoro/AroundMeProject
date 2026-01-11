@@ -27,7 +27,7 @@ void UDIY_PetMemoryComponent::BeginPlay()
         CurrentWorldContext.Temperature = 25.0f;
         CurrentWorldContext.Humidity = 0.5f;
         CurrentWorldContext.LightIntensity = 1.0f;
-        CurrentWorldContext.ObjectiveTags;
+        CurrentWorldContext.ObjectiveTags = {};
         CurrentWorldContext.CurrentHour = 8;
         CurrentWorldContext.ConstantGoldEnergy = 300.f;
     }
@@ -41,9 +41,12 @@ void UDIY_PetMemoryComponent::OnSoulLoaded()
     // 这里假设你的 Soul 资源是一个 UDIY_SoulAsset
     UDIY_PetSoulAsset *PetSoulAsset = UAssetManager::Get().GetPrimaryAssetObject<UDIY_PetSoulAsset>(DefaultSoul);
 
-    ensureAlwaysMsgf(PetSoulAsset, TEXT("PetSoulAsset Invalid Soul Asset"));
-    // 从资源初始化内存中的 Context
-    CurrentPetContext = PetSoulAsset->SoulContext;
+    if (nullptr != PetSoulAsset)
+    {
+        // 从资源初始化内存中的 Context
+        CurrentPetContext = PetSoulAsset->SoulContext;
+    }
+   
 
     // 生理和标签通常保持默认或从存盘读取，这里先初始化
 }

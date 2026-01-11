@@ -7,19 +7,23 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.ImageView;
+import android.widget.RemoteViews;
+import android.media.AudioAttributes;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 public class DIY_Service extends Service implements DIY_CommuManagerReportSchema, DIY_PassByManagerReportSchema
 {
@@ -122,15 +126,103 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
     }
 
-
+    // Java 层
+    public static void ShowAlienMessage(String title, String content) {
+        if (Instance != null) {
+            Instance.showAlienNotification(title, content);
+        }
+    }
     private DIY_CommuManager mCommuManager = null;
     private DIY_PassByManager mPassByManager =null;
     private Handler handler;
     private Runnable logTask;
     private NotificationManager notificationManager;
     private int seconds = 0;
+    private int getResId(String name, String type) {
+        return getResources().getIdentifier(name, type, getPackageName());
+    }
+    private java.util.Random random = new java.util.Random();
+    /**
+     * 初始化外星人通知渠道
+     */
+    private void createAlienNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Alien Messages";
+            String description = "Messages from the Radio Universe";
 
+            NotificationChannel channel = new NotificationChannel(
+                    DIY_CommuUtils.CHANNEL_ID_ALIEN, name, NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(description);
 
+            // ✨ 修改：动态获取 diy_alien_pop 音效 ID
+            int soundResId = getResId("diy_alien_pop", "raw");
+            if (soundResId != 0) {
+                Uri soundUri = Uri.parse("android.resource://" + getPackageName() + "/" + soundResId);
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .build();
+                channel.setSound(soundUri, audioAttributes);
+            }
+            channel.enableVibration(true);
+
+            NotificationManager nm = getSystemService(NotificationManager.class);
+            nm.createNotificationChannel(channel);
+        }
+    }
+
+    // 监听“划掉”音效
+    private final BroadcastReceiver dismissReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (DIY_CommuUtils.ACTION_DISMISS_NOTIFICATION.equals(intent.getAction())) {
+                // ✨ 修改：动态获取 diy_alien_dismiss 音效 ID
+                int dismissSoundId = getResId("diy_alien_dismiss", "raw");
+                if (dismissSoundId != 0) {
+                    android.media.MediaPlayer mp = android.media.MediaPlayer.create(context, dismissSoundId);
+                    mp.setOnCompletionListener(android.media.MediaPlayer::release);
+                    mp.start();
+                }
+            }
+        }
+    };
+
+    /**
+     * 发送自定义样式的通知
+     */
+    public void showAlienNotification(String title, String message) {
+        int layoutId = getResId("diy_alien_notification", "layout");
+        // 依然使用兜底逻辑确保不崩溃
+        int smallIconId = getResId("diy_ic_launcher_foreground", "drawable");
+        if (smallIconId == 0) smallIconId = android.R.drawable.ic_dialog_info;
+
+        if (layoutId == 0) return;
+
+        RemoteViews remoteViews = new RemoteViews(getPackageName(), layoutId);
+        remoteViews.setTextViewText(getResId("notif_title", "id"), title);
+        remoteViews.setTextViewText(getResId("notif_content", "id"), message);
+        remoteViews.setImageViewResource(getResId("notif_avatar", "id"), getResId("diy_ic_alien_head", "drawable"));
+        remoteViews.setImageViewResource(getResId("notif_bg_pattern", "id"), getResId("diy_ic_wave_pattern", "drawable"));
+
+        Intent deleteIntent = new Intent(DIY_CommuUtils.ACTION_DISMISS_NOTIFICATION).setPackage(getPackageName());
+        PendingIntent deletePendingIntent = PendingIntent.getBroadcast(this, 0, deleteIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, DIY_CommuUtils.CHANNEL_ID_ALIEN)
+                .setSmallIcon(smallIconId)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(remoteViews)
+                .setCustomBigContentView(remoteViews)
+                .setPriority(NotificationCompat.PRIORITY_HIGH) // 确保高优先级弹出
+                .setDeleteIntent(deletePendingIntent)
+                .setSound(null) // 关键：让系统去读 Channel 的音效设置，不要在这里覆盖
+                .setAutoCancel(true);
+
+        NotificationManagerCompat nm = NotificationManagerCompat.from(this);
+
+        // ✨ 核心改动：使用随机 ID，实现多条消息并存（轰炸感）
+        int randomId = 2000 + random.nextInt(10000);
+        nm.notify(randomId, builder.build());
+    }
     public void appendToLog(String text, DIY_CommuUtils.LogLevel level)
     {
         OnNewLogGenerated(text);
@@ -200,7 +292,8 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         }
     }
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
 
         Instance = this;
@@ -253,6 +346,19 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
                 .addAction(new Notification.Action.Builder(
                         null, "Stop Service", stopPendingIntent).build())
                 .build();
+
+
+        //Create alien notification channel
+        createAlienNotificationChannel();
+
+        // 2. 动态注册“划掉”音效的接收器
+        IntentFilter filter = new IntentFilter(DIY_CommuUtils.ACTION_DISMISS_NOTIFICATION);
+        // 注意：Android 14+ 要求动态注册广播必须指定 RECEIVER_EXPORTED 或 RECEIVER_NOT_EXPORTED
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(dismissReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(dismissReceiver, filter);
+        }
 
         // 启动前台服务
         startForeground(1, notification);
@@ -329,18 +435,25 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     @Override
     public void onDestroy()
     {
-        super.onDestroy();
+
         Instance=null;
         BoundActivity = null;
         mCommuManager.StopAroundMeService();
         mCommuManager.onDestroy();
         mCommuManager=null;
+        // 3. 别忘了注销，防止服务停止后还在监听
+        if (dismissReceiver != null) {
+            unregisterReceiver(dismissReceiver);
+        }
+
 
         if (handler != null && logTask != null)
         {
             handler.removeCallbacks(logTask);
         }
         Log.d(TAG, "DIY_Service destroyed");
+
+        super.onDestroy();
     }
 
     @Override

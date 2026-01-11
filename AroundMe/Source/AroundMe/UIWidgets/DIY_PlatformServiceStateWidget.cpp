@@ -12,6 +12,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "DIY_PlatformServiceSubsystem.h"
+#include "Components/EditableText.h"
+
 void UDIY_PlatformServiceStateWidget::NativeConstruct()
 {
     Super::NativeConstruct();
@@ -96,6 +98,60 @@ void UDIY_PlatformServiceStateWidget::NativeOnInitialized()
             }
         }
 
+
+        // --- 1. 标题输入框 (MessageTitleInput) ---
+        MessageTitleInput = WidgetTree->ConstructWidget<UEditableText>(UEditableText::StaticClass(), TEXT("MessageTitleInput"));
+        if (MessageTitleInput)
+        {
+            MessageTitleInput->SetHintText(FText::FromString(TEXT("Enter Message Title...")));
+            MessageTitleInput->WidgetStyle.Font.Size = 16.0f; // 设置合适字体大小
+
+            UVerticalBoxSlot* TitleSlot = VerticalBox->AddChildToVerticalBox(MessageTitleInput);
+            if (TitleSlot)
+            {
+                TitleSlot->SetPadding(FMargin(10.f, 10.f, 10.f, 5.f)); // 左上右下间距
+                TitleSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+            }
+        }
+
+        // --- 2. 内容输入框 (MessageContentInput) ---
+        MessageContentInput = WidgetTree->ConstructWidget<UEditableText>(UEditableText::StaticClass(), TEXT("MessageContentInput"));
+        if (MessageContentInput)
+        {
+            MessageContentInput->SetHintText(FText::FromString(TEXT("Enter Message Content...")));
+            MessageContentInput->WidgetStyle.Font.Size = 16.0f;
+
+            UVerticalBoxSlot* ContentSlot = VerticalBox->AddChildToVerticalBox(MessageContentInput);
+            if (ContentSlot)
+            {
+                ContentSlot->SetPadding(FMargin(10.f, 5.f, 10.f, 10.f));
+                ContentSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+            }
+        }
+
+        // --- 3. 发送按钮 (SendMessageButton) ---
+        SendMessageButton = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), TEXT("SendMessageButton"));
+        if (SendMessageButton)
+        {
+            SendMessageButton->OnClicked.AddDynamic(this, &UDIY_PlatformServiceStateWidget::SendMessageButtonClicked);
+
+            UTextBlock* SendBtnText = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
+            if (SendBtnText)
+            {
+                SendBtnText->SetText(FText::FromString(TEXT("SEND TO ALIEN")));
+                FSlateFontInfo BtnFont = SendBtnText->GetFont();
+                BtnFont.Size = 20.f;
+                SendBtnText->SetFont(BtnFont);
+                SendMessageButton->AddChild(SendBtnText);
+            }
+
+            UVerticalBoxSlot* SendBtnSlot = VerticalBox->AddChildToVerticalBox(SendMessageButton);
+            if (SendBtnSlot)
+            {
+                SendBtnSlot->SetPadding(FMargin(20.f, 10.f, 20.f, 20.f));
+                SendBtnSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+            }
+        }
     }
 }
 
@@ -131,4 +187,23 @@ void UDIY_PlatformServiceStateWidget::StopServiceButtonClicked()
         Subsys->StopPlatformService();
     }
     EASY_LOG_MAINPLAYER("StopServiceButtonClicked");
+}
+
+void UDIY_PlatformServiceStateWidget::SendMessageButtonClicked()
+{
+
+    if (MessageTitleInput && MessageContentInput)
+    {
+        FString Title = MessageTitleInput->GetText().ToString();
+        FString Content = MessageContentInput->GetText().ToString();
+
+        // 这里执行你发送消息给外星人的逻辑
+        EASY_LOG_MAINPLAYER("Sending Alien Message - Title: %s, Content: %s", *Title, *Content);
+        if (UDIYPlatformServiceSubsystem* Subsys = UDIYPlatformServiceSubsystem::Get(GetWorld()))
+        {
+             Subsys->PushAlienMessage(Title,Content);
+        }
+    }
+
+    
 }

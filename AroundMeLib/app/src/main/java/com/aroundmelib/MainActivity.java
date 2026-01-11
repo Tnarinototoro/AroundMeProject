@@ -2,27 +2,18 @@
 package com.aroundmelib;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import com.aroundmelib.DIY_CommuManagerReportSchema;
+
 import com.aroundmelib.dbg.BleDebugFragment;
 import com.aroundmelib.dbg.WifiDirectDebugFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -84,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         {
 
             // layout setting
-            setContentView(R.layout.activity_main);
+            setContentView(R.layout.diy_activity_main);
 
             //lay out setting!
             {

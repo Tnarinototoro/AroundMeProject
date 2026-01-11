@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -26,7 +25,6 @@ import androidx.fragment.app.Fragment;
 import com.aroundmelib.DIY_CommuManager;
 import com.aroundmelib.DIY_CommuManagerReportSchema;
 import com.aroundmelib.DIY_CommuUtils;
-import com.aroundmelib.DIY_PassByManager;
 import com.aroundmelib.MainActivity;
 import com.aroundmelib.R;
 
@@ -142,7 +140,7 @@ public class BleDebugFragment extends Fragment implements DIY_CommuManagerReport
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_debug_ble, container, false);
+        return inflater.inflate(R.layout.diy_frag_debug_ble, container, false);
     }
 
     @Override

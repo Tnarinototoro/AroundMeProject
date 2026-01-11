@@ -218,6 +218,32 @@ void UDIYPlatformServiceSubsystem::RequestAddGiveTask(int ItemID)
 #endif
 }
 
+void UDIYPlatformServiceSubsystem::PushAlienMessage(FString Title, FString Content)
+{
+#if PLATFORM_ANDROID
+    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    {
+        // 1. 找到你的 Service 类
+        jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
+
+        // 2. 获取静态方法 ID (String, String) -> Void
+        // 签名说明: (Ljava/lang/String;Ljava/lang/String;)V 代表接收两个字符串参数，返回为空
+        jmethodID ShowNotifMethod = Env->GetStaticMethodID(ServiceClass, "ShowAlienMessage", "(Ljava/lang/String;Ljava/lang/String;)V");
+
+        // 3. 将 FString 转换为 Java String
+        jstring jTitle = Env->NewStringUTF(TCHAR_TO_UTF8(*Title));
+        jstring jContent = Env->NewStringUTF(TCHAR_TO_UTF8(*Content));
+
+        // 4. 发起调用
+        Env->CallStaticVoidMethod(ServiceClass, ShowNotifMethod, jTitle, jContent);
+
+        // 5. 释放局部引用
+        Env->DeleteLocalRef(jTitle);
+        Env->DeleteLocalRef(jContent);
+    }
+#endif
+}
+
 
 #if PLATFORM_ANDROID
 extern "C"

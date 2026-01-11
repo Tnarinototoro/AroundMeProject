@@ -16,15 +16,9 @@ class AROUNDME_API ADIY_MusicPlayer : public AActor
 {
     GENERATED_BODY()
 
-public:
-    ADIY_MusicPlayer();
-    ~ADIY_MusicPlayer();
-    // Called every frame
-    virtual void Tick(float DeltaTime) override;
-
-private:
     uint8 HourOfToday{0};
     float CurrentMusicPlayedTime{0.0f};
+    void OnMusicLoaded(TSoftObjectPtr<USoundBase> SoundSoft, ESoundTrackID Index);
 
 protected:
     virtual void BeginPlay() override;
@@ -43,9 +37,6 @@ public:
     UPROPERTY()
     TWeakObjectPtr<UAudioComponent> AudioComponent;
 
-    // 功能：加载音乐
-    void LoadMusicFromDirectory();
-
     // 根据索引播放音乐
     UFUNCTION(BlueprintCallable, Category = "DIY_MusicPlayer")
     void PlayMusicByIndex(ESoundTrackID musicID);
@@ -62,4 +53,9 @@ public:
     // TrackID -> RowName 映射
     TMap<ESoundTrackID, FName> TrackToRowName;
     DECLARE_GET_COMPONENT_HELPER(UDIY_MainPlayerUIController);
+
+    ADIY_MusicPlayer();
+    ~ADIY_MusicPlayer();
+    // Called every frame
+    virtual void Tick(float DeltaTime) override;
 };
