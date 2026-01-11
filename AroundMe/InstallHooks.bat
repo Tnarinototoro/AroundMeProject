@@ -324,6 +324,7 @@ echo start "UE Build" cmd.exe /k ^"^"%BUILD_BAT%^" AroundMeEditor Win64 Developm
 echo exit /b 0
 ) > "%HOOKS_DIR%\post-checkout.cmd"
 
+
 echo Creating pre-push.cmd...
 (
 echo @echo off
