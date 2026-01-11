@@ -68,6 +68,9 @@ public class DIY_CommuUtils
 
     public static final int REQUEST_OPEN_PIC=1002;
 
+    public static final String CHANNEL_ID_ALIEN = "Alien_Message_Channel_New";
+    public static final String ACTION_DISMISS_NOTIFICATION = "com.aroundmelib.ACTION_DISMISS_NOTIFICATION";
+
     public static double calculateDistance(double rssi) {
         double RSSI_BASE = -69.0;
         double ENVIRONMENT_FACTOR = 2.0;

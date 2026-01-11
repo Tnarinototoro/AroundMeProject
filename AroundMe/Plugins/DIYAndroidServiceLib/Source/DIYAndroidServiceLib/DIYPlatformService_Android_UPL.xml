@@ -72,6 +72,18 @@
 		<log text="[SJL] DIYPlatformService Android INIT"/>
 	</init>
 <prebuildCopies>
+
+	<copyDir src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/res/layout"
+             dst="$S(BuildDir)/res/layout" />
+
+	<copyDir src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/res/drawable"
+             dst="$S(BuildDir)/res/drawable" />
+
+	<copyDir src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/res/raw"
+             dst="$S(BuildDir)/res/raw" />
+	
+	
+	
     <copyFile src="$S(PluginDir)/../../../../../AroundMeLib/app/src/main/java/com/aroundmelib/DIY_CommuDevice.java"
               dst="$S(BuildDir)/src/com/aroundmelib/DIY_CommuDevice.java"/>
 

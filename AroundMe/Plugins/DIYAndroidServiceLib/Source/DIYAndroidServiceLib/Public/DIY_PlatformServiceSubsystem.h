@@ -69,6 +69,9 @@ public: // 蓝图可调用
     UFUNCTION(BlueprintCallable)
     void RequestAddGiveTask(int ItemID);
 
+	UFUNCTION(BlueprintCallable)
+	void PushAlienMessage(FString Title, FString Content);
+
 	void OnImageBytesReceived(const TArray<uint8>& ImageBytes);
     class UTexture2D* CreateTextureFromImageBytes(
     const TArray<uint8>& ImageData);

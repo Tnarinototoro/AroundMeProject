@@ -79,6 +79,23 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
     }
 }
 
+void ADIY_MusicPlayer::OnMusicLoaded(TSoftObjectPtr<USoundBase> SoundSoft, ESoundTrackID Index)
+{
+    // 执行到这里时，this 已经被引擎验证过是有效的了
+    USoundBase* LoadedSound = SoundSoft.Get();
+
+    // 注意：这里使用 .Get() 访问强引用的 AudioComponent
+    if (LoadedSound && AudioComponent.IsValid())
+    {
+        AudioComponent->SetSound(LoadedSound);
+        AudioComponent->FadeIn(3.0f, 0.6f);
+        mCurrentPlayingSoundTrack = (int32)Index;
+        CurrentMusicPlayedTime = 0.f;
+
+        UE_LOG(LogTemp, Log, TEXT("Now playing via Delegate: %s"), *LoadedSound->GetName());
+    }
+}
+
 void ADIY_MusicPlayer::BeginPlay()
 {
     Super::BeginPlay();
@@ -96,7 +113,7 @@ void ADIY_MusicPlayer::BeginPlay()
     AudioComponent->OnAudioFinished.AddUniqueDynamic(this, &ADIY_MusicPlayer::OnMusicFinished);
     PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
 
-    // LoadMusicFromDirectory();
+    
 }
 
 void ADIY_MusicPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -137,52 +154,6 @@ const UDataTable *ADIY_MusicPlayer::GetMusicDataTable()
     return nullptr;
 }
 
-void ADIY_MusicPlayer::LoadMusicFromDirectory()
-{
-    FString RelativePath = FPaths::ProjectContentDir() + TEXT("Audio/BGM/Anim_Crossing/");
-    FString AbsolutePath = FPaths::ConvertRelativePathToFull(RelativePath);
-    UE_LOG(LogTemp, Warning, TEXT("Full path found is %s"), *AbsolutePath);
-
-    TArray<FString> Files;
-    IFileManager::Get().FindFilesRecursive(Files, *AbsolutePath, TEXT("*.uasset"), true, false, false);
-    UE_LOG(LogTemp, Warning, TEXT("Number of files found: %d"), Files.Num());
-
-    FAssetRegistryModule &AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
-    TArray<FAssetData> AssetDatas;
-
-    FARFilter Filter;
-    Filter.bRecursiveClasses = true;
-    Filter.bRecursivePaths = true;
-    Filter.ClassPaths.Add(USoundWave::StaticClass()->GetClassPathName());
-
-    for (const FString &File : Files)
-    {
-        FString AssetPath = FPackageName::FilenameToLongPackageName(File);
-        UE_LOG(LogTemp, Warning, TEXT("Asset path added to filter: %s"), *AssetPath);
-        Filter.PackagePaths.Add(*AssetPath);
-    }
-
-    bool bSuccess = AssetRegistryModule.Get().GetAssets(Filter, AssetDatas);
-    UE_LOG(LogTemp, Warning, TEXT("Assets retrieval was %s with %d assets found"), bSuccess ? TEXT("successful") : TEXT("unsuccessful"), AssetDatas.Num());
-
-    bool anyGot = false;
-    for (const FAssetData &AssetData : AssetDatas)
-    {
-        USoundBase *LoadedSound = Cast<USoundBase>(AssetData.GetAsset());
-        if (LoadedSound)
-        {
-            UE_LOG(LogTemp, Warning, TEXT("Sound Track Added: %s"), *LoadedSound->GetName());
-            // MusicTracks.Add(LoadedSound);
-            anyGot = true;
-        }
-    }
-
-    if (!anyGot)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("No sound track loaded properly"));
-    }
-}
-
 void ADIY_MusicPlayer::PlayMusicByIndex(ESoundTrackID Index)
 {
 
@@ -211,22 +182,12 @@ void ADIY_MusicPlayer::PlayMusicByIndex(ESoundTrackID Index)
 
     const TSoftObjectPtr<USoundBase> SoundSoft = Row->SoundAsset;
 
-    FStreamableManager &Streamable = UAssetManager::GetStreamableManager();
-    Streamable.RequestAsyncLoad(SoundSoft.ToSoftObjectPath(), [this, SoundSoft, Index]()
-                                {
-        if (!IsValid(this) || IsUnreachable())
-        {
-            return;
-        }
-        USoundBase* LoadedSound = SoundSoft.Get();
-        if (LoadedSound && AudioComponent.IsValid())
-        {
-            AudioComponent->SetSound(LoadedSound);
-            AudioComponent->FadeIn(3.0f, 0.6f);
-            mCurrentPlayingSoundTrack = (int32)Index;
-            CurrentMusicPlayedTime=0.f;
-            UE_LOG(LogTemp, Log, TEXT("Now playing (lazy): %s"), *LoadedSound->GetName());
-        } });
+    // 使用 CreateUObject 代替 Lambda
+    FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
+    Streamable.RequestAsyncLoad(
+        SoundSoft.ToSoftObjectPath(),
+        FStreamableDelegate::CreateUObject(this, &ADIY_MusicPlayer::OnMusicLoaded, SoundSoft, Index)
+    );
 }
 
 void ADIY_MusicPlayer::PlayMusicCorrespondingToTime()
@@ -263,7 +224,9 @@ UDIY_MainPlayerUIController *ADIY_MusicPlayer::AcquireOwnerActorOwnedUDIY_MainPl
     if (mOwnerActorOwned_UDIY_MainPlayerUIController != nullptr)
         return mOwnerActorOwned_UDIY_MainPlayerUIController;
 
-    AActor *cur_player = UGameplayStatics::GetPlayerController(this, 0)->GetPawn();
+    APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    if (!PC) return nullptr;
+    AActor* cur_player = PC->GetPawn();
 
     if (cur_player != nullptr && nullptr != (mOwnerActorOwned_UDIY_MainPlayerUIController = cur_player->FindComponentByClass<UDIY_MainPlayerUIController>()))
     {

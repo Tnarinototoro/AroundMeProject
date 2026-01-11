@@ -27,7 +27,7 @@ void UDIY_PetMemoryComponent::BeginPlay()
         CurrentWorldContext.Temperature = 25.0f;
         CurrentWorldContext.Humidity = 0.5f;
         CurrentWorldContext.LightIntensity = 1.0f;
-        CurrentWorldContext.ObjectiveTags;
+        CurrentWorldContext.ObjectiveTags = {};
         CurrentWorldContext.CurrentHour = 8;
         CurrentWorldContext.ConstantGoldEnergy = 300.f;
     }
