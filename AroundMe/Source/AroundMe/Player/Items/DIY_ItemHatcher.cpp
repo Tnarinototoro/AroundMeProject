@@ -3,7 +3,6 @@
 #include "DIY_ItemAsset.h"
 #include "DIY_ItemManager.h"
 #include "../../GameUtilities/DIY_Utilities.h"
-#include "Editor/EditorEngine.h" // 确保包含了头文件
 ADIY_ItemHatcher::ADIY_ItemHatcher()
 {
     // 允许 Tick 必须不然 没办法editor tick
@@ -78,7 +77,7 @@ void ADIY_ItemHatcher::RefreshPreview()
 
 // 4. 编辑器独有检查：如果正在执行撤销/重做，或者正在切换地图
 #if WITH_EDITOR
-    if (GIsTransacting || GEditor->bIsSimulatingInEditor)
+    if (GIsTransacting)
         return;
 #endif
 

@@ -37,8 +37,7 @@ public class AroundMe : ModuleRules
         PrivateDependencyModuleNames.AddRange(new string[] {
             "Slate",
             "SlateCore",
-            "RenderCore",
-            "UnrealEd"
+            "RenderCore"
              });
 
         // Uncomment if you are using online features
