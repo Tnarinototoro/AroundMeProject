@@ -127,9 +127,19 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     }
 
     // Java 层
-    public static void ShowAlienMessage(String title, String content) {
-        if (Instance != null) {
+    public static void ShowAlienMessage(String title, String content)
+    {
+        if (Instance != null)
+        {
             Instance.showAlienNotification(title, content);
+        }
+    }
+
+    public static void TryOpenImagePicker()
+    {
+        if (Instance != null)
+        {
+            Instance.RequestPickImageInternal();
         }
     }
     private DIY_CommuManager mCommuManager = null;

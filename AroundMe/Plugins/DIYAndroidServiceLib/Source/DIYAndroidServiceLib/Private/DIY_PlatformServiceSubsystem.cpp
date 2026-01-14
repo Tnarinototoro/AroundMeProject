@@ -4,17 +4,16 @@
 #include "DIY_CommuLog.h"
 #include "Misc/Parse.h"
 
-
 #if PLATFORM_ANDROID
 #include "Android/AndroidApplication.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidJavaEnv.h"
 #include "Android/DIY_CommuManager.h"
 #elif PLATFORM_IOS
-//#include "DIY_CommuDevice.h"
+// #include "DIY_CommuDevice.h"
 #endif
 
-void UDIYPlatformServiceSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UDIYPlatformServiceSubsystem::Initialize(FSubsystemCollectionBase &Collection)
 {
     Super::Initialize(Collection);
 }
@@ -29,7 +28,7 @@ TScriptInterface<IDIY_CommuManagerInterface> UDIYPlatformServiceSubsystem::Creat
     TScriptInterface<IDIY_CommuManagerInterface> DIY_CommuManagerInterface;
 
 #if PLATFORM_IOS || PLATFORM_ANDROID
-    UDIY_CommuManager* DIY_CommuManager = NewObject<UDIY_CommuManager>();
+    UDIY_CommuManager *DIY_CommuManager = NewObject<UDIY_CommuManager>();
     DIY_CommuManager->Init();
 
     DIY_CommuManagerInterface.SetObject(DIY_CommuManager);
@@ -39,12 +38,12 @@ TScriptInterface<IDIY_CommuManagerInterface> UDIYPlatformServiceSubsystem::Creat
     return DIY_CommuManagerInterface;
 }
 
-FString UDIYPlatformServiceSubsystem::ConvertBytesToHexString(const TArray<uint8>& Bytes)
+FString UDIYPlatformServiceSubsystem::ConvertBytesToHexString(const TArray<uint8> &Bytes)
 {
     return BytesToHex(Bytes.GetData(), Bytes.Num());
 }
 
-FString UDIYPlatformServiceSubsystem::HexToUUID(const FString& InHexString)
+FString UDIYPlatformServiceSubsystem::HexToUUID(const FString &InHexString)
 {
     FString HexString = InHexString.TrimStartAndEnd();
     const int StartPos = HexString.StartsWith(TEXT("0x")) ? 2 : 0;
@@ -77,11 +76,11 @@ FString UDIYPlatformServiceSubsystem::HexToUUID(const FString& InHexString)
     return GuidString.ToLower();
 }
 
-TArray<FString> UDIYPlatformServiceSubsystem::HexToUUIDs(const TArray<FString>& HexStrings)
+TArray<FString> UDIYPlatformServiceSubsystem::HexToUUIDs(const TArray<FString> &HexStrings)
 {
-    TArray<FString>UuidArray;
+    TArray<FString> UuidArray;
 
-    for (const FString& HexString : HexStrings)
+    for (const FString &HexString : HexStrings)
     {
         UuidArray.Add(UDIYPlatformServiceSubsystem::HexToUUID(HexString));
     }
@@ -89,11 +88,12 @@ TArray<FString> UDIYPlatformServiceSubsystem::HexToUUIDs(const TArray<FString>& 
     return UuidArray;
 }
 
-bool UDIYPlatformServiceSubsystem::IsUUIDValid(const FString& UUID)
+bool UDIYPlatformServiceSubsystem::IsUUIDValid(const FString &UUID)
 {
     FGuid Guid;
 
-    if (UUID.Len() == 36 && !FGuid::ParseExact(UUID, EGuidFormats::DigitsWithHyphens, Guid)) return false;
+    if (UUID.Len() == 36 && !FGuid::ParseExact(UUID, EGuidFormats::DigitsWithHyphens, Guid))
+        return false;
     return Guid.IsValid();
 }
 void UDIYPlatformServiceSubsystem::OnImageBytesReceived(
@@ -113,10 +113,10 @@ void UDIYPlatformServiceSubsystem::OnImageBytesReceived(
     // ② 通知游戏世界
     OnImageTextureReceived.Broadcast(Texture);
 }
-UTexture2D* UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(
-    const TArray<uint8>& ImageData)
+UTexture2D *UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(
+    const TArray<uint8> &ImageData)
 {
-    IImageWrapperModule& ImageWrapperModule =
+    IImageWrapperModule &ImageWrapperModule =
         FModuleManager::LoadModuleChecked<IImageWrapperModule>("ImageWrapper");
 
     EImageFormat ImageFormat =
@@ -134,7 +134,7 @@ UTexture2D* UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(
     TArray<uint8> RawData;
     Wrapper->GetRaw(ERGBFormat::BGRA, 8, RawData);
 
-    UTexture2D* Texture =
+    UTexture2D *Texture =
         UTexture2D::CreateTransient(
             Wrapper->GetWidth(),
             Wrapper->GetHeight(),
@@ -142,7 +142,7 @@ UTexture2D* UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(
 
     Texture->SRGB = true;
 
-    void* TextureData =
+    void *TextureData =
         Texture->GetPlatformData()->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
 
     FMemory::Memcpy(TextureData, RawData.GetData(), RawData.Num());
@@ -152,12 +152,12 @@ UTexture2D* UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(
 
     return Texture;
 }
-UDIYPlatformServiceSubsystem* UDIYPlatformServiceSubsystem::Get(UWorld* OptionalWorld)
+UDIYPlatformServiceSubsystem *UDIYPlatformServiceSubsystem::Get(UWorld *OptionalWorld)
 {
-    
+
     if (OptionalWorld)
     {
-        if (UGameInstance* GI = OptionalWorld->GetGameInstance())
+        if (UGameInstance *GI = OptionalWorld->GetGameInstance())
         {
             return GI->GetSubsystem<UDIYPlatformServiceSubsystem>();
         }
@@ -167,12 +167,12 @@ UDIYPlatformServiceSubsystem* UDIYPlatformServiceSubsystem::Get(UWorld* Optional
         return nullptr;
     }
 
-    for (const FWorldContext& Context : GEngine->GetWorldContexts())
+    for (const FWorldContext &Context : GEngine->GetWorldContexts())
     {
-        UWorld* World = Context.World();
+        UWorld *World = Context.World();
         if (World && World->IsGameWorld())
         {
-            if (UGameInstance* GI = World->GetGameInstance())
+            if (UGameInstance *GI = World->GetGameInstance())
             {
                 return GI->GetSubsystem<UDIYPlatformServiceSubsystem>();
             }
@@ -185,7 +185,7 @@ UDIYPlatformServiceSubsystem* UDIYPlatformServiceSubsystem::Get(UWorld* Optional
 void UDIYPlatformServiceSubsystem::StartPlatformService()
 {
 #if PLATFORM_ANDROID
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
     {
         jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
         jmethodID StartMethod = Env->GetStaticMethodID(ServiceClass, "StartDIYService", "(Landroid/app/Activity;)V");
@@ -197,7 +197,7 @@ void UDIYPlatformServiceSubsystem::StartPlatformService()
 void UDIYPlatformServiceSubsystem::StopPlatformService()
 {
 #if PLATFORM_ANDROID
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
     {
         jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
         jmethodID StopMethod = Env->GetStaticMethodID(ServiceClass, "StopDIYService", "(Landroid/app/Activity;)V");
@@ -209,7 +209,7 @@ void UDIYPlatformServiceSubsystem::StopPlatformService()
 void UDIYPlatformServiceSubsystem::RequestAddGiveTask(int ItemID)
 {
 #if PLATFORM_ANDROID
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
     {
         jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
         jmethodID GiveMethod = Env->GetStaticMethodID(ServiceClass, "RequestGiveAItem", "(I)V");
@@ -221,7 +221,7 @@ void UDIYPlatformServiceSubsystem::RequestAddGiveTask(int ItemID)
 void UDIYPlatformServiceSubsystem::PushAlienMessage(FString Title, FString Content)
 {
 #if PLATFORM_ANDROID
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
     {
         // 1. 找到你的 Service 类
         jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
@@ -244,15 +244,31 @@ void UDIYPlatformServiceSubsystem::PushAlienMessage(FString Title, FString Conte
 #endif
 }
 
+void UDIYPlatformServiceSubsystem::TryOpenImagePicker()
+{
+#if PLATFORM_ANDROID
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
+    {
+        // 1. 找到你的 Service 类
+        jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
+
+        // 2. 获取静态方法 ID () -> Void
+        jmethodID OpenImagePickerMethod = Env->GetStaticMethodID(ServiceClass, "TryOpenImagePicker", "()V");
+
+        // 4. 发起调用
+        Env->CallStaticVoidMethod(ServiceClass, OpenImagePickerMethod);
+    }
+#endif
+}
 
 #if PLATFORM_ANDROID
 extern "C"
 {
 
-    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewLogGenerated(JNIEnv* jenv, jclass clazz, jstring MyString)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewLogGenerated(JNIEnv *jenv, jclass clazz, jstring MyString)
     {
 
-        const char* chars = jenv->GetStringUTFChars(MyString, 0);
+        const char *chars = jenv->GetStringUTFChars(MyString, 0);
 
         FString ConvertedStr(UTF8_TO_TCHAR(chars));
 
@@ -264,25 +280,23 @@ extern "C"
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewRandomDeviceEncountered_1GarbageName(JNIEnv* jenv, jclass clazz)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewRandomDeviceEncountered_1GarbageName(JNIEnv *jenv, jclass clazz)
     {
 
         if (GEngine)
         {
-            if (auto* Subsys = UDIYPlatformServiceSubsystem::Get())
+            if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                    {
-                        Subsys->OnDeviceDetected_Delegate_GarbageName_Provider.Broadcast();
-                    });
+                          { Subsys->OnDeviceDetected_Delegate_GarbageName_Provider.Broadcast(); });
             }
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewRandomDeviceEncountered_1WithName(JNIEnv* jenv, jclass clazz, jstring MyString)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewRandomDeviceEncountered_1WithName(JNIEnv *jenv, jclass clazz, jstring MyString)
     {
 
-        const char* chars = jenv->GetStringUTFChars(MyString, 0);
+        const char *chars = jenv->GetStringUTFChars(MyString, 0);
 
         FString ConvertedStr(UTF8_TO_TCHAR(chars));
 
@@ -290,21 +304,18 @@ extern "C"
 
         if (GEngine)
         {
-            if (auto* Subsys = UDIYPlatformServiceSubsystem::Get())
+            if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                    {
-                        Subsys->OnDeviceDetected_Delegate_WithName_Provider.Broadcast(ConvertedStr);
-                    });
+                          { Subsys->OnDeviceDetected_Delegate_WithName_Provider.Broadcast(ConvertedStr); });
             }
-           
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnMessageReceivedFromOtherPDevices(JNIEnv* jenv, jclass clazz, jstring MyString)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnMessageReceivedFromOtherPDevices(JNIEnv *jenv, jclass clazz, jstring MyString)
     {
 
-        const char* chars = jenv->GetStringUTFChars(MyString, 0);
+        const char *chars = jenv->GetStringUTFChars(MyString, 0);
 
         FString ConvertedStr(UTF8_TO_TCHAR(chars));
 
@@ -312,76 +323,71 @@ extern "C"
 
         if (GEngine)
         {
-            if (auto* Subsys = UDIYPlatformServiceSubsystem::Get())
+            if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                    { Subsys->OnMessageReceivedFromOtherPDevices_Delegate_Provider.Broadcast(ConvertedStr); });
+                          { Subsys->OnMessageReceivedFromOtherPDevices_Delegate_Provider.Broadcast(ConvertedStr); });
             }
-            
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBypassData_1GarbageNames(JNIEnv* jenv, jclass clazz, jint inCount)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBypassData_1GarbageNames(JNIEnv *jenv, jclass clazz, jint inCount)
     {
 
         int ConvertedInt = static_cast<int>(inCount);
 
         if (GEngine)
         {
-            if (auto* Subsys = UDIYPlatformServiceSubsystem::Get())
+            if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                    { Subsys->OnSubmittingBaypassData_GarbageNamesCount_Delegate_Provider.Broadcast(ConvertedInt); });
+                          { Subsys->OnSubmittingBaypassData_GarbageNamesCount_Delegate_Provider.Broadcast(ConvertedInt); });
             }
-           
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBypassData_1WithNames(JNIEnv* jenv, jclass clazz, jint inCount)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBypassData_1WithNames(JNIEnv *jenv, jclass clazz, jint inCount)
     {
 
         int ConvertedInt = static_cast<int>(inCount);
 
         if (GEngine)
         {
-            if (auto* Subsys = UDIYPlatformServiceSubsystem::Get())
+            if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                    { Subsys->OnSubmittingBaypassData_WithNamesCount_Delegate_Provider.Broadcast(ConvertedInt); });
+                          { Subsys->OnSubmittingBaypassData_WithNamesCount_Delegate_Provider.Broadcast(ConvertedInt); });
             }
-            
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBaypassData_1GameUser(JNIEnv* jenv, jclass clazz, jint inCount)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBaypassData_1GameUser(JNIEnv *jenv, jclass clazz, jint inCount)
     {
 
         int ConvertedInt = static_cast<int>(inCount);
 
         if (GEngine)
         {
-            if (auto* Subsys = UDIYPlatformServiceSubsystem::Get())
+            if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                    { Subsys->OnSubmittingBaypassData_GameUserCount_Delegate_Provider.Broadcast(ConvertedInt); });
+                          { Subsys->OnSubmittingBaypassData_GameUserCount_Delegate_Provider.Broadcast(ConvertedInt); });
             }
-           
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnItemGiftReceived(JNIEnv* jenv, jclass clazz, jint inGiftItemID)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnItemGiftReceived(JNIEnv *jenv, jclass clazz, jint inGiftItemID)
     {
 
         int ConvertedInt = static_cast<int>(inGiftItemID);
 
         if (GEngine)
         {
-            if (auto* Subsys = UDIYPlatformServiceSubsystem::Get())
+            if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                    { Subsys->OnItemGiftReceived_Delegate_Provider.Broadcast(ConvertedInt); });
+                          { Subsys->OnItemGiftReceived_Delegate_Provider.Broadcast(ConvertedInt); });
             }
-            
         }
     }
 
