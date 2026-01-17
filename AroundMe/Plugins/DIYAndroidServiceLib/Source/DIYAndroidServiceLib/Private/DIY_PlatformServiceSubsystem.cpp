@@ -341,7 +341,7 @@ extern "C"
             if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                          { Subsys->OnSubmittingBaypassData_GarbageNamesCount_Delegate_Provider.Broadcast(ConvertedInt); });
+                          { Subsys->OnSubmittingBypassData_GarbageNamesCount_Delegate_Provider.Broadcast(ConvertedInt); });
             }
         }
     }
@@ -356,12 +356,12 @@ extern "C"
             if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                          { Subsys->OnSubmittingBaypassData_WithNamesCount_Delegate_Provider.Broadcast(ConvertedInt); });
+                          { Subsys->OnSubmittingBypassData_WithNamesCount_Delegate_Provider.Broadcast(ConvertedInt); });
             }
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBaypassData_1GameUser(JNIEnv *jenv, jclass clazz, jint inCount)
+    JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnSubmittingBypassData_1GameUser(JNIEnv *jenv, jclass clazz, jint inCount)
     {
 
         int ConvertedInt = static_cast<int>(inCount);
@@ -371,7 +371,7 @@ extern "C"
             if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                          { Subsys->OnSubmittingBaypassData_GameUserCount_Delegate_Provider.Broadcast(ConvertedInt); });
+                          { Subsys->OnSubmittingBypassData_GameUserCount_Delegate_Provider.Broadcast(ConvertedInt); });
             }
         }
     }

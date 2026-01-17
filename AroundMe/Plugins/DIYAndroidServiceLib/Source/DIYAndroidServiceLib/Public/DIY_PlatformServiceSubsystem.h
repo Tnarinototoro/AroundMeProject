@@ -89,13 +89,13 @@ public: // 蓝图 Delegate
 	FOnAroundMeService_WithStringMsg OnMessageReceivedFromOtherPDevices_Delegate_Provider;
 
 	UPROPERTY(BlueprintAssignable, Category = "PlatformService")
-	FOnAroundMeService_WithIntMsg OnSubmittingBaypassData_GarbageNamesCount_Delegate_Provider;
+	FOnAroundMeService_WithIntMsg OnSubmittingBypassData_GarbageNamesCount_Delegate_Provider;
 
 	UPROPERTY(BlueprintAssignable, Category = "PlatformService")
-	FOnAroundMeService_WithIntMsg OnSubmittingBaypassData_WithNamesCount_Delegate_Provider;
+	FOnAroundMeService_WithIntMsg OnSubmittingBypassData_WithNamesCount_Delegate_Provider;
 
 	UPROPERTY(BlueprintAssignable, Category = "PlatformService")
-	FOnAroundMeService_WithIntMsg OnSubmittingBaypassData_GameUserCount_Delegate_Provider;
+	FOnAroundMeService_WithIntMsg OnSubmittingBypassData_GameUserCount_Delegate_Provider;
 
 	UPROPERTY(BlueprintAssignable, Category = "PlatformService")
 	FOnAroundMeService_WithIntMsg OnItemGiftReceived_Delegate_Provider;

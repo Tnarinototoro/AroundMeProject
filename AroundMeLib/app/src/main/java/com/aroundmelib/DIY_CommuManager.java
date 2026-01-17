@@ -74,14 +74,26 @@ public class DIY_CommuManager
 
     private int mDeviceCountEncountered_WithName = 0;
 
+    public int GetDeviceCountEncountered_WithName()
+    {
+        return mDeviceCountEncountered_WithName;
+    }
+
+
     private int mDeviceCountEncountered_WithGarbageName = 0;
+
+    public int GetDeviceCountEncountered_WithGarbageName()
+    {
+        return mDeviceCountEncountered_WithGarbageName;
+    }
 
     private int mDIYGameUserEncountered_WithName = 0;
 
-    public int mDeviceCountEncountered_WithName_Latest = 0;
-    public int mDeviceCountEncountered_WithGarbageName_Latest = 0;
+    public int GetDIYGameUserEncountered_WithName()
+    {
+        return mDIYGameUserEncountered_WithName;
+    }
 
-    public int mDIYGameUserEncountered_WithName_Latest = 0;
     public void RequestGiveAItemTask(int inItemID)
     {
         mRequestedToGiveItems.add(inItemID);
@@ -99,42 +111,23 @@ public class DIY_CommuManager
     {
         mReportSchema = inSchema;
     }
-    public int GetDeviceCountEncountered_WithName()
-    {
-        return mDeviceCountEncountered_WithName;
-    }
-    public int GetDeviceCountEncountered_WithGarbageName()
-    {
-        return mDeviceCountEncountered_WithGarbageName;
-    }
 
 
-    private void UpdateCounts()
-    {
 
-        mDeviceCountEncountered_WithName_Latest = Math.max(mDeviceCountEncountered_WithName_Latest, mDeviceCountEncountered_WithName);
-        mDeviceCountEncountered_WithGarbageName_Latest =Math.max(mDeviceCountEncountered_WithGarbageName_Latest, mDeviceCountEncountered_WithGarbageName);
-        mDIYGameUserEncountered_WithName_Latest =Math.max(mDIYGameUserEncountered_WithName_Latest, mDIYGameUserEncountered_WithName);
-    }
 
 
     public String GetCurrentNumStatus()
     {
+
         return String.format("Name:%d, Null:%d, User:%d",
-                mDeviceCountEncountered_WithName_Latest,
-                mDeviceCountEncountered_WithGarbageName_Latest,
-                mDIYGameUserEncountered_WithName_Latest);
+                mDeviceCountEncountered_WithName,
+                mDeviceCountEncountered_WithGarbageName,
+                mDIYGameUserEncountered_WithName);
     }
 
     @SuppressLint("MissingPermission")
     private void ResetAroundMeBluetoothServiceResults()
     {
-        mDeviceCountEncountered_WithName = 0;
-        mDeviceCountEncountered_WithGarbageName = 0;
-
-
-
-
 
         if (mFoundDevices != null)
         {
@@ -707,7 +700,7 @@ public class DIY_CommuManager
             mBluetoothGattServer.close();
 
 
-            UpdateCounts();
+
 
 
             ResetAroundMeBluetoothServiceResults();
@@ -859,14 +852,30 @@ public class DIY_CommuManager
                 }
                 else
                 {
-                    if(mReportSchema!=null)
+                    //upload bluetooth info to ue5 game instance
+
                     {
-                        mReportSchema.OnSubmitInfoToUE5();
+                        if(mReportSchema!=null)
+                        {
+                            if(mReportSchema.GetIsGameActive())
+                            {
+                                mReportSchema.OnSubmitInfoToUE5();
+                                mDeviceCountEncountered_WithName = 0;
+                                mDeviceCountEncountered_WithGarbageName = 0;
+                                mDIYGameUserEncountered_WithName = 0;
+                            }
+
+
+
+
+
+                        }
                     }
+
                     startClassicBluetoothDiscovery();
 
 
-                    UpdateCounts();
+
                     ResetAroundMeBluetoothServiceResults();
 
                 }

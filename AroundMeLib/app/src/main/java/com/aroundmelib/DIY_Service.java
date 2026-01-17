@@ -32,8 +32,15 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public static final String ACTION_PICK_IMAGE = "DIY_ACTION_PICK_IMAGE";
     public static DIY_Service Instance = null;
     public static Activity BoundActivity = null;
+    // 1. 追踪游戏状态
+    private boolean isGameActive = false;
+    // 提供给 GameActivity 调用的接口，用来更新状态
+    public void setGameActive(boolean active)
+    {
 
-
+        this.isGameActive = active;
+        Log.d(TAG, "Game Active State Changed: " + active);
+    }
     public static native void OnNewRandomDeviceEncountered_GarbageName();
 
     public static native void OnNewLogGenerated(String in_string);
@@ -45,7 +52,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
     public static native void OnSubmittingBypassData_GarbageNames(int in_withoutname_device_count);
 
-    public static native void OnSubmittingBaypassData_GameUser(int in_User_Coount);
+    public static native void OnSubmittingBypassData_GameUser(int in_User_Coount);
 
 
 
@@ -394,9 +401,9 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
                         .setContentTitle("DIY Service")
                         .setContentText(String.format("Service running for %d sec \n Name:%d Null:%d User:%d",
                                 seconds,
-                                mCommuManager.mDeviceCountEncountered_WithName_Latest,
-                                mCommuManager.mDeviceCountEncountered_WithGarbageName_Latest,
-                                mCommuManager.mDIYGameUserEncountered_WithName_Latest
+                                mCommuManager.GetDeviceCountEncountered_WithName(),
+                                mCommuManager.GetDeviceCountEncountered_WithGarbageName(),
+                                mCommuManager.GetDIYGameUserEncountered_WithName()
 
 
                         ))
@@ -549,17 +556,22 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     {
         DIY_CommuManagerReportSchema.super.OnSubmitInfoToUE5();
         //no more needed to do this!
-        OnSubmittingBypassData_GarbageNames(mCommuManager.mDeviceCountEncountered_WithGarbageName_Latest);
+        OnSubmittingBypassData_GarbageNames(mCommuManager.GetDeviceCountEncountered_WithGarbageName());
 
 
-        OnSubmittingBypassData_WithNames(mCommuManager.mDeviceCountEncountered_WithName_Latest);
-        OnSubmittingBaypassData_GameUser(mCommuManager.mDIYGameUserEncountered_WithName_Latest);
+        OnSubmittingBypassData_WithNames(mCommuManager.GetDeviceCountEncountered_WithName());
+        OnSubmittingBypassData_GameUser(mCommuManager.GetDIYGameUserEncountered_WithName());
 
 
         appendToLog("SubmitInfoToUE5 once"
 
                 //+ GetCurrentNumStatus()
                 , DIY_CommuUtils.LogLevel.INFO);
+    }
+    @Override
+    public boolean GetIsGameActive()
+    {
+        return isGameActive;
     }
 
     @Override

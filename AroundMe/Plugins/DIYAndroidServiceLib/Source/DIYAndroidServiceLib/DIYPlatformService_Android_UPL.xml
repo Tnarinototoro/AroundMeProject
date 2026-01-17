@@ -267,7 +267,9 @@
 	<gameActivityOnResumeAdditions>
 		<insert>
 			<![CDATA[
-
+if (com.aroundmelib.DIY_Service.Instance != null) {
+        com.aroundmelib.DIY_Service.Instance.setGameActive(true);
+    }
 			
 			]]>
 		</insert>
@@ -278,7 +280,9 @@
 	<gameActivityOnPauseAdditions>
 		<insert>
 			<![CDATA[
-
+if (com.aroundmelib.DIY_Service.Instance != null) {
+        com.aroundmelib.DIY_Service.Instance.setGameActive(false);
+    }
 			]]>
 		</insert>
 	</gameActivityOnPauseAdditions>

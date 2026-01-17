@@ -81,4 +81,5 @@ public interface DIY_CommuManagerReportSchema
         return "null";
     }
 
+    default boolean GetIsGameActive(){return true;}
 }
