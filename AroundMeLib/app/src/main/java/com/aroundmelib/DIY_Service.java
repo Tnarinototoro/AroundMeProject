@@ -388,6 +388,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         mPassByManager.setPassByManagerReportSchema(this);
 
 
+
         // 👉 定时任务：每秒更新通知内容
         handler = new Handler();
         logTask = new Runnable()
@@ -496,15 +497,14 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     {
         DIY_CommuManagerReportSchema.super.PostStopAroundMeService();
         appendToLog("BLE搜索结束...", DIY_CommuUtils.LogLevel.INFO);
-
+        setGameActive(false);
     }
 
     @Override
     public void PostStartAroundMeService()
     {
         DIY_CommuManagerReportSchema.super.PostStartAroundMeService();
-
-
+        setGameActive(true);
     }
 
 
