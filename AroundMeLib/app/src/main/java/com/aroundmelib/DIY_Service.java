@@ -399,8 +399,9 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
                 Notification updatedNotification = new Notification.Builder(DIY_Service.this, CHANNEL_ID)
                         .setContentTitle("DIY Service")
-                        .setContentText(String.format("Service running for %d sec \n Name:%d Null:%d User:%d",
+                        .setContentText(String.format("%d sec %s \n Name:%d Null:%d User:%d",
                                 seconds,
+                                isGameActive ? "ACTIVE" : "PAUSED",
                                 mCommuManager.GetDeviceCountEncountered_WithName(),
                                 mCommuManager.GetDeviceCountEncountered_WithGarbageName(),
                                 mCommuManager.GetDIYGameUserEncountered_WithName()
