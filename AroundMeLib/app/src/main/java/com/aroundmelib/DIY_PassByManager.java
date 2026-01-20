@@ -92,16 +92,19 @@ public class DIY_PassByManager
     // JNI 回调（在 C++ 侧实现）
     private native void nativeOnImageSelected(String path);
     private Activity activity;
+
+    private Context Current_Context;
     private Uri Chosen_Uri;
     private ArrayList<DIY_CommuUtils.DIY_WfdPeer> wfdPeerListCache;
 
     private final HashMap<String, DIY_CommuUtils.DIY_WfdPeer> wfdPeerMap = new HashMap<>();
-    public DIY_PassByManager(Activity activity)
+    public DIY_PassByManager(Activity activity,Context inContext)
     {
 
         this.activity = activity;
-        manager = (WifiP2pManager) activity.getSystemService(Context.WIFI_P2P_SERVICE);
-        channel = manager.initialize(activity, activity.getMainLooper(), null);
+        this.Current_Context=inContext;
+        manager = (WifiP2pManager) Current_Context.getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(Current_Context, Current_Context.getMainLooper(), null);
     }
     public WifiP2pManager GetWifiP2pManager()
     {

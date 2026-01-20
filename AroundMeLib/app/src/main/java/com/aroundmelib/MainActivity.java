@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
             mDIY_CommuManagerInstace.setCommuManagerReportSchema(bleFragment);
 
 
-            mDIY_PassByManagerInstace=new DIY_PassByManager(this);
+            mDIY_PassByManagerInstace=new DIY_PassByManager(this,getApplicationContext());
             mDIY_PassByManagerInstace.setPassByManagerReportSchema(wifiFragment);
         }
 

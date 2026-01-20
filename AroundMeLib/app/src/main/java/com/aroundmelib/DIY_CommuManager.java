@@ -1070,7 +1070,7 @@ public class DIY_CommuManager
 
 
             }
-            if (!mActivity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
+            if (!mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
             {
                 if(null!=mReportSchema)
                 {

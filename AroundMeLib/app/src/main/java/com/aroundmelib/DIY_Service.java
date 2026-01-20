@@ -27,7 +27,26 @@ import java.io.InputStream;
 
 public class DIY_Service extends Service implements DIY_CommuManagerReportSchema, DIY_PassByManagerReportSchema
 {
+
     private static final String TAG = "DIY_Service";
+
+    // --- 1. 新增变量 ---
+    private static final String LOG_CHANNEL_ID = "DIY_LOG_CHANNEL";
+    private java.util.LinkedList<String> logQueue = new java.util.LinkedList<>();
+    private static final int MAX_LOG_LINES = 5; // 通知栏只显示最近5条
+    private static final int LOG_NOTIF_ID = 888; // Log 通知的唯一 ID
+
+    // --- 2. 在 onCreate 中初始化 Log 渠道 ---
+    private void createLogNotificationChannel()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel = new NotificationChannel(
+                    LOG_CHANNEL_ID, "DIY System Logs", NotificationManager.IMPORTANCE_MIN); // 设为 MIN，不弹窗不响，只在下拉栏看
+            channel.setShowBadge(false);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
     private static final String CHANNEL_ID = "DIYServiceChannel";
     public static final String ACTION_PICK_IMAGE = "DIY_ACTION_PICK_IMAGE";
     public static DIY_Service Instance = null;
@@ -243,6 +262,31 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public void appendToLog(String text, DIY_CommuUtils.LogLevel level)
     {
         OnNewLogGenerated(text);
+
+        // B. 更新 Log 队列
+        String timeStamp = new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date());
+        logQueue.addFirst(timeStamp + ": " + text);
+        if (logQueue.size() > MAX_LOG_LINES) {
+            logQueue.removeLast();
+        }
+
+        // C. 刷新 Log 通知
+        updateLogNotification();
+    }
+    private void updateLogNotification() {
+        StringBuilder sb = new StringBuilder();
+        for (String s : logQueue) {
+            sb.append(s).append("\n");
+        }
+
+        Notification logNotif = new NotificationCompat.Builder(this, LOG_CHANNEL_ID)
+                .setContentTitle("AroundMe Realtime Logs")
+                .setSmallIcon(android.R.drawable.ic_menu_info_details)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(sb.toString()))
+                .setOngoing(true)
+                .build();
+
+        notificationManager.notify(LOG_NOTIF_ID, logNotif);
     }
     private void RequestPickImageInternal()
     {
@@ -367,6 +411,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
         //Create alien notification channel
         createAlienNotificationChannel();
+        createLogNotificationChannel();
 
         // 2. 动态注册“划掉”音效的接收器
         IntentFilter filter = new IntentFilter(DIY_CommuUtils.ACTION_DISMISS_NOTIFICATION);
@@ -380,11 +425,11 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         // 启动前台服务
         startForeground(1, notification);
 
-        mCommuManager=new DIY_CommuManager(BoundActivity,BoundActivity.getApplicationContext());
+        mCommuManager=new DIY_CommuManager(BoundActivity,this);
         mCommuManager.setCommuManagerReportSchema(this);
 
 
-        mPassByManager=new DIY_PassByManager(BoundActivity);
+        mPassByManager=new DIY_PassByManager(BoundActivity,this);
         mPassByManager.setPassByManagerReportSchema(this);
 
 
@@ -400,9 +445,10 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
                 Notification updatedNotification = new Notification.Builder(DIY_Service.this, CHANNEL_ID)
                         .setContentTitle("DIY Service")
-                        .setContentText(String.format("%d sec %s \n Name:%d Null:%d User:%d",
+                        .setContentText(String.format("%d sec| Game %s | Commu %s \n Name:%d Null:%d User:%d",
                                 seconds,
                                 isGameActive ? "ACTIVE" : "PAUSED",
+                                mCommuManager.mIsAroundMeServiceRunning? "ON" : "OFF",
                                 mCommuManager.GetDeviceCountEncountered_WithName(),
                                 mCommuManager.GetDeviceCountEncountered_WithGarbageName(),
                                 mCommuManager.GetDIYGameUserEncountered_WithName()
@@ -461,7 +507,8 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         mCommuManager.onDestroy();
         mCommuManager=null;
         // 3. 别忘了注销，防止服务停止后还在监听
-        if (dismissReceiver != null) {
+        if (dismissReceiver != null)
+        {
             unregisterReceiver(dismissReceiver);
         }
 
