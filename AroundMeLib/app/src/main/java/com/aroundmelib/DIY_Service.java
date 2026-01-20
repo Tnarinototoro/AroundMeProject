@@ -626,13 +626,13 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public void OnCallBack_BLEDeviceEncountered_GarbageName()
     {
         OnNewRandomDeviceEncountered_GarbageName();
-
+        appendToLog("Garbage detected!", DIY_CommuUtils.LogLevel.INFO);
     }
     @Override
     public void OnCallBack_NewBLEDeviceEncountered_WithName(String inText)
     {
         OnNewRandomDeviceEncountered_WithName(inText);
-
+        appendToLog(inText, DIY_CommuUtils.LogLevel.INFO);
     }
 
 
@@ -645,7 +645,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public void OnCallBack_NewClassicDeviceEncountered_WithName(String inText)
     {
         OnNewRandomDeviceEncountered_WithName(inText);
-
+        appendToLog(inText, DIY_CommuUtils.LogLevel.INFO);
     }
 
     @Override
