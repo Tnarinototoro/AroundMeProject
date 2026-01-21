@@ -398,10 +398,8 @@ extern "C"
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
                 { 
-                    // UE5 端将字符串还原为 FPrimaryAssetId
-                    //FPrimaryAssetId ReceivedID(AssetIDStr);
                     Subsys->OnItemGiftReceived_Delegate_Provider.Broadcast(AssetIDStr);
-                    
+
                 });
             }
         }

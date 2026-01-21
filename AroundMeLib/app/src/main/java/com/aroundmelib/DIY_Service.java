@@ -306,6 +306,34 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         });
     }
 
+    public void processIncomingAction(String rawMessage) {
+        if (rawMessage == null || !rawMessage.contains("|")) {
+            appendToLog("收到无法识别的电波信号: " + rawMessage, DIY_CommuUtils.LogLevel.WARNING);
+            return;
+        }
+
+        String[] parts = rawMessage.split("\\|", 2); // 分成 动作 和 数据 两部分
+        String action = parts[0];
+        String payload = parts[1];
+
+        switch (action) {
+            case "ACTION_GIFT":
+                // 收到礼物 AssetID
+                OnItemGiftReceived(payload);
+                showAlienNotification("收到神秘物质", "捕获到来自外星的 ID: " + payload);
+                break;
+
+            case "ACTION_ENERGY":
+                // 收到能量石信号 (以后扩展)
+                // OnEnergyCaptured(payload);
+                break;
+
+            case "ACTION_PHOTO_REQ":
+                // 收到大文件传输请求 (以后开启 WFD)
+                appendToLog("对方请求建立高能视觉链接: " + payload, DIY_CommuUtils.LogLevel.DEBUG);
+                break;
+        }
+    }
     public void handleActivityResult(int requestCode, int resultCode, Intent data)
     {
         if(null==BoundActivity)
@@ -563,22 +591,9 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
         // 🔄 如果当前不是调试模式（即游戏运行中），将消息回调给 UE 层
         OnMessageReceivedFromOtherPDevices(inText);
+        processIncomingAction(inText);
 
 
-        // 🎁 简单的消息解析逻辑：
-        // 如果消息以 "X" 或 "x" 开头，则认为是系统指令；
-        // 否则认为是游戏中收到的“礼物物品ID”。
-        if (inText.startsWith("X") || inText.startsWith("x"))
-        {
-            // TODO: 系统级指令处理
-        }
-        else
-        {
-
-            // 将字符串转为整数作为 Item ID，通知游戏层“收到礼物”
-            OnItemGiftReceived(inText);
-
-        }
     }
 
     @Override

@@ -826,7 +826,8 @@ public class DIY_CommuManager
                     }
                     if(mRequestedToGiveItems.size()>0)
                     {
-                        messageToSend=String.format("%s",mRequestedToGiveItems.get(mRequestedToGiveItems.size()-1));
+                        messageToSend = "ACTION_GIFT|" + mRequestedToGiveItems.get(mRequestedToGiveItems.size()-1);
+
                         mRequestedToGiveItems.remove(mRequestedToGiveItems.size()-1);
 
                         appendToLog(String.format("XXXXXXXX left gifts to give %d",mRequestedToGiveItems.size()));
