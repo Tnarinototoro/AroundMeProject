@@ -75,7 +75,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
 
 
-    public static native void OnItemGiftReceived(int received_item_id);
+    public static native void OnItemGiftReceived(String assetId);
     public static native void OnImageBytesForGame(byte[] imageBytes);
 
 
@@ -134,7 +134,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         }
     }
 
-    public static void RequestGiveAItem(int item_id)
+    public static void RequestGiveAItem(String item_id)
     {
         if(null==Instance)
         {
@@ -576,7 +576,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         {
 
             // 将字符串转为整数作为 Item ID，通知游戏层“收到礼物”
-            OnItemGiftReceived(Integer.parseInt(inText));
+            OnItemGiftReceived(inText);
 
         }
     }

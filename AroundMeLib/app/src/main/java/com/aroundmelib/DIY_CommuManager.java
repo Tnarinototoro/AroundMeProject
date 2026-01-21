@@ -60,7 +60,7 @@ public class DIY_CommuManager
     private Activity mActivity = null;
     private Context mContext=null;
     private Handler mHandler = new Handler();
-    private ArrayList<Integer> mRequestedToGiveItems=new ArrayList<Integer>();
+    private ArrayList<String> mRequestedToGiveItems=new ArrayList<String>();
 
 
     private long mCallbackAddr = 0;
@@ -94,7 +94,7 @@ public class DIY_CommuManager
         return mDIYGameUserEncountered_WithName;
     }
 
-    public void RequestGiveAItemTask(int inItemID)
+    public void RequestGiveAItemTask(String inItemID)
     {
         mRequestedToGiveItems.add(inItemID);
     }
@@ -826,7 +826,7 @@ public class DIY_CommuManager
                     }
                     if(mRequestedToGiveItems.size()>0)
                     {
-                        messageToSend=String.format("%d",mRequestedToGiveItems.get(mRequestedToGiveItems.size()-1));
+                        messageToSend=String.format("%s",mRequestedToGiveItems.get(mRequestedToGiveItems.size()-1));
                         mRequestedToGiveItems.remove(mRequestedToGiveItems.size()-1);
 
                         appendToLog(String.format("XXXXXXXX left gifts to give %d",mRequestedToGiveItems.size()));

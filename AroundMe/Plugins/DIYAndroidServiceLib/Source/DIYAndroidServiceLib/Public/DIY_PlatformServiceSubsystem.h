@@ -67,7 +67,7 @@ public: // 蓝图可调用
 	void StopPlatformService();
 
 	UFUNCTION(BlueprintCallable)
-	void RequestAddGiveTask(int ItemID);
+	void RequestAddGiveTask(FPrimaryAssetId AssetID);
 
 	UFUNCTION(BlueprintCallable)
 	void PushAlienMessage(FString Title, FString Content);
@@ -98,7 +98,7 @@ public: // 蓝图 Delegate
 	FOnAroundMeService_WithIntMsg OnSubmittingBypassData_GameUserCount_Delegate_Provider;
 
 	UPROPERTY(BlueprintAssignable, Category = "PlatformService")
-	FOnAroundMeService_WithIntMsg OnItemGiftReceived_Delegate_Provider;
+	FOnAroundMeService_WithStringMsg OnItemGiftReceived_Delegate_Provider;
 
 	UPROPERTY(BlueprintAssignable, Category = "PlatformService")
 	FOnImageTextureReceived OnImageTextureReceived;
