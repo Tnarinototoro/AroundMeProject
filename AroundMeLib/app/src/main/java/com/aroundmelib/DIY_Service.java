@@ -147,7 +147,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
             OnNewLogGenerated("RequestGiveAItem Failed due to invalid commu manager instance");
             return;
         }
-
+        OnNewLogGenerated("RequestGiveAItem "+item_id);
         Instance.mCommuManager.RequestGiveAItemTask(item_id);
 
     }
@@ -320,7 +320,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
             case "ACTION_GIFT":
                 // 收到礼物 AssetID
                 OnItemGiftReceived(payload);
-                showAlienNotification("收到神秘物质", "捕获到来自外星的 ID: " + payload);
+                showAlienNotification("收到神秘物质", "Raw Msg "+ rawMessage +"捕获到来自外星的 ID: " + payload);
                 break;
 
             case "ACTION_ENERGY":

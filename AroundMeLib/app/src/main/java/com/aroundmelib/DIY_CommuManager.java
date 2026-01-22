@@ -410,10 +410,25 @@ public class DIY_CommuManager
 
                 // ✅ 开始发现对方设备提供的 GATT Service 列表
                 // 这一步是 GATT 通信的关键，只有发现 Service 后才能访问 Characteristic
-                gatt.discoverServices();
+                // ✅ 改动 1: 成功连接后先请求高 MTU (512字节)，而不是直接 discoverServices
+                gatt.requestMtu(512);
             }
 
             // ⚠️ 可选：如果 newState == STATE_DISCONNECTED，可以在此进行资源清理
+        }
+
+        // ✅ 改动 2: 新增 MTU 变化回调
+        @SuppressLint("MissingPermission")
+        @Override
+        public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
+            super.onMtuChanged(gatt, mtu, status);
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                appendToLog("MTU 请求成功，当前长度: " + mtu);
+            } else {
+                appendToLog("MTU 请求失败，保持默认");
+            }
+            // ✅ 关键：只有 MTU 协商好了，才开始发现服务
+            gatt.discoverServices();
         }
 
         // 🔍 当 Peripheral 的服务发现完成时被调用（discoverServices() 完成后）
@@ -830,7 +845,7 @@ public class DIY_CommuManager
 
                         mRequestedToGiveItems.remove(mRequestedToGiveItems.size()-1);
 
-                        appendToLog(String.format("XXXXXXXX left gifts to give %d",mRequestedToGiveItems.size()));
+                        appendToLog(String.format("%s left gifts to give %d",messageToSend,mRequestedToGiveItems.size()));
                     }
                     BluetoothGattCharacteristic characteristic = mBluetoothGattServer
                             .getService(DIY_CommuUtils.mAroundMeIdentify_UUID)

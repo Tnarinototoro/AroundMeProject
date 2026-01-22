@@ -214,7 +214,7 @@ void UDIYPlatformServiceSubsystem::RequestAddGiveTask(FPrimaryAssetId AssetID)
         jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
         // 注意签名改成了 (Ljava/lang/String;)V
         jmethodID GiveMethod = Env->GetStaticMethodID(ServiceClass, "RequestGiveAItem", "(Ljava/lang/String;)V");
-        
+
         jstring jAssetId = Env->NewStringUTF(TCHAR_TO_UTF8(*AssetID.ToString()));
         Env->CallStaticVoidMethod(ServiceClass, GiveMethod, jAssetId);
         Env->DeleteLocalRef(jAssetId);
@@ -271,13 +271,11 @@ extern "C"
 
     JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewLogGenerated(JNIEnv *jenv, jclass clazz, jstring MyString)
     {
-        bool should_output=false;
-        if(!should_output)
+        bool should_output = false;
+        if (!should_output)
         {
             return;
         }
-
-
 
         const char *chars = jenv->GetStringUTFChars(MyString, 0);
 
@@ -389,7 +387,7 @@ extern "C"
 
     JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnItemGiftReceived(JNIEnv *jenv, jclass clazz, jstring inAssetID)
     {
-        const char* nativeString = jenv->GetStringUTFChars(inAssetID, 0);
+        const char *nativeString = jenv->GetStringUTFChars(inAssetID, 0);
         FString AssetIDStr = FString(UTF8_TO_TCHAR(nativeString));
         jenv->ReleaseStringUTFChars(inAssetID, nativeString);
         if (GEngine)
@@ -397,14 +395,10 @@ extern "C"
             if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
             {
                 AsyncTask(ENamedThreads::GameThread, [=]()
-                { 
-                    Subsys->OnItemGiftReceived_Delegate_Provider.Broadcast(AssetIDStr);
-
-                });
+                          { Subsys->OnItemGiftReceived_Delegate_Provider.Broadcast(AssetIDStr); });
             }
         }
-
-}
+    }
 
     JNIEXPORT void JNICALL
     Java_com_aroundmelib_DIY_1Service_OnImageBytesForGame(
