@@ -10,6 +10,7 @@
 #include "NavigationSystem.h"
 #include "NavLinkCustomComponent.h"
 #include "NavLinkCustomInterface.h"
+#include "../Player/Items/DIY_Item.h"
 
 // void ForceRefreshNavLink(AActor* InActor)
 // {
@@ -36,6 +37,59 @@
 //         }
 //     }
 // }
+
+class FAsyncScaleTask : public FTickableGameObject
+{
+public:
+    TWeakObjectPtr<AActor> TargetActor;
+    float Progress = 1.0f;
+    float Speed = 1.0f;
+    bool bIsFinished = false;
+
+    FAsyncScaleTask(AActor *InActor, float InSpeed) : TargetActor(InActor), Speed(InSpeed) {}
+
+    virtual void Tick(float DeltaTime) override
+    {
+        if (bIsFinished)
+            return;
+
+        AActor *Actor = TargetActor.Get();
+
+        if (!Actor || !Actor->GetWorld() || Actor->GetWorld()->bIsTearingDown)
+        {
+            bIsFinished = true;
+            return;
+        }
+
+        Progress -= DeltaTime * Speed;
+        if (Progress <= 0.0f)
+        {
+            Actor->SetActorScale3D(FVector::ZeroVector);
+            UDIY_ItemManagerSubsystem *CurItemMgr = UDIY_ItemManagerSubsystem::Get(Actor->GetWorld());
+            if (nullptr == CurItemMgr)
+            {
+                Actor->Destroy();
+            }
+            else
+            {
+                CurItemMgr->RequestRecycleItem(Actor);
+            }
+
+            bIsFinished = true;
+        }
+        else
+        {
+            Actor->SetActorScale3D(FVector(Progress));
+        }
+    }
+
+    // 只要任务没结束，就一直 Tick
+    virtual bool IsTickable() const override { return !bIsFinished; }
+    virtual TStatId GetStatId() const override { RETURN_QUICK_DECLARE_CYCLE_STAT(FAsyncScaleTask, STATGROUP_Tickables); }
+
+    // 关卡切换时是否继续？设置为 false 可以防止跨世界引用崩溃
+    virtual bool IsTickableInEditor() const override { return false; }
+};
 
 bool UDIY_Utilities::bShouldLogToGameScreen = true;
 UDIY_ItemManagerSubsystem *UDIY_Utilities::DIY_GetItemManagerInstance(const UObject *WorldContextObject)
@@ -102,6 +156,14 @@ void UDIY_Utilities::ForceRebuildNavigation(AActor *inActor)
     {
         NavSys->Build();
     }
+}
+
+void UDIY_Utilities::AsyncScaleAndDestroy(AActor *TargetActor, float Speed)
+{
+    if (!TargetActor || TargetActor->GetWorld()->bIsTearingDown)
+        return;
+
+    new FAsyncScaleTask(TargetActor, Speed);
 }
 
 UDIY_Utilities::UDIY_Utilities()

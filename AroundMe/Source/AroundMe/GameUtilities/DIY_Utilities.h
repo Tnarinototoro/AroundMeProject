@@ -36,6 +36,10 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "DIY_Utilitie|Navigation")
     static void ForceRebuildNavigation(class AActor *inActor);
+
+    UFUNCTION(BlueprintCallable, Category = "DIY_Utility")
+    static void AsyncScaleAndDestroy(AActor *TargetActor, float Speed);
+
     UDIY_Utilities();
 
     UFUNCTION(BlueprintCallable, Category = "DIY_Utility")
