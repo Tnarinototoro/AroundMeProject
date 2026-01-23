@@ -72,8 +72,34 @@ void UDIY_ItemManagerSubsystem::RequestRecycleItem(AActor *Item)
     Pool.Add(Item);
     EASY_LOG_MAINPLAYER("item %s recycled to the objects pool", *ItemID.ToString());
 }
+const FDIY_CraftingReceipt *UDIY_ItemManagerSubsystem::GetReceiptFromItemID(FPrimaryAssetId InItemID)
+{
 
-UTexture2D *UDIY_ItemManagerSubsystem::GetItemIconTexture(FPrimaryAssetId inITemID) const
+    const UDIY_ItemAsset *ItemResource = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(InItemID);
+
+    // 如果资产存在，返回其中的 Receipt；如果不存在，返回一个空的静态实例防止崩溃
+    if (ItemResource)
+    {
+        return &ItemResource->CraftingReceipt;
+    }
+
+    return nullptr;
+}
+
+const FDIY_ItemDefaultConfig *UDIY_ItemManagerSubsystem::GetConfigFromItemID(FPrimaryAssetId InItemID)
+{
+    const UDIY_ItemAsset *ItemResource = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(InItemID);
+
+    if (ItemResource)
+    {
+        return &ItemResource->DefaultConfig;
+    }
+
+    ensureAlwaysMsgf(false, TEXT("[UDIY_ItemManagerSubsystem::GetConfigFromItemID] Invalid from %s"), *InItemID.ToString());
+
+    return nullptr;
+}
+UTexture2D *UDIY_ItemManagerSubsystem::GetItemIconTexture(FPrimaryAssetId inITemID)
 {
 
     ensureMsgf(SubsystemHelper->DefaultItemSlotIcon != nullptr && nullptr != SubsystemHelper->EmptyItemSlotIcon, TEXT("please set up defualt and empty slot icon for backup"));
@@ -272,36 +298,6 @@ void UDIY_ItemManagerSubsystem::RequestChange_ItemNumInBackPack_Statistics(FPrim
     {
         UE_LOG(LogTemp, Warning, TEXT("Attempted to change statistics for unregistered ItemID: %s"), *InItemID.ToString());
     }
-}
-
-const FDIY_CraftingReceipt *UDIY_ItemManagerSubsystem::GetReceiptFromItemID(FPrimaryAssetId InItemID) const
-{
-
-    const UDIY_ItemAsset *ItemResource = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(InItemID);
-
-    // 如果资产存在，返回其中的 Receipt；如果不存在，返回一个空的静态实例防止崩溃
-    if (ItemResource)
-    {
-        return &ItemResource->CraftingReceipt;
-    }
-
-    ensureAlwaysMsgf(false, TEXT("[UDIY_ItemManagerSubsystem::GetReceiptFromItemID] Invalid from %s"), *InItemID.ToString());
-
-    return nullptr;
-}
-
-const FDIY_ItemDefaultConfig *UDIY_ItemManagerSubsystem::GetConfigFromItemID(FPrimaryAssetId InItemID) const
-{
-    const UDIY_ItemAsset *ItemResource = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(InItemID);
-
-    if (ItemResource)
-    {
-        return &ItemResource->DefaultConfig;
-    }
-
-    ensureAlwaysMsgf(false, TEXT("[UDIY_ItemManagerSubsystem::GetConfigFromItemID] Invalid from %s"), *InItemID.ToString());
-
-    return nullptr;
 }
 
 int32 UDIY_ItemManagerSubsystem::Get_ItemNumInBackPack_Statistics(FPrimaryAssetId InItemID)

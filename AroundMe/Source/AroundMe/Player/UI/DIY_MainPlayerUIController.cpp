@@ -25,99 +25,7 @@ void UDIY_MainPlayerUIController::BeginPlay()
     UAssetManager::Get().GetPrimaryAssetIdList(FPrimaryAssetType("Item"), AllCachedItemIDs);
     ItemTolTalNumber = AllCachedItemIDs.Num();
     checkf(ItemTolTalNumber > 0, TEXT("No Item Asset Found"));
-    for (int type = 0; type < (int)EMainPlayerUISectionID::EMainPlayerUISectionID_Count; ++type)
-    {
-        switch (type)
-        {
-        case (int)EMainPlayerUISectionID::BackPack:
-        {
-            ensureMsgf(mAllWidgets[type] == nullptr, TEXT("BackPack widget has to be null firstly"));
-            mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_ItemBackPackWidget::StaticClass());
-            UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[type]);
-            ensureMsgf(item_backpack_widget != nullptr, TEXT("UDIY_ItemBackPackWidget null"));
-
-            item_backpack_widget->InitializeBackPack(BackPack_GridRowNum, BackPack_GridColNum, BackPack_SlotIconSize, BackPack_TextSlotFontSize);
-
-            item_backpack_widget->SetAnchorsInViewport(FAnchors(BackPack_Anchors_InViewPort.X, BackPack_Anchors_InViewPort.Y));
-            item_backpack_widget->SetAlignmentInViewport(BackPack_Align_InViewPort);
-
-            // item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
-            item_backpack_widget->AddToViewport(0);
-
-            RequestVisibility_BackPack(ESlateVisibility::Hidden);
-
-            break;
-        }
-        case (int)EMainPlayerUISectionID::DailyActivity:
-        {
-
-            break;
-        }
-        case (int)EMainPlayerUISectionID::PlatformService:
-        {
-            ensureMsgf(mAllWidgets[type] == nullptr, TEXT("PlatformService widget has to be null firstly"));
-            mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_PlatformServiceStateWidget::StaticClass());
-            UDIY_PlatformServiceStateWidget *platform_widget = Cast<UDIY_PlatformServiceStateWidget>(mAllWidgets[type]);
-            ensureMsgf(platform_widget != nullptr, TEXT("UDIY_PlatformServiceStateWidget null"));
-
-            platform_widget->SetAnchorsInViewport(FAnchors(PlatformService_Anchors_InViewPort.X, PlatformService_Anchors_InViewPort.Y));
-            platform_widget->SetAlignmentInViewport(PlatformService_Align_InViewPort);
-
-            // PlatformService will not show in player user view port!
-            //  item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
-            //  platform_widget->AddToViewport(0);
-
-            RequestChangeUISectionVisibility(ESlateVisibility::Visible, EMainPlayerUISectionID::PlatformService);
-            break;
-        }
-        case (int)EMainPlayerUISectionID::MusicPlayerState:
-        {
-            ensureMsgf(mAllWidgets[type] == nullptr, TEXT("MusicPlayerStateWidget widget has to be null firstly"));
-            mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_MusicPlayerStateWidget::StaticClass());
-            UDIY_MusicPlayerStateWidget *music_player_widget = Cast<UDIY_MusicPlayerStateWidget>(mAllWidgets[type]);
-            ensureMsgf(music_player_widget != nullptr, TEXT("UDIY_MusicPlayerStateWidget null"));
-
-            music_player_widget->SetAnchorsInViewport(FAnchors(MusicPlayer_Anchors_InViewPort.X, MusicPlayer_Anchors_InViewPort.Y));
-            music_player_widget->SetAlignmentInViewport(MusicPlayer_Align_InViewPort);
-
-            music_player_widget->InitMusicPlayerStateWidget(MusicPlayer_TextSlotFontSize);
-            music_player_widget->AddToViewport(0);
-
-            RequestChangeUISectionVisibility(ESlateVisibility::Visible, EMainPlayerUISectionID::MusicPlayerState);
-            break;
-        }
-        case (int)EMainPlayerUISectionID::ItemCraftingPlatform:
-        {
-            ensureMsgf(mAllWidgets[type] == nullptr, TEXT("ItemCraftingPlatform widget has to be null firstly"));
-            mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_CraftingPlatformWidget::StaticClass());
-            UDIY_CraftingPlatformWidget *item_crafting_platform_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[type]);
-            ensureMsgf(item_crafting_platform_widget != nullptr, TEXT("UDIY_PlatformServiceStateWidget null"));
-            item_crafting_platform_widget->InitializeItemCraftingPlatformWidget(AllCachedItemIDs,
-                                                                                ItemCraftingPlatform_GridRowMax_DisplayedNumLimit,
-                                                                                ItemCraftingPlatform_GridColNum,
-                                                                                ItemCraftingPlatform_SlotIconSize,
-                                                                                ItemCraftingPlatform_TextSlotFontSize);
-
-            item_crafting_platform_widget->SetAnchorsInViewport(
-                FAnchors(ItemCraftingPlatform_Anchors_InViewPort.X,
-                         ItemCraftingPlatform_Anchors_InViewPort.Y));
-            item_crafting_platform_widget->SetAlignmentInViewport(ItemCraftingPlatform_Align_InViewPort);
-
-            // item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
-            item_crafting_platform_widget->AddToViewport(0);
-
-            RequestChangeUISectionVisibility(ESlateVisibility::Hidden, EMainPlayerUISectionID::ItemCraftingPlatform);
-
-            // ToggleCraftingPlatformUi(true);
-            break;
-        }
-
-        default:
-            break;
-        }
-    }
-
-    UDIY_ItemManagerSubsystem::OnItemsNumInBackPack_Changed.AddUObject(this, &UDIY_MainPlayerUIController::OnItemBackPackNumChanged);
+    UAssetManager::Get().LoadPrimaryAssets(AllCachedItemIDs, TArray<FName>(), FStreamableDelegate::CreateUObject(this, &UDIY_MainPlayerUIController::OnInitAllItemsInfoLoaded));
 }
 
 void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -248,7 +156,10 @@ void UDIY_MainPlayerUIController::RequestMoveCurrentSelectedCursor(int inDeltaX,
 void UDIY_MainPlayerUIController::RequestUpdateStateInfoText_MusicPlayer(const FText &inText)
 {
     UDIY_MusicPlayerStateWidget *music_player_widget = Cast<UDIY_MusicPlayerStateWidget>(mAllWidgets[(int)EMainPlayerUISectionID::MusicPlayerState]);
-    music_player_widget->UpdateText(inText);
+    if (music_player_widget)
+    {
+        music_player_widget->UpdateText(inText);
+    }
 }
 bool UDIY_MainPlayerUIController::IsItemSubMenuShown() const
 {
@@ -627,6 +538,98 @@ UUserWidget *UDIY_MainPlayerUIController::GetSectionUIWidget(EMainPlayerUISectio
 {
     return mAllWidgets[(uint32)SectionID];
 }
+void UDIY_MainPlayerUIController::OnInitAllItemsInfoLoaded()
+{
+    for (int type = 0; type < (int)EMainPlayerUISectionID::EMainPlayerUISectionID_Count; ++type)
+    {
+        switch (type)
+        {
+        case (int)EMainPlayerUISectionID::BackPack:
+        {
+            ensureMsgf(mAllWidgets[type] == nullptr, TEXT("BackPack widget has to be null firstly"));
+            mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_ItemBackPackWidget::StaticClass());
+            UDIY_ItemBackPackWidget *item_backpack_widget = Cast<UDIY_ItemBackPackWidget>(mAllWidgets[type]);
+            ensureMsgf(item_backpack_widget != nullptr, TEXT("UDIY_ItemBackPackWidget null"));
+
+            item_backpack_widget->InitializeBackPack(BackPack_GridRowNum, BackPack_GridColNum, BackPack_SlotIconSize, BackPack_TextSlotFontSize);
+
+            item_backpack_widget->SetAnchorsInViewport(FAnchors(BackPack_Anchors_InViewPort.X, BackPack_Anchors_InViewPort.Y));
+            item_backpack_widget->SetAlignmentInViewport(BackPack_Align_InViewPort);
+
+            item_backpack_widget->AddToViewport(0);
+
+            RequestVisibility_BackPack(ESlateVisibility::Hidden);
+
+            break;
+        }
+        case (int)EMainPlayerUISectionID::DailyActivity:
+        {
+
+            break;
+        }
+        case (int)EMainPlayerUISectionID::PlatformService:
+        {
+            ensureMsgf(mAllWidgets[type] == nullptr, TEXT("PlatformService widget has to be null firstly"));
+            mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_PlatformServiceStateWidget::StaticClass());
+            UDIY_PlatformServiceStateWidget *platform_widget = Cast<UDIY_PlatformServiceStateWidget>(mAllWidgets[type]);
+            ensureMsgf(platform_widget != nullptr, TEXT("UDIY_PlatformServiceStateWidget null"));
+
+            platform_widget->SetAnchorsInViewport(FAnchors(PlatformService_Anchors_InViewPort.X, PlatformService_Anchors_InViewPort.Y));
+            platform_widget->SetAlignmentInViewport(PlatformService_Align_InViewPort);
+
+            platform_widget->AddToViewport(0);
+
+            RequestChangeUISectionVisibility(ESlateVisibility::Visible, EMainPlayerUISectionID::PlatformService);
+            break;
+        }
+        case (int)EMainPlayerUISectionID::MusicPlayerState:
+        {
+            ensureMsgf(mAllWidgets[type] == nullptr, TEXT("MusicPlayerStateWidget widget has to be null firstly"));
+            mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_MusicPlayerStateWidget::StaticClass());
+            UDIY_MusicPlayerStateWidget *music_player_widget = Cast<UDIY_MusicPlayerStateWidget>(mAllWidgets[type]);
+            ensureMsgf(music_player_widget != nullptr, TEXT("UDIY_MusicPlayerStateWidget null"));
+
+            music_player_widget->SetAnchorsInViewport(FAnchors(MusicPlayer_Anchors_InViewPort.X, MusicPlayer_Anchors_InViewPort.Y));
+            music_player_widget->SetAlignmentInViewport(MusicPlayer_Align_InViewPort);
+
+            music_player_widget->InitMusicPlayerStateWidget(MusicPlayer_TextSlotFontSize);
+            music_player_widget->AddToViewport(0);
+
+            RequestChangeUISectionVisibility(ESlateVisibility::Visible, EMainPlayerUISectionID::MusicPlayerState);
+            break;
+        }
+        case (int)EMainPlayerUISectionID::ItemCraftingPlatform:
+        {
+            ensureMsgf(mAllWidgets[type] == nullptr, TEXT("ItemCraftingPlatform widget has to be null firstly"));
+            mAllWidgets[type] = CreateWidget(GetWorld(), UDIY_CraftingPlatformWidget::StaticClass());
+            UDIY_CraftingPlatformWidget *item_crafting_platform_widget = Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[type]);
+            ensureMsgf(item_crafting_platform_widget != nullptr, TEXT("UDIY_PlatformServiceStateWidget null"));
+            item_crafting_platform_widget->InitializeItemCraftingPlatformWidget(AllCachedItemIDs,
+                                                                                ItemCraftingPlatform_GridRowMax_DisplayedNumLimit,
+                                                                                ItemCraftingPlatform_GridColNum,
+                                                                                ItemCraftingPlatform_SlotIconSize,
+                                                                                ItemCraftingPlatform_TextSlotFontSize);
+
+            item_crafting_platform_widget->SetAnchorsInViewport(
+                FAnchors(ItemCraftingPlatform_Anchors_InViewPort.X,
+                         ItemCraftingPlatform_Anchors_InViewPort.Y));
+            item_crafting_platform_widget->SetAlignmentInViewport(ItemCraftingPlatform_Align_InViewPort);
+
+            // item_crafting_platform_widget->AddToViewport(0);
+
+            RequestChangeUISectionVisibility(ESlateVisibility::Hidden, EMainPlayerUISectionID::ItemCraftingPlatform);
+
+            // ToggleCraftingPlatformUi(true);
+            break;
+        }
+
+        default:
+            break;
+        }
+    }
+
+    UDIY_ItemManagerSubsystem::OnItemsNumInBackPack_Changed.AddUObject(this, &UDIY_MainPlayerUIController::OnItemBackPackNumChanged);
+}
 bool UDIY_MainPlayerUIController::IsCraftingPlatformUiOpened() const
 {
     return IsUISectionVisible(EMainPlayerUISectionID::ItemCraftingPlatform);
@@ -672,6 +675,11 @@ void UDIY_MainPlayerUIController::SelectCraftingPlatformSlotOn(uint32 col_x, uin
 
         const FDIY_CraftingReceipt *cur_receipt = UDIY_Utilities::DIY_GetItemManagerInstance(GetWorld())->GetReceiptFromItemID(cur_item_id);
         final_Receipt_String += FString::Printf(TEXT("Target:%s \n"), *cur_item_id.ToString());
+
+        if (nullptr == cur_receipt)
+        {
+            return;
+        }
 
         bool okay_to_craft = true;
         for (const FDIY_CraftingReceipt_Element &cur_element : cur_receipt->InputElements)

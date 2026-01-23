@@ -85,6 +85,8 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY|UI")
     class UUserWidget *GetSectionUIWidget(EMainPlayerUISectionID SectionID);
 
+    void OnInitAllItemsInfoLoaded();
+
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 

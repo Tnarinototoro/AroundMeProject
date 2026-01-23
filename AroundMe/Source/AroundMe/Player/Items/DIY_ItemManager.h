@@ -26,7 +26,7 @@ public:
     void RequestRecycleItem(AActor *Item);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
-    UTexture2D *GetItemIconTexture(FPrimaryAssetId inITemID) const;
+    UTexture2D *GetItemIconTexture(FPrimaryAssetId inITemID);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     void RequestChange_ItemNumInBackPack_Statistics(FPrimaryAssetId inItemID, int32 inDeltaNum);
@@ -34,25 +34,22 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     int32 Get_ItemNumInBackPack_Statistics(FPrimaryAssetId inItemID);
 
-    const FDIY_CraftingReceipt *GetReceiptFromItemID(FPrimaryAssetId inItemID) const;
+    const FDIY_CraftingReceipt *GetReceiptFromItemID(FPrimaryAssetId inItemID);
 
-    const FDIY_ItemDefaultConfig *GetConfigFromItemID(FPrimaryAssetId inItemID) const;
+    const FDIY_ItemDefaultConfig *GetConfigFromItemID(FPrimaryAssetId inItemID);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     bool TryRequestSpawningItem_CraftPlatform(FPrimaryAssetId inItemID, FVector inLocation, FRotator inRotator);
 
     static FOnItemsNumInBackPack_Changed OnItemsNumInBackPack_Changed;
 
-	
-	UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     float GetCurrentEnergyTotalEarned() const;
 
-	UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     bool TryAddEnergyTotalEarned(float inDeltaEnergy);
-	UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
+    UFUNCTION(BlueprintCallable, Category = "DIY_ItemManager")
     float GetEnergyTotalEarnedLimit() const;
-
-
 
 protected:
     virtual void Initialize(FSubsystemCollectionBase &Collection) override;
@@ -67,7 +64,7 @@ private:
     TMap<FPrimaryAssetId, TArray<AActor *>> ItemPools;
     TMap<FPrimaryAssetId, FDIY_ItemStatisticInfo> ItemStatistics;
 
-	float CurrentEnergyTotalEarned{ 0.f };
+    float CurrentEnergyTotalEarned{0.f};
 
 private:
     TSubclassOf<class UDIY_ItemManagerSubsystemHelperBase> SubsystemHelperClass;
