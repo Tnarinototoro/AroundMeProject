@@ -63,8 +63,9 @@ void UDIY_MainPlayerUIController::BeginPlay()
             platform_widget->SetAnchorsInViewport(FAnchors(PlatformService_Anchors_InViewPort.X, PlatformService_Anchors_InViewPort.Y));
             platform_widget->SetAlignmentInViewport(PlatformService_Align_InViewPort);
 
-            // item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
-            platform_widget->AddToViewport(0);
+            // PlatformService will not show in player user view port!
+            //  item_backpack_widget->SetDesiredSizeInViewport(FVector2D(300.0f, 300.0f));
+            //  platform_widget->AddToViewport(0);
 
             RequestChangeUISectionVisibility(ESlateVisibility::Visible, EMainPlayerUISectionID::PlatformService);
             break;
@@ -621,6 +622,10 @@ void UDIY_MainPlayerUIController::ToggleCraftingPlatformUi(bool inIsOpen)
             Cast<UDIY_CraftingPlatformWidget>(mAllWidgets[(int)EMainPlayerUISectionID::ItemCraftingPlatform])->RequestUpdateShowConsoleWidget(false);
         }
     }
+}
+UUserWidget *UDIY_MainPlayerUIController::GetSectionUIWidget(EMainPlayerUISectionID SectionID)
+{
+    return mAllWidgets[(uint32)SectionID];
 }
 bool UDIY_MainPlayerUIController::IsCraftingPlatformUiOpened() const
 {

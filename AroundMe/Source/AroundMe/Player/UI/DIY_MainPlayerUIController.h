@@ -79,6 +79,12 @@ protected:
     float ItemCraftingPlatform_Console_TextSlotFontSize{20.0f};
 
 public:
+    UFUNCTION(BlueprintCallable, Category = "DIY|UI")
+    void ToggleCraftingPlatformUi(bool inIsOpen);
+
+    UFUNCTION(BlueprintCallable, Category = "DIY|UI")
+    class UUserWidget *GetSectionUIWidget(EMainPlayerUISectionID SectionID);
+
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
@@ -113,10 +119,11 @@ public:
     void ExecuteCurrentItemSubMenuCommand();
 
     // crafting platform ui funcs
+
     void RequestMoveCurrentSelectedCursor_CraftingPlatform(int32 DeltaX, int32 DeltaY, uint32 Stride = 1);
     void UpdateScrollOffset_CraftingPlatform();
     void UpdateSelectionInfo_CraftingPlatform();
-    void ToggleCraftingPlatformUi(bool inIsOpen);
+
     void ToggleCraftingPlatformSlotSelected(uint32 inCol_x, uint32 inRow_y, bool isSelected);
     bool IsCraftingPlatformUiOpened() const;
     void RequestVisibility_CraftingPlatform(ESlateVisibility invisibility);
