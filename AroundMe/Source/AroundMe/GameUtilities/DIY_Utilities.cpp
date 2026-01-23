@@ -11,7 +11,11 @@
 #include "NavLinkCustomComponent.h"
 #include "NavLinkCustomInterface.h"
 #include "../Player/Items/DIY_Item.h"
-
+#include "IImageWrapper.h"
+#include "IImageWrapperModule.h"
+#include "ImageUtils.h"
+#include "Misc/FileHelper.h"
+#include "HAL/PlatformFileManager.h"
 // void ForceRefreshNavLink(AActor* InActor)
 // {
 //     if (!InActor) return;
@@ -164,6 +168,52 @@ void UDIY_Utilities::AsyncScaleAndDestroy(AActor *TargetActor, float Speed)
         return;
 
     new FAsyncScaleTask(TargetActor, Speed);
+}
+
+bool UDIY_Utilities::SaveTextureToLocal(UTexture2D *InTexture, FString FileName, FString &OutPath)
+{
+    if (!InTexture)
+        return false;
+
+    // --- 1. 确定平台保存路径 ---
+    FString SaveDir;
+#if PLATFORM_ANDROID
+    // Android 建议保存在外部私有目录，无需权限申请
+    SaveDir = FPaths::ProjectPersistentDownloadDir();
+#else
+    // Windows 建议保存在项目 Saved 文件夹下
+    SaveDir = FPaths::ProjectSavedDir() + TEXT("ExportedPhotos/");
+#endif
+
+    OutPath = SaveDir + FileName + TEXT(".jpg");
+
+    // --- 2. 准备像素数据 ---
+    // 强制 Texture 变为可读状态（如果是刚刚动态生成的）
+    InTexture->UpdateResource();
+
+    FTexture2DMipMap &Mip = InTexture->GetPlatformData()->Mips[0];
+    int32 Width = Mip.SizeX;
+    int32 Height = Mip.SizeY;
+
+    // 锁定并读取数据
+    const FColor *FormatedImageData = static_cast<const FColor *>(Mip.BulkData.Lock(LOCK_READ_ONLY));
+
+    TArray<FColor> Pixels;
+    Pixels.Append(FormatedImageData, Width * Height);
+
+    Mip.BulkData.Unlock();
+
+    // --- 3. 压缩并写入文件 ---
+    IImageWrapperModule &ImageWrapperModule = FModuleManager::LoadModuleChecked<IImageWrapperModule>(FName("ImageWrapper"));
+    TSharedPtr<IImageWrapper> ImageWrapper = ImageWrapperModule.CreateImageWrapper(EImageFormat::JPEG);
+
+    if (ImageWrapper.IsValid() && ImageWrapper->SetRaw(Pixels.GetData(), Pixels.Num() * sizeof(FColor), Width, Height, ERGBFormat::BGRA, 8))
+    {
+        const TArray64<uint8> &CompressedData = ImageWrapper->GetCompressed(80); // 80% 质量
+        return FFileHelper::SaveArrayToFile(CompressedData, *OutPath);
+    }
+
+    return false;
 }
 
 UDIY_Utilities::UDIY_Utilities()

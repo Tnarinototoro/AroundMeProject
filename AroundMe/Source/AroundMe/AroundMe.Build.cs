@@ -37,7 +37,9 @@ public class AroundMe : ModuleRules
         PrivateDependencyModuleNames.AddRange(new string[] {
             "Slate",
             "SlateCore",
-            "RenderCore"
+            "RenderCore",
+            "ImageWriteQueue",
+            "ImageWrapper"
              });
 
         // Uncomment if you are using online features

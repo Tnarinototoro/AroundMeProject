@@ -40,6 +40,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_Utility")
     static void AsyncScaleAndDestroy(AActor *TargetActor, float Speed);
 
+    UFUNCTION(BlueprintCallable, Category = "DIY_Commu|File")
+    static bool SaveTextureToLocal(class UTexture2D *InTexture, FString FileName, FString &OutPath);
+
     UDIY_Utilities();
 
     UFUNCTION(BlueprintCallable, Category = "DIY_Utility")
