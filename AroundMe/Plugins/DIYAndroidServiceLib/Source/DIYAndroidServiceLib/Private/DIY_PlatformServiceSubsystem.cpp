@@ -222,6 +222,32 @@ void UDIYPlatformServiceSubsystem::RequestAddGiveTask(FPrimaryAssetId AssetID)
 #endif
 }
 
+void UDIYPlatformServiceSubsystem::RequestAddPhotoToBeSent(FString InPath)
+{
+#if PLATFORM_ANDROID
+    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    {
+        // 1. 找到 Java 类路径（替换成你实际的类路径）
+        jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
+
+        // 2. 找到静态方法 ID
+        jmethodID MethodID = Env->GetStaticMethodID(ServiceClass, "AddPhotoToPendingQueue", "(Ljava/lang/String;)V");
+
+        // 3. 将 FString 转为 jstring
+        jstring jPath = Env->NewStringUTF(TCHAR_TO_UTF8(*InPath));
+
+        // 4. 执行调用
+        Env->CallStaticVoidMethod(ServiceClass, MethodID, jPath);
+
+        // 5. 释放引用
+        Env->DeleteLocalRef(jPath);
+        Env->DeleteLocalRef(ServiceClass);
+    }
+#else
+    UE_LOG(LogTemp, Warning, TEXT("非 Android 平台，仅保存文件至: %s"), *InPath);
+#endif
+}
+
 void UDIYPlatformServiceSubsystem::PushAlienMessage(FString Title, FString Content)
 {
 #if PLATFORM_ANDROID

@@ -69,6 +69,10 @@ public: // 蓝图可调用
 	UFUNCTION(BlueprintCallable)
 	void RequestAddGiveTask(FPrimaryAssetId AssetID);
 
+
+	UFUNCTION(BlueprintCallable)
+	void RequestAddPhotoToBeSent(FString InPath);
+
 	UFUNCTION(BlueprintCallable)
 	void PushAlienMessage(FString Title, FString Content);
 

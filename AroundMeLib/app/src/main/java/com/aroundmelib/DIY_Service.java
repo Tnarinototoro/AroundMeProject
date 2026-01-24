@@ -24,6 +24,7 @@ import androidx.core.app.NotificationManagerCompat;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class DIY_Service extends Service implements DIY_CommuManagerReportSchema, DIY_PassByManagerReportSchema
 {
@@ -33,6 +34,9 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     // --- 1. 新增变量 ---
     private static final String LOG_CHANNEL_ID = "DIY_LOG_CHANNEL";
     private java.util.LinkedList<String> logQueue = new java.util.LinkedList<>();
+
+    public ArrayList<Uri> mPendingToSendPhotoUrls=new java.util.ArrayList<>();
+    public ArrayList<Uri> mPendingToPassToGameWorldPhotoUrls=new java.util.ArrayList<>();
     private static final int MAX_LOG_LINES = 5; // 通知栏只显示最近5条
     private static final int LOG_NOTIF_ID = 888; // Log 通知的唯一 ID
 
@@ -59,6 +63,50 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
         this.isGameActive = active;
         Log.d(TAG, "Game Active State Changed: " + active);
+    }
+    // 供 C++ 调用：添加待发送的照片路径
+    public static void AddPhotoToPendingQueue(String filePath)
+    {
+        if(null==Instance)
+        {
+            return;
+        }
+
+        File file = new File(filePath);
+        if (file.exists())
+        {
+            Instance.mPendingToSendPhotoUrls.add(Uri.fromFile(file));
+            Instance.appendToLog("DIY_Commu"+ "成功添加照片到待发队列: " + filePath,DIY_CommuUtils.LogLevel.ERROR);
+        }
+        else
+        {
+            Instance.appendToLog("DIY_Commu"+ "文件不存在，添加失败: " + filePath,DIY_CommuUtils.LogLevel.ERROR);
+        }
+    }
+
+    // 供 Java 内部发送完毕后调用：清理文件
+    public static void ClearAndThumbnail(Uri photoUri)
+    {
+        if(null==Instance)
+        {
+            return;
+        }
+
+        try
+        {
+            File file = new File(photoUri.getPath());
+            if (file.exists())
+            {
+                boolean deleted = file.delete();
+                Instance.mPendingToSendPhotoUrls.remove(photoUri);
+                Instance.appendToLog("DIY_Commu"+"发送完毕，已删除临时文件: " + (deleted?"删除成功":"未找到"),
+                        DIY_CommuUtils.LogLevel.ERROR);
+            }
+        }
+        catch (Exception e)
+        {
+            Instance.appendToLog("DIY_Commu"+"删除文件出错: " + e.getMessage(),DIY_CommuUtils.LogLevel.ERROR);
+        }
     }
     public static native void OnNewRandomDeviceEncountered_GarbageName();
 
