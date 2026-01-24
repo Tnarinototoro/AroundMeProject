@@ -17,6 +17,7 @@
 #include "Components/HorizontalBox.h"
 #include "DIY_CraftingPlatformConsoleWidget.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
+#include "Components/HorizontalBoxSlot.h"
 void UDIY_CraftingPlatformWidget::NativeConstruct()
 {
     Super::NativeConstruct();
@@ -26,28 +27,30 @@ void UDIY_CraftingPlatformWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
 
-    // Create SizeBox
-    SizeBox = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass(), TEXT("SizeBox"));
-    if (SizeBox)
+    // 1. 创建主水平布局容器
+    UHorizontalBox *MainLayout = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass(), TEXT("MainLayout"));
+    WidgetTree->RootWidget = MainLayout;
+
+    // 2. 左侧：配方列表区
+    SizeBox = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass(), TEXT("LeftSizeBox"));
+    ScrollBox = WidgetTree->ConstructWidget<UScrollBox>(UScrollBox::StaticClass(), TEXT("ScrollBox"));
+    ScrollBox->SetAlwaysShowScrollbar(true);
+    SizeBox->AddChild(ScrollBox);
+
+    // 给左侧分配权重（比如占屏幕 40%）
+    UHorizontalBoxSlot *LeftSlot = MainLayout->AddChildToHorizontalBox(SizeBox);
+    LeftSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+    LeftSlot->SetHorizontalAlignment(HAlign_Fill);
+
+    // 3. 右侧：控制台区
+    // 注意：如果是 3D Widget，最好直接在蓝图里把 Console 拖进去，或者像下面这样构造
+    CraftConsoleWidget = CreateWidget<UDIY_CraftingPlatformConsoleWidget>(this, UDIY_CraftingPlatformConsoleWidget::StaticClass());
+    if (CraftConsoleWidget)
     {
-        WidgetTree->RootWidget = SizeBox;
-
-        // Create ScrollBox
-        ScrollBox = WidgetTree->ConstructWidget<UScrollBox>(UScrollBox::StaticClass(), TEXT("ScrollBox"));
-        if (ScrollBox)
-        {
-            ScrollBox->SetAlwaysShowScrollbar(true);
-            SizeBox->AddChild(ScrollBox);
-        }
+        CraftConsoleWidget->InitializeCraftingPlatformConsole();
+        UHorizontalBoxSlot *RightSlot = MainLayout->AddChildToHorizontalBox(CraftConsoleWidget);
+        RightSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill)); // 左右平分或按比例
     }
-
-    CraftConsoleWidget = Cast<UDIY_CraftingPlatformConsoleWidget>(CreateWidget(GetWorld(), UDIY_CraftingPlatformConsoleWidget::StaticClass(), TEXT("CraftConsoleWidget")));
-    ensureMsgf(nullptr != CraftConsoleWidget, TEXT("CraftConsoleWidget not created failed"));
-    CraftConsoleWidget->InitializeCraftingPlatformConsole();
-
-    CraftConsoleWidget->SetPositionInViewport({0.f, 0.f}, false);
-    CraftConsoleWidget->SetVisibility(ESlateVisibility::Hidden);
-    CraftConsoleWidget->AddToViewport(1);
 }
 
 void UDIY_CraftingPlatformWidget::InitializeItemCraftingPlatformWidget(const TArray<FPrimaryAssetId> &InAllItemIDs, int32 RowsDisplayed_Limit, int32 Cols, const FVector2D &inImageIconSlotSize, float inTextSlotFontSize)
@@ -204,29 +207,31 @@ UDIY_CraftReceiptRowWidget *UDIY_CraftingPlatformWidget::GetRowWidgetAt(int32 ro
 
 void UDIY_CraftingPlatformWidget::RequestUpdateShowConsoleWidget(bool inBool)
 {
-    if (inBool)
-    {
 
-        // ItemSubMenuWidget->SetAnchorsInViewport({0.5f, 0.5f});
-        // ItemSubMenuWidget->SetAlignmentInViewport({0.f, 0.f});
+    CraftConsoleWidget->SetVisibility(inBool ? ESlateVisibility::Visible : ESlateVisibility::SelfHitTestInvisible);
+    // if (inBool)
+    // {
 
-        FGeometry SlotBorderGeometry = GetSlotBorder(0, ColNum - 1)->GetCachedGeometry();
-        FVector2D PixelPosition, ViewportPosition;
+    //     // ItemSubMenuWidget->SetAnchorsInViewport({0.5f, 0.5f});
+    //     // ItemSubMenuWidget->SetAlignmentInViewport({0.f, 0.f});
 
-        FVector2D desired_slot_size = GetSlotBorder(0, ColNum - 1)->GetParent()->GetDesiredSize();
-        // 将Local坐标转换为Viewport坐标
-        USlateBlueprintLibrary::LocalToViewport(GetWorld(), SlotBorderGeometry, FVector2D(0., 0.f), PixelPosition, ViewportPosition);
+    //     FGeometry SlotBorderGeometry = GetSlotBorder(0, ColNum - 1)->GetCachedGeometry();
+    //     FVector2D PixelPosition, ViewportPosition;
 
-        ViewportPosition.X += desired_slot_size.X;
-        ViewportPosition.X += ScrollBox->GetScrollbarThickness().X;
-        // CraftConsoleWidget->GetDesiredSize().X / 3.0f;
-        CraftConsoleWidget->SetPositionInViewport(ViewportPosition, false);
-        CraftConsoleWidget->SetVisibility(ESlateVisibility::Visible);
-    }
-    else
-    {
-        CraftConsoleWidget->SetVisibility(ESlateVisibility::Hidden);
-    }
+    //     FVector2D desired_slot_size = GetSlotBorder(0, ColNum - 1)->GetParent()->GetDesiredSize();
+    //     // 将Local坐标转换为Viewport坐标
+    //     USlateBlueprintLibrary::LocalToViewport(GetWorld(), SlotBorderGeometry, FVector2D(0., 0.f), PixelPosition, ViewportPosition);
+
+    //     ViewportPosition.X += desired_slot_size.X;
+    //     ViewportPosition.X += ScrollBox->GetScrollbarThickness().X;
+    //     // CraftConsoleWidget->GetDesiredSize().X / 3.0f;
+    //     CraftConsoleWidget->SetPositionInViewport(ViewportPosition, false);
+    //     CraftConsoleWidget->SetVisibility(ESlateVisibility::Visible);
+    // }
+    // else
+    // {
+    //     CraftConsoleWidget->SetVisibility(ESlateVisibility::Hidden);
+    // }
 }
 void UDIY_CraftingPlatformWidget::RequestChangeConsoleWidgetImage(UTexture2D *Texture)
 {

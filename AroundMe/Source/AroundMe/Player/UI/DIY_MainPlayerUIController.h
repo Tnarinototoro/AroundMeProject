@@ -92,14 +92,18 @@ public:
 
     // common funcs
 
+    UFUNCTION(BlueprintCallable, Category = "DIY|UI")
     void RequestChangeUISectionVisibility(ESlateVisibility invisibility, EMainPlayerUISectionID SectionID);
+    UFUNCTION(BlueprintCallable, Category = "DIY|UI")
     bool IsUISectionVisible(EMainPlayerUISectionID SectionID) const;
 
     // Music Player Funcs
     void RequestUpdateStateInfoText_MusicPlayer(const FText &inText);
 
     // BackPack Funcs
+    UFUNCTION(BlueprintCallable, Category = "DIY|UI")
     void RequestVisibility_BackPack(ESlateVisibility invisibility);
+    UFUNCTION(BlueprintCallable, Category = "DIY|UI")
     bool RequestAddItemToBackPack(class AActor *inItem);
     // must has been in backpack
     void RequestMoveCurrentSelectedCursor(int inDeltaX, int inDeltaY, uint32 inStride = 1);
