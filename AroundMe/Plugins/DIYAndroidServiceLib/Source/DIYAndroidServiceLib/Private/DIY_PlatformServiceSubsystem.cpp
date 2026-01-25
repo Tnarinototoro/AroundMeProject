@@ -311,7 +311,7 @@ extern "C"
 
     JNIEXPORT void JNICALL Java_com_aroundmelib_DIY_1Service_OnNewLogGenerated(JNIEnv *jenv, jclass clazz, jstring MyString)
     {
-        bool should_output = false;
+        bool should_output = true;
         if (!should_output)
         {
             return;
