@@ -47,7 +47,7 @@ public class DIY_PassByManager
     private PrintWriter connWriter = null;
     private BufferedReader connReader = null;
     private Thread connReadThread = null;
-    private String lastSelectedImagePath = null;
+
     private HashSet<String> mValidBlePlayerNames = new HashSet<>();
 
     public ArrayList<Uri> mPendingToSendPhotoUris =new java.util.ArrayList<>();
@@ -60,11 +60,19 @@ public class DIY_PassByManager
         {
             mPendingToSendPhotoUris.add(Uri.fromFile(file));
             logSafe("DIY_Commu"+ "成功添加照片到待发队列: " + filePath,DIY_CommuUtils.LogLevel.ERROR);
+            logSafe("当前队列数量: " + mPendingToSendPhotoUris.size(),DIY_CommuUtils.LogLevel.ERROR);
         }
         else
         {
             logSafe("DIY_Commu"+ "文件不存在，添加失败: " + filePath,DIY_CommuUtils.LogLevel.ERROR);
         }
+    }
+    public boolean SimpleRemovePhoto(Uri photoUri)
+    {
+        boolean result = mPendingToSendPhotoUris.remove(photoUri);
+        logSafe("Removed photo uri "+photoUri.toString()+(result?"Success":"Failed!"), DIY_CommuUtils.LogLevel.ERROR);
+        logSafe("当前队列数量: " + mPendingToSendPhotoUris.size(),DIY_CommuUtils.LogLevel.ERROR);
+        return result;
     }
     public void ClearAndThumbnail(Uri photoUri)
     {
@@ -74,7 +82,8 @@ public class DIY_PassByManager
             if (file.exists())
             {
                 boolean deleted = file.delete();
-                mPendingToSendPhotoUris.remove(photoUri);
+                SimpleRemovePhoto(photoUri);
+
                 logSafe("DIY_Commu"+"发送完毕，已删除临时文件: " + (deleted?"删除成功":"未找到"),
                         DIY_CommuUtils.LogLevel.ERROR);
             }
@@ -120,7 +129,8 @@ public class DIY_PassByManager
     }
     public String getLastSelectedImagePath()
     {
-        return lastSelectedImagePath;
+
+        return getPathFromUri(activity, GetLatestInPendingQueue_Uri());
     }
     private boolean isGroupOwner = false;      // 当前角色：GO = true, Client = false
 
@@ -615,6 +625,13 @@ public class DIY_PassByManager
                 fis.close();
 
                 logSafe("[SendFile] 文件主体发送完毕", DIY_CommuUtils.LogLevel.SUCCESS);
+
+                SimpleRemovePhoto(Uri.fromFile(file));
+
+                if(mReportSchema!=null)
+                {
+                    mReportSchema.onSendPhotoTaskFinished(Uri.fromFile(file));
+                }
             }
             catch (Exception e)
             {
@@ -879,7 +896,7 @@ public class DIY_PassByManager
         logSafe("Selected image path/uri: " + path, DIY_CommuUtils.LogLevel.WARNING);
 
         AddPhotoToPendingQueue(path);
-        lastSelectedImagePath = path;   // <-- 新增
+
         //nativeOnImageSelected(path);
     }
 

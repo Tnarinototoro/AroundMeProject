@@ -1,5 +1,6 @@
 package com.aroundmelib;
 
+import android.net.Uri;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 
 import java.io.File;
@@ -26,5 +27,10 @@ public interface DIY_PassByManagerReportSchema
     default boolean HasAnySendPhotoTask()
     {
         return false;
+    }
+
+    default void onSendPhotoTaskFinished(Uri Finisheduri)
+    {
+        return;
     }
 }

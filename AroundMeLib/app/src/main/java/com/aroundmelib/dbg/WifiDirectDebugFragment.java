@@ -4,6 +4,7 @@ package com.aroundmelib.dbg;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -271,6 +272,7 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         btnSend = view.findViewById(R.id.button_send);
         btnSend.setOnClickListener(v ->
         {
+            appendWfdLog_UIOperation("发送图片按键被点击了");
             String msg = editMessage.getText().toString().trim();
 
             DIY_PassByManager mgr = GetDIY_PassByManagerInstace();
@@ -374,4 +376,34 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         return DIY_CommuUtils.isUriValid(getContext(),mgr.GetLatestInPendingQueue_Uri());
     }
 
+    @Override
+    public void onSendPhotoTaskFinished(Uri Finisheduri)
+    {
+        // 确保在主线程执行 UI 更新
+        Picked_imageView.post(() ->
+        {
+            DIY_PassByManager mgr = GetDIY_PassByManagerInstace();
+
+            // 1. 如果管理器没了，直接清空
+            if (null == mgr) {
+                Picked_imageView.setImageURI(null);
+                return;
+            }
+
+            // 2. 获取下一张待发图片的 URI
+            Uri nextUri = mgr.GetLatestInPendingQueue_Uri();
+
+            // 3. 安全切换图片
+            if (nextUri == null || nextUri.equals(Uri.EMPTY)) {
+                Picked_imageView.setImageURI(null);
+                // 这里可以加上：logSafe("队列已清空", ...);
+            } else {
+                // 如果图片很大，setImageURI 可能会卡顿。
+                // 提示：后续如果还卡，建议改用 Glide.with(context).load(nextUri).into(Picked_imageView);
+                Picked_imageView.setImageURI(nextUri);
+            }
+        });
+
+
+    }
 }

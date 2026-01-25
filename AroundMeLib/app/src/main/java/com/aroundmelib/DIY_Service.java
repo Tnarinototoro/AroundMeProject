@@ -782,4 +782,11 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         }
         return mgr.mPendingToSendPhotoUris.size()>0;
     }
+
+    @Override
+    public void onSendPhotoTaskFinished(Uri Finisheduri)
+    {
+        DIY_PassByManagerReportSchema.super.onSendPhotoTaskFinished(Finisheduri);
+
+    }
 }
