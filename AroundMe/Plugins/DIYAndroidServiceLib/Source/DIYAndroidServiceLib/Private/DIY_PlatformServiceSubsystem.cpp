@@ -113,8 +113,22 @@ void UDIYPlatformServiceSubsystem::OnImageBytesReceived(
     // ② 通知游戏世界
     OnImageTextureReceived.Broadcast(Texture);
 }
-UTexture2D *UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(
-    const TArray<uint8> &ImageData)
+void UDIYPlatformServiceSubsystem::OnImageBytesReceivedFromOtherDevices(const TArray<uint8> &ImageBytes)
+{
+
+    UTexture2D *Texture = CreateTextureFromImageBytes(ImageBytes);
+
+    if (!Texture)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Failed to create texture from image bytes"));
+        return;
+    }
+
+    // ① 保存到 Subsystem（非常重要，防 GC）
+    LastReceivedImageTextureFromOtherDevice = Texture;
+    OnImageTextureFromOtherDeviceReceived.Broadcast(Texture);
+}
+UTexture2D *UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(const TArray<uint8> &ImageData)
 {
     IImageWrapperModule &ImageWrapperModule =
         FModuleManager::LoadModuleChecked<IImageWrapperModule>("ImageWrapper");
@@ -463,6 +477,31 @@ extern "C"
         {
             AsyncTask(ENamedThreads::GameThread, [Subsys, Bytes = MoveTemp(Bytes)]() mutable
                       { Subsys->OnImageBytesReceived(Bytes); });
+        }
+    }
+    JNIEXPORT void JNICALL
+    Java_com_aroundmelib_DIY_1Service_OnImageBytesReceivedFromOtherPhones(
+        JNIEnv *Env,
+        jclass,
+        jbyteArray ImageBytes)
+    {
+        if (!ImageBytes)
+            return;
+
+        jsize Length = Env->GetArrayLength(ImageBytes);
+        TArray<uint8> Bytes;
+        Bytes.SetNumUninitialized(Length);
+
+        Env->GetByteArrayRegion(
+            ImageBytes,
+            0,
+            Length,
+            reinterpret_cast<jbyte *>(Bytes.GetData()));
+
+        if (auto *Subsys = UDIYPlatformServiceSubsystem::Get())
+        {
+            AsyncTask(ENamedThreads::GameThread, [Subsys, Bytes = MoveTemp(Bytes)]() mutable
+                      { Subsys->OnImageBytesReceivedFromOtherDevices(Bytes); });
         }
     }
 }

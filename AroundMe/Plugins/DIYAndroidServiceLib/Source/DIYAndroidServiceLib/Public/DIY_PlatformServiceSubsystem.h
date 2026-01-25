@@ -81,7 +81,12 @@ public: // 蓝图可调用
 	UFUNCTION(BlueprintCallable)
 	void TryOpenImagePicker();
 
+	// received from user self choice
 	void OnImageBytesReceived(const TArray<uint8> &ImageBytes);
+
+	// received from user self choice
+	void OnImageBytesReceivedFromOtherDevices(const TArray<uint8> &ImageBytes);
+
 	class UTexture2D *CreateTextureFromImageBytes(
 		const TArray<uint8> &ImageData);
 
@@ -109,7 +114,13 @@ public: // 蓝图 Delegate
 	UPROPERTY(BlueprintAssignable, Category = "PlatformService")
 	FOnImageTextureReceived OnImageTextureReceived;
 
+	UPROPERTY(BlueprintAssignable, Category = "PlatformService")
+	FOnImageTextureReceived OnImageTextureFromOtherDeviceReceived;
+
 protected:
 	UPROPERTY()
 	class UTexture2D *LastReceivedImageTexture = nullptr;
+
+	UPROPERTY()
+	class UTexture2D *LastReceivedImageTextureFromOtherDevice = nullptr;
 };

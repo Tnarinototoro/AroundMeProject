@@ -21,8 +21,10 @@ import android.content.IntentFilter;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class DIY_Service extends Service implements DIY_CommuManagerReportSchema, DIY_PassByManagerReportSchema
@@ -105,7 +107,11 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
 
     public static native void OnItemGiftReceived(String assetId);
+
+    //used for user self added picture not from other phones
     public static native void OnImageBytesForGame(byte[] imageBytes);
+
+    public static native void OnImageBytesReceivedFromOtherPhones(byte[] imageBytes);
 
 
     // -------------------------
@@ -134,7 +140,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         Log.d("DIY_Service", "Service stopped from UE");
     }
 
-    private byte[] ReadBytesFromUri(Uri uri)
+    public byte[] ReadBytesFromUri(Uri uri)
     {
         try
         {
@@ -801,8 +807,32 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
                         fileName, fileSizeKB, absolutePath),
                 DIY_CommuUtils.LogLevel.SUCCESS);
 
-        // 如果你有同步到 UE5 的逻辑需求，后续可以在这里追加
-        // mPendingToPassToGameWorldPhotoUris.add(Uri.fromFile(file));
+
+        appendToLog("正在转换字节流并同步至游戏...", DIY_CommuUtils.LogLevel.INFO);
+
+        try {
+            // 1. 将文件内容读取为字节数组
+            int size = (int) file.length();
+            byte[] bytes = new byte[size];
+
+            try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file)))
+            {
+                bis.read(bytes, 0, bytes.length);
+            }
+
+
+            // 2. 调用你的 native 接口，直接送入 UE5 世界
+            // 建议在主线程调用，或者根据你 JNI 层的需求来定
+            OnImageBytesReceivedFromOtherPhones(bytes);
+
+            appendToLog("✅ 游戏同步成功，字节数: " + bytes.length, DIY_CommuUtils.LogLevel.SUCCESS);
+
+        } catch (Exception e)
+        {
+            appendToLog("同步失败: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+        }
+
+        //mPendingToPassToGameWorldPhotoUris.add(Uri.fromFile(file));
     }
 
 
