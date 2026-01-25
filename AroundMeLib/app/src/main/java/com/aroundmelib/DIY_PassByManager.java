@@ -36,6 +36,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 
 public class DIY_PassByManager
@@ -49,7 +50,23 @@ public class DIY_PassByManager
     private BufferedReader connReader = null;
     private Thread connReadThread = null;
     private String lastSelectedImagePath = null;
-
+    private HashSet<String> mValidBlePlayerNames = new HashSet<>();
+    public void addValidBlePlayerName(String name)
+    {
+        if (
+                name != null &&
+                !name.isEmpty() &&
+                !name.equals("null")
+        )
+        {
+            mValidBlePlayerNames.add(name);
+            logSafe("熟人名单更新: " + name, DIY_CommuUtils.LogLevel.DEBUG);
+        }
+    }
+    public boolean isBlePlayer(String deviceName)
+    {
+        return mValidBlePlayerNames.contains(deviceName);
+    }
     public String getLastSelectedImagePath()
     {
         return lastSelectedImagePath;

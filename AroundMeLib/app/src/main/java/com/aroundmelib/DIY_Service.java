@@ -218,6 +218,16 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     }
     private DIY_CommuManager mCommuManager = null;
     private DIY_PassByManager mPassByManager =null;
+
+    public DIY_CommuManager  GetCommuManager()
+    {
+        return mCommuManager;
+    }
+
+    public DIY_PassByManager GetPassByManager()
+    {
+        return mPassByManager;
+    }
     private Handler handler;
     private Runnable logTask;
     private NotificationManager notificationManager;
@@ -769,5 +779,15 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     }
 
 
+    @Override
+    public DIY_CommuManager GetCurrentContextPossibleCommuManager()
+    {
+        return GetCommuManager();
+    }
 
+    @Override
+    public DIY_PassByManager GetCurrentContextPossiblePassByManager()
+    {
+        return GetPassByManager();
+    }
 }

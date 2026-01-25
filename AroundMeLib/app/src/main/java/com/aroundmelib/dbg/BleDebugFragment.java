@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import com.aroundmelib.DIY_CommuManager;
 import com.aroundmelib.DIY_CommuManagerReportSchema;
 import com.aroundmelib.DIY_CommuUtils;
+import com.aroundmelib.DIY_PassByManager;
 import com.aroundmelib.MainActivity;
 import com.aroundmelib.R;
 
@@ -498,4 +499,17 @@ public class BleDebugFragment extends Fragment implements DIY_CommuManagerReport
         return mInputMessage.getText().toString();
     }
 
+    @Override
+    public DIY_PassByManager GetCurrentContextPossiblePassByManager()
+    {
+        MainActivity Cur_Activity =
+                (MainActivity)getActivity();
+
+        if(null!= Cur_Activity)
+        {
+            return Cur_Activity.getDIY_PassByManagerInstace();
+        }
+
+        return null;
+    }
 }

@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.aroundmelib.DIY_CommuManager;
 import com.aroundmelib.DIY_CommuUtils;
 import com.aroundmelib.DIY_PassByManager;
 import com.aroundmelib.DIY_PassByManagerReportSchema;
@@ -347,6 +348,20 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
 
             appendWfdLog_UIOperation("✔ 图片已成功显示在 Receive 区域");
         });
+    }
+
+    @Override
+    public DIY_CommuManager GetCurrentContextPossibleCommuManager()
+    {
+        MainActivity Cur_Activity =
+                (MainActivity)getActivity();
+
+        if(null!= Cur_Activity)
+        {
+            return Cur_Activity.getDIY_CommuManagerInstace();
+        }
+
+        return null;
     }
 
 

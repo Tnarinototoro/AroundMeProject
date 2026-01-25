@@ -352,6 +352,23 @@ public class DIY_CommuManager
                     mFoundDevices.put(result_device_mac_addr, player_info);
 
 
+
+                    // 假设你在 DIY_Service 里能拿到 passByManager 实例
+                    // 或者通过单例/全局引用调用
+                    if(mReportSchema != null)
+                    {
+                        DIY_PassByManager Cur_PasserByManager=
+                        mReportSchema.GetCurrentContextPossiblePassByManager();
+
+                        if(null!=Cur_PasserByManager)
+                        {
+                            Cur_PasserByManager.addValidBlePlayerName(player_info.mDeviceName);
+                        }
+
+
+                    }
+
+
                     // 有效设备数量 +1
                     mDeviceCountEncountered_WithName++;
                     mDIYGameUserEncountered_WithName++;
@@ -836,7 +853,7 @@ public class DIY_CommuManager
                 for (BluetoothDevice device : connectedDevices)
                 {
                     String messageToSend = "TestString";
-                    
+
                     if(mReportSchema!=null)
                     {
                         messageToSend=mReportSchema.GetInputMessage();

@@ -17,4 +17,9 @@ public interface DIY_PassByManagerReportSchema
     }
 
     default void onImageReceived(File file){}
+
+    default DIY_CommuManager GetCurrentContextPossibleCommuManager()
+    {
+        return null;
+    }
 }

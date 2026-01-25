@@ -82,4 +82,9 @@ public interface DIY_CommuManagerReportSchema
     }
 
     default boolean GetIsGameActive(){return true;}
+
+    default DIY_PassByManager GetCurrentContextPossiblePassByManager()
+    {
+        return null;
+    }
 }
