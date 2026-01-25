@@ -180,6 +180,24 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         Instance.mCommuManager.RequestGiveAItemTask(item_id);
 
     }
+    public static void ResetWifiDirectState()
+    {
+
+        if(null==Instance)
+        {
+            OnNewLogGenerated("ResetWifiDirectState Failed due to invalid service instance");
+            return;
+        }
+        if(null== Instance.mPassByManager)
+        {
+            OnNewLogGenerated("ResetWifiDirectState Failed due to invalid PassByManager instance");
+            return;
+        }
+
+        Instance.mPassByManager.resetWifiDirectState();
+
+    }
+
 
     // Java 层
     public static void ShowAlienMessage(String title, String content)
@@ -499,7 +517,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         mPassByManager=new DIY_PassByManager(BoundActivity,this);
         mPassByManager.setPassByManagerReportSchema(this);
 
-
+        mPassByManager.onResume();
 
         // 👉 定时任务：每秒更新通知内容
         handler = new Handler();
@@ -536,6 +554,31 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
                 {
                     mCommuManager.StartAroundMeService();
                 }
+
+
+                // ✅ 最小修改：自动任务检查逻辑
+                DIY_PassByManager mgr = mPassByManager; // 确保你能拿到 mgr 实例
+                if (mgr != null && mgr.isConnected()&&!mgr.isTransferring)
+                {
+                    // 1. 获取最新待发图片的路径
+                    Uri nextUri = mgr.GetLatestInPendingQueue_Uri();
+
+                    // 2. 只有当路径有效且不为空时触发
+                    if (nextUri != null && !nextUri.equals(Uri.EMPTY))
+                    {
+                        String path = DIY_PassByManager.getPathFromUri(BoundActivity, nextUri);
+
+                        // 3. 这里的 sendImageFile 内部已经跑在子线程，不会阻塞 logTask
+                        // 且 sendFile 内部会处理文件是否存在判断
+                        if (path != null)
+                        {
+                            mgr.sendImageFile(path);
+                            // 注意：由于 sendFile 结束后会自动 ClearAndThumbnail，
+                            // 下一秒 logTask 再次运行会拿到队列里的下一张或发现已空。
+                        }
+                    }
+                }
+
             }
         };
         handler.post(logTask);
@@ -568,6 +611,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public void onDestroy()
     {
 
+
         Instance=null;
         BoundActivity = null;
         mCommuManager.StopAroundMeService();
@@ -579,6 +623,9 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
             unregisterReceiver(dismissReceiver);
         }
 
+        mPassByManager.onPause();
+        mPassByManager.resetWifiDirectState();
+        mPassByManager=null;
 
         if (handler != null && logTask != null)
         {
@@ -593,6 +640,7 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public IBinder onBind(Intent intent) {
         return null; // 不支持绑定
     }
+
 
 
 
@@ -680,7 +728,6 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     public void OnCallBack_BLEDeviceEncountered_GarbageName()
     {
         OnNewRandomDeviceEncountered_GarbageName();
-        appendToLog("Garbage detected!", DIY_CommuUtils.LogLevel.INFO);
     }
     @Override
     public void OnCallBack_NewBLEDeviceEncountered_WithName(String inText)
@@ -737,26 +784,25 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
 
 
     @Override
-    public void onImageReceived(File file)
+    public void onImageReceivedFromOtherPhone(File file)
     {
-       /* requireActivity().runOnUiThread(() ->
-        {
-            appendWfdLog_UIOperation("准备 decode 图片: " + file.getAbsolutePath());
+        if (file == null || !file.exists()) {
+            appendToLog("收到无效文件回调", DIY_CommuUtils.LogLevel.ERROR);
+            return;
+        }
 
-            Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
-            if (bmp == null)
-            {
-                appendWfdLog_UIOperation("❌ decodeFile 失败，图片损坏！");
-                return;
-            }
+        // 获取文件基本信息
+        String fileName = file.getName();
+        long fileSizeKB = file.length() / 1024;
+        String absolutePath = file.getAbsolutePath();
 
-            appendWfdLog_UIOperation("✔ decodeFile 成功，设置到 UI");
+        // 直接输出到 Service 日志记录器
+        appendToLog(String.format("[接收成功] 名字: %s | 大小: %d KB | 路径: %s",
+                        fileName, fileSizeKB, absolutePath),
+                DIY_CommuUtils.LogLevel.SUCCESS);
 
-            ImageView recvView = getView().findViewById(R.id.image_receive);
-            recvView.setImageBitmap(bmp);
-
-            appendWfdLog_UIOperation("✔ 图片已成功显示在 Receive 区域");
-        });*/
+        // 如果你有同步到 UE5 的逻辑需求，后续可以在这里追加
+        // mPendingToPassToGameWorldPhotoUris.add(Uri.fromFile(file));
     }
 
 

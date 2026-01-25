@@ -331,7 +331,7 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
     }
 
     @Override
-    public void onImageReceived(File file)
+    public void onImageReceivedFromOtherPhone(File file)
     {
         requireActivity().runOnUiThread(() ->
         {

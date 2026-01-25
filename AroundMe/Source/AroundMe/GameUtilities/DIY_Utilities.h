@@ -27,9 +27,16 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
     static bool DIY_IsLoggingEnabled();
 
-    // Function to output a log message to the screen
-    UFUNCTION(BlueprintCallable, Category = "DIY_Utilities")
-    static void DIY_PrintLogToScreen(float TimeToDisplay, const FString &DebugMessage, FColor DisplayColor = FColor::Green);
+    /**
+     * 保持与蓝图 PrintString 一致的体验
+     * @param WorldContextObject 上下文，通常传 this
+     * @param InString 消息内容
+     * @param TextColor 颜色
+     * @param Duration 持续时间
+     * @param Key 如果设置了 Key，相同 Key 的消息会覆盖而不是堆叠（实现折叠效果）
+     */
+    UFUNCTION(BlueprintCallable, Category = "DIY_Utility", meta = (WorldContext = "WorldContextObject", AdvancedDisplay = "4", DevelopmentOnly))
+    static void DIY_PrintLogToScreen(const UObject *WorldContextObject, const FString &InString, FLinearColor TextColor = FLinearColor(0.0, 0.66, 1.0), float Duration = 2.0f, const FName Key = NAME_None);
 
     UFUNCTION(BlueprintCallable, Category = "DIY_Utilitie|Navigation")
     static void ForceUpdateNavProxyInOctree(class AActor *inActor);

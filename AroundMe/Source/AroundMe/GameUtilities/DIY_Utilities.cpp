@@ -16,6 +16,7 @@
 #include "ImageUtils.h"
 #include "Misc/FileHelper.h"
 #include "HAL/PlatformFileManager.h"
+#include "Kismet/KismetSystemLibrary.h"
 // void ForceRefreshNavLink(AActor* InActor)
 // {
 //     if (!InActor) return;
@@ -116,12 +117,25 @@ bool UDIY_Utilities::DIY_IsLoggingEnabled()
     return UDIY_Utilities::bShouldLogToGameScreen;
 }
 
-void UDIY_Utilities::DIY_PrintLogToScreen(float TimeToDisplay, const FString &DebugMessage, FColor DisplayColor)
+void UDIY_Utilities::DIY_PrintLogToScreen(const UObject *WorldContextObject, const FString &InString, FLinearColor TextColor, float Duration, const FName Key)
 {
-    if (nullptr != GEngine && UDIY_Utilities::bShouldLogToGameScreen)
+
+    if (nullptr == GEngine)
     {
-        GEngine->AddOnScreenDebugMessage(-1, TimeToDisplay, DisplayColor, DebugMessage);
+        return;
     }
+    // 1. 我们的全局开关检测
+    if (!bShouldLogToGameScreen)
+    {
+        return;
+    }
+
+    // 2. 直接调用 Kismet 库，它内部会自动处理：
+    // - 只在 Development/Debug 环境显示 (Shipping 自动不显示)
+    // - 打印到屏幕 (bPrintToScreen = true)
+    // - 打印到 Output Log (bPrintToLog = true)
+    // - 处理 Key 导致的折叠逻辑
+    UKismetSystemLibrary::PrintString(WorldContextObject, InString, true, true, TextColor, Duration, Key);
 }
 
 void UDIY_Utilities::ForceUpdateNavProxyInOctree(AActor *inActor)

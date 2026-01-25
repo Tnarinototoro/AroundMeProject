@@ -49,7 +49,7 @@ public class DIY_PassByManager
     private Thread connReadThread = null;
 
     private HashSet<String> mValidBlePlayerNames = new HashSet<>();
-
+    public boolean isTransferring=false;
     public ArrayList<Uri> mPendingToSendPhotoUris =new java.util.ArrayList<>();
     public ArrayList<Uri> mPendingToPassToGameWorldPhotoUris =new java.util.ArrayList<>();
     public void AddPhotoToPendingQueue(String filePath)
@@ -158,7 +158,8 @@ public class DIY_PassByManager
                     mReportSchema.onWIFILogReport(msg, level);
                 }
             });
-        } else
+        }
+        else
         {
             // fallback
             if (mReportSchema != null)
@@ -591,6 +592,7 @@ public class DIY_PassByManager
                     logSafe("[SendFile] 文件不存在: " + filePath, DIY_CommuUtils.LogLevel.ERROR);
                     return;
                 }
+                isTransferring=true;
 
                 long fileSize = file.length();
                 String fileName = file.getName();
@@ -632,6 +634,7 @@ public class DIY_PassByManager
                 {
                     mReportSchema.onSendPhotoTaskFinished(Uri.fromFile(file));
                 }
+                isTransferring=false;
             }
             catch (Exception e)
             {
@@ -732,7 +735,7 @@ public class DIY_PassByManager
                                     DIY_CommuUtils.LogLevel.SUCCESS);
 
                             if (mime.startsWith("image") && mReportSchema != null)
-                                mReportSchema.onImageReceived(file);
+                                mReportSchema.onImageReceivedFromOtherPhone(file);
                         }
                     }
                 }

@@ -10,7 +10,7 @@ void UDIY_AreaManager::BeforeSwitchArea_Implementation(EDIY_Area inNextAreaID)
     FString debug_info = FString::Printf(TEXT("Switching ^..^ to NextAreaID: %s \n"),
                                          *UEnum::GetValueAsString(inNextAreaID));
 
-    UDIY_Utilities::DIY_PrintLogToScreen(3.0f, debug_info);
+    UDIY_Utilities::DIY_PrintLogToScreen(this, debug_info, FLinearColor::Red, 3.0f);
 }
 
 void UDIY_AreaManager::AfterSwitchArea_Implementation(EDIY_Area inNextAreaID)
@@ -18,7 +18,7 @@ void UDIY_AreaManager::AfterSwitchArea_Implementation(EDIY_Area inNextAreaID)
     FString debug_info = FString::Printf(TEXT("Already Switched :))to NextAreaID: %s \n"),
                                          *UEnum::GetValueAsString(inNextAreaID));
 
-    UDIY_Utilities::DIY_PrintLogToScreen(3.0f, debug_info);
+    UDIY_Utilities::DIY_PrintLogToScreen(this, debug_info, FLinearColor::Red, 3.0f);
 }
 
 void UDIY_AreaManager::RegisterEnvObjectWithTag(FGameplayTag IDTag, ADIY_EnvObjectBase *Obj)

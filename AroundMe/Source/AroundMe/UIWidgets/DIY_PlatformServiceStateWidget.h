@@ -20,7 +20,6 @@ public:
     UFUNCTION()
     void StopServiceButtonClicked();
 
-
 private:
     UPROPERTY()
     class UTextBlock *InfoTextBlock;
@@ -29,11 +28,14 @@ private:
     class UVerticalBox *VerticalBox;
     class UButton *StopServiceButton;
 
-    // --- 新增组件 ---
-    class UEditableText* MessageTitleInput;   // 消息标题输入框
-    class UEditableText* MessageContentInput; // 消息内容输入框
-    class UButton* SendMessageButton;         // 发送按钮
+    class UEditableText *MessageTitleInput;
+    class UEditableText *MessageContentInput;
+    class UButton *SendMessageButton;
+    class UButton *ResetWifiDirectStateButton;
 
     UFUNCTION()
-    void SendMessageButtonClicked();          // 发送按钮的回调
+    void SendMessageButtonClicked();
+
+    UFUNCTION()
+    void ResetWifiDirectStateButtonClicked();
 };

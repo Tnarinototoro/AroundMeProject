@@ -222,10 +222,24 @@ void UDIYPlatformServiceSubsystem::RequestAddGiveTask(FPrimaryAssetId AssetID)
 #endif
 }
 
+void UDIYPlatformServiceSubsystem::ResetWifiDirectState()
+{
+#if PLATFORM_ANDROID
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
+    {
+        jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");
+        // 注意签名改成了 (Ljava/lang/String;)V
+        jmethodID ResetWifiMethod = Env->GetStaticMethodID(ServiceClass, "ResetWifiDirectState", "()V");
+
+        Env->CallStaticVoidMethod(ServiceClass, ResetWifiMethod);
+    }
+#endif
+}
+
 void UDIYPlatformServiceSubsystem::RequestAddPhotoToBeSent(FString InPath)
 {
 #if PLATFORM_ANDROID
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    if (JNIEnv *Env = FAndroidApplication::GetJavaEnv())
     {
         // 1. 找到 Java 类路径（替换成你实际的类路径）
         jclass ServiceClass = FAndroidApplication::FindJavaClass("com/aroundmelib/DIY_Service");

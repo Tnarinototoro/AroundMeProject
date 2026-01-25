@@ -17,7 +17,7 @@ public interface DIY_PassByManagerReportSchema
         return;
     }
 
-    default void onImageReceived(File file){}
+    default void onImageReceivedFromOtherPhone(File file){}
 
     default DIY_CommuManager GetCurrentContextPossibleCommuManager()
     {
