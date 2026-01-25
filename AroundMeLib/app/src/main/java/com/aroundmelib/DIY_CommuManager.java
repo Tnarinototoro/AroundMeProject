@@ -321,11 +321,11 @@ public class DIY_CommuManager
 
                     if (got_gatt != null)
                     {
-                        appendToLog("connected successfully");
+                        appendToLog("connected"+result_device.getName()+"successfully");
                     }
                     else
                     {
-                        appendToLog("connected failed!");
+                        appendToLog("connected "+result_device.getName()+"failed!");
                     }
 
                     // 计算距离
@@ -831,10 +831,12 @@ public class DIY_CommuManager
             {
                 // Here, we simulate sending data as peripheral every 2 seconds.
                 List<BluetoothDevice> connectedDevices = mBluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
+
+                appendToLog(String.format("%d devices are connected with local device",connectedDevices.size()));
                 for (BluetoothDevice device : connectedDevices)
                 {
                     String messageToSend = "TestString";
-
+                    
                     if(mReportSchema!=null)
                     {
                         messageToSend=mReportSchema.GetInputMessage();
