@@ -792,7 +792,8 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     @Override
     public void onImageReceivedFromOtherPhone(File file)
     {
-        if (file == null || !file.exists()) {
+        if (file == null || !file.exists())
+        {
             appendToLog("收到无效文件回调", DIY_CommuUtils.LogLevel.ERROR);
             return;
         }
