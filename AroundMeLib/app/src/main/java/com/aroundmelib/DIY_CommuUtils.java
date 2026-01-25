@@ -1,9 +1,13 @@
 package com.aroundmelib;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.net.Uri;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Looper;
 import android.util.Log;
+
+import java.io.File;
+import java.io.InputStream;
 import java.util.UUID;
 import android.os.Handler;
 import android.widget.Toast;
@@ -108,5 +112,39 @@ public class DIY_CommuUtils
         new Handler(Looper.getMainLooper()).post(() -> {
             Toast.makeText(context.getApplicationContext(), "🔧 " + message, Toast.LENGTH_SHORT).show();
         });
+    }
+
+    public static boolean isPathValid(String path)
+    {
+        if (path == null || path.isEmpty()) return false;
+        File file = new File(path);
+        return file.exists() && file.isFile() && file.length() > 0;
+    }
+
+    public static boolean isUriValid(Context context, Uri uri)
+    {
+        if (uri == null) return false;
+
+        // 如果是 file 类型的 URI，直接转成 path 判断
+        if ("file".equalsIgnoreCase(uri.getScheme()))
+        {
+            return isPathValid(uri.getPath());
+        }
+
+        // 如果是 content 类型的 URI (来自相册选择)
+        try {
+            // 尝试打开输入流。如果能打开，说明资源真实存在且我们有权限访问
+            InputStream is = context.getContentResolver().openInputStream(uri);
+            if (is != null)
+            {
+                is.close();
+                return true;
+            }
+        } catch (Exception e)
+        {
+            // 抛出异常说明文件不存在、已被删除或无权访问
+            Log.e("DIY_Debug", "URI 无效或无法访问: " + e.getMessage());
+        }
+        return false;
     }
 }

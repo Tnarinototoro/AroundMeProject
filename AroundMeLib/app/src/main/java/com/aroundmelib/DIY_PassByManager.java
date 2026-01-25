@@ -19,10 +19,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,6 +49,42 @@ public class DIY_PassByManager
     private Thread connReadThread = null;
     private String lastSelectedImagePath = null;
     private HashSet<String> mValidBlePlayerNames = new HashSet<>();
+
+    public ArrayList<Uri> mPendingToSendPhotoUris =new java.util.ArrayList<>();
+    public ArrayList<Uri> mPendingToPassToGameWorldPhotoUris =new java.util.ArrayList<>();
+    public void AddPhotoToPendingQueue(String filePath)
+    {
+
+        File file = new File(filePath);
+        if (file.exists())
+        {
+            mPendingToSendPhotoUris.add(Uri.fromFile(file));
+            logSafe("DIY_Commu"+ "成功添加照片到待发队列: " + filePath,DIY_CommuUtils.LogLevel.ERROR);
+        }
+        else
+        {
+            logSafe("DIY_Commu"+ "文件不存在，添加失败: " + filePath,DIY_CommuUtils.LogLevel.ERROR);
+        }
+    }
+    public void ClearAndThumbnail(Uri photoUri)
+    {
+        try
+        {
+            File file = new File(photoUri.getPath());
+            if (file.exists())
+            {
+                boolean deleted = file.delete();
+                mPendingToSendPhotoUris.remove(photoUri);
+                logSafe("DIY_Commu"+"发送完毕，已删除临时文件: " + (deleted?"删除成功":"未找到"),
+                        DIY_CommuUtils.LogLevel.ERROR);
+            }
+        }
+        catch (Exception e)
+        {
+            logSafe("DIY_Commu"+"删除文件出错: " + e.getMessage(),DIY_CommuUtils.LogLevel.ERROR);
+        }
+    }
+
     public void addValidBlePlayerName(String name)
     {
         if (
@@ -61,6 +95,23 @@ public class DIY_PassByManager
         {
             mValidBlePlayerNames.add(name);
             logSafe("熟人名单更新: " + name, DIY_CommuUtils.LogLevel.DEBUG);
+
+            StartScanningPeers();
+
+        }
+    }
+    private void closeActiveSockets()
+    {
+        try {
+            if (connWriter != null) { connWriter.close(); connWriter = null; }
+            if (connReader != null) { connReader.close(); connReader = null; }
+            if (connSocket != null) { connSocket.close(); connSocket = null; }
+            // 注意：这里不要在 startServerSocket 内部直接 new 局部变量 ServerSocket
+            // 建议将其定义为成员变量，或者在启动前确保它被处理
+        }
+        catch (Exception e)
+        {
+            logSafe("Cleanup sockets error: " + e.getMessage(), DIY_CommuUtils.LogLevel.DEBUG);
         }
     }
     public boolean isBlePlayer(String deviceName)
@@ -111,7 +162,7 @@ public class DIY_PassByManager
     private Activity activity;
 
     private Context Current_Context;
-    private Uri Chosen_Uri;
+
     private ArrayList<DIY_CommuUtils.DIY_WfdPeer> wfdPeerListCache;
 
     private final HashMap<String, DIY_CommuUtils.DIY_WfdPeer> wfdPeerMap = new HashMap<>();
@@ -133,9 +184,13 @@ public class DIY_PassByManager
         return channel;
     }
 
-    public Uri GetChosen_Uri()
+    public Uri GetLatestInPendingQueue_Uri()
     {
-        return Chosen_Uri;
+        if(mPendingToSendPhotoUris.size()==0)
+        {
+            return Uri.EMPTY;
+        }
+        return mPendingToSendPhotoUris.get(mPendingToSendPhotoUris.size()-1);
     }
 
 
@@ -160,7 +215,8 @@ public class DIY_PassByManager
         activity.startActivityForResult(Intent.createChooser(intent, "Select Image"), DIY_CommuUtils.REQUEST_OPEN_PIC);
     }
     @SuppressLint("MissingPermission")
-    public void disconnect() {
+    public void disconnect()
+    {
 
         // ① 取消正在进行的连接（避免卡 invited）
         manager.cancelConnect(channel, new WifiP2pManager.ActionListener() {
@@ -174,18 +230,23 @@ public class DIY_PassByManager
                     @Override
                     public void onSuccess()
                     {
-                        isConnected = false;
-                        connectedDeviceMac = null;
+
+                        setConnected(false);
 
 
-                        logSafe("Disconnected!", DIY_CommuUtils.LogLevel.SUCCESS);
+                        setConnectedDeviceMac(null);
+                        closeActiveSockets();
+
+                        logSafe("Disconnected! and removed group", DIY_CommuUtils.LogLevel.SUCCESS);
 
                     }
 
                     @Override
                     public void onFailure(int reason)
                     {
-
+                        setConnected(false);
+                        setConnectedDeviceMac(null);
+                        closeActiveSockets();
                         logSafe("removeGroup failed: " + reason, DIY_CommuUtils.LogLevel.ERROR);
 
                     }
@@ -199,9 +260,8 @@ public class DIY_PassByManager
                 manager.removeGroup(channel, new WifiP2pManager.ActionListener()
                 {
                     @Override
-                    public void onSuccess() {
-                        isConnected = false;
-                        connectedDeviceMac = null;
+                    public void onSuccess()
+                    {
 
                         logSafe("Disconnected (remove only)", DIY_CommuUtils.LogLevel.SUCCESS);
 
@@ -222,11 +282,13 @@ public class DIY_PassByManager
     @SuppressLint("MissingPermission")
     public void connectToPeer(String mac)
     {
-        // ✔ 记录当前正在连接的对象
-        connectedDeviceMac = mac;
-        isConnected = false;   // 防止旧状态残留
 
-
+        //do not allow for multiple connections ,which uses too much power
+        if(isConnected())
+        {
+            logSafe("Already connected to " + connectedDeviceMac, DIY_CommuUtils.LogLevel.WARNING);
+            return;
+        }
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = mac;
         config.wps.setup = WpsInfo.PBC;
@@ -237,6 +299,8 @@ public class DIY_PassByManager
             {
 
                 logSafe("DIY_PassByManager: connectToPeer success: " + mac, DIY_CommuUtils.LogLevel.WARNING);
+                setConnectedDeviceMac(mac);
+
 
 
                 logSafe("Connect success, waiting group formation...", DIY_CommuUtils.LogLevel.WARNING);
@@ -249,7 +313,8 @@ public class DIY_PassByManager
 
                 logSafe("connectToPeer FAILED: " + reason,DIY_CommuUtils.LogLevel.ERROR);
 
-
+                setConnectedDeviceMac(null);
+                setConnected(false);
                 logSafe("Connect failed: " + reason, DIY_CommuUtils.LogLevel.WARNING);
 
             }
@@ -266,52 +331,9 @@ public class DIY_PassByManager
         logSafe("==== RESET WiFi Direct ====", DIY_CommuUtils.LogLevel.WARNING);
 
 
-        // 1. 取消正在进行的连接
-        manager.cancelConnect(channel, new WifiP2pManager.ActionListener()
-        {
-            @Override
-            public void onSuccess()
-            {
+        disconnect();
+        stopDiscoveryAndReset();
 
-                logSafe("DIY_PassByManager: cancelConnect OK", DIY_CommuUtils.LogLevel.WARNING);
-
-
-                // 2. 移除 group
-                manager.removeGroup(channel, new WifiP2pManager.ActionListener()
-                {
-                    @Override
-                    public void onSuccess()
-                    {
-
-                        logSafe("removeGroup OK", DIY_CommuUtils.LogLevel.WARNING);
-
-
-                        // 3. 停止 peer 扫描
-                        stopDiscoveryAndReset();
-                    }
-
-                    @Override
-                    public void onFailure(int reason)
-                    {
-
-                        logSafe("removeGroup FAILED: " + reason, DIY_CommuUtils.LogLevel.ERROR);
-
-
-                        stopDiscoveryAndReset();
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(int reason)
-            {
-                logSafe("DIY_PassByManager: cancelConnect FAILED: " + reason, DIY_CommuUtils.LogLevel.ERROR);
-
-
-                // 不管 cancel 成功与否，都继续 reset
-                stopDiscoveryAndReset();
-            }
-        });
     }
 
     @SuppressLint("MissingPermission")
@@ -342,9 +364,9 @@ public class DIY_PassByManager
     private void finishReset() {
 
         // 清空状态
-        isConnected = false;
-        connectedDeviceMac = null;
 
+        setConnected(false);
+        setConnectedDeviceMac(null);
         // 清空缓存
         wfdPeerMap.clear();
         if (wfdPeerListCache != null) {
@@ -410,6 +432,30 @@ public class DIY_PassByManager
                         }
 
                         p.lastSeenTime = now;
+
+
+
+                        if (isBlePlayer(dev.deviceName))
+                        {
+                            logSafe("发现熟人 WiFi: " + dev.deviceName + " 地址: " + dev.deviceAddress,
+                                    DIY_CommuUtils.LogLevel.SUCCESS);
+
+                            // 这里的 device.deviceAddress 就是该设备本次真实的、可连的 P2P MAC 地址！
+
+
+                            if(mReportSchema!=null&& mReportSchema.HasAnySendPhotoTask())
+                            {
+                                logSafe("检测到待发送任务，尝试连接...", DIY_CommuUtils.LogLevel.INFO);
+
+                                // 执行连接（之前写好的 connectToPeer 方法）
+                                connectToPeer(dev.deviceAddress);
+
+
+
+                            }
+
+                        }
+
                     }
 
                     // 清理 30 秒没有刷新过的设备
@@ -475,12 +521,20 @@ public class DIY_PassByManager
                 NetworkInfo networkInfo =
                         intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
+                if (networkInfo != null && !networkInfo.isConnected())
+                {
+                    setConnected(false);
+                    setConnectedDeviceMac(null);
+                    closeActiveSockets();
+
+                }
                 if (networkInfo != null && networkInfo.isConnected())
                 {
-                    isConnected = true;
+
+
                     manager.requestConnectionInfo(channel, info ->
                     {
-                        isConnected = true;
+
                         boolean isGO = info.isGroupOwner;
                         String groupOwnerIp = info.groupOwnerAddress.getHostAddress();
 
@@ -500,6 +554,7 @@ public class DIY_PassByManager
 
                             startClientSocket(groupOwnerIp); // Client 主动连接 GO
                         }
+                        setConnected(true);
                     });
                 }
             }
@@ -699,21 +754,23 @@ public class DIY_PassByManager
 
     public void startServerSocket()
     {
+
+
+        closeActiveSockets(); // ✅ 启动前先清理旧连接
         new Thread(() ->
         {
-            try
+            // 关键：使用 try-with-resources 确保 ServerSocket 在异常或结束时关闭
+            try (ServerSocket ss = new ServerSocket(8988))
             {
-                logSafe("[Server] 启动 ServerSocket 8988", DIY_CommuUtils.LogLevel.INFO);
-                ServerSocket ss = new ServerSocket(8988);
+                ss.setReuseAddress(true); // ✅ 允许端口重用，防止 TIME_WAIT 状态导致无法绑定
+                logSafe("[Server] 监听端口 8988...", DIY_CommuUtils.LogLevel.INFO);
                 Socket client = ss.accept();
 
                 connSocket = client;
                 connWriter = new PrintWriter(client.getOutputStream(), true);
 
                 logSafe("[Server] Client 已连接", DIY_CommuUtils.LogLevel.SUCCESS);
-
                 startReceiveLoop(client);
-
             }
             catch(Exception e)
             {
@@ -727,11 +784,13 @@ public class DIY_PassByManager
 
     public void startClientSocket(String goIp)
     {
+        closeActiveSockets(); // ✅ 启动前先清理旧连接
         new Thread(() ->
         {
             try
             {
                 Socket socket = new Socket();
+                socket.setReuseAddress(true); // ✅ 允许重用
                 socket.bind(null);
                 socket.connect(new InetSocketAddress(goIp, 8988), 5000);
 
@@ -739,15 +798,12 @@ public class DIY_PassByManager
                 connWriter = new PrintWriter(socket.getOutputStream(), true);
 
                 logSafe("[Client] 连接 GO 成功", DIY_CommuUtils.LogLevel.SUCCESS);
-
-                startReceiveLoop(socket); // 必须添加
-
+                startReceiveLoop(socket);
             }
             catch(Exception e)
             {
                 logSafe("[Client] 错误: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
             }
-
         }).start();
     }
 
@@ -810,17 +866,19 @@ public class DIY_PassByManager
         if (resultCode != Activity.RESULT_OK) return;
         if (data == null) return;
 
-        Chosen_Uri = data.getData();
-        if (Chosen_Uri == null) return;
+        Uri current_uri = data.getData();
 
-        String path = getPathFromUri(activity, Chosen_Uri);
+        if (current_uri == null) return;
+
+        String path = getPathFromUri(activity, current_uri);
         if (path == null)
         {
             // 取不到物理路径时，可以先传 URI 字符串回去（UE端再处理），或实现流拷贝到缓存后传路径
-            path = Chosen_Uri.toString();
+            path = current_uri.toString();
         }
         logSafe("Selected image path/uri: " + path, DIY_CommuUtils.LogLevel.WARNING);
 
+        AddPhotoToPendingQueue(path);
         lastSelectedImagePath = path;   // <-- 新增
         //nativeOnImageSelected(path);
     }

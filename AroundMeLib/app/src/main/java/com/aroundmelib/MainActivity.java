@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity
             mDIY_PassByManagerInstace.onActivityResult(requestCode, resultCode, data);
             if (requestCode == DIY_CommuUtils.REQUEST_OPEN_PIC && resultCode == Activity.RESULT_OK && data != null)
             {
-                Uri selectedImage =mDIY_PassByManagerInstace.GetChosen_Uri();
+                Uri selectedImage =mDIY_PassByManagerInstace.GetLatestInPendingQueue_Uri();
 
 
                 appendToLog("图片已选择：" + selectedImage.toString(), DIY_CommuUtils.LogLevel.INFO);

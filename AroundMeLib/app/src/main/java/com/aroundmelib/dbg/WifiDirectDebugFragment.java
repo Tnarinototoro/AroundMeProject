@@ -201,25 +201,26 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
 
         mButton_Pick.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View arg0) {
-                MainActivity Cur_Activity =
-                        (MainActivity) getActivity();
+            public void onClick(View arg0)
+            {
 
-                if (null != Cur_Activity.getDIY_PassByManagerInstace()) {
-                    Cur_Activity.getDIY_PassByManagerInstace().openImagePicker();
+
+                if (null != GetDIY_PassByManagerInstace())
+                {
+                    GetDIY_PassByManagerInstace().openImagePicker();
                 }
             }
         });
 
-        mButtonScanPeers.setOnClickListener(v -> {
+        mButtonScanPeers.setOnClickListener(v ->
+        {
             appendWfdLog_UIOperation("Start discovering peers...");
+            DIY_PassByManager Cur_PassByManager = GetDIY_PassByManagerInstace();
+            if(null!=Cur_PassByManager)
+            {
+                Cur_PassByManager.StartScanningPeers();
+            }
 
-            MainActivity Cur_Activity =
-                    (MainActivity) getActivity();
-
-            DIY_PassByManager Cur_PassByManager =
-                    Cur_Activity.getDIY_PassByManagerInstace();
-            Cur_PassByManager.StartScanningPeers();
 
 
 
@@ -364,5 +365,13 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
         return null;
     }
 
+    @Override
+    public boolean HasAnySendPhotoTask()
+    {
+        DIY_PassByManager mgr = GetDIY_PassByManagerInstace();
+        if(null==mgr) return false;
+
+        return DIY_CommuUtils.isUriValid(getContext(),mgr.GetLatestInPendingQueue_Uri());
+    }
 
 }

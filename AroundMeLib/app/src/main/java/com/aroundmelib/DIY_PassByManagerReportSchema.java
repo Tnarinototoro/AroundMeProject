@@ -22,4 +22,9 @@ public interface DIY_PassByManagerReportSchema
     {
         return null;
     }
+
+    default boolean HasAnySendPhotoTask()
+    {
+        return false;
+    }
 }
