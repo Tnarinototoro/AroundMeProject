@@ -322,15 +322,19 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
         int randomId = 2000 + random.nextInt(10000);
         nm.notify(randomId, builder.build());
     }
+    // 使用 synchronized 确保对 logQueue 的所有操作都是原子性的
     public void appendToLog(String text, DIY_CommuUtils.LogLevel level)
     {
         OnNewLogGenerated(text);
 
-        // B. 更新 Log 队列
+        // B. 更新 Log 队列（加锁）
         String timeStamp = new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date());
-        logQueue.addFirst(timeStamp + ": " + text);
-        if (logQueue.size() > MAX_LOG_LINES) {
-            logQueue.removeLast();
+
+        synchronized (logQueue) { // ✅ 锁定队列，防止读写冲突
+            logQueue.addFirst(timeStamp + ": " + text);
+            if (logQueue.size() > MAX_LOG_LINES) {
+                logQueue.removeLast();
+            }
         }
 
         // C. 刷新 Log 通知
@@ -338,8 +342,12 @@ public class DIY_Service extends Service implements DIY_CommuManagerReportSchema
     }
     private void updateLogNotification() {
         StringBuilder sb = new StringBuilder();
-        for (String s : logQueue) {
-            sb.append(s).append("\n");
+
+        // ✅ 关键：遍历时必须加锁，否则遍历到一半如果 addFirst 了，指针就断了
+        synchronized (logQueue) {
+            for (String s : logQueue) {
+                sb.append(s).append("\n");
+            }
         }
 
         Notification logNotif = new NotificationCompat.Builder(this, LOG_CHANNEL_ID)
