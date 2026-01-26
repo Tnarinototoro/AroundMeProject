@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WpsInfo;
@@ -56,16 +58,20 @@ public class DIY_PassByManager
     {
 
         File file = new File(filePath);
-        if (file.exists())
+        if (!file.exists()) return;
+
+        // ✅ 检查是否是 HEIC
+        String pathLower = filePath.toLowerCase();
+        if (pathLower.endsWith(".heic") || pathLower.endsWith(".heif"))
         {
-            mPendingToSendPhotoUris.add(Uri.fromFile(file));
-            logSafe("DIY_Commu"+ "成功添加照片到待发队列: " + filePath,DIY_CommuUtils.LogLevel.ERROR);
-            logSafe("当前队列数量: " + mPendingToSendPhotoUris.size(),DIY_CommuUtils.LogLevel.ERROR);
+            file = convertHeicToJpeg(file);
+            filePath = file.getAbsolutePath();
         }
-        else
-        {
-            logSafe("DIY_Commu"+ "文件不存在，添加失败: " + filePath,DIY_CommuUtils.LogLevel.ERROR);
-        }
+
+        mPendingToSendPhotoUris.add(Uri.fromFile(file));
+        logSafe("成功添加任务: " + filePath, DIY_CommuUtils.LogLevel.INFO);
+
+
     }
     public boolean SimpleRemovePhoto(Uri photoUri)
     {
@@ -904,6 +910,29 @@ public class DIY_PassByManager
     }
 
 
+    private File convertHeicToJpeg(File heicFile)
+    {
+        try {
+            // 1. 解码 HEIC
+            Bitmap bitmap = BitmapFactory.decodeFile(heicFile.getAbsolutePath());
+            if (bitmap == null) return heicFile; // 解码失败则返回原文件
+
+            // 2. 创建临时 JPEG 文件
+            File jpegFile = new File(activity.getCacheDir(), "converted_" + System.currentTimeMillis() + ".jpg");
+            FileOutputStream fos = new FileOutputStream(jpegFile);
+
+            // 3. 压成 JPEG (质量设为 90 足够了)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            fos.close();
+            bitmap.recycle(); // 释放内存
+
+            logSafe("HEIC 已自动转换为 JPEG 进行发送", DIY_CommuUtils.LogLevel.INFO);
+            return jpegFile;
+        } catch (Exception e) {
+            logSafe("HEIC 转换失败: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+            return heicFile;
+        }
+    }
     public static String getPathFromUri(final Context context, final Uri uri) {
         // DocumentProvider
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
