@@ -49,8 +49,9 @@ void ADIY_EnvObjectBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 ADIY_EnvObjectBase::ADIY_EnvObjectBase()
 {
     PrimaryActorTick.bCanEverTick = false;
+    RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 #if WITH_EDITOR
-    RootComponent=CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+
     // 使用标准创建方式，但标记为仅编辑器可见
     ErrorTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("ErrorTextComponent"));
     if (ErrorTextComponent)
@@ -58,17 +59,17 @@ ADIY_EnvObjectBase::ADIY_EnvObjectBase()
         ErrorTextComponent->SetupAttachment(RootComponent);
         ErrorTextComponent->SetRelativeLocation(FVector(0.f, 0.f, 150.f)); // 稍微调高一点，防止穿模
 
-         // 关键属性设置
-         // ErrorTextComponent
-         ErrorTextComponent->bHiddenInGame = true; // 运行游戏时隐藏
-         ErrorTextComponent->CastShadow = false;   // 关闭阴影减少开销
+        // 关键属性设置
+        // ErrorTextComponent
+        ErrorTextComponent->bHiddenInGame = true; // 运行游戏时隐藏
+        ErrorTextComponent->CastShadow = false;   // 关闭阴影减少开销
 
-         ErrorTextComponent->SetTextRenderColor(FColor::Red);
-         ErrorTextComponent->SetHorizontalAlignment(EHTA_Center);
-         ErrorTextComponent->SetWorldSize(60.f);
-         ErrorTextComponent->bIsEditorOnly = true;
-         // 确保在编辑器里即便没选中也能看到
-         ErrorTextComponent->SetVisibility(true);
+        ErrorTextComponent->SetTextRenderColor(FColor::Red);
+        ErrorTextComponent->SetHorizontalAlignment(EHTA_Center);
+        ErrorTextComponent->SetWorldSize(60.f);
+        ErrorTextComponent->bIsEditorOnly = true;
+        // 确保在编辑器里即便没选中也能看到
+        ErrorTextComponent->SetVisibility(true);
     }
 #endif
 }
