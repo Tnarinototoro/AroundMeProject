@@ -127,6 +127,29 @@ UTexture2D *UDIY_ItemManagerSubsystem::GetItemIconTexture(FPrimaryAssetId inITem
     return icon;
 }
 
+void UDIY_ItemManagerSubsystem::RequestSpawnItemWithCallback(FPrimaryAssetId ItemID, FVector Location, FRotator Rotation, TFunction<void(AActor *)> OnComplete)
+{
+    // 1. 尝试从对象池拿 (同步)
+    TArray<AActor *> *Pool = ItemPools.Find(ItemID);
+    if (Pool && Pool->Num() > 0)
+    {
+        AActor *Item = Pool->Pop();
+        Item->SetActorLocationAndRotation(Location, Rotation, false, nullptr, ETeleportType::ResetPhysics);
+        Item->SetActorHiddenInGame(false);
+        if (ADIY_ItemBase *ItemBase = Cast<ADIY_ItemBase>(Item))
+        {
+            ItemBase->InitItem(ItemID);
+            ItemBase->SetActorTickEnabled(true);
+        }
+        if (OnComplete)
+            OnComplete(Item); // 立即回调
+        return;
+    }
+
+    // 2. 走带回调的异步加载链条
+    SpawnItemInternal_WithCallback(ItemID, Location, Rotation, OnComplete);
+}
+
 UDIY_ItemManagerSubsystem::UDIY_ItemManagerSubsystem()
 {
     static ConstructorHelpers::FClassFinder<UDIY_ItemManagerSubsystemHelperBase>
@@ -274,6 +297,56 @@ void UDIY_ItemManagerSubsystem::SpawnActorFromClass(UClass *ActorClass, FVector 
     }
 }
 
+void UDIY_ItemManagerSubsystem::SpawnItemInternal_WithCallback(FPrimaryAssetId ItemID, FVector Location, FRotator Rotation, TFunction<void(AActor *)> CompletionCallback)
+{
+    const UDIY_ItemAsset *ItemResource = UAssetManager::Get().GetPrimaryAssetObject<UDIY_ItemAsset>(ItemID);
+
+    // 如果资源本身没加载，先加载 DataAsset
+    if (!ItemResource)
+    {
+        UAssetManager::Get().LoadPrimaryAsset(ItemID, TArray<FName>(), FStreamableDelegate::CreateUObject(this, &UDIY_ItemManagerSubsystem::SpawnItemInternal_WithCallback, ItemID, Location, Rotation, CompletionCallback));
+        return;
+    }
+
+    TSoftClassPtr<AActor> ItemClassPtr = ItemResource->ItemActorClass;
+
+    // 尝试直接获取类
+    if (UClass *LoadedClass = ItemClassPtr.Get())
+    {
+        AActor *NewActor = FinalizeSpawn(LoadedClass, Location, Rotation, ItemID);
+        if (CompletionCallback)
+            CompletionCallback(NewActor);
+        return;
+    }
+
+    // 资源在磁盘，启动异步加载并把回调传下去
+    UAssetManager::GetStreamableManager().RequestAsyncLoad(
+        ItemClassPtr.ToSoftObjectPath(),
+        FStreamableDelegate::CreateUObject(this, &UDIY_ItemManagerSubsystem::OnItemClassLoaded_WithCallback, ItemID, ItemClassPtr.ToSoftObjectPath(), Location, Rotation, CompletionCallback));
+}
+
+void UDIY_ItemManagerSubsystem::OnItemClassLoaded_WithCallback(FPrimaryAssetId ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, TFunction<void(AActor *)> CompletionCallback)
+{
+    UClass *LoadedClass = Cast<UClass>(ItemPath.ResolveObject());
+    AActor *NewActor = FinalizeSpawn(LoadedClass, Location, Rotation, ItemID);
+    if (CompletionCallback)
+        CompletionCallback(NewActor);
+}
+
+AActor *UDIY_ItemManagerSubsystem::FinalizeSpawn(UClass *ActorClass, FVector Location, FRotator Rotation, FPrimaryAssetId ItemID)
+{
+    if (!ActorClass)
+        return nullptr;
+
+    AActor *SpawnedActor = GetWorld()->SpawnActor<AActor>(ActorClass, Location, Rotation);
+    if (ADIY_ItemBase *ItemBase = Cast<ADIY_ItemBase>(SpawnedActor))
+    {
+        ItemBase->InitItem(ItemID);
+        ItemBase->SetActorTickEnabled(true);
+    }
+    return SpawnedActor;
+}
+
 void UDIY_ItemManagerSubsystem::OnItemRequestRecycle(class AActor *inActor)
 {
     RequestRecycleItem(inActor);
@@ -362,4 +435,59 @@ float UDIY_ItemManagerSubsystem::GetEnergyTotalEarnedLimit() const
 
 void UDIY_ItemManagerSubsystemHelperBase::Initialize()
 {
+}
+
+UDIY_AsyncAction_SpawnItem *UDIY_AsyncAction_SpawnItem::AsyncSpawnItem(UObject *WorldContextObject, FPrimaryAssetId ItemID, FVector Location, FRotator Rotation)
+{
+    UDIY_AsyncAction_SpawnItem *Action = NewObject<UDIY_AsyncAction_SpawnItem>();
+    Action->WorldContextPtr = WorldContextObject;
+    Action->CachedItemID = ItemID;
+    Action->CachedLocation = Location;
+    Action->CachedRotation = Rotation;
+    return Action;
+}
+
+void UDIY_AsyncAction_SpawnItem::Activate()
+{
+    // 不要直接调用 GetWorld()，因为它在这个对象里大概率返回 null
+    UWorld *World = GEngine->GetWorldFromContextObject(WorldContextPtr.Get(), EGetWorldErrorMode::LogAndReturnNull);
+
+    if (!World)
+    {
+
+        OnFailure.Broadcast(nullptr);
+        SetReadyToDestroy();
+        return;
+    }
+
+    auto *Manager = UDIY_ItemManagerSubsystem::Get(World);
+
+    if (!Manager)
+    {
+
+        OnFailure.Broadcast(nullptr);
+        SetReadyToDestroy();
+        return;
+    }
+
+    TWeakObjectPtr<UDIY_AsyncAction_SpawnItem> WeakSelf(this);
+    // 调用回调入口
+    Manager->RequestSpawnItemWithCallback(
+        CachedItemID,
+        CachedLocation,
+        CachedRotation,
+        [WeakSelf](AActor *ResultActor)
+        {
+                                            if(WeakSelf.IsValid())
+                                            {
+                                                if (ResultActor)
+                                                {
+                                                    WeakSelf->OnSuccess.Broadcast(ResultActor);
+                                                }
+                                                else
+                                                {
+                                                     WeakSelf->OnFailure.Broadcast(nullptr);
+                                                }
+                                                WeakSelf->SetReadyToDestroy();
+                                            } });
 }

@@ -6,8 +6,42 @@
 #include "UObject/NoExportTypes.h"
 #include "DIY_ItemDefines.h"
 #include "../../System/DIY_GameInstanceSubsystem.h"
+#include "Kismet/BlueprintAsyncActionBase.h"
 // #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "DIY_ItemManager.generated.h"
+
+// 定义输出执行线的委托
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSpawnItemCompleted, AActor *, SpawnedActor);
+
+UCLASS()
+class UDIY_AsyncAction_SpawnItem : public UBlueprintAsyncActionBase
+{
+    GENERATED_BODY()
+
+public:
+    // 蓝图节点上的两个输出执行线
+    UPROPERTY(BlueprintAssignable)
+    FOnSpawnItemCompleted OnSuccess;
+
+    UPROPERTY(BlueprintAssignable)
+    FOnSpawnItemCompleted OnFailure;
+
+    // 静态工厂函数：在蓝图中搜索 "Async Spawn Item" 就会看到它
+    UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "DIY|Item")
+    static UDIY_AsyncAction_SpawnItem *AsyncSpawnItem(UObject *WorldContextObject, FPrimaryAssetId ItemID, FVector Location, FRotator Rotation);
+
+    // 实际执行逻辑
+    virtual void Activate() override;
+
+private:
+    TWeakObjectPtr<UObject> WorldContextPtr;
+    FPrimaryAssetId CachedItemID;
+    FVector CachedLocation;
+    FRotator CachedRotation;
+
+    // 内部回调，对接 Subsystem 的异步结果
+    void HandleItemSpawned(AActor *Actor);
+};
 
 UCLASS()
 class AROUNDME_API UDIY_ItemManagerSubsystem : public UDIY_GameInstanceSubsystem
@@ -15,6 +49,9 @@ class AROUNDME_API UDIY_ItemManagerSubsystem : public UDIY_GameInstanceSubsystem
     GENERATED_BODY()
 
 public:
+    // 供 Async Action 调用的唯一入口
+    void RequestSpawnItemWithCallback(FPrimaryAssetId ItemID, FVector Location, FRotator Rotation, TFunction<void(AActor *)> OnComplete);
+
     UDIY_ItemManagerSubsystem();
 
     static UDIY_ItemManagerSubsystem *Get(UWorld *World);
@@ -60,6 +97,15 @@ private:
     void OnItemRequestRecycle(AActor *inActor);
     void OnItemClassLoaded(FPrimaryAssetId ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation);
     void SpawnActorFromClass(UClass *inClass, FVector Location, FRotator Rotation, FPrimaryAssetId ItemID);
+
+    // 专门处理带回调的 Spawn 链条
+    void SpawnItemInternal_WithCallback(FPrimaryAssetId ItemID, FVector Location, FRotator Rotation, TFunction<void(AActor *)> CompletionCallback);
+
+    // 异步加载后的中间环节
+    void OnItemClassLoaded_WithCallback(FPrimaryAssetId ItemID, FSoftObjectPath ItemPath, FVector Location, FRotator Rotation, TFunction<void(AActor *)> CompletionCallback);
+
+    // 最终生成的出口
+    AActor *FinalizeSpawn(UClass *ActorClass, FVector Location, FRotator Rotation, FPrimaryAssetId ItemID);
 
     TMap<FPrimaryAssetId, TArray<AActor *>> ItemPools;
     TMap<FPrimaryAssetId, FDIY_ItemStatisticInfo> ItemStatistics;
