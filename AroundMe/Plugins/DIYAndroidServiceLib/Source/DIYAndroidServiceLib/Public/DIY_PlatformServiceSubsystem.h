@@ -8,6 +8,7 @@ UCLASS()
 class DIYPLATFORMSERVICE_API UDIYPlatformServiceSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
+	bool IsGifData(const TArray<uint8> &ImageData);
 
 public:
 	/**
@@ -57,7 +58,7 @@ public:
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAroundMeService_WithIntMsg, int, inIntMsg);
 
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnImageTextureReceived, UTexture2D *, inTexture);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnImageTextureReceived, UTexture *, inTexture);
 
 public: // 蓝图可调用
 	UFUNCTION(BlueprintCallable)
@@ -87,7 +88,7 @@ public: // 蓝图可调用
 	// received from user self choice
 	void OnImageBytesReceivedFromOtherDevices(const TArray<uint8> &ImageBytes);
 
-	class UTexture2D *CreateTextureFromImageBytes(
+	class UTexture *CreateTextureFromImageBytes(
 		const TArray<uint8> &ImageData);
 
 public: // 蓝图 Delegate
@@ -119,8 +120,8 @@ public: // 蓝图 Delegate
 
 protected:
 	UPROPERTY()
-	class UTexture2D *LastReceivedImageTexture = nullptr;
+	class UTexture *LastReceivedImageTexture = nullptr;
 
 	UPROPERTY()
-	class UTexture2D *LastReceivedImageTextureFromOtherDevice = nullptr;
+	class UTexture *LastReceivedImageTextureFromOtherDevice = nullptr;
 };

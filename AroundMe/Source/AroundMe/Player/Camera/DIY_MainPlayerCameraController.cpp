@@ -18,7 +18,6 @@ UDIY_MainPlayerCameraController::UDIY_MainPlayerCameraController()
     // Create CameraBoom (Spring Arm component)
     CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 
-
     CameraBoom->SetupAttachment(this);
     CameraBoom->TargetArmLength = 600.f;
     CameraBoom->bUsePawnControlRotation = true; // Rotate arm based on controller
@@ -31,12 +30,12 @@ UDIY_MainPlayerCameraController::UDIY_MainPlayerCameraController()
     FollowCamera->SetConstraintAspectRatio(true);
     FollowCamera->SetAspectRatio(16.0f/9.0f);
 #endif
-                                                                                // if (CameraBoom->GetAttachParent() == GetCapsuleComponent())
-                                                                                // {
-                                                                                // 	UE_LOG(LogTemp, Warning, TEXT("CameraBoom is correctly attached to PlayerCapsule."));
-                                                                                // }
-                                                                                // else
-                                                                                // {
+                                                   // if (CameraBoom->GetAttachParent() == GetCapsuleComponent())
+                                                   // {
+                                                   // 	UE_LOG(LogTemp, Warning, TEXT("CameraBoom is correctly attached to PlayerCapsule."));
+                                                   // }
+                                                   // else
+                                                   // {
 
     // 	UE_LOG(LogTemp, Warning, TEXT("CameraBoom is NOT attached to PlayerCapsule."));
     // }
@@ -56,31 +55,27 @@ void UDIY_MainPlayerCameraController::BeginPlay()
         cur_controller->SetControlRotation(NewRotator);
     }
 
-    AActor* Owner = GetOwner();
+    AActor *Owner = GetOwner();
 
     if (nullptr != Owner)
     {
-        
+
         PlayerCameraEntry.CameraActor = Owner;
-        if (UDIY_CameraManager* CM = UDIY_CameraManager::Get(this))
+        if (UDIY_CameraManager *CM = UDIY_CameraManager::Get(this))
         {
             ensureAlwaysMsgf(PlayerCameraEntry.CameraActor.IsValid(), TEXT("Camera Entry Failed with empty camera actor with name %s"), *PlayerCameraEntry.CameraName.ToString());
             CM->AddCameraEntry(PlayerCameraEntry);
-             if(!CM->OnCameraInUseChanged.IsAlreadyBound(this,&UDIY_MainPlayerCameraController::OnCameraInUseChanged))
-             {
-                 CM->OnCameraInUseChanged.AddDynamic(this,&UDIY_MainPlayerCameraController::OnCameraInUseChanged);
-             }
-
+            if (!CM->OnCameraInUseChanged.IsAlreadyBound(this, &UDIY_MainPlayerCameraController::OnCameraInUseChanged))
+            {
+                CM->OnCameraInUseChanged.AddDynamic(this, &UDIY_MainPlayerCameraController::OnCameraInUseChanged);
+            }
         }
     }
-
-    
-
 }
 
 void UDIY_MainPlayerCameraController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if (UDIY_CameraManager* CM = UDIY_CameraManager::Get(this))
+    if (UDIY_CameraManager *CM = UDIY_CameraManager::Get(this))
     {
         CM->RemoveCameraEntry(PlayerCameraEntry.CameraName);
         if (CM->OnCameraInUseChanged.IsAlreadyBound(this, &UDIY_MainPlayerCameraController::OnCameraInUseChanged))
@@ -92,15 +87,15 @@ void UDIY_MainPlayerCameraController::EndPlay(const EEndPlayReason::Type EndPlay
     Super::EndPlay(EndPlayReason);
 }
 
-void UDIY_MainPlayerCameraController::OnCameraInUseChanged(AActor* NewCameraActor)
+void UDIY_MainPlayerCameraController::OnCameraInUseChanged(AActor *NewCameraActor)
 {
     if (nullptr == NewCameraActor)
         return;
 
-    AActor* Owner = this->GetOwner();
+    AActor *Owner = this->GetOwner();
 
     if (Owner == nullptr)
-    { 
+    {
         return;
     }
 
@@ -113,7 +108,6 @@ void UDIY_MainPlayerCameraController::OnCameraInUseChanged(AActor* NewCameraActo
     {
         return;
     }
-
 
     if (NewCameraActor == Owner)
     {
@@ -203,7 +197,7 @@ void UDIY_MainPlayerCameraController::UpdateUpDownCam(float DeltaTime)
 
 void UDIY_MainPlayerCameraController::HandleMouseMoveForUpDownCam(const FVector2D &Value)
 {
-    // UE_LOG(MainPlayerLog, Warning, TEXT("yYYYYY before pitch x %f, added pitch %f"), GetControlRotation().Pitch, Axis2DValue.Y * 5.0f);
+
 #if 0
 
     if (CurrentUpDownType == TargetUpDownType)

@@ -333,23 +333,30 @@ public class WifiDirectDebugFragment extends Fragment implements DIY_PassByManag
     @Override
     public void onImageReceivedFromOtherPhone(File file)
     {
+        // 如果是 Debug App，我们只求它不崩，能看个大概就行
         requireActivity().runOnUiThread(() ->
         {
-            appendWfdLog_UIOperation("准备 decode 图片: " + file.getAbsolutePath());
+            if (file == null || !file.exists()) return;
 
-            Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
-            if (bmp == null)
-            {
-                appendWfdLog_UIOperation("❌ decodeFile 失败，图片损坏！");
-                return;
+            // 💡 针对 GIF 的一点点小温柔：如果文件名是 .gif，我们在 Log 里提示一下
+            if (file.getName().toLowerCase().endsWith(".gif")) {
+                appendWfdLog_UIOperation("👀 收到 GIF 动图，DebugApp 仅显示首帧静态预览");
             }
 
-            appendWfdLog_UIOperation("✔ decodeFile 成功，设置到 UI");
+            // 使用 inSampleSize 简单优化，防止大图撑爆 Debug App 内存
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 2; // 采样缩小，Debug App 只要能看见就行
 
-            ImageView recvView = getView().findViewById(R.id.image_receive);
-            recvView.setImageBitmap(bmp);
+            Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 
-            appendWfdLog_UIOperation("✔ 图片已成功显示在 Receive 区域");
+            if (bmp != null)
+            {
+                ImageView recvView = getView().findViewById(R.id.image_receive);
+                recvView.setImageBitmap(bmp);
+                appendWfdLog_UIOperation("✔ 已在预览区显示静态缩略图");
+            } else {
+                appendWfdLog_UIOperation("❌ 图片解析失败（可能是格式不支持）");
+            }
         });
     }
 

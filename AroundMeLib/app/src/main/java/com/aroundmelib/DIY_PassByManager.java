@@ -217,19 +217,41 @@ public class DIY_PassByManager
         return wfdPeerListCache.get(idx);
     }
     // 从 Service 或 Activity 被调用以打开图片选择器
-    public void openImagePicker()
-    {
-
-        if (activity == null)
-        {
+    public void openImagePicker() {
+        if (activity == null) {
             logSafe("DIY_PassByManager: openImagePicker: activity is null", DIY_CommuUtils.LogLevel.ERROR);
-
-
             return;
         }
+
+        // 1. 使用 ACTION_GET_CONTENT 或 ACTION_OPEN_DOCUMENT (后者在 Android 11+ 更稳)
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+
+        // 2. 设置基础过滤类型为图片
         intent.setType("image/*");
-        activity.startActivityForResult(Intent.createChooser(intent, "Select Image"), DIY_CommuUtils.REQUEST_OPEN_PIC);
+
+        // 3. 显式指定允许的所有图片子格式，防止系统相册过滤 GIF
+        String[] mimeTypes = {
+                "image/jpeg",
+                "image/png",
+                "image/gif",    // ✅ 核心：确保 GIF 可见
+                "image/webp",
+                "image/heic",
+                "image/heif",
+                "image/bmp"
+        };
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
+        // 4. 加上此 Category 确保返回的是可以打开的文件流
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            activity.startActivityForResult(
+                    Intent.createChooser(intent, "Select Image or GIF"),
+                    DIY_CommuUtils.REQUEST_OPEN_PIC
+            );
+        } catch (Exception e) {
+            logSafe("无法启动选择器: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+        }
     }
     @SuppressLint("MissingPermission")
     public void disconnect()

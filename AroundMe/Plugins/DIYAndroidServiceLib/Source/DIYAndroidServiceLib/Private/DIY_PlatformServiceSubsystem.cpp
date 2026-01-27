@@ -3,7 +3,7 @@
 #include "IImageWrapperModule.h"
 #include "DIY_CommuLog.h"
 #include "Misc/Parse.h"
-
+#include "AnimatedTexture/Public/AnimatedTexture2D.h"
 #if PLATFORM_ANDROID
 #include "Android/AndroidApplication.h"
 #include "Android/AndroidJNI.h"
@@ -21,6 +21,26 @@ void UDIYPlatformServiceSubsystem::Initialize(FSubsystemCollectionBase &Collecti
 void UDIYPlatformServiceSubsystem::Deinitialize()
 {
     Super::Deinitialize();
+}
+
+bool UDIYPlatformServiceSubsystem::IsGifData(const TArray<uint8> &ImageData)
+{
+    UE_LOG(LogTemp, Warning, TEXT("ImageData Array Num: %d"), ImageData.Num()); // 打印数组长度
+
+    if (ImageData.Num() < 6)
+        return false;
+
+    const uint8 *Data = ImageData.GetData();
+    // 使用格式化打印，如果不是字符就打出 16 进制
+    UE_LOG(LogTemp, Warning, TEXT("Raw Header: %02X %02X %02X %02X %02X %02X"),
+           Data[0], Data[1], Data[2], Data[3], Data[4], Data[5]);
+
+    FString Header = FString::Printf(TEXT("%c%c%c%c%c%c"),
+                                     Data[0], Data[1], Data[2], Data[3], Data[4], Data[5]);
+
+    UE_LOG(LogTemp, Warning, TEXT("File Header Detected: %s"), *Header);
+
+    return Header.StartsWith(TEXT("GIF8"));
 }
 
 TScriptInterface<IDIY_CommuManagerInterface> UDIYPlatformServiceSubsystem::CreateDIY_CommuManager()
@@ -99,7 +119,7 @@ bool UDIYPlatformServiceSubsystem::IsUUIDValid(const FString &UUID)
 void UDIYPlatformServiceSubsystem::OnImageBytesReceived(
     const TArray<uint8> &ImageBytes)
 {
-    UTexture2D *Texture = CreateTextureFromImageBytes(ImageBytes);
+    UTexture *Texture = CreateTextureFromImageBytes(ImageBytes);
 
     if (!Texture)
     {
@@ -116,7 +136,7 @@ void UDIYPlatformServiceSubsystem::OnImageBytesReceived(
 void UDIYPlatformServiceSubsystem::OnImageBytesReceivedFromOtherDevices(const TArray<uint8> &ImageBytes)
 {
 
-    UTexture2D *Texture = CreateTextureFromImageBytes(ImageBytes);
+    UTexture *Texture = CreateTextureFromImageBytes(ImageBytes);
 
     if (!Texture)
     {
@@ -128,8 +148,50 @@ void UDIYPlatformServiceSubsystem::OnImageBytesReceivedFromOtherDevices(const TA
     LastReceivedImageTextureFromOtherDevice = Texture;
     OnImageTextureFromOtherDeviceReceived.Broadcast(Texture);
 }
-UTexture2D *UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(const TArray<uint8> &ImageData)
+UTexture *UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(const TArray<uint8> &ImageData)
 {
+
+    // 1. 判断是否为 GIF
+    if (IsGifData(ImageData))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Detected Img Data as GIF Starting To Process texture from image bytes"));
+        // 创建 AnimatedTexture2D 对象 (Transient 表示不保存到磁盘)
+        UAnimatedTexture2D *AnimTexture = NewObject<UAnimatedTexture2D>(
+            GetTransientPackage(),
+            UAnimatedTexture2D::StaticClass(),
+            NAME_None,
+            RF_Transient);
+
+        if (AnimTexture)
+        {
+            // 1. 塞入数据
+            AnimTexture->ImportFile(ImageData.GetData(), ImageData.Num());
+
+            // 2. 必须手动调用一次 CreateResource 或触发渲染状态更新
+            // 插件的 CreateResource 内部会根据 FileBlob 初始化 GIF 解码器
+            AnimTexture->UpdateResource();
+
+            // 3. 插件逻辑设置
+            AnimTexture->bLooping = true;
+            AnimTexture->PlayRate = 1.0f;
+            AnimTexture->SRGB = true;
+
+            // 4. 非常重要：通知渲染线程准备显示第一帧
+            // 这样不会等到下一帧 Tick 才开始解码，避免初始瞬间的空白
+            AnimTexture->UpdateFirstFrame();
+
+            AnimTexture->PlayFromStart();
+
+            UE_LOG(LogTemp, Warning, TEXT("GIF Asset Ready: %f seconds"), AnimTexture->GetAnimationLength());
+            return AnimTexture;
+        }
+
+        UE_LOG(LogTemp, Warning, TEXT("AnimTexture 2d Created failed"));
+
+        return nullptr;
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("AnimatedTexture creation failed! Starting to create static texture"));
     IImageWrapperModule &ImageWrapperModule =
         FModuleManager::LoadModuleChecked<IImageWrapperModule>("ImageWrapper");
 
@@ -142,6 +204,7 @@ UTexture2D *UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(const TArr
     if (!Wrapper.IsValid() ||
         !Wrapper->SetCompressed(ImageData.GetData(), ImageData.Num()))
     {
+        UE_LOG(LogTemp, Warning, TEXT("Static Texture 2d Created failed! Data Seems not okay!!!"));
         return nullptr;
     }
 
@@ -163,7 +226,7 @@ UTexture2D *UDIYPlatformServiceSubsystem::CreateTextureFromImageBytes(const TArr
 
     Texture->GetPlatformData()->Mips[0].BulkData.Unlock();
     Texture->UpdateResource();
-
+    UE_LOG(LogTemp, Warning, TEXT("Static Texture 2d Created Successfully"));
     return Texture;
 }
 UDIYPlatformServiceSubsystem *UDIYPlatformServiceSubsystem::Get(UWorld *OptionalWorld)

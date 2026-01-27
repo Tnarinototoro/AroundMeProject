@@ -44,6 +44,7 @@ public class DIYPlatformService : ModuleRules
                 "ImageWrapper",
                 "RenderCore",
                 "RHI",
+                "AnimatedTexture"
 				// ... add private dependencies that you statically link with here ...	
 			}
             );

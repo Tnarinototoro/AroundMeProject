@@ -28,9 +28,13 @@
 			"LoadingPhase": "PreLoadingScreen"
 		}
 	],
-    "Plugins": [
+	"Plugins": [
 		{
 			"Name": "AndroidPermission",
+			"Enabled": true
+		},
+		{
+			"Name": "AnimatedTexture",
 			"Enabled": true
 		}
 	]

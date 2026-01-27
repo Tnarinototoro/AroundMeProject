@@ -259,7 +259,7 @@ void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue &
 
             AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor(delta_x, -delta_y);
         }
-        return;
+        
     }
 
     if (is_crafting_platform_open)
@@ -269,7 +269,7 @@ void UDIY_MainPlayerInputController::HandleXYMouseMove(const FInputActionValue &
 
         AcquireOwnerActorOwnedUDIY_MainPlayerUIController()->RequestMoveCurrentSelectedCursor_CraftingPlatform(delta_x, -delta_y);
 
-        return;
+        
     }
     AcquireOwnerActorOwnedUDIY_MainPlayerCameraController()->HandleMouseMoveForUpDownCam(Axis2DValue);
 }
