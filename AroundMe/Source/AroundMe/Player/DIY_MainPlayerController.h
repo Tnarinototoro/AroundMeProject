@@ -52,7 +52,7 @@ public:
         FHitResult &OutHitResult,
         bool bIgnoreSelf = true);
 
-    // Auto detect platform��identify Touch or Mouse
+    // Auto detect platform identify Touch or Mouse
     UFUNCTION(BlueprintCallable, Category = "DIY_MainPlayerController", meta = (AdvancedDisplay = "bTraceComplex, bIgnoreSelf"))
     bool DIY_GetHitResultUnderInput(
         ECollisionChannel TraceChannel,
@@ -82,4 +82,29 @@ public:
     /** NewCount: 当前手指数量, OldCount: 变化前的数量 */
     UFUNCTION(BlueprintImplementableEvent, Category = "Gestures")
     void OnDIY_TouchCountChanged(int32 NewCount, int32 OldCount);
+
+    /** 长按开始：当某一根手指刚刚达到阈值时触发 */
+    UFUNCTION(BlueprintImplementableEvent, Category = "Gestures")
+    void OnDIY_GestureLongPressStart(int32 CurrentLongPressCount, FVector2D FingerLocation);
+
+        /** * 手势事件：长按持续中 (Tick触发)
+     * @param FingerCount 当前达到长按标准的手指数量
+     * @param Duration 当前这组手指中按得最久的那根的时长
+     */
+    UFUNCTION(BlueprintImplementableEvent, Category = "Gestures")
+    void OnDIY_GestureLongPress(int32 FingerCount, float Duration, FVector2D AverageLocation);
+
+    /** * 手势事件：长按松开 (仅在满足长按阈值后松开时触发一次)
+     */
+    UFUNCTION(BlueprintImplementableEvent, Category = "Gestures")
+    void OnDIY_GestureLongPressReleased(int32 FingerCount, float TotalDuration, FVector2D ReleaseLocation);
+
+protected:
+    /** 长按判定阈值（秒），超过此时间触发 LongPress */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gestures Config")
+    float LongPressThreshold = 0.5f;
+
+    /** 防抖距离：长按期间手指移动超过此像素值则视为滑动而非长按 */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gestures Config")
+    float LongPressAllowedMovement = 40.0f;
 };

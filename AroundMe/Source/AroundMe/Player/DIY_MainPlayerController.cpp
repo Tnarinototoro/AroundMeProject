@@ -19,8 +19,53 @@ void ADIY_MainPlayerController::ProcessCustomGestures(float DeltaTime)
     if (ActiveTouchCount <= 0)
         return;
 
+    // --- Long Press 核心逻辑 ---
+    {
+        TArray<int32, TInlineAllocator<10>> LongPressIndices;
+        FVector2D LongPressCenter = FVector2D::ZeroVector;
+        float MaxDuration = 0.f;
+        float CurrentTime = GetWorld()->GetTimeSeconds();
+
+        for (int32 i = 0; i < 10; ++i)
+        {
+            if (TrackedTouches[i].bIsPressed)
+            {
+                float Duration = CurrentTime - TrackedTouches[i].PressTime;
+                float Dist = FVector2D::Distance(TrackedTouches[i].StartLoc, TrackedTouches[i].CurrentLoc);
+
+                // 判定是否达标
+                if (Duration >= LongPressThreshold && Dist < LongPressAllowedMovement)
+                {
+                    // --- 新增：Start 触发逻辑 ---
+                    if (!TrackedTouches[i].bIsLongPressTriggered)
+                    {
+                        TrackedTouches[i].bIsLongPressTriggered = true;
+                        // 这里统计的是包含当前这根刚达标的，总共有多少根达标了
+                        int32 CurrentReadyCount = 1;
+                        for (int32 j = 0; j < 10; ++j)
+                            if (i != j && TrackedTouches[j].bIsLongPressTriggered)
+                                CurrentReadyCount++;
+
+                        OnDIY_GestureLongPressStart(CurrentReadyCount, TrackedTouches[i].CurrentLoc);
+                    }
+
+                    LongPressIndices.Add(i);
+                    LongPressCenter += TrackedTouches[i].CurrentLoc;
+                    MaxDuration = FMath::Max(MaxDuration, Duration);
+                }
+            }
+        }
+
+        // 2. Ongoing: 持续触发 (只要有达标的手指在，就一直通报总数)
+        if (LongPressIndices.Num() > 0)
+        {
+            OnDIY_GestureLongPress(LongPressIndices.Num(), MaxDuration, LongPressCenter / LongPressIndices.Num());
+        }
+    }
+
     // 1. 快速收集所有当前活跃的手指索引
     TArray<int32, TInlineAllocator<10>> ActiveIndices;
+
     for (int32 i = 0; i < 10; ++i)
     {
         if (TrackedTouches[i].bIsPressed)
@@ -268,7 +313,28 @@ bool ADIY_MainPlayerController::InputTouch(uint32 Handle, ETouchType::Type Type,
         break;
 
     case ETouchType::Ended:
+        // 只有这根手指之前进入过长按状态，松开才触发特殊 Released
+        if (Info.bIsLongPressTriggered)
+        {
+            float FinalDuration = GetWorld()->GetTimeSeconds() - Info.PressTime;
+
+            // 计算剩下的手指里，还有几根是处于长按状态的
+            int32 RemainingLongPressCount = 0;
+            for (int32 j = 0; j < 10; ++j)
+            {
+                if (j != FingerIndex && TrackedTouches[j].bIsPressed && TrackedTouches[j].bIsLongPressTriggered)
+                {
+                    RemainingLongPressCount++;
+                }
+            }
+
+            // 触发 Released：告知刚才按了多久，以及屏幕上还剩几根长按手指在坚持
+            OnDIY_GestureLongPressReleased(RemainingLongPressCount, FinalDuration, TouchLocation);
+        }
+
+        // 重置状态
         Info.bIsPressed = false;
+        Info.bIsLongPressTriggered = false; // 必须重置，否则下次按会直接判定为长按
         ActiveTouchCount = FMath::Max(0, ActiveTouchCount - 1);
         break;
 

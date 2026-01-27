@@ -11,6 +11,7 @@ struct FDIY_TouchInfo
     GENERATED_BODY()
 
     bool bIsPressed = false;
+    bool bIsLongPressTriggered = false; // 新增：标记是否已触发过 Start 事件
     FVector2D StartLoc = FVector2D::ZeroVector;
     FVector2D CurrentLoc = FVector2D::ZeroVector;
     FVector2D LastFrameLoc = FVector2D::ZeroVector;

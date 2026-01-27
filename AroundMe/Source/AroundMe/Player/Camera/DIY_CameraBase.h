@@ -47,4 +47,20 @@ public:
     /** NewCount: 当前手指数量, OldCount: 变化前的数量 */
     UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "DIY_CameraBase")
     void OnDIY_TouchCountChanged(int32 NewCount, int32 OldCount);
+
+    /** 长按开始：当某一根手指刚刚达到阈值时触发 */
+    UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "DIY_CameraBase")
+    void OnDIY_GestureLongPressStart(int32 CurrentLongPressCount, FVector2D FingerLocation);
+
+    /** * 手势事件：长按持续中 (Tick触发)
+     * @param FingerCount 当前达到长按标准的手指数量
+     * @param Duration 当前这组手指中按得最久的那根的时长
+     */
+    UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "DIY_CameraBase")
+    void OnDIY_GestureLongPress(int32 FingerCount, float Duration, FVector2D AverageLocation);
+
+    /** * 手势事件：长按松开 (仅在满足长按阈值后松开时触发一次)
+     */
+    UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "DIY_CameraBase")
+    void OnDIY_GestureLongPressReleased(int32 FingerCount, float TotalDuration, FVector2D ReleaseLocation);
 };
