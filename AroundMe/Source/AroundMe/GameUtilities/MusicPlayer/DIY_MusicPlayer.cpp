@@ -12,7 +12,9 @@
 #include "Engine/AssetManager.h"
 #include "AroundMe/Debug/DIY_GlobalDebugSettings.h"
 #include "../Sound/DIY_SoundManager.h"
-#include "../Time/DIY_TimeManager.h"
+
+#include "../Weather/DIY_WeatherManager.h"
+#include "VaRest/Public/VaRestJsonObject.h"
 
 ADIY_MusicPlayer::ADIY_MusicPlayer()
 {
@@ -34,11 +36,6 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
 
     FDateTime cur_date_time = FDateTime::Now();
 
-    if (UDIY_TimeManager *TimeManager = UDIY_TimeManager::Get(GetWorld()))
-    {
-        cur_date_time = TimeManager->GetCurrentLocal();
-    }
-
     uint8 new_hour = cur_date_time.GetHour();
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
@@ -59,30 +56,32 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
     }
 
     UDIY_MainPlayerUIController *cur_ui_controller = AcquireOwnerActorOwnedUDIY_MainPlayerUIController();
-    if (nullptr != cur_ui_controller)
-    {
-        cur_ui_controller->RequestUpdateStateInfoText_MusicPlayer(
-            FText::FromString(
-                FString::Printf(
-                    TEXT("%d/%d/%d \n %d:%d:%d \n Track: %s \n PlayingTime: %f Duration: %f"),
-                    cur_date_time.GetYear(),
-                    cur_date_time.GetMonth(),
-                    cur_date_time.GetDay(),
-                    HourOfToday,
-                    cur_date_time.GetMinute(),
-                    cur_date_time.GetSecond(),
-                    AudioComponent->GetSound() ? *AudioComponent->GetSound()->GetName() : TEXT("None"),
-                    CurrentMusicPlayedTime,
-                    AudioComponent->GetSound() ? AudioComponent->GetSound()->GetDuration() : 0.0f)
 
-                    ));
+    UDIY_WeatherManager *cur_weather_manager = UDIY_WeatherManager::Get(this);
+    if (nullptr != cur_ui_controller && cur_weather_manager != nullptr)
+    {
+        cur_ui_controller->RequestUpdateStateInfoText_MusicPlayer(FText::FromString(FString::Printf(
+            TEXT("%d/%d/%d \n %d:%d:%d \n Track: %s \n PlayingTime: %f Duration: %f \n Location: %s \n Weather: %s \n "),
+            cur_date_time.GetYear(),
+            cur_date_time.GetMonth(),
+            cur_date_time.GetDay(),
+            HourOfToday,
+            cur_date_time.GetMinute(),
+            cur_date_time.GetSecond(),
+            AudioComponent->GetSound() ? *AudioComponent->GetSound()->GetName() : TEXT("None"),
+            CurrentMusicPlayedTime,
+            AudioComponent->GetSound() ? AudioComponent->GetSound()->GetDuration() : 0.0f,
+            cur_weather_manager->GetLocationJson() == nullptr ? TEXT("None") : *cur_weather_manager->GetLocationJson()->EncodeJsonToSingleString(),
+            cur_weather_manager->GetWeatherJson() == nullptr ? TEXT("None") : *cur_weather_manager->GetWeatherJson()->GetObjectField(TEXT("current"))->EncodeJsonToSingleString()
+
+                )));
     }
 }
 
 void ADIY_MusicPlayer::OnMusicLoaded(TSoftObjectPtr<USoundBase> SoundSoft, ESoundTrackID Index)
 {
     // 执行到这里时，this 已经被引擎验证过是有效的了
-    USoundBase* LoadedSound = SoundSoft.Get();
+    USoundBase *LoadedSound = SoundSoft.Get();
 
     // 注意：这里使用 .Get() 访问强引用的 AudioComponent
     if (LoadedSound && AudioComponent.IsValid())
@@ -112,8 +111,6 @@ void ADIY_MusicPlayer::BeginPlay()
     }
     AudioComponent->OnAudioFinished.AddUniqueDynamic(this, &ADIY_MusicPlayer::OnMusicFinished);
     PlayMusicByIndex((ESoundTrackID)GenerateDateCorrespondingMusicIndex());
-
-    
 }
 
 void ADIY_MusicPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -183,11 +180,10 @@ void ADIY_MusicPlayer::PlayMusicByIndex(ESoundTrackID Index)
     const TSoftObjectPtr<USoundBase> SoundSoft = Row->SoundAsset;
 
     // 使用 CreateUObject 代替 Lambda
-    FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
+    FStreamableManager &Streamable = UAssetManager::GetStreamableManager();
     Streamable.RequestAsyncLoad(
         SoundSoft.ToSoftObjectPath(),
-        FStreamableDelegate::CreateUObject(this, &ADIY_MusicPlayer::OnMusicLoaded, SoundSoft, Index)
-    );
+        FStreamableDelegate::CreateUObject(this, &ADIY_MusicPlayer::OnMusicLoaded, SoundSoft, Index));
 }
 
 void ADIY_MusicPlayer::PlayMusicCorrespondingToTime()
@@ -224,9 +220,10 @@ UDIY_MainPlayerUIController *ADIY_MusicPlayer::AcquireOwnerActorOwnedUDIY_MainPl
     if (mOwnerActorOwned_UDIY_MainPlayerUIController != nullptr)
         return mOwnerActorOwned_UDIY_MainPlayerUIController;
 
-    APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-    if (!PC) return nullptr;
-    AActor* cur_player = PC->GetPawn();
+    APlayerController *PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    if (!PC)
+        return nullptr;
+    AActor *cur_player = PC->GetPawn();
 
     if (cur_player != nullptr && nullptr != (mOwnerActorOwned_UDIY_MainPlayerUIController = cur_player->FindComponentByClass<UDIY_MainPlayerUIController>()))
     {

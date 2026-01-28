@@ -33,9 +33,14 @@ private:
     class UButton *SendMessageButton;
     class UButton *ResetWifiDirectStateButton;
 
+    class UButton *ManuallySyncRealWorldInfoButton;
+
     UFUNCTION()
     void SendMessageButtonClicked();
 
     UFUNCTION()
     void ResetWifiDirectStateButtonClicked();
+
+    UFUNCTION()
+    void ManuallySyncRealWorldInfoButtonClicked();
 };

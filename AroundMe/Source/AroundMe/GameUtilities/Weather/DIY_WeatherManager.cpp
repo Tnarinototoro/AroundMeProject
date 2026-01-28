@@ -1,6 +1,11 @@
 #include "DIY_WeatherManager.h"
 #include "TimerManager.h"
 
+void UDIY_WeatherManager::BroadcastSyncRealWorldInfoFinished()
+{
+    OnSyncRealWorldInfoFinished.Broadcast();
+}
+
 void UDIY_WeatherManager::ManuallySyncRealWorldInfo()
 {
 
@@ -36,8 +41,8 @@ void UDIY_WeatherManager::Initialize(FSubsystemCollectionBase &Collection)
             this,
             &UDIY_WeatherManager::QueryWeatherFromAPI,
             3600.0f, // 间隔（秒）
-            true,    // 循环
-            3.0f);
+            true     // 循环
+        );
     }
 
     SubsystemHelper = nullptr;
@@ -50,6 +55,106 @@ void UDIY_WeatherManager::Initialize(FSubsystemCollectionBase &Collection)
 
     LocationDataJson = nullptr;
     WeatherDataJson = nullptr;
+}
+
+E_DIY_WeatherState UDIY_WeatherManager::ParseWMOCode(int32 Code)
+{
+    E_DIY_WeatherState Result = E_DIY_WeatherState::Unknown;
+
+    switch (Code)
+    {
+    case 0:
+        Result = E_DIY_WeatherState::ClearSky;
+        break;
+    case 1:
+        Result = E_DIY_WeatherState::MainlyClear;
+        break;
+    case 2:
+        Result = E_DIY_WeatherState::PartlyCloudy;
+        break;
+    case 3:
+        Result = E_DIY_WeatherState::Overcast;
+        break;
+
+    case 45:
+        Result = E_DIY_WeatherState::Fog;
+        break;
+    case 48:
+        Result = E_DIY_WeatherState::DepositingRimeFog;
+        break;
+
+    case 51:
+        Result = E_DIY_WeatherState::DrizzleLight;
+        break;
+    case 53:
+        Result = E_DIY_WeatherState::DrizzleModerate;
+        break;
+    case 55:
+        Result = E_DIY_WeatherState::DrizzleDense;
+        break;
+
+    case 56:
+    case 57:
+        Result = E_DIY_WeatherState::FreezingDrizzle;
+        break;
+
+    case 61:
+        Result = E_DIY_WeatherState::RainSlight;
+        break;
+    case 63:
+        Result = E_DIY_WeatherState::RainModerate;
+        break;
+    case 65:
+        Result = E_DIY_WeatherState::RainHeavy;
+        break;
+
+    case 66:
+    case 67:
+        Result = E_DIY_WeatherState::FreezingRain;
+        break;
+
+    case 71:
+        Result = E_DIY_WeatherState::SnowSlight;
+        break;
+    case 73:
+        Result = E_DIY_WeatherState::SnowModerate;
+        break;
+    case 75:
+        Result = E_DIY_WeatherState::SnowHeavy;
+        break;
+    case 77:
+        Result = E_DIY_WeatherState::SnowGrains;
+        break;
+
+    case 80:
+        Result = E_DIY_WeatherState::RainShowersSlight;
+        break;
+    case 81:
+        Result = E_DIY_WeatherState::RainShowersModerate;
+        break;
+    case 82:
+        Result = E_DIY_WeatherState::RainShowersViolent;
+        break;
+
+    case 85:
+    case 86:
+        Result = E_DIY_WeatherState::SnowShowers;
+        break;
+
+    case 95:
+        Result = E_DIY_WeatherState::Thunderstorm;
+        break;
+    case 96:
+    case 99:
+        Result = E_DIY_WeatherState::ThunderstormWithHail;
+        break;
+
+    default:
+        Result = E_DIY_WeatherState::ClearSky;
+        break;
+    }
+
+    return Result;
 }
 
 void UDIY_WeatherManager::Deinitialize()

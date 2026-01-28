@@ -13,6 +13,7 @@
 #include "Engine/World.h"
 #include "DIY_PlatformServiceSubsystem.h"
 #include "Components/EditableText.h"
+#include "AroundMe/GameUtilities/Weather/DIY_WeatherManager.h"
 
 void UDIY_PlatformServiceStateWidget::NativeConstruct()
 {
@@ -172,6 +173,30 @@ void UDIY_PlatformServiceStateWidget::NativeOnInitialized()
                 ResetWifiBtnSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
             }
         }
+
+        ManuallySyncRealWorldInfoButton = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), TEXT("ManuallySyncRealWorldInfoButton"));
+        if (ManuallySyncRealWorldInfoButton)
+        {
+            ManuallySyncRealWorldInfoButton->SetIsEnabled(true);
+            ManuallySyncRealWorldInfoButton->OnClicked.AddDynamic(this, &UDIY_PlatformServiceStateWidget::ManuallySyncRealWorldInfoButtonClicked);
+
+            UTextBlock *ManuallySyncBtnText = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
+            if (ManuallySyncBtnText)
+            {
+                ManuallySyncBtnText->SetText(FText::FromString(TEXT("ManuallySyncRealWorldInfo")));
+                FSlateFontInfo BtnFont = ManuallySyncBtnText->GetFont();
+                BtnFont.Size = 20.f;
+                ManuallySyncBtnText->SetFont(BtnFont);
+                ManuallySyncRealWorldInfoButton->AddChild(ManuallySyncBtnText);
+            }
+
+            UVerticalBoxSlot *ManuallySyncBtnSlot = VerticalBox->AddChildToVerticalBox(ManuallySyncRealWorldInfoButton);
+            if (ManuallySyncBtnSlot)
+            {
+                ManuallySyncBtnSlot->SetPadding(FMargin(20.f, 10.f, 20.f, 20.f));
+                ManuallySyncBtnSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+            }
+        }
     }
 }
 
@@ -234,4 +259,15 @@ void UDIY_PlatformServiceStateWidget::ResetWifiDirectStateButtonClicked()
         Subsys->ResetWifiDirectState();
     }
     EASY_LOG_MAINPLAYER("ResetWifiDirectStateButton Clicked");
+}
+
+void UDIY_PlatformServiceStateWidget::ManuallySyncRealWorldInfoButtonClicked()
+{
+    ensureMsgf(ManuallySyncRealWorldInfoButton != nullptr, TEXT("ManuallySyncRealWorldInfoButton not initialized well"));
+
+    if (UDIY_WeatherManager *Subsys = UDIY_WeatherManager::Get(GetWorld()))
+    {
+        Subsys->ManuallySyncRealWorldInfo();
+    }
+    EASY_LOG_MAINPLAYER("ManuallySyncRealWorldInfoButton Clicked");
 }
