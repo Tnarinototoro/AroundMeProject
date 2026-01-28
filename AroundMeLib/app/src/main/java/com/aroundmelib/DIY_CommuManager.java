@@ -27,6 +27,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.os.ParcelUuid;
 import android.util.SparseArray;
@@ -114,7 +116,27 @@ public class DIY_CommuManager
 
 
 
-
+    public void requestLocation()
+    {
+        LocationManager locationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager != null)
+        {
+            try
+            {
+                Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                if (location != null) {
+                    double lat = location.getLatitude();
+                    double lon = location.getLongitude();
+                    appendToLog(String.format("纬度: %f, 经度: %f", lat, lon),DIY_CommuUtils.LogLevel.SUCCESS);
+                    // 通过 JNI 将经纬度传回 UE5
+                    //OnLocationReceived(lat, lon);
+                }
+            } catch (SecurityException e)
+            {
+                appendToLog("定位权限未开启: " + e.getMessage(), DIY_CommuUtils.LogLevel.ERROR);
+            }
+        }
+    }
 
     public String GetCurrentNumStatus()
     {
@@ -163,11 +185,11 @@ public class DIY_CommuManager
     }
 
 
-    private void appendToLog(String inText)
+    private void appendToLog(String inText,DIY_CommuUtils.LogLevel inLogLevel)
     {
         if(mReportSchema!=null)
         {
-            mReportSchema.onBLELogReport(inText, DIY_CommuUtils.LogLevel.INFO);
+            mReportSchema.onBLELogReport(inText, inLogLevel);
         }
     }
     @SuppressLint("MissingPermission")
@@ -177,11 +199,7 @@ public class DIY_CommuManager
         {
             mBluetoothAdapter.startDiscovery();
 
-            if(mReportSchema!=null)
-            {
-                mReportSchema.onBLELogReport("经典蓝牙 搜索 开始~", DIY_CommuUtils.LogLevel.SUCCESS);
-            }
-
+            appendToLog("经典蓝牙 搜索 开始~", DIY_CommuUtils.LogLevel.SUCCESS);
 
 
 
@@ -206,7 +224,7 @@ public class DIY_CommuManager
         mBluetoothLeScanner.startScan(Arrays.asList(scanFilter), scanSettings, mBLEScanCallback);
 
 
-        appendToLog("BLE Scanning started!");
+        appendToLog("BLE Scanning started!",  DIY_CommuUtils.LogLevel.SUCCESS);
     }
 
     @SuppressLint("MissingPermission")
@@ -217,10 +235,10 @@ public class DIY_CommuManager
             mBluetoothGattServer = mBluetoothManager.openGattServer(mContext, gattServerCallback);
 
             if (mBluetoothGattServer == null) {
-                appendToLog("mBluetoothGattServer not started well");
+                appendToLog("mBluetoothGattServer not started well",  DIY_CommuUtils.LogLevel.ERROR);
 
             } else {
-                appendToLog("mBluetoothGattServer started well");
+                appendToLog("mBluetoothGattServer started well",  DIY_CommuUtils.LogLevel.SUCCESS);
             }
 
             BluetoothGattService service = new BluetoothGattService(DIY_CommuUtils.mAroundMeIdentify_UUID,
@@ -321,11 +339,11 @@ public class DIY_CommuManager
 
                     if (got_gatt != null)
                     {
-                        appendToLog("connected"+result_device.getName()+"successfully");
+                        appendToLog("connected"+result_device.getName()+"successfully",  DIY_CommuUtils.LogLevel.SUCCESS);
                     }
                     else
                     {
-                        appendToLog("connected "+result_device.getName()+"failed!");
+                        appendToLog("connected "+result_device.getName()+"failed!",  DIY_CommuUtils.LogLevel.ERROR);
                     }
 
                     // 计算距离
@@ -397,7 +415,7 @@ public class DIY_CommuManager
         public void onScanFailed(int errorCode)
         {
             super.onScanFailed(errorCode);
-            appendToLog("BLE Scan Started Failed! with error code: " + errorCode);
+            appendToLog("BLE Scan Started Failed! with error code: " + errorCode,  DIY_CommuUtils.LogLevel.ERROR);
 
             // 🔥 扫描启动失败的处理（比如蓝牙被占用、未开启权限等）
             // errorCode 常见值：
@@ -423,7 +441,7 @@ public class DIY_CommuManager
             {
                 appendToLog("connected with p-device:" +
                         gatt.getDevice().getName() + "@" +
-                        gatt.getDevice().getAddress());
+                        gatt.getDevice().getAddress(),  DIY_CommuUtils.LogLevel.SUCCESS);
 
                 // ✅ 开始发现对方设备提供的 GATT Service 列表
                 // 这一步是 GATT 通信的关键，只有发现 Service 后才能访问 Characteristic
@@ -440,9 +458,9 @@ public class DIY_CommuManager
         public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
             super.onMtuChanged(gatt, mtu, status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                appendToLog("MTU 请求成功，当前长度: " + mtu);
+                appendToLog("MTU 请求成功，当前长度: " + mtu,  DIY_CommuUtils.LogLevel.SUCCESS);
             } else {
-                appendToLog("MTU 请求失败，保持默认");
+                appendToLog("MTU 请求失败，保持默认",  DIY_CommuUtils.LogLevel.ERROR);
             }
             // ✅ 关键：只有 MTU 协商好了，才开始发现服务
             gatt.discoverServices();
@@ -511,7 +529,7 @@ public class DIY_CommuManager
             appendToLog("msg from p device:" +
                     gatt.getDevice().getName() + "@" +
                     gatt.getDevice().getAddress() +
-                    "@mgs:" + receivedString);
+                    "@mgs:" + receivedString,  DIY_CommuUtils.LogLevel.INFO);
 
 
             if(mReportSchema!=null)
@@ -560,7 +578,7 @@ public class DIY_CommuManager
                 // 显示发送方设备名、MAC 地址、以及它发送的消息内容
                 appendToLog("Received msg from c device: " +
                         device.getName() + "@" + device.getAddress() +
-                        " msg:" + receivedData);
+                        " msg:" + receivedData,  DIY_CommuUtils.LogLevel.INFO);
 
                 if(mReportSchema!=null)
                 {
@@ -616,12 +634,12 @@ public class DIY_CommuManager
             if (newState == BluetoothProfile.STATE_CONNECTED)
             {
                 // 说明 Central 设备成功连接到当前设备（本机是 Peripheral）
-                appendToLog("Connected with c-device: " + device.getName() + "@" + device.getAddress());
+                appendToLog("Connected with c-device: " + device.getName() + "@" + device.getAddress(),  DIY_CommuUtils.LogLevel.INFO);
 
                 // 如果这个设备之前已经在已连接列表中，就提示重复连接
                 if (mFoundDevices.containsKey(device.getAddress()))
                 {
-                    appendToLog("Already connected with p-device: " + device.getName() + "@" + device.getAddress());
+                    appendToLog("Already connected with p-device: " + device.getName() + "@" + device.getAddress(),  DIY_CommuUtils.LogLevel.INFO);
                 }
 
                 // 此处可以做一些连接建立后的初始化工作，比如：
@@ -633,7 +651,7 @@ public class DIY_CommuManager
             else if (newState == BluetoothProfile.STATE_DISCONNECTED)
             {
                 // 打印断开日志
-                appendToLog("Disconnected with c-device: " + device.getName() + "@" + device.getAddress());
+                appendToLog("Disconnected with c-device: " + device.getName() + "@" + device.getAddress(),  DIY_CommuUtils.LogLevel.INFO);
 
                 // 这里可以执行断开清理逻辑，比如：
                 // - 移除设备引用
@@ -656,7 +674,7 @@ public class DIY_CommuManager
             // 广播启动成功，说明此设备现在正在以 Peripheral 角色
             // 向周围设备（Central）周期性发送 BLE 广播包
             // 广播包中可包含 deviceName、ServiceUUID 等标识信息。
-            appendToLog("BLE BroadCast Started successfully");
+            appendToLog("BLE BroadCast Started successfully",  DIY_CommuUtils.LogLevel.INFO);
 
             // 此时，周围的 Central（例如另一台手机）可通过扫描发现该设备。
             // 后续 Central 调用 connectGatt() 即可与此设备建立 GATT 连接。
@@ -669,7 +687,7 @@ public class DIY_CommuManager
             super.onStartFailure(errorCode);
 
             // 打印错误码，方便排查
-            appendToLog("BLE BroadCast Started Failed! with error code " + errorCode);
+            appendToLog("BLE BroadCast Started Failed! with error code " + errorCode,  DIY_CommuUtils.LogLevel.ERROR);
 
             // 常见的 errorCode 说明：
             // 1 → ADVERTISE_FAILED_DATA_TOO_LARGE
@@ -719,7 +737,7 @@ public class DIY_CommuManager
             {
                 mBluetoothLeAdvertiser.stopAdvertising(mAdvertiseCallback);
 
-                appendToLog("Stop BroadCasting your service");
+                appendToLog("Stop BroadCasting your service",  DIY_CommuUtils.LogLevel.INFO);
             }
 
             if (mBluetoothLeScanner != null && mBLEScanCallback != null)
@@ -849,7 +867,7 @@ public class DIY_CommuManager
                 // Here, we simulate sending data as peripheral every 2 seconds.
                 List<BluetoothDevice> connectedDevices = mBluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
 
-                appendToLog(String.format("%d devices are connected with local device",connectedDevices.size()));
+                appendToLog(String.format("%d devices are connected with local device",connectedDevices.size()),  DIY_CommuUtils.LogLevel.INFO);
                 for (BluetoothDevice device : connectedDevices)
                 {
                     String messageToSend = "TestString";
@@ -864,7 +882,7 @@ public class DIY_CommuManager
 
                         mRequestedToGiveItems.remove(mRequestedToGiveItems.size()-1);
 
-                        appendToLog(String.format("%s left gifts to give %d",messageToSend,mRequestedToGiveItems.size()));
+                        appendToLog(String.format("%s left gifts to give %d",messageToSend,mRequestedToGiveItems.size()),  DIY_CommuUtils.LogLevel.INFO);
                     }
                     BluetoothGattCharacteristic characteristic = mBluetoothGattServer
                             .getService(DIY_CommuUtils.mAroundMeIdentify_UUID)
@@ -872,7 +890,7 @@ public class DIY_CommuManager
                     characteristic.setValue(messageToSend.getBytes(StandardCharsets.UTF_8));
                     mBluetoothGattServer.notifyCharacteristicChanged(device, characteristic, false);
 
-                    appendToLog("msg sent to c device :" + device.getName() + "@" + device.getAddress()+"msg: "+messageToSend);
+                    appendToLog("msg sent to c device :" + device.getName() + "@" + device.getAddress()+"msg: "+messageToSend,  DIY_CommuUtils.LogLevel.INFO);
 
                 }
             }
@@ -883,7 +901,7 @@ public class DIY_CommuManager
 
                 if (mBluetoothAdapter.isDiscovering())
                 {
-                    appendToLog("经典蓝牙搜索设备ing");
+                    appendToLog("经典蓝牙搜索设备ing",  DIY_CommuUtils.LogLevel.INFO);
                 }
                 else
                 {
@@ -919,6 +937,7 @@ public class DIY_CommuManager
 
             mHandler.postDelayed(MainUpdate, 2000); // Schedule the next message in 2 seconds
 
+            //requestLocation();
 
             if(mReportSchema!=null)
             {
@@ -1036,10 +1055,7 @@ public class DIY_CommuManager
             }
             else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED))
             {
-                if(mReportSchema!=null)
-                {
-                    mReportSchema.onBLELogReport("经典蓝牙 搜索结束",DIY_CommuUtils.LogLevel.SUCCESS);
-                }
+                appendToLog("经典蓝牙 搜索结束",DIY_CommuUtils.LogLevel.SUCCESS);
             }
 
         }
@@ -1098,20 +1114,13 @@ public class DIY_CommuManager
             mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
             if (mBluetoothLeAdvertiser == null)
             {
-                if(null!=mReportSchema)
-                {
-                    mReportSchema.onBLELogReport("硬件不支持 BLE 广播",DIY_CommuUtils.LogLevel.ERROR);
-                }
-
+                appendToLog("硬件不支持 BLE 广播",DIY_CommuUtils.LogLevel.ERROR);
 
             }
             if (!mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
             {
-                if(null!=mReportSchema)
-                {
-                    mReportSchema.onBLELogReport("硬件不支持 BLE机能",DIY_CommuUtils.LogLevel.ERROR);
-                }
 
+                appendToLog("硬件不支持 BLE机能",DIY_CommuUtils.LogLevel.ERROR);
 
             }
         }

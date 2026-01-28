@@ -139,6 +139,10 @@
 		{
 			"Name": "AnimationWarping",
 			"Enabled": true
+		},
+		{
+			"Name": "VaRest",
+			"Enabled": true
 		}
 	]
 }

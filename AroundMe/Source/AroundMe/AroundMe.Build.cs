@@ -39,7 +39,8 @@ public class AroundMe : ModuleRules
             "SlateCore",
             "RenderCore",
             "ImageWriteQueue",
-            "ImageWrapper"
+            "ImageWrapper",
+            "VaRest"
              });
 
         // Uncomment if you are using online features

@@ -1,6 +1,12 @@
 #include "DIY_WeatherManager.h"
 #include "TimerManager.h"
 
+void UDIY_WeatherManager::ManuallySyncRealWorldInfo()
+{
+
+    QueryWeatherFromAPI();
+}
+
 UDIY_WeatherManager *UDIY_WeatherManager::Get(const UObject *WorldContextObject)
 {
     if (!WorldContextObject)
@@ -8,22 +14,42 @@ UDIY_WeatherManager *UDIY_WeatherManager::Get(const UObject *WorldContextObject)
     UWorld *World = WorldContextObject->GetWorld();
     return World ? World->GetSubsystem<UDIY_WeatherManager>() : nullptr;
 }
+UDIY_WeatherManager::UDIY_WeatherManager()
+{
 
+    static ConstructorHelpers::FClassFinder<UDIY_WeatherManagerHelperBase>
+        BluePrintFile(TEXT("/Game/Blueprint/Subsystem/DIY_WeatherManagerHelper_BP"));
+    if (BluePrintFile.Class)
+    {
+        SubsystemHelperClass = (UClass *)BluePrintFile.Class;
+    }
+}
 void UDIY_WeatherManager::Initialize(FSubsystemCollectionBase &Collection)
 {
     Super::Initialize(Collection);
 
-    // 启动一个定时器，每隔 10 秒刷新一次天气
+    // 启动一个定时器，每隔  1h 刷新一次天气
     if (UWorld *World = GetWorld())
     {
         World->GetTimerManager().SetTimer(
             WeatherTimerHandle,
             this,
             &UDIY_WeatherManager::QueryWeatherFromAPI,
-            10.0f, // 间隔（秒）
-            true   // 循环
-        );
+            3600.0f, // 间隔（秒）
+            true,    // 循环
+            3.0f);
     }
+
+    SubsystemHelper = nullptr;
+
+    ensureAlwaysMsgf(SubsystemHelperClass,
+                     TEXT("UDIY_WeatherManager::Initialize: SubsystemHelperClass is null!"));
+    UObject *outer = this;
+    SubsystemHelper = NewObject<UDIY_WeatherManagerHelperBase>(outer, SubsystemHelperClass);
+    SubsystemHelper->Initialize();
+
+    LocationDataJson = nullptr;
+    WeatherDataJson = nullptr;
 }
 
 void UDIY_WeatherManager::Deinitialize()
@@ -32,12 +58,11 @@ void UDIY_WeatherManager::Deinitialize()
     {
         World->GetTimerManager().ClearTimer(WeatherTimerHandle);
     }
-    Super::Deinitialize();
-}
+    LocationDataJson = nullptr;
+    WeatherDataJson = nullptr;
+    SubsystemHelper = nullptr;
 
-void UDIY_WeatherManager::QueryWeatherNow()
-{
-    QueryWeatherFromAPI();
+    Super::Deinitialize();
 }
 
 void UDIY_WeatherManager::RegisterWeatherInsrance(AActor *InWeatherActor)
@@ -79,10 +104,20 @@ void UDIY_WeatherManager::UnRegisterSkyInsrance()
 void UDIY_WeatherManager::QueryWeatherFromAPI()
 {
 
+    if (nullptr == SubsystemHelper)
+    {
+        return;
+    }
+
+    SubsystemHelper->SyncRealWorldInfo();
     UE_LOG(LogTemp, Log, TEXT("Querying real-world weather API..."));
 
     CurrentTemperature = FMath::RandRange(-10.0f, 35.0f);
     CurrentMoisture = FMath::FRandRange(0.f, 1.f);
 
-    UE_LOG(LogTemp, Log, TEXT("Updated Weather -> Temp: %.1f, Moist: %.2f"), CurrentTemperature, CurrentMoisture);
+    // UE_LOG(LogTemp, Log, TEXT("Updated Weather -> Temp: %.1f, Moist: %.2f"), CurrentTemperature, CurrentMoisture);
+}
+
+void UDIY_WeatherManagerHelperBase::Initialize()
+{
 }
