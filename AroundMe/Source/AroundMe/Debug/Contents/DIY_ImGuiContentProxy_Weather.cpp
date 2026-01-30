@@ -7,34 +7,29 @@
 FDIY_ImGuiContentProxy_Weather::FDIY_ImGuiContentProxy_Weather(FDIY_ImGuiProxy &InOwningProxy)
     : FDIY_ImGuiContentProxy_MenuWindow(InOwningProxy, DIY_ImGuiNames::MenuCategoryNameSystem, "Weather", "WeatherDebugPanel")
 {
-
 }
 
 void FDIY_ImGuiContentProxy_Weather::DrawWindow(float DeltaTime)
 {
     ImGui::Text("BasicControl");
-    ImGui::SliderInt("WeatherPresetType", &FDIY_GlobalDebugSettings::sInstance.weather.WeatherPresetType, 0, 20);
+    ImGui::SliderInt("WeatherPresetType", &FDIY_GlobalDebugSettings::sInstance.weather.WeatherPresetType, -1, 20);
 
-    UDIY_WeatherManager* WeatherManager = UDIY_WeatherManager::Get(GetWorld());
+    UDIY_WeatherManager *WeatherManager = UDIY_WeatherManager::Get(GetWorld());
 
-    if(nullptr == WeatherManager)
+    if (nullptr == WeatherManager)
     {
         return;
     }
 
-    ADIY_UDSParamsStore* Param_store=Cast<ADIY_UDSParamsStore>(WeatherManager->GetWorldParamsStoreInstance());
-   
-    if(nullptr == Param_store)
+    ADIY_UDSParamsStore *Param_store = Cast<ADIY_UDSParamsStore>(WeatherManager->GetWorldParamsStoreInstance());
+
+    if (nullptr == Param_store)
     {
         return;
     }
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
 
-
-
-   Param_store->SetParam_WeatherPresetType(FDIY_GlobalDebugSettings::sInstance.weather.WeatherPresetType);
-
-    
+    Param_store->SetParam_WeatherPresetType(FDIY_GlobalDebugSettings::sInstance.weather.WeatherPresetType);
 
 #endif
 }

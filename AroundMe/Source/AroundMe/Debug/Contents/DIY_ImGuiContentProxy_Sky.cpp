@@ -14,7 +14,7 @@ void FDIY_ImGuiContentProxy_Sky::DrawWindow(float DeltaTime)
 {
     ImGui::Text("BasicControl");
     ImGui::Checkbox("ForceControlSky", &FDIY_GlobalDebugSettings::sInstance.sky.bForceControlSky);
-    ImGui::SliderFloat("Hour", &FDIY_GlobalDebugSettings::sInstance.sky.TimeOfDay, 0.f, 2400.f);
+    ImGui::SliderFloat("DayCycleProgress", &FDIY_GlobalDebugSettings::sInstance.sky.TimeOfDay, 0.f, 24.f);
     ImGui::Checkbox("EnableAnimatedTime", &FDIY_GlobalDebugSettings::sInstance.sky.bEnableAnimatedTime);
     ImGui::SliderFloat("AnimatedTimeSpeed", &FDIY_GlobalDebugSettings::sInstance.sky.AnimatedTimeSpeed, 0.f, 100.f);
     ImGui::SliderFloat("OverallIntensity", &FDIY_GlobalDebugSettings::sInstance.sky.OverallIntensity, 0.f, 2.f);
