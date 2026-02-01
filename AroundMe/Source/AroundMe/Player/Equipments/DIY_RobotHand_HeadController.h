@@ -28,8 +28,6 @@ public:
     UFUNCTION(BlueprintCallable)
     void SetHeadSpinningAngle_Directly(float inSpinAngle);
 
-    
-
 protected:
     void UpdateHandHeadStateMachine(float inDeltatime);
 
@@ -42,11 +40,8 @@ private:
 
     float mCurrentStateElapsedTime{0.f};
     bool mEnteredNewStateSign{false};
-    
-
     // this used as Drill_Type spinning speed
     float Param_Float_0{0.f};
-
     float CurrentSpinAngle{0.f};
     float CurrentSpinSpeed{90.f};
 };

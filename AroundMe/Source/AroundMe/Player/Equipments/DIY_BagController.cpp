@@ -7,7 +7,6 @@ UDIY_BagController::UDIY_BagController()
 {
     PrimaryComponentTick.bCanEverTick = true;
 
-    mEquipName = FName(TEXT("EquipBag"));
     mEquipIndex = EEquipmentsIndex::Bag;
 }
 

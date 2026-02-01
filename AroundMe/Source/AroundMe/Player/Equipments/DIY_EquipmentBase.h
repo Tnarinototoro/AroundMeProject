@@ -16,10 +16,7 @@ public:
     UDIY_EquipmentBase();
 
 public:
-    UPROPERTY(BlueprintReadOnly, VisibleAnyWhere, Category = "UDIY_EquipmentBase")
-    FName mEquipName;
-
-    UPROPERTY(BlueprintReadOnly, VisibleAnyWhere, Category = "UDIY_EquipmentBase")
+    UPROPERTY(BlueprintReadOnly, EditAnyWhere, Category = "UDIY_EquipmentBase")
     EEquipmentsIndex mEquipIndex;
 
     void SetParentEquipment(UActorComponent *inParentEquipment);
@@ -34,6 +31,14 @@ public:
     {
         return EquipModelType;
     }
+
+#if WITH_EDITOR
+    // 1. 当属性被修改时触发 (用于自动重命名组件)
+    virtual void PostEditChangeProperty(FPropertyChangedEvent &PropertyChangedEvent) override;
+
+    // 2. 地图保存或编译时触发 (用于在日志中报错)
+    virtual void CheckForErrors() override;
+#endif
 
 private:
 protected:

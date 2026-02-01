@@ -10,8 +10,7 @@
 UDIY_RobotHandController::UDIY_RobotHandController()
 {
     PrimaryComponentTick.bCanEverTick = true;
-
-    Target_Hook = CreateDefaultSubobject<USceneComponent>(TEXT("Target_Hook"));
+    Target_Hook = nullptr;
 }
 
 void UDIY_RobotHandController::BeginPlay()
@@ -23,7 +22,7 @@ void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickTyp
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    if (nullptr != this->GetSkeletalMeshAsset())
+    if (nullptr != this->GetSkeletalMeshAsset() && nullptr != Target_Hook)
     {
         FVector HandEndLocation = GetHandEndWolrdLocation();
 

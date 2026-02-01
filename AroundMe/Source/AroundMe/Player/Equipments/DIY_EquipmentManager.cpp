@@ -185,4 +185,31 @@ void UDIY_EquipmentManager::RealizeAllEquipmentModels()
         GetEquipSKMAtIndex((EEquipmentsIndex)i)->SetCollisionEnabled(ECollisionEnabled::NoCollision);
         GetEquipSKMAtIndex((EEquipmentsIndex)i)->SetSimulatePhysics(false);
     }
+
+    // bag
+    AllEquipments[(int)EEquipmentsIndex::Bag]->SetParentEquipment(this);
+    AllEquipments[(int)EEquipmentsIndex::Bag]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Left_Hand]);
+    AllEquipments[(int)EEquipmentsIndex::Bag]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Right_Hand]);
+    AllEquipments[(int)EEquipmentsIndex::Bag]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Kago]);
+
+    // chest and cap stand-alone equipment
+    AllEquipments[(int)EEquipmentsIndex::Chest]->SetParentEquipment(this);
+    AllEquipments[(int)EEquipmentsIndex::Cap]->SetParentEquipment(this);
+
+    // left hand
+    AllEquipments[(int)EEquipmentsIndex::Left_Hand]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]);
+    AllEquipments[(int)EEquipmentsIndex::Left_Hand]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Bag]);
+
+    // right hand
+    AllEquipments[(int)EEquipmentsIndex::Right_Hand]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]);
+    AllEquipments[(int)EEquipmentsIndex::Right_Hand]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Bag]);
+
+    // right hand head
+    AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Right_Hand]);
+
+    // left hand head
+    AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Left_Hand]);
+
+    // kago
+    AllEquipments[(int)EEquipmentsIndex::Kago]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Bag]);
 }

@@ -9,6 +9,7 @@ UDIY_KagoController::UDIY_KagoController()
     PrimaryComponentTick.bCanEverTick = true;
     HandHead_Releasing_Point = CreateDefaultSubobject<USceneComponent>(TEXT("HandHead_Releasing_Point"));
 
+    mEquipIndex = EEquipmentsIndex::Kago;
     HandHead_Releasing_Point->SetupAttachment(this);
     HandHead_Releasing_Point->SetRelativeLocation({0.f, 0.f, 0.f});
 }
