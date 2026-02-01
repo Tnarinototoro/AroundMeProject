@@ -3,7 +3,6 @@
 #include "CoreMinimal.h"
 #include "DIY_AcitonDefines.generated.h"
 
-
 UENUM(BlueprintType)
 enum class EInputActionType : uint8
 {
@@ -25,8 +24,7 @@ enum class EMainPlayerActingStateType : uint8
 	State_Mining,
 	State_PickingUp,
 	State_WoodChopping,
-    State_Pray,
+	State_Pray,
+	State_GrabbedByUser,
 	ActingState_Count
 };
-
-
