@@ -23,7 +23,7 @@ void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickTyp
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    if (nullptr != mEquipMentMesh && nullptr != mEquipMentMesh->GetSkeletalMeshAsset())
+    if (nullptr != this->GetSkeletalMeshAsset())
     {
         FVector HandEndLocation = GetHandEndWolrdLocation();
 
@@ -42,7 +42,7 @@ void UDIY_RobotHandController::TickComponent(float DeltaTime, ELevelTick TickTyp
 
 FVector UDIY_RobotHandController::GetHandEndWolrdLocation() const
 {
-    return mEquipMentMesh->GetBoneTransform("armhead_00").GetLocation();
+    return this->GetBoneTransform("armhead_00").GetLocation();
 }
 
 EDIY_RobotHand_State_Type UDIY_RobotHandController::GetCurrentState() const
@@ -189,7 +189,7 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
         FString debug_str = FString::Printf(TEXT("%s"),
                                             *UEnum::GetValueAsString(mCurrentState));
 
-        DrawDebugString(GetWorld(), this->mEquipMentMesh->GetComponentLocation(), debug_str, nullptr, FColor::Red, 0.f);
+        DrawDebugString(GetWorld(), this->GetComponentLocation(), debug_str, nullptr, FColor::Red, 0.f);
     }
 #endif
 
@@ -271,7 +271,7 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
             mCurrentPickedUpItem = mCurrentTargetPickUpItem;
             mCurrentTargetPickUpItem = nullptr;
 
-            AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(mCurrentPickedUpItem, FName("armhead_00"), mEquipMentMesh);
+            AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(mCurrentPickedUpItem, FName("armhead_00"), this);
 
             SwitchToNextState(EDIY_RobotHand_State_Type::Moving_ToDumpPoint);
 
@@ -339,7 +339,7 @@ void UDIY_RobotHandController::UpdateHandHeadStateMachine(float inDeltatime)
             break;
         }
 
-        FVector target_pos = mCurrentBeingDrilledItem->GetActorLocation() + HeadController->mEquipMentMesh->GetBoneLocation(FName("root")) - HeadController->mEquipMentMesh->GetSocketLocation(FName("Drill_Head"));
+        FVector target_pos = mCurrentBeingDrilledItem->GetActorLocation() + HeadController->GetBoneLocation(FName("root")) - HeadController->GetSocketLocation(FName("Drill_Head"));
 
         FVector cur_calculated_pos = FMath::VInterpTo(CurrentTargetHookPoint, target_pos, inDeltatime, DrillTask_MoveToTargetObjectSpeed);
         Target_Hook->SetWorldLocation(cur_calculated_pos);

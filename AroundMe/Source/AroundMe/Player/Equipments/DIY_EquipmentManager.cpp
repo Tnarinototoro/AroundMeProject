@@ -5,17 +5,13 @@
 #include "DIY_KagoController.h"
 #include "DIY_ChestController.h"
 #include "DIY_CapController.h"
+#include "../Items/DIY_ItemManager.h"
 #include "GameFramework/Character.h"
 #include "DIY_EquipmentCommonLib.h"
 
 UDIY_EquipmentManager::UDIY_EquipmentManager()
 {
     PrimaryComponentTick.bCanEverTick = true;
-
-    InitAllEquipments();
-
-    //@TODO
-    // CurAllEquipModelType[] init should be processed at save object
 }
 
 void UDIY_EquipmentManager::RequestEquipModelTypeTo(EEquipmentsIndex inEquipIndex, int inModelType, bool forceReLoad)
@@ -37,65 +33,77 @@ void UDIY_EquipmentManager::RequestEquipModelTypeTo(EEquipmentsIndex inEquipInde
     if (inModelType < 0)
         return;
 
+    UDIY_ItemManagerSubsystem *item_manager = UDIY_ItemManagerSubsystem::Get(GetWorld());
+    if (nullptr == item_manager)
+    {
+        return;
+    }
+    UDIY_ItemManagerSubsystemHelperBase *helper = item_manager->SubsystemHelper;
+
+    if (nullptr == helper)
+    {
+        return;
+    }
+
     TSoftObjectPtr<USkeletalMesh> *needed_object_path = nullptr;
 
     switch (inEquipIndex)
     {
     case EEquipmentsIndex::Bag:
     {
-        ensureMsgf(inModelType < SKMDepot_Bags.Num(), TEXT("bag requested to invalid model type"));
-        needed_object_path = &SKMDepot_Bags[inModelType];
+        ensureMsgf(inModelType < helper->SKMDepot_Bags.Num(), TEXT("bag requested to invalid model type"));
+        needed_object_path = &helper->SKMDepot_Bags[inModelType];
         break;
     }
     case EEquipmentsIndex::Left_Hand:
     {
-        ensureMsgf(inModelType < SKMDepot_Hands.Num(), TEXT("hand requested to invalid model type"));
+        ensureMsgf(inModelType < helper->SKMDepot_Hands.Num(), TEXT("hand requested to invalid model type"));
 
-        needed_object_path = &SKMDepot_Hands[inModelType];
+        needed_object_path = &helper->SKMDepot_Hands[inModelType];
         break;
     }
     case EEquipmentsIndex::Right_Hand:
     {
-        ensureMsgf(inModelType < SKMDepot_Hands.Num(), TEXT("hand requested to invalid model type"));
+        ensureMsgf(inModelType < helper->SKMDepot_Hands.Num(), TEXT("hand requested to invalid model type"));
 
-        needed_object_path = &SKMDepot_Hands[inModelType];
+        needed_object_path = &helper->SKMDepot_Hands[inModelType];
 
         break;
     }
     case EEquipmentsIndex::Left_Hand_Head:
     {
-        ensureMsgf(inModelType < SKMDepot_Hand_Heads.Num(), TEXT("hand head requested to invalid model type"));
+        ensureMsgf(inModelType < helper->SKMDepot_Hand_Heads.Num(), TEXT("hand head requested to invalid model type"));
 
-        needed_object_path = &SKMDepot_Hand_Heads[inModelType];
+        needed_object_path = &helper->SKMDepot_Hand_Heads[inModelType];
         break;
     }
     case EEquipmentsIndex::Right_Hand_Head:
     {
-        ensureMsgf(inModelType < SKMDepot_Hand_Heads.Num(), TEXT("hand head requested to invalid model type"));
-        needed_object_path = &SKMDepot_Hand_Heads[inModelType];
+        ensureMsgf(inModelType < helper->SKMDepot_Hand_Heads.Num(), TEXT("hand head requested to invalid model type"));
+        needed_object_path = &helper->SKMDepot_Hand_Heads[inModelType];
         break;
     }
     case EEquipmentsIndex::Kago:
     {
 
-        ensureMsgf(inModelType < SKMDepot_Kagos.Num(), TEXT("kago requested to invalid model type"));
+        ensureMsgf(inModelType < helper->SKMDepot_Kagos.Num(), TEXT("kago requested to invalid model type"));
 
-        needed_object_path = &SKMDepot_Kagos[inModelType];
+        needed_object_path = &helper->SKMDepot_Kagos[inModelType];
         break;
     }
     case EEquipmentsIndex::Chest:
     {
 
-        ensureMsgf(inModelType < SKMDepot_Chests.Num(), TEXT("chest requested to invalid model type"));
+        ensureMsgf(inModelType < helper->SKMDepot_Chests.Num(), TEXT("chest requested to invalid model type"));
 
-        needed_object_path = &SKMDepot_Chests[inModelType];
+        needed_object_path = &helper->SKMDepot_Chests[inModelType];
         break;
     }
     case EEquipmentsIndex::Cap:
     {
 
-        ensureMsgf(inModelType < SKMDepot_Caps.Num(), TEXT("cap requested to invalid model type"));
-        needed_object_path = &SKMDepot_Caps[inModelType];
+        ensureMsgf(inModelType < helper->SKMDepot_Caps.Num(), TEXT("cap requested to invalid model type"));
+        needed_object_path = &helper->SKMDepot_Caps[inModelType];
         break;
     }
 
@@ -105,7 +113,7 @@ void UDIY_EquipmentManager::RequestEquipModelTypeTo(EEquipmentsIndex inEquipInde
 
     ensureMsgf(nullptr != needed_object_path, TEXT("needed_object_path needs to be valid to create equipment"));
 
-    DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)inEquipIndex]->mEquipMentMesh, *needed_object_path);
+    DIY_EquipmentCommonLib::LoadSkeletonMeshAsync(this, AllEquipments[(int)inEquipIndex], *needed_object_path);
 
     GetEquipAtIndex(inEquipIndex)->SetEquipModelType(inModelType);
 }
@@ -124,22 +132,23 @@ USkeletalMeshComponent *UDIY_EquipmentManager::GetEquipSKMAtIndex(EEquipmentsInd
     ensureMsgf((uint8)inIndex < (uint8)EEquipmentsIndex::Equip_Count, TEXT("GetEquipAtIndex inIndex over the limit"));
     ensureMsgf((uint8)inIndex < AllEquipments.Num(), TEXT("GetEquipAtIndex inIndex over the array num"));
 
-    ensureMsgf(nullptr != AllEquipments[(uint8)inIndex]->mEquipMentMesh, TEXT("current index skm shall never be null"));
-    return AllEquipments[(uint8)inIndex]->mEquipMentMesh;
+    ensureMsgf(nullptr != AllEquipments[(uint8)inIndex], TEXT("current index skm shall never be null"));
+    return AllEquipments[(uint8)inIndex];
 }
-
+void UDIY_EquipmentManager::RegisterEquipment(UDIY_EquipmentBase *inEquipment, EEquipmentsIndex inIndex)
+{
+    if (AllEquipments.Num() == 0)
+    {
+        AllEquipments.Init(nullptr, (int32)EEquipmentsIndex::Equip_Count);
+    }
+    ensureAlwaysMsgf(AllEquipments.Num() == (uint8)EEquipmentsIndex::Equip_Count, TEXT("AllEquipments.Num() != (uint8)EEquipmentsIndex::Equip_Count"));
+    ensureAlwaysMsgf((int32)inIndex < AllEquipments.Num(), TEXT("RegisterEquipment inIndex over the array num"));
+    ensureAlwaysMsgf(nullptr == AllEquipments[(uint8)inIndex], TEXT("current index skm shall be null"));
+    AllEquipments[(int32)inIndex] = inEquipment;
+}
 void UDIY_EquipmentManager::BeginPlay()
 {
     Super::BeginPlay();
-
-    checkf((int32)EDIY_RobotHandType::Count == SKMDepot_Hands.Num(), TEXT("RobotHand num is invalid"));
-    checkf((int32)EDIY_RobotHand_HeadType::Count == SKMDepot_Hand_Heads.Num(), TEXT("RobotHand num is invalid"));
-    checkf((int32)EDIY_BagType::Count == SKMDepot_Bags.Num(), TEXT("RobotHand num is invalid"));
-    checkf((int32)EDIY_KagoType::Count == SKMDepot_Kagos.Num(), TEXT("Kago num is invalid"));
-
-    checkf((int32)EDIY_ChestType::Count == SKMDepot_Chests.Num(), TEXT("Chest num is invalid"));
-    checkf((int32)EDIY_CapType::Count == SKMDepot_Caps.Num(), TEXT("Cap num is invalid"));
-    RealizeAllEquipmentModels();
 }
 
 void UDIY_EquipmentManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
@@ -157,181 +166,6 @@ FVector UDIY_EquipmentManager::GetKagoRobotDumpItemPoint()
 void UDIY_EquipmentManager::PostInitProperties()
 {
     Super::PostInitProperties();
-}
-
-void UDIY_EquipmentManager::InitAllEquipments()
-{
-
-    AllEquipments.Init(nullptr, (int)EEquipmentsIndex::Equip_Count);
-
-    for (int equip_index = 0; equip_index < (int)EEquipmentsIndex::Equip_Count; ++equip_index)
-    {
-
-        switch (equip_index)
-        {
-        case (int)EEquipmentsIndex::Bag:
-        {
-
-            AllEquipments[(int)EEquipmentsIndex::Bag] = CreateDefaultSubobject<UDIY_BagController>(TEXT("Bag"));
-
-            // FAttachmentTransformRules rule(EAttachmentRule::KeepRelative,false);
-            // AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh->AttachToComponent(this,rule);
-            AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh->SetupAttachment(this);
-
-            //(X=-28.690009,Y=-3.189239,Z=-40.898868)
-            //(Pitch=-0.883222,Yaw=-85.507022,Roll=-2.330402)
-            AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh->SetRelativeLocation({-28.690009, -3.189239, -40.898868});
-            AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh->SetRelativeRotation({-0.883222, -85.507022, -2.330402});
-
-            AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipIndex = EEquipmentsIndex::Bag;
-            AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipName = TEXT("Bag");
-
-            break;
-        }
-
-        case (int)EEquipmentsIndex::Left_Hand:
-        {
-
-            AllEquipments[(int)EEquipmentsIndex::Left_Hand] = CreateDefaultSubobject<UDIY_RobotHandController>(TEXT("Left_Hand"));
-
-            // FAttachmentTransformRules rule(EAttachmentRule::KeepRelative,false);
-            // cur_scene_compo->AttachToComponent(GetEuqipmentEntityAs_SceneCompo(EEquipmentsIndex::Bag),rule,TEXT("arm_l"));
-
-            AllEquipments[(int)EEquipmentsIndex::Left_Hand]->mEquipMentMesh->SetupAttachment(AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh, TEXT("arm_l"));
-
-            AllEquipments[(int)EEquipmentsIndex::Left_Hand]->mEquipIndex = EEquipmentsIndex::Left_Hand;
-            AllEquipments[(int)EEquipmentsIndex::Left_Hand]->mEquipName = TEXT("Left_Hand");
-
-            UDIY_RobotHandController *cur_hand = Cast<UDIY_RobotHandController>(AllEquipments[(int)EEquipmentsIndex::Left_Hand]);
-
-            cur_hand->Target_Hook->SetupAttachment(this);
-            //(X=35.000000,Y=-60.000000,Z=20.000000)
-
-            cur_hand->Target_Hook->SetRelativeLocation({35.f, -60.f, 20.f});
-
-            // EASY_LOG_MAINPLAYER("xxxxxxxxx manager parent is %s",*this->GetAttachParent()->GetName());
-            break;
-        }
-        case (int)EEquipmentsIndex::Right_Hand:
-        {
-
-            AllEquipments[(int)EEquipmentsIndex::Right_Hand] = CreateDefaultSubobject<UDIY_RobotHandController>(TEXT("Right_Hand"));
-
-            // FAttachmentTransformRules rule(EAttachmentRule::KeepRelative,false);
-            // cur_scene_compo->AttachToComponent(GetEuqipmentEntityAs_SceneCompo(EEquipmentsIndex::Bag),rule,TEXT("arm_r"));
-
-            AllEquipments[(int)EEquipmentsIndex::Right_Hand]->mEquipMentMesh->SetupAttachment(AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh, TEXT("arm_r"));
-
-            AllEquipments[(int)EEquipmentsIndex::Right_Hand]->mEquipIndex = EEquipmentsIndex::Right_Hand;
-            AllEquipments[(int)EEquipmentsIndex::Right_Hand]->mEquipName = TEXT("Right_Hand");
-
-            UDIY_RobotHandController *cur_hand = Cast<UDIY_RobotHandController>(AllEquipments[(int)EEquipmentsIndex::Right_Hand]);
-            cur_hand->Target_Hook->SetupAttachment(this);
-            cur_hand->Target_Hook->SetRelativeLocation({35.f, 60.f, 20.f});
-
-            break;
-        }
-        case (int)EEquipmentsIndex::Left_Hand_Head:
-        {
-
-            AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head] = CreateDefaultSubobject<UDIY_RobotHand_HeadController>(TEXT("Left_Hand_Head"));
-
-            // FAttachmentTransformRules rule(EAttachmentRule::KeepRelative,false);
-            // cur_scene_compo->AttachToComponent(GetEuqipmentEntityAs_SceneCompo(EEquipmentsIndex::Left_Hand),rule,TEXT("armhead_00"));
-
-            AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->mEquipMentMesh->SetupAttachment(AllEquipments[(int)EEquipmentsIndex::Left_Hand]->mEquipMentMesh, TEXT("armhead_00"));
-
-            AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->mEquipIndex = EEquipmentsIndex::Left_Hand_Head;
-            AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->mEquipName = TEXT("Left_Hand_Head");
-
-            break;
-        }
-        case (int)EEquipmentsIndex::Right_Hand_Head:
-        {
-
-            AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head] = CreateDefaultSubobject<UDIY_RobotHand_HeadController>(TEXT("Right_Hand_Head"));
-
-            // FAttachmentTransformRules rule(EAttachmentRule::KeepRelative,false);
-            // cur_scene_compo->AttachToComponent(GetEuqipmentEntityAs_SceneCompo(EEquipmentsIndex::Right_Hand),rule,TEXT("armhead_00"));
-
-            AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->mEquipMentMesh->SetupAttachment(AllEquipments[(int)EEquipmentsIndex::Right_Hand]->mEquipMentMesh, TEXT("armhead_00"));
-
-            AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->mEquipIndex = EEquipmentsIndex::Right_Hand_Head;
-            AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->mEquipName = TEXT("Right_Hand_Head");
-
-            break;
-        }
-        case (int)EEquipmentsIndex::Kago:
-        {
-
-            AllEquipments[(int)EEquipmentsIndex::Kago] = CreateDefaultSubobject<UDIY_KagoController>(TEXT("Kago"));
-
-            AllEquipments[(int)EEquipmentsIndex::Kago]->mEquipMentMesh->SetupAttachment(AllEquipments[(int)EEquipmentsIndex::Bag]->mEquipMentMesh, TEXT("kago"));
-
-            AllEquipments[(int)EEquipmentsIndex::Kago]->mEquipIndex = EEquipmentsIndex::Kago;
-            AllEquipments[(int)EEquipmentsIndex::Kago]->mEquipName = TEXT("Kago");
-
-            break;
-        }
-        case (int)EEquipmentsIndex::Chest:
-        {
-
-            AllEquipments[(int)EEquipmentsIndex::Chest] = CreateDefaultSubobject<UDIY_ChestController>(TEXT("Chest"));
-
-            AllEquipments[(int)EEquipmentsIndex::Chest]->mEquipMentMesh->SetupAttachment(this);
-
-            AllEquipments[(int)EEquipmentsIndex::Chest]->mEquipIndex = EEquipmentsIndex::Chest;
-            AllEquipments[(int)EEquipmentsIndex::Chest]->mEquipName = TEXT("Chest");
-
-            break;
-        }
-        case (int)EEquipmentsIndex::Cap:
-        {
-
-            AllEquipments[(int)EEquipmentsIndex::Cap] = CreateDefaultSubobject<UDIY_CapController>(TEXT("Cap"));
-
-            AllEquipments[(int)EEquipmentsIndex::Cap]->mEquipMentMesh->SetupAttachment(this);
-
-            AllEquipments[(int)EEquipmentsIndex::Cap]->mEquipIndex = EEquipmentsIndex::Cap;
-            AllEquipments[(int)EEquipmentsIndex::Cap]->mEquipName = TEXT("Cap");
-
-            break;
-        }
-        default:
-            break;
-        }
-    }
-
-    // relation ship setting!
-    {
-
-        // bag
-        AllEquipments[(int)EEquipmentsIndex::Bag]->SetParentEquipment(this);
-        AllEquipments[(int)EEquipmentsIndex::Bag]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Left_Hand]);
-        AllEquipments[(int)EEquipmentsIndex::Bag]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Right_Hand]);
-        AllEquipments[(int)EEquipmentsIndex::Bag]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Kago]);
-
-        // chest and cap stand-alone equipment
-        AllEquipments[(int)EEquipmentsIndex::Chest]->SetParentEquipment(this);
-        AllEquipments[(int)EEquipmentsIndex::Cap]->SetParentEquipment(this);
-
-        // left hand
-        AllEquipments[(int)EEquipmentsIndex::Left_Hand]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]);
-        AllEquipments[(int)EEquipmentsIndex::Left_Hand]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Bag]);
-
-        // right hand
-        AllEquipments[(int)EEquipmentsIndex::Right_Hand]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]);
-        AllEquipments[(int)EEquipmentsIndex::Right_Hand]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Bag]);
-
-        // right hand head
-        AllEquipments[(int)EEquipmentsIndex::Right_Hand_Head]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Right_Hand]);
-
-        // left hand head
-        AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Left_Hand]);
-
-        // kago
-        AllEquipments[(int)EEquipmentsIndex::Kago]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Bag]);
-    }
 }
 
 void UDIY_EquipmentManager::RealizeAllEquipmentModels()

@@ -8,7 +8,7 @@
 #include "DIY_EquipmentBase.generated.h"
 
 UCLASS(ClassGroup = (Equipment), meta = (BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_EquipmentBase : public UActorComponent
+class AROUNDME_API UDIY_EquipmentBase : public USkeletalMeshComponent
 {
     GENERATED_BODY()
 
@@ -16,9 +16,6 @@ public:
     UDIY_EquipmentBase();
 
 public:
-    UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "UDIY_EquipmentBase")
-    class USkeletalMeshComponent *mEquipMentMesh{nullptr};
-
     UPROPERTY(BlueprintReadOnly, VisibleAnyWhere, Category = "UDIY_EquipmentBase")
     FName mEquipName;
 
@@ -28,8 +25,6 @@ public:
     void SetParentEquipment(UActorComponent *inParentEquipment);
 
     void AddChildEquipment(UActorComponent *inChildEquipment);
-
-    
 
     void SetEquipModelType(int32 inModelType)
     {

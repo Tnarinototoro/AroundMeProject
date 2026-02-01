@@ -141,6 +141,19 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = "BackPack")
     float EnergyTotalEarnedLimit{999999.f};
 
+    UPROPERTY(EditDefaultsOnly, Category = "DIY_Equipment")
+    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Hand_Heads;
+    UPROPERTY(EditDefaultsOnly, Category = "DIY_Equipment")
+    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Hands;
+    UPROPERTY(EditDefaultsOnly, Category = "DIY_Equipment")
+    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Bags;
+    UPROPERTY(EditDefaultsOnly, Category = "DIY_Equipment")
+    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Kagos;
+    UPROPERTY(EditDefaultsOnly, Category = "DIY_Equipment")
+    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Chests;
+    UPROPERTY(EditDefaultsOnly, Category = "DIY_Equipment")
+    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Caps;
+
 protected:
 public:
     void Initialize();

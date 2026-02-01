@@ -10,7 +10,7 @@
 #include "DIY_EquipmentManager.generated.h"
 
 UCLASS(ClassGroup = (Player), meta = (BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_EquipmentManager : public USceneComponent
+class AROUNDME_API UDIY_EquipmentManager : public UActorComponent
 {
     GENERATED_BODY()
 
@@ -26,22 +26,14 @@ public:
     UFUNCTION(BlueprintCallable, BlueprintPure, Category = "DIY_EquipmentManager")
     class USkeletalMeshComponent *GetEquipSKMAtIndex(EEquipmentsIndex inIndex);
 
+    UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
+    void RegisterEquipment(class UDIY_EquipmentBase *inEquipment, EEquipmentsIndex inIndex);
+
+    UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
+    void RealizeAllEquipmentModels();
 protected:
     // Called when the game starts
     virtual void BeginPlay() override;
-
-    UPROPERTY(EditDefaultsOnly, Category = "DIY_EquipmentManager")
-    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Hand_Heads;
-    UPROPERTY(EditDefaultsOnly, Category = "DIY_EquipmentManager")
-    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Hands;
-    UPROPERTY(EditDefaultsOnly, Category = "DIY_EquipmentManager")
-    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Bags;
-    UPROPERTY(EditDefaultsOnly, Category = "DIY_EquipmentManager")
-    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Kagos;
-    UPROPERTY(EditDefaultsOnly, Category = "DIY_EquipmentManager")
-    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Chests;
-    UPROPERTY(EditDefaultsOnly, Category = "DIY_EquipmentManager")
-    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Caps;
 
 public:
     // Called every frame
@@ -51,11 +43,8 @@ public:
 
     virtual void PostInitProperties() override;
 
-    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "DIY_EquipmentManager")
-    TArray<class UDIY_EquipmentBase *> AllEquipments;
-
 protected:
 private:
-    void InitAllEquipments();
-    void RealizeAllEquipmentModels();
+    
+    TArray<class UDIY_EquipmentBase *> AllEquipments;
 };

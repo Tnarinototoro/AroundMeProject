@@ -19,14 +19,10 @@ void UDIY_RobotHand_HeadController::BeginPlay()
 void UDIY_RobotHand_HeadController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-    if (nullptr != mEquipMentMesh)
-    {
+    UpdateHandHeadStateMachine(DeltaTime);
 
-        UpdateHandHeadStateMachine(DeltaTime);
-
-        // actaully do updates here!
-        UpdateParams(DeltaTime);
-    }
+    // actaully do updates here!
+    UpdateParams(DeltaTime);
 }
 
 void UDIY_RobotHand_HeadController::SetHeadSpinningSpeed(float inSpinSpeed)
@@ -43,7 +39,7 @@ void UDIY_RobotHand_HeadController::UpdateParams(float inDeltatime)
 {
     // update head angles and spinning
     {
-        USkeletalMeshComponent *parent_skm = Cast<USkeletalMeshComponent>(mEquipMentMesh->GetAttachParent());
+        USkeletalMeshComponent *parent_skm = Cast<USkeletalMeshComponent>(GetAttachParent());
 
         if (nullptr != parent_skm)
         {
@@ -62,7 +58,7 @@ void UDIY_RobotHand_HeadController::UpdateParams(float inDeltatime)
             }
 #endif
 
-            FRotator cur_rotate = mEquipMentMesh->GetRelativeRotationFromWorld(FRotationMatrix::MakeFromX(real_forward_vec).ToQuat()).Rotator();
+            FRotator cur_rotate = GetRelativeRotationFromWorld(FRotationMatrix::MakeFromX(real_forward_vec).ToQuat()).Rotator();
 
             cur_rotate.Roll = CurrentSpinAngle;
             CurrentSpinAngle += CurrentSpinSpeed * inDeltatime;
@@ -70,7 +66,7 @@ void UDIY_RobotHand_HeadController::UpdateParams(float inDeltatime)
             CurrentSpinAngle = FMath::Modulo(CurrentSpinAngle, 360.f);
 
             // you have to set relative rotation directly
-            mEquipMentMesh->SetRelativeRotation(cur_rotate);
+            SetRelativeRotation(cur_rotate);
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
             if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
@@ -105,14 +101,14 @@ void UDIY_RobotHand_HeadController::UpdateParams(float inDeltatime)
 void UDIY_RobotHand_HeadController::UpdateHandHeadStateMachine(float inDeltatime)
 {
 
-    FRotator cur_rotate = mEquipMentMesh->GetRelativeRotation();
+    FRotator cur_rotate = GetRelativeRotation();
 
 #if UE_BUILD_DEVELOPMENT || UE_BUILD_DEBUG
     if (FDIY_GlobalDebugSettings::sInstance.equipment.bShowHandHeadDebugInfo)
     {
         FString debug_str = FString::Printf(TEXT("%s SpinSpeed %f"),
                                             *UEnum::GetValueAsString(mCurrentState), CurrentSpinSpeed);
-        DrawDebugString(GetWorld(), this->mEquipMentMesh->GetComponentLocation(), debug_str, nullptr, FColor::Green, 0.f);
+        DrawDebugString(GetWorld(), GetComponentLocation(), debug_str, nullptr, FColor::Green, 0.f);
     }
 #endif
 
