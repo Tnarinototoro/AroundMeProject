@@ -614,12 +614,8 @@ void UDIY_MainPlayerUIController::OnInitAllItemsInfoLoaded()
                 FAnchors(ItemCraftingPlatform_Anchors_InViewPort.X,
                          ItemCraftingPlatform_Anchors_InViewPort.Y));
             item_crafting_platform_widget->SetAlignmentInViewport(ItemCraftingPlatform_Align_InViewPort);
-
-            // item_crafting_platform_widget->AddToViewport(0);
-
             RequestChangeUISectionVisibility(ESlateVisibility::Hidden, EMainPlayerUISectionID::ItemCraftingPlatform);
 
-            // ToggleCraftingPlatformUi(true);
             break;
         }
 
@@ -629,6 +625,7 @@ void UDIY_MainPlayerUIController::OnInitAllItemsInfoLoaded()
     }
 
     UDIY_ItemManagerSubsystem::OnItemsNumInBackPack_Changed.AddUObject(this, &UDIY_MainPlayerUIController::OnItemBackPackNumChanged);
+    ToggleCraftingPlatformUi(true);
 }
 bool UDIY_MainPlayerUIController::IsCraftingPlatformUiOpened() const
 {
@@ -641,7 +638,9 @@ void UDIY_MainPlayerUIController::SelectCraftingPlatformSlotOn(uint32 col_x, uin
     if (is_multi_selecting)
         return;
 
-    ensureMsgf(isCraftingPlatformPosInValidRange(col_x, row_y) && IsUISectionVisible(EMainPlayerUISectionID::ItemCraftingPlatform), TEXT("Selected slot is not in rang or ItemCraftingPlatform not opended"));
+    bool isCurslotValid = isCraftingPlatformPosInValidRange(col_x, row_y);
+    bool isCraftingPlatformUIVisible = IsUISectionVisible(EMainPlayerUISectionID::ItemCraftingPlatform);
+    ensureMsgf(isCurslotValid, TEXT("Selected slot is in range %d or ItemCraftingPlatform opended %d"), isCurslotValid, isCraftingPlatformUIVisible);
     if (col_x == CraftingPlatform_CurrentSelectedCol && CraftingPlatform_CurrentSelectedRow == row_y)
         return;
 
