@@ -155,11 +155,14 @@ void ADIY_MainPlayer::UpdateGameLogic(float deltaTime)
     default:
         break;
     }
-    UCharacterMovementComponent *cur_movement_compo = GetCharacterMovement();
 
-    ensure(cur_movement_compo && cur_movement_compo->GetMaxSpeed() > 0.f);
-
-    AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->mSpeedRate = cur_movement_compo->GetLastUpdateVelocity().Length() / cur_movement_compo->GetMaxSpeed();
+    if (UCharacterMovementComponent *cur_movement_compo = GetCharacterMovement())
+    {
+        if (cur_movement_compo && cur_movement_compo->GetMaxSpeed() > 0.f)
+        {
+            AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->mSpeedRate = cur_movement_compo->GetLastUpdateVelocity().Length() / cur_movement_compo->GetMaxSpeed();
+        }
+    }
 }
 
 void ADIY_MainPlayer::PostInitializeComponents()

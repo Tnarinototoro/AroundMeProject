@@ -136,6 +136,7 @@ public:
     FPrimaryAssetId GetCurrentTargetCraftingItemID() const;
 
 private:
+    UPROPERTY()
     TArray<class UUserWidget *> mAllWidgets;
     bool RememberLastSelectedSlotCursorPos_WhenClosed{false};
     // Pos Y

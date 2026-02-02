@@ -35,6 +35,11 @@ void UDIY_MainPlayerUIController::EndPlay(const EEndPlayReason::Type EndPlayReas
     ensureMsgf(mAllWidgets.Num() == (int32)EMainPlayerUISectionID::EMainPlayerUISectionID_Count, TEXT("Widgets num not right please contact PG"));
     for (int type = 0; type < (int)EMainPlayerUISectionID::EMainPlayerUISectionID_Count; ++type)
     {
+        if (mAllWidgets[type] == nullptr)
+        {
+            continue;
+        }
+
         switch (type)
         {
         case (int)EMainPlayerUISectionID::BackPack:
