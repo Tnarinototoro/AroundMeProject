@@ -141,7 +141,12 @@ void UDIY_MainPlayerUIController::RequestVisibility_CraftingPlatform(ESlateVisib
 }
 bool UDIY_MainPlayerUIController::IsUISectionVisible(EMainPlayerUISectionID SectionID) const
 {
-    return mAllWidgets[int(SectionID)]->IsVisible();
+    if (mAllWidgets[int(SectionID)] != nullptr && IsValidChecked(mAllWidgets[int(SectionID)]))
+    {
+        return mAllWidgets[int(SectionID)]->IsVisible();
+    }
+
+    return false;
 }
 
 void UDIY_MainPlayerUIController::RequestMoveCurrentSelectedCursor(int inDeltaX, int inDeltaY, uint32 inStride)
