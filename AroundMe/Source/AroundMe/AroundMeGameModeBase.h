@@ -16,7 +16,20 @@ class AROUNDME_API AAroundMeGameModeBase : public AGameModeBase
 public:
     AAroundMeGameModeBase();
 
+    UPROPERTY(EditAnywhere, Category = "Developer_Config")
+    TSubclassOf<APawn> MainPawnClass;
+
+    
+    UPROPERTY(EditAnywhere, Category = "Developer_Config")
+    FName GroundLevelName;
 protected:
 
     virtual void BeginPlay() override;
+
+    
+    UFUNCTION()
+    void OnGroundLevelVisible();
+
+   
+    void SpawnAndPossessPlayer();
 };
