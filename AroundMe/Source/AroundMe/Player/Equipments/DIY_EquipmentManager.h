@@ -23,8 +23,7 @@ public:
     UFUNCTION(BlueprintCallable, BlueprintPure, Category = "DIY_EquipmentManager")
     class UDIY_EquipmentBase *GetEquipAtIndex(EEquipmentsIndex inIndex);
 
-    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "DIY_EquipmentManager")
-    class USkeletalMeshComponent *GetEquipSKMAtIndex(EEquipmentsIndex inIndex);
+  
 
     UFUNCTION(BlueprintCallable, Category = "DIY_EquipmentManager")
     void RegisterEquipment(class UDIY_EquipmentBase *inEquipment, EEquipmentsIndex inIndex);

@@ -43,6 +43,10 @@ void UDIY_EquipmentBase::PostEditChangeProperty(FPropertyChangedEvent &PropertyC
     }
 }
 
+void UDIY_EquipmentBase::OnModelTypeChanged(uint32 lastModelType,uint32 newModelType)
+{
+    
+}
 void UDIY_EquipmentBase::CheckForErrors()
 {
     Super::CheckForErrors();

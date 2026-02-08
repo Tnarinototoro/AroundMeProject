@@ -154,6 +154,9 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = "DIY_Equipment")
     TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Caps;
 
+    UPROPERTY(EditDefaultsOnly, Category = "DIY_Equipment")
+    TArray<TSoftObjectPtr<USkeletalMesh>> SKMDepot_Faces;
+
 protected:
 public:
     void Initialize();

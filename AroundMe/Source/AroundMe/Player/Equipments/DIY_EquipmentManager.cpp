@@ -5,6 +5,7 @@
 #include "DIY_KagoController.h"
 #include "DIY_ChestController.h"
 #include "DIY_CapController.h"
+#include "DIY_FaceController.h"
 #include "../Items/DIY_ItemManager.h"
 #include "GameFramework/Character.h"
 #include "DIY_EquipmentCommonLib.h"
@@ -106,6 +107,13 @@ void UDIY_EquipmentManager::RequestEquipModelTypeTo(EEquipmentsIndex inEquipInde
         needed_object_path = &helper->SKMDepot_Caps[inModelType];
         break;
     }
+    case EEquipmentsIndex::Face:
+    {
+
+        ensureMsgf(inModelType < helper->SKMDepot_Faces.Num(), TEXT("face requested to invalid model type"));
+        needed_object_path = &helper->SKMDepot_Faces[inModelType];
+        break;
+    }
 
     default:
         break;
@@ -127,14 +135,6 @@ UDIY_EquipmentBase *UDIY_EquipmentManager::GetEquipAtIndex(EEquipmentsIndex inIn
     return AllEquipments[(uint8)inIndex];
 }
 
-USkeletalMeshComponent *UDIY_EquipmentManager::GetEquipSKMAtIndex(EEquipmentsIndex inIndex)
-{
-    ensureMsgf((uint8)inIndex < (uint8)EEquipmentsIndex::Equip_Count, TEXT("GetEquipAtIndex inIndex over the limit"));
-    ensureMsgf((uint8)inIndex < AllEquipments.Num(), TEXT("GetEquipAtIndex inIndex over the array num"));
-
-    ensureMsgf(nullptr != AllEquipments[(uint8)inIndex], TEXT("current index skm shall never be null"));
-    return AllEquipments[(uint8)inIndex];
-}
 void UDIY_EquipmentManager::RegisterEquipment(UDIY_EquipmentBase *inEquipment, EEquipmentsIndex inIndex)
 {
     if (AllEquipments.Num() == 0)
@@ -178,12 +178,14 @@ void UDIY_EquipmentManager::RealizeAllEquipmentModels()
     RequestEquipModelTypeTo(EEquipmentsIndex::Kago, (int32)EDIY_KagoType::RustOld_Type, true);
     RequestEquipModelTypeTo(EEquipmentsIndex::Chest, (int32)EDIY_ChestType::Original_Type, true);
     RequestEquipModelTypeTo(EEquipmentsIndex::Cap, (int32)EDIY_CapType::Original_Type, true);
+    RequestEquipModelTypeTo(EEquipmentsIndex::Face, (int32)EDIY_FaceType::Default, true);
 
     for (int i = 0; i < AllEquipments.Num(); i++)
     {
 
-        GetEquipSKMAtIndex((EEquipmentsIndex)i)->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-        GetEquipSKMAtIndex((EEquipmentsIndex)i)->SetSimulatePhysics(false);
+        GetEquipAtIndex((EEquipmentsIndex)i)->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        GetEquipAtIndex((EEquipmentsIndex)i)->SetSimulatePhysics(false);
+        GetEquipAtIndex((EEquipmentsIndex)i)->OnWeaponSelfChangeModelTypeRequest.BindUFunction(this, FName("RequestEquipModelTypeTo"));
     }
 
     // bag
@@ -195,7 +197,7 @@ void UDIY_EquipmentManager::RealizeAllEquipmentModels()
     // chest and cap stand-alone equipment
     AllEquipments[(int)EEquipmentsIndex::Chest]->SetParentEquipment(this);
     AllEquipments[(int)EEquipmentsIndex::Cap]->SetParentEquipment(this);
-
+    AllEquipments[(int)EEquipmentsIndex::Face]->SetParentEquipment(this);
     // left hand
     AllEquipments[(int)EEquipmentsIndex::Left_Hand]->AddChildEquipment(AllEquipments[(int)EEquipmentsIndex::Left_Hand_Head]);
     AllEquipments[(int)EEquipmentsIndex::Left_Hand]->SetParentEquipment(AllEquipments[(int)EEquipmentsIndex::Bag]);

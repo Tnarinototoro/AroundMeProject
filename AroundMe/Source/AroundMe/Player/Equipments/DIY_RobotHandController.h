@@ -21,7 +21,7 @@ protected:
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DIY_RobotHandController")
-    TObjectPtr<USceneComponent> Target_Hook; // 推荐使用 TObjectPtr 规范
+    TObjectPtr<USceneComponent> Target_Hook; 
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 

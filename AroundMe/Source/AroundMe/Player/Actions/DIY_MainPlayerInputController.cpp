@@ -12,6 +12,7 @@
 #include "../Items/DIY_Item.h"
 #include "../../GameUtilities/DIY_Utilities.h"
 #include "../Items/DIY_ItemManager.h"
+#include "../Equipments/DIY_EquipmentBase.h"
 #include "../Equipments/DIY_EquipmentManager.h"
 
 UDIY_MainPlayerInputController::UDIY_MainPlayerInputController()
@@ -145,8 +146,12 @@ void UDIY_MainPlayerInputController::onInteractPressed(const FInputActionValue &
             }
             if (nullptr != detected_actor && is_pickable)
             {
-                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->PickUpDetectedItem(detected_actor, "armhead_l_00", AcquireOwnerActorOwnedUDIY_EquipmentManager()->GetEquipSKMAtIndex(EEquipmentsIndex::Right_Hand_Head));
-                EASY_LOG_MAINPLAYER("%s Picked up the actor yyyyyyyy", *GetOwner()->GetName());
+                AcquireOwnerActorOwnedUDIY_MainPlayerActionController()->
+                PickUpDetectedItem(
+                    detected_actor, 
+                    "armhead_l_00", 
+                    AcquireOwnerActorOwnedUDIY_EquipmentManager()->GetEquipAtIndex(EEquipmentsIndex::Right_Hand_Head));
+                EASY_LOG_MAINPLAYER("%s Picked up the actor", *GetOwner()->GetName());
             }
         }
         else

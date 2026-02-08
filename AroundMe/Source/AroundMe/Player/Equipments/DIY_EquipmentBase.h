@@ -23,14 +23,20 @@ public:
 
     void AddChildEquipment(UActorComponent *inChildEquipment);
 
+    virtual void OnModelTypeChanged(uint32 lastModelType,uint32 newModelType);
     void SetEquipModelType(int32 inModelType)
     {
+        uint32 tmpModelType = EquipModelType;
         EquipModelType = inModelType;
+        OnModelTypeChanged(tmpModelType,inModelType);
     }
     int32 GetEquipModelType() const
     {
         return EquipModelType;
     }
+    DECLARE_DYNAMIC_DELEGATE_ThreeParams(FOnWeaponSelfChangeModelTypeRequest, EEquipmentsIndex, inEquipIndex,int,inModelType,bool,forceReLoad);
+
+    FOnWeaponSelfChangeModelTypeRequest OnWeaponSelfChangeModelTypeRequest;
 
 #if WITH_EDITOR
     // 1. 当属性被修改时触发 (用于自动重命名组件)

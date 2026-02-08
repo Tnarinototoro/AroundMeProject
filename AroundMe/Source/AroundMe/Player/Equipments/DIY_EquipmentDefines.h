@@ -45,6 +45,7 @@ enum class EEquipmentsIndex : uint8
     Kago UMETA(DisplayName="Kago"),
     Chest UMETA(DisplayName="Chest"),
     Cap UMETA(DisplayName="Cap"),
+    Face UMETA(DisplayName="Face"),
     Equip_Count
 
 

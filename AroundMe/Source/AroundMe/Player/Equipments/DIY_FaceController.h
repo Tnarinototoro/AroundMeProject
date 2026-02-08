@@ -4,23 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
-#include "DIY_BagDefines.h"
+#include "DIY_FaceDefines.h"
 #include "DIY_EquipmentBase.h"
-#include "DIY_BagController.generated.h"
+#include "DIY_FaceController.generated.h"
 
 UCLASS(ClassGroup = (Player), meta = (BlueprintSpawnableComponent))
-class AROUNDME_API UDIY_BagController : public UDIY_EquipmentBase
+class AROUNDME_API UDIY_FaceController : public UDIY_EquipmentBase
 {
 	GENERATED_BODY()
 
 public:
 
-	UDIY_BagController();
+	UDIY_FaceController();
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+
+    virtual void OnModelTypeChanged(uint32 lastModelType, uint32 newModelType) override;
 public:
 
 
@@ -37,17 +39,17 @@ public:
 
 
 protected:
-	void UpdateHandHeadStateMachine(float inDeltatime);
+	void UpdateFaceStateMachine(float inDeltatime);
 
-	void SwitchToNextState(EDIY_BagState_Type inNextState);
+	void RequestSwitchToNextFaceType(EDIY_FaceType inNextType);
 
 private:
 
 
-	EDIY_BagState_Type mCurrentState{ EDIY_BagState_Type::Idle };
+	EDIY_FaceType mCurrentFaceType{ EDIY_FaceType::Default };
 
-	float mCurrentStateElapsedTime{ 0.f };
-	bool mEnteredNewStateSign{ false };
+	float mCurrentFaceTypeElapsedTime{ 0.f };
+	bool mEnteredNewFaceTypeSign{ false };
 
 	
 private:
