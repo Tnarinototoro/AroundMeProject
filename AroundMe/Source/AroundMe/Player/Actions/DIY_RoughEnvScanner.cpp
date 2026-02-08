@@ -63,7 +63,7 @@ AActor *UDIY_RoughEnvScanner::GetNearest_DetectedActor() const
         }
         ADIY_ItemBase *ItemActor = Cast<ADIY_ItemBase>(CurActor);
 
-        if (nullptr == ItemActor)
+        if (nullptr != ItemActor)
         {
 
             if (!UDIY_Utilities::HasTagHelper(ItemActor->GetOwnedGameplayTags(), "DIY.Interact.Pickable") &&
