@@ -28,13 +28,23 @@ void UDIY_PetMemoryComponent::BeginPlay()
         CurrentWorldContext.Humidity = 0.5f;
         CurrentWorldContext.LightIntensity = 1.0f;
         CurrentWorldContext.ObjectiveTags = {};
-        CurrentWorldContext.CurrentHour = 8;
+        CurrentWorldContext.CurrentHour = FDateTime::Now().GetHour();
         CurrentWorldContext.ConstantGoldEnergy = 300.f;
+    }
+
+    // Set Timer
+    {
+        GetWorld()->GetTimerManager().SetTimer(RefreshContextTimer, this, &UDIY_PetMemoryComponent::RefreshContext, ContextRefreshInterval, true, ContextRefreshInterval);
     }
     // init routine pool for once
     {
         ResetAndLoadDailyPool();
     }
+}
+void UDIY_PetMemoryComponent::EndPlay(EEndPlayReason::Type EndPlayReason)
+{
+
+    Super::EndPlay(EndPlayReason);
 }
 void UDIY_PetMemoryComponent::OnSoulLoaded()
 {
@@ -46,7 +56,6 @@ void UDIY_PetMemoryComponent::OnSoulLoaded()
         // 从资源初始化内存中的 Context
         CurrentPetContext = PetSoulAsset->SoulContext;
     }
-   
 
     // 生理和标签通常保持默认或从存盘读取，这里先初始化
 }
@@ -125,6 +134,10 @@ void UDIY_PetMemoryComponent::OnSingleRoutineLoaded(FPrimaryAssetId RoutineAsset
     AddRoutineInstanceEntryToPool(RoutineData, RoutineAssetID);
 }
 UDIY_PetMemoryComponent::UDIY_PetMemoryComponent()
+{
+}
+
+void UDIY_PetMemoryComponent::RefreshContext()
 {
 }
 

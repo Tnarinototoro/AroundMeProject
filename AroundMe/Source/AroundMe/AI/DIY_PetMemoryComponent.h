@@ -17,6 +17,7 @@ class AROUNDME_API UDIY_PetMemoryComponent : public UActorComponent
 
 protected:
     virtual void BeginPlay() override;
+    virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
     void OnSoulLoaded();
     void OnAllRoutinesLoaded(TArray<FPrimaryAssetId> LoadedIds);
     void RequestAddToDailyPool(FPrimaryAssetId RoutineAssetID);
@@ -25,6 +26,8 @@ protected:
 
 public:
     UDIY_PetMemoryComponent();
+
+    void RefreshContext();
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Memory", meta = (AllowedTypes = "Soul"))
     FPrimaryAssetId DefaultSoul;
@@ -71,10 +74,15 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
     float BasicThinkInterval = 3.0f;
 
+     /** 思考频率控制：基础思考间隔 */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+    float ContextRefreshInterval = 1.0f;
+
     // --- 核心操作 ---
     /** 每天 0 点重置 Pool */
     void RefreshDailyPool(const TArray<FDIY_RoutineConfig> &AllPossibleConfigs);
 
+    FTimerHandle RefreshContextTimer;
     /**
      * 获取当前 WorkingStack 中最顶层的活跃任务。
      * @param OutInstance 如果找到活跃任务，则将数据填充到此变量中。
