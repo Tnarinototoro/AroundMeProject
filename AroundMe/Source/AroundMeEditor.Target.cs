@@ -10,6 +10,10 @@ public class AroundMeEditorTarget : TargetRules
         Type = TargetType.Editor;
         DefaultBuildSettings = BuildSettingsVersion.V5;
         IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
+
+        WindowsPlatform.CompilerVersion = "14.38.33130";
+        WindowsPlatform.WindowsSdkVersion = "10.0.22621.0";
+       
         ExtraModuleNames.AddRange(new string[] { "AroundMe", "AroundMeEditor" });
     }
 }
