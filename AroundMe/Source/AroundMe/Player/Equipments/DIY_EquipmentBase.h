@@ -23,18 +23,13 @@ public:
 
     void AddChildEquipment(UActorComponent *inChildEquipment);
 
-    virtual void OnModelTypeChanged(uint32 lastModelType,uint32 newModelType);
-    void SetEquipModelType(int32 inModelType)
-    {
-        uint32 tmpModelType = EquipModelType;
-        EquipModelType = inModelType;
-        OnModelTypeChanged(tmpModelType,inModelType);
-    }
+    virtual void OnModelTypeChanged(uint32 lastModelType, uint32 newModelType);
+    void SetEquipModelType(int32 inModelType);
     int32 GetEquipModelType() const
     {
         return EquipModelType;
     }
-    DECLARE_DYNAMIC_DELEGATE_ThreeParams(FOnWeaponSelfChangeModelTypeRequest, EEquipmentsIndex, inEquipIndex,int,inModelType,bool,forceReLoad);
+    DECLARE_DYNAMIC_DELEGATE_ThreeParams(FOnWeaponSelfChangeModelTypeRequest, EEquipmentsIndex, inEquipIndex, int, inModelType, bool, forceReLoad);
 
     FOnWeaponSelfChangeModelTypeRequest OnWeaponSelfChangeModelTypeRequest;
 

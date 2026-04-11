@@ -17,6 +17,16 @@ void UDIY_EquipmentBase::AddChildEquipment(UActorComponent *inChildEquipment)
     ChildEquipments.Add(inChildEquipment);
 }
 
+void UDIY_EquipmentBase::OnModelTypeChanged(uint32 lastModelType, uint32 newModelType)
+{
+}
+void UDIY_EquipmentBase::SetEquipModelType(int32 inModelType)
+{
+    uint32 tmpModelType = EquipModelType;
+    EquipModelType = inModelType;
+    this->OnModelTypeChanged(tmpModelType, inModelType);
+}
+
 #if WITH_EDITOR
 void UDIY_EquipmentBase::PostEditChangeProperty(FPropertyChangedEvent &PropertyChangedEvent)
 {
@@ -43,10 +53,6 @@ void UDIY_EquipmentBase::PostEditChangeProperty(FPropertyChangedEvent &PropertyC
     }
 }
 
-void UDIY_EquipmentBase::OnModelTypeChanged(uint32 lastModelType,uint32 newModelType)
-{
-    
-}
 void UDIY_EquipmentBase::CheckForErrors()
 {
     Super::CheckForErrors();
