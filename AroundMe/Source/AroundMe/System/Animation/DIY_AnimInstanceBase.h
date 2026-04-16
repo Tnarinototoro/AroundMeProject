@@ -14,6 +14,9 @@ class AROUNDME_API UDIY_AnimInstanceBase : public UAnimInstance
 
 protected:
     virtual FAnimInstanceProxy *CreateAnimInstanceProxy() override { return &BaseProxy; }
+    virtual void DestroyAnimInstanceProxy(FAnimInstanceProxy *InProxy) override
+    {
+    }
 };
 
 // --- Master AnimInstance ---
@@ -32,7 +35,9 @@ protected:
     FDIY_MasterAnimProxy MasterProxy;
 
     virtual FAnimInstanceProxy *CreateAnimInstanceProxy() override { return &MasterProxy; }
-
+    virtual void DestroyAnimInstanceProxy(FAnimInstanceProxy *InProxy) override
+    {
+    }
     // 在主线程采集数据
     virtual void NativeUpdateAnimation(float DeltaSeconds) override
     {
@@ -56,7 +61,9 @@ protected:
     FDIY_LayerAnimProxy LayerProxy;
 
     virtual FAnimInstanceProxy *CreateAnimInstanceProxy() override { return &LayerProxy; }
-
+    virtual void DestroyAnimInstanceProxy(FAnimInstanceProxy *InProxy) override
+    {
+    }
     virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override
     {
         Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
