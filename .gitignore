@@ -10,7 +10,8 @@
 **/.idea/**
 **/autosave/**
 
-
+PlayGround/.ignore
+PlayGround/PlayGround.sln
 AroundMe/.ignore
 AroundMe/AroundMe.sln
 
@@ -42,3 +43,4 @@ AroundMe/Work_Files/character/CN_BIRD/TEXTURE/CN_BIRD_HEAD_00_clr.psd
 AroundMe/Work_Files/character/CN_BIRD/CN_BIRD_work_out_ficial.mb
 AroundMe/Work_Files/character/CN_BIRD/CN_BIRD_work.mb
 AroundMe/Work_Files/character/CN_BIRD/CN_BIRD_work.mb
+*.code-workspace
