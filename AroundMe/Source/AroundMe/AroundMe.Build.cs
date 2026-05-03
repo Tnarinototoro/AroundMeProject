@@ -28,7 +28,9 @@ public class AroundMe : ModuleRules
             "Json",
             "HTTP",
             "JsonUtilities",
-            "StateTreeModule"
+            "StateTreeModule",
+            "GameplayStateTreeModule",
+            "StructUtils"
         });
 
 

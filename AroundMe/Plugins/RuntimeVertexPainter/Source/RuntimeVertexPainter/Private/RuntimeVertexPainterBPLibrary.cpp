@@ -92,7 +92,8 @@ void URuntimeVertexPainterBPLibrary::EndPaintVertexColor_SM(FRVPContext Context)
     }
 
     Context.StaticMeshComponent->MarkRenderStateDirty();
-    Context.StaticMeshComponent->bDisallowMeshPaintPerInstance = true;
+    //Context.StaticMeshComponent->bDisallowMeshPaintPerInstance = true;
+
     return;
 }
 
@@ -903,7 +904,7 @@ void URuntimeVertexPainterBPLibrary::OverrideVertexColors(UStaticMeshComponent *
     BeginInitResource(LODInfo.OverrideVertexColors);
 
     StaticMeshComponent->MarkRenderStateDirty();
-    StaticMeshComponent->bDisallowMeshPaintPerInstance = true;
+    //StaticMeshComponent->bDisallowMeshPaintPerInstance = true;
 }
 
 void URuntimeVertexPainterBPLibrary::SkeletalMeshOverrideVertexColors(USkeletalMeshComponent *SkeletalMeshComponent, int32 LODIndex, TArray<FColor> VertexColors)
