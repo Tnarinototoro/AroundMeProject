@@ -121,6 +121,7 @@
 			"Name": "MobileFSR",
 			"Enabled": true,
 			"SupportedTargetPlatforms": [
+				"IOS",
 				"Android"
 			]
 		},
@@ -154,6 +155,10 @@
 			"SupportedTargetPlatforms": [
 				"Android"
 			]
+		},
+		{
+			"Name": "StructUtils",
+			"Enabled": true
 		}
 	]
 }

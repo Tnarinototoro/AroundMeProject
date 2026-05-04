@@ -10,7 +10,6 @@
 	"DocsURL": "https://docs.google.com/presentation/d/1vdp49Poe0Iu_AGhIww9Lkb5HgOxExtChmGLGLwRs7P8/present?usp=sharing",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/3caab7c6e81f449296989122c043ae21",
 	"SupportURL": "https://forums.unrealengine.com/unreal-engine/marketplace/1664564-assets-cleaner-project-cleaning-tool-support-thread",
-	"EngineVersion": "5.4.0",
 	"CanContainContent": false,
 	"Installed": true,
 	"Modules": [
