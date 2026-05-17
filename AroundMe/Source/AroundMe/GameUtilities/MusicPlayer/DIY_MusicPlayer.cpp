@@ -21,8 +21,8 @@ ADIY_MusicPlayer::ADIY_MusicPlayer()
     PrimaryActorTick.bCanEverTick = true;
     PrimaryActorTick.TickInterval = 1.0f;
     AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
-    AudioComponent->bAllowSpatialization = true; // 关闭空间化以实现2D音效
-    AudioComponent->bIsUISound = false;          // 设置为UI声音，通常用于2D背景音乐
+    AudioComponent->bAllowSpatialization = false; // 关闭空间化以实现2D音效
+    AudioComponent->bIsUISound = true;          // 设置为UI声音，通常用于2D背景音乐
     AudioComponent->SetupAttachment(RootComponent);
 }
 
