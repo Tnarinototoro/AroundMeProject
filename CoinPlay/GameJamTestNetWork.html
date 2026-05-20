@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Game Jam LAN Duel - Diagnostics Edition</title>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+
+        #networkPanel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            color: white;
+            font-family: 'Consolas', monospace;
+            border-radius: 6px;
+            z-index: 1000;
+            border: 2px solid gold;
+            width: 290px;
+        }
+
+        .net-title {
+            font-weight: bold;
+            color: gold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 90%;
+            padding: 6px;
+            margin: 6px 0;
+            border: 1px solid #555;
+            border-radius: 4px;
+            background: #222;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            background: #555;
+            color: white;
+        }
+
+        .btn-host {
+            background: #28a745 !important;
+            color: white;
+        }
+
+        .btn-join {
+            background: #007bff !important;
+            color: white;
+        }
+
+        button:disabled {
+            background: #444 !important;
+            color: #888 !important;
+            cursor: not-allowed;
+        }
+    </style>
+
+    <script src="https://cdn.babylonjs.com/havok/HavokPhysics_v1.1.4.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+</head>
+
+<body>
+
+    <div id="networkPanel">
+        <div class="net-title">⚡ 局域网快捷对战配置</div>
+        <input type="text" id="roomCodeInput" maxlength="4" value="8888" placeholder="输入 4 位数字房间号">
+        <div class="btn-group">
+            <button id="hostBtn" class="btn-host">创房 (P1)</button>
+            <button id="joinBtn" class="btn-join">加入 (P2)</button>
+        </div>
+        <div id="netStatus"
+            style="font-size: 12px; margin-top: 10px; color: #aaa; background: rgba(255,255,255,0.1); padding: 5px; max-height: 200px; overflow-y: auto;">
+            状态: 等待本地配置...</div>
+    </div>
+
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+        // 全局未捕获异常监听（专门抓死在半路上的暗病）
+        window.onerror = function (message, source, lineno, colno, error) {
+            const errDiv = document.getElementById("netStatus");
+            if (errDiv) errDiv.innerHTML += `<div style="color:red;">🚨 脚本崩溃: ${message} (第${lineno}行)</div>`;
+            return false;
+        };
+
+        const canvas = document.getElementById("renderCanvas");
+        let engine;
+        let conn = null;
+        let peer = null;
+        let myRole = "SPECTATOR";
+
+        const gameState = {
+            phase: "WAITING_FOR_PLAYER", p1Score: 0, p2Score: 0,
+            currentPlayer: null, activeCoin: null, hitList: new Set(), coinsFallen: [], isStable: true
+        };
+
+        let allCoins = [];
+        let logStack, p1Text, p2Text, infoText;
+
+        // 基础调试输出
+        const screenLog = (msg, color = "white") => {
+            console.log(`[GameLog] ${msg}`);
+            const debugDiv = document.getElementById("netStatus");
+            if (debugDiv) {
+                debugDiv.innerHTML += `<div style="color:${color}; margin-top:2px;">• ${msg}</div>`;
+            }
+        };
+
+        // 1. 环境自检
+        if (window.location.protocol === "file:") {
+            screenLog("CRITICAL: 当前仍为 file:// 协议！", "red");
+        } else {
+            screenLog("Protocol Check: Local Server HTTP OK ✅", "green");
+        }
+
+        // 2. 核心：将网络按钮点击事件提到最前面绑定，防止被后面的 async 阻塞导致点击失效
+        document.getElementById("hostBtn").addEventListener("click", () => {
+            screenLog("👉 收到 [创房] 按钮点击！开始处理...", "yellow");
+            try {
+                const code = document.getElementById("roomCodeInput").value.trim();
+                if (!/^\d{4}$/.test(code)) return alert("请输入4位纯数字代码！");
+
+                if (typeof Peer === "undefined") {
+                    screenLog("Error: PeerJS 组件未加载，无法创房！", "red");
+                    return;
+                }
+
+                myRole = "HOST";
+                disableNetButtons();
+                screenLog(`向服务器注册主机 [Room:${code}]...`, "cyan");
+
+                peer = new Peer(`jam-room-${code}-HOST`);
+
+                peer.on('open', (id) => {
+                    screenLog(`房间号 [ ${code} ] 锁定成功！等待玩家加入...`, "green");
+                });
+
+                peer.on('connection', (incoming) => {
+                    conn = incoming;
+                    setupNetworkPipe();
+                });
+
+                peer.on('error', (err) => {
+                    screenLog(`网络异常 (${err.type}): 房间号可能被占用。`, "red");
+                    enableNetButtons();
+                });
+            } catch (e) {
+                screenLog(`创房逻辑内崩溃: ${e.message}`, "red");
+            }
+        });
+
+        document.getElementById("joinBtn").addEventListener("click", () => {
+            screenLog("👉 收到 [加入] 按钮点击！开始处理...", "yellow");
+            try {
+                const code = document.getElementById("roomCodeInput").value.trim();
+                if (!/^\d{4}$/.test(code)) return alert("请输入4位纯数字代码！");
+
+                if (typeof Peer === "undefined") {
+                    screenLog("Error: PeerJS 组件未加载，无法加入！", "red");
+                    return;
+                }
+
+                myRole = "CLIENT";
+                disableNetButtons();
+                screenLog(`正在连接主机房间 [Room:${code}]...`, "cyan");
+
+                peer = new Peer(`jam-room-${code}-CLIENT`);
+
+                peer.on('open', () => {
+                    conn = peer.connect(`jam-room-${code}-HOST`);
+                    setupNetworkPipe();
+                });
+
+                peer.on('error', (err) => {
+                    screenLog(`连接失败 (${err.type})`, "red");
+                    enableNetButtons();
+                });
+            } catch (e) {
+                screenLog(`加入逻辑内崩溃: ${e.message}`, "red");
+            }
+        });
+
+        function disableNetButtons() {
+            document.getElementById("hostBtn").disabled = true;
+            document.getElementById("joinBtn").disabled = true;
+            document.getElementById("roomCodeInput").disabled = true;
+        }
+        function enableNetButtons() {
+            document.getElementById("hostBtn").disabled = false;
+            document.getElementById("joinBtn").disabled = false;
+            document.getElementById("roomCodeInput").disabled = false;
+        }
+
+        function setupNetworkPipe() {
+            if (!conn) return;
+            conn.on('open', () => {
+                screenLog(`🟢 联机成功！身份: ${myRole}`, "green");
+                document.getElementById("networkPanel").style.backgroundColor = "rgba(0,40,0,0.9)";
+                if (myRole === "HOST") {
+                    const starter = Math.random() > 0.5 ? "P1" : "P2";
+                    if (conn && conn.open) conn.send({ type: "start_game", firstPlayer: starter });
+                    if (window.startOnlineGame) window.startOnlineGame(starter);
+                }
+            });
+
+            conn.on('data', (data) => {
+                if (data.type === "start_game" && window.startOnlineGame) window.startOnlineGame(data.firstPlayer);
+            });
+        }
+
+        // 3. 异步 3D 渲染流程独立，不堵塞 DOM
+        async function initGame() {
+            try {
+                engine = new BABYLON.Engine(canvas, true);
+                const scene = new BABYLON.Scene(engine);
+
+                // 允许没有物理时降级运行
+                try {
+                    const havokInstance = await HavokPhysics();
+                    const hk = new BABYLON.HavokPlugin(true, havokInstance);
+                    scene.enablePhysics(new BABYLON.Vector3(0, -9.81, 0), hk);
+                    screenLog("物理引擎: Havok 启用成功 ✅", "green");
+                } catch (pe) {
+                    screenLog("物理引擎初始化失败，但不影响点击网络按钮", "orange");
+                }
+
+                const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 3, 15, BABYLON.Vector3.Zero(), scene);
+                camera.attachControl(canvas, true);
+                new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+                const table = BABYLON.MeshBuilder.CreateCylinder("table", { diameter: 10, height: 0.5 }, scene);
+
+                engine.runRenderLoop(() => { scene.render(); });
+            } catch (e) {
+                screenLog(`3D渲染流异常: ${e.message}`, "red");
+            }
+        }
+
+        // 延迟启动 3D，优先把按钮空出来
+        setTimeout(initGame, 100);
+        window.addEventListener("resize", () => { if (engine) engine.resize(); });
+    </script>
+</body>
+
+</html>
