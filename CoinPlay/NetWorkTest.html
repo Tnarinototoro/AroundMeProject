@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Jam LAN P2P Match</title>
+    <style>
+        html, body { overflow: hidden; width: 100%; height: 100%; margin: 0; padding: 0; background: #1a1a1a; }
+        #renderCanvas { width: 100%; height: 100%; touch-action: none; }
+        #connectionUI {
+            position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.8);
+            padding: 15px; color: white; font-family: monospace; border-radius: 5px; z-index: 100;
+        }
+        input, button { padding: 6px; margin: 4px 0; border: none; border-radius: 3px; font-size: 14px; }
+        button { background: #28a745; color: white; cursor: pointer; font-weight: bold; }
+        button:hover { background: #218838; }
+    </style>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+</head>
+<body>
+
+    <div id="connectionUI">
+        <div id="myIdDisplay">我的ID: 加载中...</div>
+        <hr>
+        <input type="text" id="peerIdInput" placeholder="输入对方的 ID">
+        <button id="connectBtn">建立局域网连接</button>
+    </div>
+
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("renderCanvas");
+        const engine = new BABYLON.Engine(canvas, true);
+
+        // --- 1. 永久屏幕日志系统 ---
+        let logStack;
+        const createUI = (scene) => {
+            const adt = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            logStack = new BABYLON.GUI.StackPanel();
+            logStack.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+            logStack.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+            logStack.isHitTestVisible = false;
+            adt.addControl(logStack);
+        };
+
+        const screenLog = (msg, color = "white") => {
+            if (!logStack) return;
+            const t = new BABYLON.GUI.TextBlock();
+            t.text = `> ${msg}`; t.color = color; t.height = "28px"; t.fontSize = 16;
+            t.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+            logStack.addControl(t);
+            if (logStack.children.length > 15) logStack.removeControl(logStack.children[0]);
+        };
+
+        // --- 2. 创建游戏基础场景 ---
+        const createScene = function () {
+            const scene = new BABYLON.Scene(engine);
+            const camera = new BABYLON.ArcRotateCamera("cam", -Math.PI / 2, Math.PI / 3, 15, BABYLON.Vector3.Zero(), scene);
+            camera.attachControl(canvas, true);
+            new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+            createUI(scene);
+            screenLog("System: 3D Environment Ready.", "yellow");
+
+            // 创建地面
+            const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 10, height: 10}, scene);
+            const groundMat = new BABYLON.StandardMaterial("gMat", scene);
+            groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+            ground.material = groundMat;
+
+            // 本地玩家 (黄色方块)
+            const localPlayer = BABYLON.MeshBuilder.CreateBox("localPlayer", {size: 1}, scene);
+            localPlayer.position.y = 0.5;
+            const matL = new BABYLON.StandardMaterial("mL", scene);
+            matL.diffuseColor = new BABYLON.Color3(1, 0.8, 0);
+            localPlayer.material = matL;
+
+            // 远程玩家 (青色方块，初始隐藏，连接后激活)
+            const remotePlayer = BABYLON.MeshBuilder.CreateBox("remotePlayer", {size: 1}, scene);
+            remotePlayer.position.y = 0.5;
+            remotePlayer.position.x = 2;
+            const matR = new BABYLON.StandardMaterial("mR", scene);
+            matR.diffuseColor = new BABYLON.Color3(0, 0.8, 1);
+            remotePlayer.material = matR;
+            remotePlayer.setEnabled(false); // 默认隐藏
+
+            // 本地键盘控制逻辑
+            const inputMap = {};
+            scene.actionManager = new BABYLON.ActionManager(scene);
+            scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
+                inputMap[evt.sourceEvent.key.toLowerCase()] = true;
+            }));
+            scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
+                inputMap[evt.sourceEvent.key.toLowerCase()] = false;
+            }));
+
+            // 游戏主循环：移动并广播数据
+            scene.onBeforeRenderObservable.add(() => {
+                let moved = false;
+                const speed = 0.1;
+                if (inputMap["w"] || inputMap["arrowup"]) { localPlayer.position.z += speed; moved = true; }
+                if (inputMap["s"] || inputMap["arrowdown"]) { localPlayer.position.z -= speed; moved = true; }
+                if (inputMap["a"] || inputMap["arrowleft"]) { localPlayer.position.x -= speed; moved = true; }
+                if (inputMap["d"] || inputMap["arrowright"]) { localPlayer.position.x += speed; moved = true; }
+
+                // 如果位置发生改变，并且连接已建立，把坐标喷给对方
+                if (moved && conn && conn.open) {
+                    conn.send({
+                        type: "move",
+                        pos: { x: localPlayer.position.x, z: localPlayer.position.z }
+                    });
+                }
+            });
+
+            return { scene, localPlayer, remotePlayer };
+        };
+
+        const game = createScene();
+        const scene = game.scene;
+
+        // --- 3. 核心网络同步逻辑 (PeerJS) ---
+        let peer = null;
+        let conn = null;
+
+        // 初始化 Peer（使用 PeerJS 官方默认公共公网信令服务器）
+        try {
+            peer = new Peer();
+            
+            peer.on('open', (id) => {
+                document.getElementById("myIdDisplay").innerText = `我的ID: ${id}`;
+                screenLog(`Network: Connected to Signaling Server. Your ID is [${id}]`, "green");
+                screenLog("Share this ID with your friend to play!", "cyan");
+            });
+
+            // 监听对方的连接 (作为 Host 被动接收连接)
+            peer.on('connection', (connection) => {
+                conn = connection;
+                setupConnectionHandlers();
+            });
+
+            peer.on('error', (err) => {
+                screenLog(`Network Error: ${err.type}`, "red");
+            });
+        } catch(e) {
+            console.error(e);
+        }
+
+        // 主动连接对方 (作为 Client)
+        document.getElementById("connectBtn").addEventListener("click", () => {
+            const remoteId = document.getElementById("peerIdInput").value.trim();
+            if (!remoteId) {
+                screenLog("Error: Please enter a valid Peer ID", "orange");
+                return;
+            }
+            screenLog(`Attempting to connect to: ${remoteId}...`, "white");
+            conn = peer.connect(remoteId);
+            setupConnectionHandlers();
+        });
+
+        // 配置数据通道的回调
+        function setupConnectionHandlers() {
+            conn.on('open', () => {
+                screenLog("P2P Connection ESTABLISHED! ⚔️", "green");
+                document.getElementById("connectionUI").style.opacity = "0.4"; // 降低 UI 干扰
+                game.remotePlayer.setEnabled(true); // 显示对手
+            });
+
+            // 核心：接收对方的数据包并同步到场景
+            conn.on('data', (data) => {
+                if (data.type === "move") {
+                    game.remotePlayer.position.x = data.pos.x;
+                    game.remotePlayer.position.z = data.pos.z;
+                }
+            });
+
+            conn.on('close', () => {
+                screenLog("Connection closed by peer.", "red");
+                game.remotePlayer.setEnabled(false);
+            });
+        }
+
+        // 启动渲染流
+        engine.runRenderLoop(() => { scene.render(); });
+        window.addEventListener("resize", () => { engine.resize(); });
+    </script>
+</body>
+</html>
