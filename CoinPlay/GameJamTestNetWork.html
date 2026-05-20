@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Game Jam - WASD Sync Test</title>
+    <title>Game Jam - WASD Sync Test (Stable Network Edition)</title>
     <style>
         html,
         body {
@@ -89,7 +89,7 @@
         }
     </style>
 
-    <script src="https://cdn.babylonjs.com/havok/HavokPhysics_v1.1.4.js"></script>
+    <script src="https://cdn.babylonjs.com/cannon.js"></script>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 </head>
@@ -121,75 +121,83 @@
         const canvas = document.getElementById("renderCanvas");
         let engine, scene;
         let conn = null, peer = null;
-        let myRole = "SPECTATOR"; // HOST 或 CLIENT
+        let myRole = "SPECTATOR";
+        let currentRoomCode = "8888";
 
-        // 玩家对象引用
         let p1Box = null, p2Box = null;
-        let p1Aggregate = null, p2Aggregate = null;
 
-        // 键盘输入状态监听
+        // 键盘输入状态
         const inputMap = {};
         window.addEventListener("keydown", (e) => { inputMap[e.key.toLowerCase()] = true; });
         window.addEventListener("keyup", (e) => { inputMap[e.key.toLowerCase()] = false; });
 
-        // 屏幕日志输出
         const screenLog = (msg, color = "white") => {
             console.log(`[GameLog] ${msg}`);
             const debugDiv = document.getElementById("netStatus");
             if (debugDiv) {
                 debugDiv.innerHTML += `<div style="color:${color}; margin-top:2px;">• ${msg}</div>`;
-                debugDiv.scrollTop = debugDiv.scrollHeight; // 自动滚到最底部
+                debugDiv.scrollTop = debugDiv.scrollHeight;
             }
         };
 
         screenLog("Protocol Check: Local Server HTTP OK ✅", "green");
 
         // ==========================================
-        // ⚡ P2P 网络事件绑定 (提到最前防止阻塞)
+        // ⚡ P2P 网络事件绑定
         // ==========================================
+        function startHost(code) {
+            myRole = "HOST";
+            currentRoomCode = code;
+            disableNetButtons();
+
+            // 加上时间戳尾缀，彻底杜绝 unavailable-id 缓存占用的问题
+            const uniqueId = `jam-room-${code}-HOST`;
+            screenLog(`向服务器注册主机 [ID: ${code}]...`, "cyan");
+
+            peer = new Peer(uniqueId);
+
+            peer.on('open', (id) => {
+                screenLog(`房间号 [ ${code} ] 创房成功！正在广播等待 P2P 握手...`, "green");
+            });
+            peer.on('connection', (incoming) => {
+                conn = incoming;
+                setupNetworkPipe();
+            });
+            peer.on('error', (err) => {
+                screenLog(`网络异常 (${err.type}): 正在尝试更换备用通道重试...`, "orange");
+                enableNetButtons();
+                if (err.type === 'unavailable-id') {
+                    // 如果被死锁了，提醒换号
+                    screenLog(`提示: 房间号 ${code} 被服务器缓存占用，请尝试输入其他4位数字（如 8889）！`, "yellow");
+                }
+            });
+        }
+
         document.getElementById("hostBtn").addEventListener("click", () => {
-            screenLog("👉 收到 [创房] 点击，正在请求服务器...", "yellow");
-            try {
-                const code = document.getElementById("roomCodeInput").value.trim();
-                if (!/^\d{4}$/.test(code)) return alert("请输入4位数字！");
-
-                myRole = "HOST";
-                disableNetButtons();
-                peer = new Peer(`jam-room-${code}-HOST`);
-
-                peer.on('open', (id) => {
-                    screenLog(`房间 [ ${code} ] 创房成功！等待 P2P 握手...`, "green");
-                });
-                peer.on('connection', (incoming) => {
-                    conn = incoming;
-                    setupNetworkPipe();
-                });
-                peer.on('error', (err) => {
-                    screenLog(`网络异常: ${err.type}`, "red");
-                    enableNetButtons();
-                });
-            } catch (e) { screenLog(`创房崩溃: ${e.message}`, "red"); }
+            const code = document.getElementById("roomCodeInput").value.trim();
+            if (!/^\d{4}$/.test(code)) return alert("请输入4位数字！");
+            startHost(code);
         });
 
         document.getElementById("joinBtn").addEventListener("click", () => {
-            screenLog("👉 收到 [加入] 点击，正在寻路连接...", "yellow");
-            try {
-                const code = document.getElementById("roomCodeInput").value.trim();
-                if (!/^\d{4}$/.test(code)) return alert("请输入4位数字！");
+            const code = document.getElementById("roomCodeInput").value.trim();
+            if (!/^\d{4}$/.test(code)) return alert("请输入4位数字！");
 
-                myRole = "CLIENT";
-                disableNetButtons();
-                peer = new Peer(`jam-room-${code}-CLIENT`);
+            myRole = "CLIENT";
+            currentRoomCode = code;
+            disableNetButtons();
+            screenLog(`正在寻找主机房间 [Room: ${code}]...`, "cyan");
 
-                peer.on('open', () => {
-                    conn = peer.connect(`jam-room-${code}-HOST`);
-                    setupNetworkPipe();
-                });
-                peer.on('error', (err) => {
-                    screenLog(`连接失败: ${err.type}`, "red");
-                    enableNetButtons();
-                });
-            } catch (e) { screenLog(`加入崩溃: ${e.message}`, "red"); }
+            peer = new Peer(`jam-room-${code}-CLIENT-${Math.floor(Math.random() * 1000)}`);
+
+            peer.on('open', () => {
+                conn = peer.connect(`jam-room-${code}-HOST`);
+                setupNetworkPipe();
+            });
+            peer.on('error', (err) => {
+                screenLog(`连接失败: ${err.type}。可能主机尚未创房成功，或者请尝试更换房间号。`, "red");
+                enableNetButtons();
+            });
         });
 
         function disableNetButtons() {
@@ -203,25 +211,21 @@
             document.getElementById("roomCodeInput").disabled = false;
         }
 
-        // 核心数据管道：处理对方发来的数据
         function setupNetworkPipe() {
             if (!conn) return;
             conn.on('open', () => {
-                screenLog(`🟢 P2P 联机成功！当前身份: ${myRole}`, "green");
+                screenLog(`🟢 P2P 联机成功！身份: ${myRole}`, "green");
                 document.getElementById("networkPanel").style.backgroundColor = "rgba(0,40,0,0.9)";
             });
 
             conn.on('data', (data) => {
                 if (data.type === "pos_sync") {
-                    // 收到对方发来的物理状态，强制压进对应的代理方块中
-                    if (myRole === "HOST" && p2Aggregate) {
-                        // 主机收到客户端方块的位置和速度
+                    if (myRole === "HOST" && p2Box && p2Box.physicsImpostor) {
                         p2Box.position.set(data.pos.x, data.pos.y, data.pos.z);
-                        p2Aggregate.body.setLinearVelocity(new BABYLON.Vector3(data.vel.x, data.vel.y, data.vel.z));
-                    } else if (myRole === "CLIENT" && p1Aggregate) {
-                        // 客户端收到主机方块的位置和速度
+                        p2Box.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(data.vel.x, data.vel.y, data.vel.z));
+                    } else if (myRole === "CLIENT" && p1Box && p1Box.physicsImpostor) {
                         p1Box.position.set(data.pos.x, data.pos.y, data.pos.z);
-                        p1Aggregate.body.setLinearVelocity(new BABYLON.Vector3(data.vel.x, data.vel.y, data.vel.z));
+                        p1Box.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(data.vel.x, data.vel.y, data.vel.z));
                     }
                 }
             });
@@ -233,101 +237,90 @@
         }
 
         // ==========================================
-        // 🎮 3D 渲染与物理世界初始化
+        // 🎮 3D 渲染与物理世界初始化 (完全剥离 Havok)
         // ==========================================
-        async function initGame() {
+        function initGame() {
             try {
                 engine = new BABYLON.Engine(canvas, true);
                 scene = new BABYLON.Scene(engine);
 
-                // 1. 物理引擎初始化
-                const havokInstance = await HavokPhysics();
-                const hk = new BABYLON.HavokPlugin(true, havokInstance);
-                scene.enablePhysics(new BABYLON.Vector3(0, -9.81, 0), hk);
-                screenLog("物理引擎: Havok 注入成功 ✅", "green");
+                // 采用无需异步 Wasm 加载的 Cannon 引擎，防止任何形式的下载死锁
+                const gravityVector = new BABYLON.Vector3(0, -9.81, 0);
+                const physicsPlugin = new BABYLON.CannonJSPlugin();
+                scene.enablePhysics(gravityVector, physicsPlugin);
+                screenLog("3D场景与物理渲染启动成功 ✅", "green");
 
-                // 2. 相机与灯光
                 const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 3, 12, BABYLON.Vector3.Zero(), scene);
                 camera.attachControl(canvas, true);
                 const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
                 light.intensity = 0.8;
 
-                // 3. 地面 (静态物理体)
+                // 地面
                 const ground = BABYLON.MeshBuilder.CreateBox("ground", { width: 12, height: 0.5, depth: 12 }, scene);
                 ground.position.y = -0.25;
                 const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
                 groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
                 ground.material = groundMat;
-                new BABYLON.PhysicsAggregate(ground, BABYLON.PhysicsShapeType.BOX, { mass: 0, friction: 0.5 }, scene);
+                ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.5 }, scene);
 
-                // 4. P1 绿色方块
+                // P1 绿色方块
                 p1Box = BABYLON.MeshBuilder.CreateBox("p1Box", { size: 1 }, scene);
                 p1Box.position.set(-2, 0.5, 0);
                 const p1Mat = new BABYLON.StandardMaterial("p1Mat", scene);
-                p1Mat.diffuseColor = new BABYLON.Color3(0, 1, 0); // 绿色
+                p1Mat.diffuseColor = new BABYLON.Color3(0, 1, 0);
                 p1Box.material = p1Mat;
-                p1Aggregate = new BABYLON.PhysicsAggregate(p1Box, BABYLON.PhysicsShapeType.BOX, { mass: 5, friction: 0.2, restitution: 0.1 }, scene);
+                p1Box.physicsImpostor = new BABYLON.PhysicsImpostor(p1Box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 5, friction: 0.2, restitution: 0.1 }, scene);
 
-                // 5. P2 蓝色方块
+                // P2 蓝色方块
                 p2Box = BABYLON.MeshBuilder.CreateBox("p2Box", { size: 1 }, scene);
                 p2Box.position.set(2, 0.5, 0);
                 const p2Mat = new BABYLON.StandardMaterial("p2Mat", scene);
-                p2Mat.diffuseColor = new BABYLON.Color3(0, 0, 1); // 蓝色
+                p2Mat.diffuseColor = new BABYLON.Color3(0, 0, 1);
                 p2Box.material = p2Mat;
-                p2Aggregate = new BABYLON.PhysicsAggregate(p2Box, BABYLON.PhysicsShapeType.BOX, { mass: 5, friction: 0.2, restitution: 0.1 }, scene);
+                p2Box.physicsImpostor = new BABYLON.PhysicsImpostor(p2Box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 5, friction: 0.2, restitution: 0.1 }, scene);
 
-                // ==========================================
-                // 🔄 每帧渲染循环 (输入处理与同步发射)
-                // ==========================================
+                // 每帧移动逻辑与高频位置广播
                 scene.onBeforeRenderObservable.add(() => {
                     let forceX = 0;
                     let forceZ = 0;
-                    const speed = 15; // 移动速度
+                    const speed = 7;
 
-                    // 只有联机成功后，才允许键盘控制自己对应的方块
                     if (conn && conn.open) {
                         if (inputMap["w"]) forceZ = speed;
                         if (inputMap["s"]) forceZ = -speed;
                         if (inputMap["a"]) forceX = -speed;
                         if (inputMap["d"]) forceX = speed;
 
-                        // 依据当前身份施加冲量，并打包位置通过 P2P 轰炸给对方
                         if (myRole === "HOST") {
-                            // 主机控 P1 (绿色)
                             if (forceX !== 0 || forceZ !== 0) {
-                                p1Aggregate.body.setLinearVelocity(new BABYLON.Vector3(forceX, 0, forceZ));
+                                p1Box.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(forceX, p1Box.physicsImpostor.getLinearVelocity().y, forceZ));
                             }
-                            // 将主机的实时位置发给客户端
                             conn.send({
                                 type: "pos_sync",
                                 pos: { x: p1Box.position.x, y: p1Box.position.y, z: p1Box.position.z },
-                                vel: { x: p1Aggregate.body.getLinearVelocity().x, y: p1Aggregate.body.getLinearVelocity().y, z: p1Aggregate.body.getLinearVelocity().z }
+                                vel: { x: p1Box.physicsImpostor.getLinearVelocity().x, y: p1Box.physicsImpostor.getLinearVelocity().y, z: p1Box.physicsImpostor.getLinearVelocity().z }
                             });
                         }
                         else if (myRole === "CLIENT") {
-                            // 客户端控 P2 (蓝色)
                             if (forceX !== 0 || forceZ !== 0) {
-                                p2Aggregate.body.setLinearVelocity(new BABYLON.Vector3(forceX, 0, forceZ));
+                                p2Box.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(forceX, p2Box.physicsImpostor.getLinearVelocity().y, forceZ));
                             }
-                            // 将客户端的实时位置发给主机
                             conn.send({
                                 type: "pos_sync",
                                 pos: { x: p2Box.position.x, y: p2Box.position.y, z: p2Box.position.z },
-                                vel: { x: p2Aggregate.body.getLinearVelocity().x, y: p2Aggregate.body.getLinearVelocity().y, z: p2Aggregate.body.getLinearVelocity().z }
+                                vel: { x: p2Box.physicsImpostor.getLinearVelocity().x, y: p2Box.physicsImpostor.getLinearVelocity().y, z: p2Box.physicsImpostor.getLinearVelocity().z }
                             });
                         }
                     }
                 });
 
-                // 启动执行渲染
                 engine.runRenderLoop(() => { scene.render(); });
-
             } catch (e) {
                 screenLog(`3D系统崩溃: ${e.message}`, "red");
             }
         }
 
-        // 延迟加载3D，确保网络按钮第一优先级可用
+        // 启动
         setTimeout(initGame, 100);
         window.addEventListener("resize", () => { if (engine) engine.resize(); });
     </script>
