@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Jam LAN Gold Flipping Duel</title>
+    <style>
+        html, body { overflow: hidden; width: 100%; height: 100%; margin: 0; padding: 0; background: #1a1a1a; }
+        #renderCanvas { width: 100%; height: 100%; touch-action: none; }
+        #networkPanel {
+            position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.85);
+            padding: 15px; color: white; font-family: 'Consolas', monospace; border-radius: 6px; 
+            z-index: 1000; border: 1px solid #333; width: 280px;
+        }
+        .net-title { font-weight: bold; color: gold; margin-bottom: 8px; font-size: 14px; }
+        input { width: 90%; padding: 6px; margin: 6px 0; border: 1px solid #55px; border-radius: 4px; background: #222; color: #fff; font-size: 16px; text-align: center; }
+        .btn-group { display: flex; gap: 8px; margin-top: 5px; }
+        button { flex: 1; padding: 8px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .btn-host { background: #28a745; color: white; }
+        .btn-join { background: #007bff; color: white; }
+        button:disabled { background: #444; color: #888; cursor: not-allowed; }
+    </style>
+    <script src="https://cdn.babylonjs.com/havok/HavokPhysics_v1.1.4.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+</head>
+<body>
+
+    <div id="networkPanel">
+        <div class="net-title">⚡ 局域网快捷对战配置</div>
+        <input type="text" id="roomCodeInput" maxlength="4" placeholder="输入 4 位数字房间号">
+        <div class="btn-group">
+            <button id="hostBtn" class="btn-host">创房 (P1)</button>
+            <button id="joinBtn" class="btn-join">加入 (P2)</button>
+        </div>
+        <div id="netStatus" style="font-size: 12px; margin-top: 10px; color: #aaa;">状态: 等待本地配置...</div>
+    </div>
+
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("renderCanvas");
+        const engine = new BABYLON.Engine(canvas, true);
+        
+        let conn = null;
+        let myRole = "SPECTATOR"; // 连接后确定是 P1 还是 P2
+
+        // === 1. 游戏状态机 ===
+        const gameState = {
+            phase: "WAITING_FOR_PLAYER", 
+            p1Score: 0,
+            p2Score: 0,
+            currentPlayer: null,
+            activeCoin: null,    
+            hitList: new Set(),  
+            coinsFallen: [],     
+            isStable: true
+        };
+
+        let allCoins = [];
+        let logStack, p1Text, p2Text, infoText;
+
+        // --- 屏幕日志系统 ---
+        const screenLog = (msg, color = "white") => {
+            if (!logStack) return;
+            const t = new BABYLON.GUI.TextBlock();
+            t.text = `> ${msg}`; t.color = color; t.height = "26px"; t.fontSize = 15;
+            t.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+            logStack.addControl(t);
+            if (logStack.children.length > 12) logStack.removeControl(logStack.children[0]);
+        };
+
+        const updateUI = () => {
+            p1Text.text = `P1 (Host): ${gameState.p1Score}`;
+            p2Text.text = `P2 (Client): ${gameState.p2Score}`;
+            p1Text.color = gameState.currentPlayer === "P1" ? "#00FF00" : "black";
+            p2Text.color = gameState.currentPlayer === "P2" ? "#00FF00" : "black";
+        };
+
+        // === 2. 核心场景搭建 ===
+        export const createScene = async function () {
+            const scene = new BABYLON.Scene(engine);
+            
+            // 初始化物理引擎
+            const havokInstance = await HavokPhysics();
+            const hk = new BABYLON.HavokPlugin(true, havokInstance);
+            scene.enablePhysics(new BABYLON.Vector3(0, -9.81, 0), hk);
+
+            const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/environmentSpecular.env", scene);
+            scene.environmentTexture = hdrTexture;
+            
+            const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 3, 15, BABYLON.Vector3.Zero(), scene);
+            camera.attachControl(canvas, true);
+            new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+            // --- UI 初始化 ---
+            const adt = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            logStack = new BABYLON.GUI.StackPanel();
+            logStack.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+            logStack.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+            logStack.isHitTestVisible = false;
+            adt.addControl(logStack);
+
+            const styleText = (t, alignV) => {
+                t.color = "black"; t.fontSize = 28;
+                t.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                t.textVerticalAlignment = alignV;
+                t.paddingRight = "20px"; t.paddingTop = "20px"; t.paddingBottom = "20px";
+                adt.addControl(t);
+            };
+            styleText(p1Text = new BABYLON.GUI.TextBlock(), BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM);
+            styleText(p2Text = new BABYLON.GUI.TextBlock(), BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP);
+            
+            infoText = new BABYLON.GUI.TextBlock();
+            infoText.text = `等待局域网对战联机...`; infoText.color = "gold"; infoText.fontSize = 32;
+            adt.addControl(infoText);
+            updateUI();
+
+            // --- 场景物体与材质 ---
+            const goldMat = new BABYLON.PBRMaterial("goldMat", scene);
+            goldMat.metallic = 1.0; goldMat.roughness = 0.1;
+            goldMat.albedoColor = new BABYLON.Color3(1, 0.8, 0.2);
+
+            const tableMat = new BABYLON.StandardMaterial("tableMat", scene);
+            tableMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+
+            const table = BABYLON.MeshBuilder.CreateCylinder("table", {diameter: 10, height: 0.5}, scene);
+            table.material = tableMat;
+            new BABYLON.PhysicsAggregate(table, BABYLON.PhysicsShapeType.CYLINDER, { mass: 0, friction: 1 }, scene);
+
+            const createPillar = (name, x, z) => {
+                const p = BABYLON.MeshBuilder.CreateCylinder(name, {diameter: 0.4, height: 1.5}, scene);
+                p.position.set(x, 0.75, z);
+                new BABYLON.PhysicsAggregate(p, BABYLON.PhysicsShapeType.CYLINDER, { mass: 0 }, scene);
+            };
+            createPillar("p1", 0, 1); createPillar("p2", -2.5, 2); createPillar("p3", 2.5, 2);
+
+            // 硬币工厂
+            const createCoin = (name, x, z) => {
+                const coin = BABYLON.MeshBuilder.CreateCylinder(name, {diameter: 0.6, height: 0.15}, scene);
+                coin.position.set(x, 1, z);
+                coin.material = goldMat;
+                const agg = new BABYLON.PhysicsAggregate(coin, BABYLON.PhysicsShapeType.CYLINDER, { mass: 2.0, friction: 1, restitution: 0.6 }, scene);
+                
+                agg.body.setCollisionCallbackEnabled(true);
+                agg.body.getCollisionObservable().add((collisionEvent) => {
+                    if (gameState.phase === "ANIMATING" && gameState.activeCoin) {
+                        const otherBody = collisionEvent.collidedAgainst.transformNode;
+                        if (otherBody && otherBody.name.includes("coin") && otherBody !== gameState.activeCoin.mesh) {
+                            gameState.hitList.add(otherBody.name);
+                        }
+                    }
+                });
+
+                const obj = { name, mesh: coin, aggregate: agg };
+                allCoins.push(obj);
+                return obj;
+            };
+
+            const removeCoin = (coinObj) => {
+                if (!coinObj || !coinObj.mesh) return;
+                coinObj.aggregate.dispose();
+                coinObj.mesh.dispose();
+                allCoins = allCoins.filter(c => c !== coinObj);
+            };
+
+            // 用固定种子生成相同的开局物理排布（防双端对齐错位）
+            const initFixedCoins = () => {
+                allCoins.forEach(c => removeCoin(c));
+                allCoins = [];
+                // 预设好6个不重叠的相对平稳坐标
+                const positions = [
+                    {x: -1.5, z: 1.5}, {x: 1.5, z: 1.5},
+                    {x: -2.0, z: -1.0}, {x: 2.0, z: -1.0},
+                    {x: 0.0, z: -2.0}, {x: 1.0, z: 3.0}
+                ];
+                positions.forEach((pos, index) => {
+                    createCoin(`coin_${index}`, pos.x, pos.z);
+                });
+                screenLog("Map initialization complete.", "cyan");
+            };
+            initFixedCoins();
+
+            // --- 3. 核心结算网络同步重构 ---
+            const processTurnResult = () => {
+                if (myRole !== "HOST") return; // 统一由 HOST 端决定裁判结果并同步给 Client
+
+                const hitCount = gameState.hitList.size;
+                const fallenCount = gameState.coinsFallen.length;
+                let changeTurn = true;
+
+                if (fallenCount > 0) {
+                    if (gameState.currentPlayer === "P1") gameState.p2Score += fallenCount;
+                    else gameState.p1Score += fallenCount;
+                    infoText.text = `FALLEN! ${fallenCount} TO OPPONENT`;
+                } else if (hitCount === 1) {
+                    if (gameState.currentPlayer === "P1") gameState.p1Score++;
+                    else gameState.p2Score++;
+                    infoText.text = "PERFECT! SCORE +1";
+                    removeCoin(gameState.activeCoin);
+                    changeTurn = false;
+                } else if (hitCount > 1) {
+                    if (gameState.currentPlayer === "P1") gameState.p2Score++;
+                    else gameState.p1Score++;
+                    infoText.text = "TOO MANY HITS! SCORE RETURNED";
+                    removeCoin(gameState.activeCoin);
+                } else {
+                    infoText.text = "MISSED EVERYTHING";
+                }
+
+                // 广播分数和状态更新包
+                broadcast({
+                    type: "sync_score",
+                    p1Score: gameState.p1Score,
+                    p2Score: gameState.p2Score,
+                    info: infoText.text,
+                    changeTurn: changeTurn,
+                    removedCoinName: (hitCount >= 1) ? gameState.activeCoin.name : null
+                });
+
+                executeTurnEnd(changeTurn, (hitCount >= 1) ? gameState.activeCoin.name : null);
+            };
+
+            window.executeTurnEnd = (changeTurn, removedCoinName) => {
+                if (removedCoinName) {
+                    const target = allCoins.find(c => c.name === removedCoinName);
+                    if (target) removeCoin(target);
+                }
+                
+                infoText.alpha = 1;
+                setTimeout(() => {
+                    infoText.alpha = 0;
+                    if (changeTurn) gameState.currentPlayer = (gameState.currentPlayer === "P1") ? "P2" : "P1";
+                    gameState.phase = (gameState.currentPlayer === "P1") ? "P1_TURN" : "P2_TURN";
+                    gameState.hitList.clear();
+                    gameState.coinsFallen = [];
+                    gameState.activeCoin = null;
+                    updateUI();
+                    
+                    if (gameState.currentPlayer === myRole) {
+                        infoText.text = "YOUR TURN! FLIP IT!";
+                        infoText.alpha = 1;
+                    }
+                }, 1500);
+            };
+
+            // --- 4. 输入交互控制器（增加回合锁限制） ---
+            const hl = new BABYLON.HighlightLayer("hl", scene);
+            let isDragging = false;
+            let dragLine = null;
+            let arrowLine = null;
+
+            const drawArrow = (start, end, scene, existing) => {
+                const dir = end.subtract(start);
+                if (dir.length() < 0.2) return existing;
+                const pts = [start, end];
+                const side = BABYLON.Vector3.Cross(dir.normalizeToNew(), BABYLON.Vector3.Up()).scale(0.2);
+                pts.push(end.subtract(dir.scale(0.2)).add(side)); pts.push(end); pts.push(end.subtract(dir.scale(0.2)).subtract(side));
+                if (existing) return BABYLON.MeshBuilder.CreateLines(null, {points: pts, instance: existing});
+                const l = BABYLON.MeshBuilder.CreateLines("arrow", {points: pts, updatable: true}, scene);
+                l.color = new BABYLON.Color3(0, 0.5, 1);
+                return l;
+            };
+
+            scene.onPointerObservable.add((pointerInfo) => {
+                // 网络锁：当前不是你的身份的回合，直接拦截所有鼠标拖拽
+                if (gameState.currentPlayer !== myRole) return;
+                if (!gameState.phase.includes("TURN")) return;
+
+                if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERDOWN) {
+                    const hit = allCoins.find(c => c.mesh === pointerInfo.pickInfo.pickedMesh);
+                    if (hit) {
+                        gameState.activeCoin = hit;
+                        hl.addMesh(hit.mesh, BABYLON.Color3.White());
+                        isDragging = true;
+                        camera.detachControl();
+                    }
+                }
+
+                if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERMOVE && isDragging) {
+                    const pick = scene.pick(scene.pointerX, scene.pointerY, m => m === table);
+                    if (pick.hit) {
+                        const start = gameState.activeCoin.mesh.position;
+                        const pullDir = start.subtract(pick.pickedPoint);
+                        const arrowEnd = start.add(pullDir); 
+                        
+                        if (dragLine) dragLine.dispose();
+                        dragLine = BABYLON.MeshBuilder.CreateLines("l", {points: [start, pick.pickedPoint]}, scene);
+                        arrowLine = drawArrow(start, arrowEnd, scene, arrowLine);
+                    }
+                }
+
+                if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERUP && isDragging) {
+                    const pick = scene.pick(scene.pointerX, scene.pointerY, m => m === table);
+                    if (pick.hit) {
+                        const force = gameState.activeCoin.mesh.position.subtract(pick.pickedPoint).scale(45);
+                        
+                        // 核心网络同步：把施加的物理冲击广播出去
+                        broadcast({
+                            type: "flip_action",
+                            coinName: gameState.activeCoin.name,
+                            force: { x: force.x, y: force.y, z: force.z }
+                        });
+
+                        // 本地物理立即响应
+                        executeRemoteFlip(gameState.activeCoin.name, force);
+                    }
+                    if (dragLine) dragLine.dispose(); dragLine = null;
+                    if (arrowLine) arrowLine.dispose(); arrowLine = null;
+                    isDragging = false;
+                    hl.removeAllMeshes();
+                    camera.attachControl(canvas, true);
+                }
+            });
+
+            // 远端物理执行注入
+            window.executeRemoteFlip = (coinName, forceVector) => {
+                const target = allCoins.find(c => c.name === coinName);
+                if (target) {
+                    gameState.activeCoin = target;
+                    const bjsVector = new BABYLON.Vector3(forceVector.x, forceVector.y, forceVector.z);
+                    target.aggregate.body.applyImpulse(bjsVector, target.mesh.position);
+                    gameState.phase = "ANIMATING";
+                }
+            };
+
+            // --- 5. 物理监控循环 ---
+            scene.onAfterRenderObservable.add(() => {
+                if (gameState.phase === "ANIMATING") {
+                    const moving = allCoins.some(c => c.aggregate.body.getLinearVelocity().length() > 0.05);
+                    if (!moving && !gameState.isStable) {
+                        processTurnResult();
+                        gameState.isStable = true;
+                    } else if (moving) {
+                        gameState.isStable = false;
+                    }
+                }
+            });
+
+            scene.onBeforeRenderObservable.add(() => {
+                for (let i = allCoins.length - 1; i >= 0; i--) {
+                    const c = allCoins[i];
+                    if (c.mesh.position.y < -3) {
+                        if (!gameState.coinsFallen.includes(c.name)) {
+                            gameState.coinsFallen.push(c.name);
+                        }
+                        removeCoin(c);
+                    }
+                }
+            });
+
+            window.startOnlineGame = (firstPlayer) => {
+                initFixedCoins();
+                gameState.currentPlayer = firstPlayer;
+                infoText.text = firstPlayer === myRole ? "YOU FLIP FIRST! (GO)" : "OPPONENT FLIP FIRST!";
+                infoText.alpha = 1;
+                setTimeout(() => { infoText.alpha = 0; gameState.phase = (firstPlayer === "P1") ? "P1_TURN" : "P2_TURN"; updateUI(); }, 2000);
+            };
+
+            return scene;
+        };
+
+        // === 6. 精确局域网 4位短码 P2P 匹配引擎 ===
+        let peer = null;
+        const statusTxt = document.getElementById("netStatus");
+
+        const getPeerID = (code, role) => `jam-room-${code}-${role}`;
+
+        function broadcast(msg) {
+            if (conn && conn.open) conn.send(msg);
+        }
+
+        // 创房逻辑 (Host)
+        document.getElementById("hostBtn").addEventListener("click", () => {
+            const code = document.getElementById("roomCodeInput").value.trim();
+            if(!/^\d{4}$/.test(code)) return alert("请输入清晰的4位数字代码！");
+            
+            myRole = "HOST"; // 主机为 P1
+            disableNetButtons();
+            statusTxt.innerText = `状态: 正在建立专属房间 ${code}...`;
+
+            peer = new Peer(getPeerID(code, "HOST"));
+            
+            peer.on('open', () => {
+                statusTxt.innerText = `房间 ${code} 建立成功！等待 P2P 玩家加入...`;
+                screenLog(`Network: Room [${code}] opened. Act as Host.`, "green");
+            });
+
+            peer.on('connection', (incoming) => {
+                conn = incoming;
+                setupNetworkPipe();
+            });
+            
+            peer.on('error', (err) => {
+                statusTxt.innerText = `创房失败: 房间可能已被占用`;
+                enableNetButtons();
+            });
+        });
+
+        // 加入房间逻辑 (Client)
+        document.getElementById("joinBtn").addEventListener("click", () => {
+            const code = document.getElementById("roomCodeInput").value.trim();
+            if(!/^\d{4}$/.test(code)) return alert("请输入清晰的4位数字代码！");
+            
+            myRole = "CLIENT"; // 访客为 P2
+            disableNetButtons();
+            statusTxt.innerText = `状态: 正在全网搜寻房间 ${code}...`;
+
+            peer = new Peer(getPeerID(code, "CLIENT"));
+            
+            peer.on('open', () => {
+                conn = peer.connect(getPeerID(code, "HOST"));
+                setupNetworkPipe();
+            });
+
+            peer.on('error', (err) => {
+                statusTxt.innerText = `加入连接故障，检查房间号`;
+                enableNetButtons();
+            });
+        });
+
+        function disableNetButtons() {
+            document.getElementById("hostBtn").disabled = true;
+            document.getElementById("joinBtn").disabled = true;
+            document.getElementById("roomCodeInput").disabled = true;
+        }
+        function enableNetButtons() {
+            document.getElementById("hostBtn").disabled = false;
+            document.getElementById("joinBtn").disabled = false;
+            document.getElementById("roomCodeInput").disabled = false;
+        }
+
+        // 建立网络管道及报文分发
+        function setupNetworkPipe() {
+            conn.on('open', () => {
+                statusTxt.innerText = `🟢 联机对战成功！身份: ${myRole}`;
+                document.getElementById("networkPanel").style.opacity = "0.3";
+                screenLog(`P2P Pipe Connected! Role determined: ${myRole}`, "green");
+
+                if (myRole === "HOST") {
+                    // 主机掷硬币决定谁先手，并向客户端发送同步启动
+                    const starter = Math.random() > 0.5 ? "P1" : "P2";
+                    broadcast({ type: "start_game", firstPlayer: starter });
+                    window.startOnlineGame(starter);
+                }
+            });
+
+            conn.on('data', (data) => {
+                switch(data.type) {
+                    case "start_game":
+                        window.startOnlineGame(data.firstPlayer);
+                        break;
+                    case "flip_action":
+                        // 接收对方的力度包，并在本地Havok层执行相同的弹射力
+                        window.executeRemoteFlip(data.coinName, data.force);
+                        break;
+                    case "sync_score":
+                        // 客户端同步主机的裁判结果
+                        gameState.p1Score = data.p1Score;
+                        gameState.p2Score = data.p2Score;
+                        infoText.text = data.info;
+                        window.executeTurnEnd(data.changeTurn, data.removedCoinName);
+                        break;
+                }
+            });
+
+            conn.on('close', () => {
+                statusTxt.innerText = `❌ 对手已断开连接`;
+                screenLog("Opponent left the room.", "red");
+                enableNetButtons();
+            });
+        }
+
+        // 初始化渲染环境
+        createScene().then((scene) => {
+            engine.runRenderLoop(() => { scene.render(); });
+        });
+        window.addEventListener("resize", () => { engine.resize(); });
+    </script>
+</body>
+</html>
