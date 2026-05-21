@@ -249,9 +249,9 @@
                     if (targetCoin) {
                         gameState.activeCoin = targetCoin;
                         gameState.phase = "ANIMATING";
-                        // 修正：同步接收线速度强刷，彻底抹平两侧翻转概率误差
-                        targetCoin.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(data.velocity.x, data.velocity.y, data.velocity.z));
-                        targetCoin.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+                        // 还原离线版冲量同步机制
+                        const force = new BABYLON.Vector3(data.force.x, data.force.y, data.force.z);
+                        targetCoin.physicsImpostor.applyImpulse(force, targetCoin.mesh.position);
                         screenLog("同步监听到对方弹射硬币: " + data.coinName);
                     }
                 }
@@ -409,19 +409,16 @@
                     if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERUP && isDragging) {
                         const pick = scene.pick(scene.pointerX, scene.pointerY, m => m === table);
                         if (pick.hit) {
-                            // 核心修复点：将拖拽差值换算为初速度向量（削减缩放倍数，45冲量换算成速度大概在4.5-5左右最顺手）
-                            const targetVelocity = gameState.activeCoin.mesh.position.subtract(pick.pickedPoint).scale(5.0);
-
-                            // 1. 直接赋予绝对平移动量，彻底抹除侧翻转力矩
-                            gameState.activeCoin.physicsImpostor.setLinearVelocity(targetVelocity);
-                            gameState.activeCoin.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+                            // 还原离线版黄金拉线发射力度系数
+                            const force = gameState.activeCoin.mesh.position.subtract(pick.pickedPoint).scale(45.0);
+                            gameState.activeCoin.physicsImpostor.applyImpulse(force, gameState.activeCoin.mesh.position);
                             gameState.phase = "ANIMATING";
 
-                            // 2. 将计算后的速度向量实时同步给对方
+                            // 实时同步冲量
                             conn.send({
                                 type: "flip_coin",
                                 coinName: gameState.activeCoin.name,
-                                velocity: { x: targetVelocity.x, y: targetVelocity.y, z: targetVelocity.z }
+                                force: { x: force.x, y: force.y, z: force.z }
                             });
                         }
                         if (dragLine) dragLine.dispose(); dragLine = null;
@@ -501,6 +498,11 @@
             coin.material = goldMat;
 
             const impostor = new BABYLON.PhysicsImpostor(coin, BABYLON.PhysicsImpostor.CylinderImpostor, { mass: 2.0, friction: 1, restitution: 0.6 }, scene);
+
+            // 核心修复点：通过锁定 Cannon.js 刚体的角速度因子，彻底抹除 X 和 Z 轴的立起/翻转力矩
+            if (impostor.physicsBody && impostor.physicsBody.angularFactor) {
+                impostor.physicsBody.angularFactor.set(0, 1, 0);
+            }
 
             // 碰撞事件检测（连连看判定依据）
             impostor.registerOnPhysicsCollide(scene.getPhysicsEngine().getPhysicsPlugin().world.materials, (main, collided) => {
