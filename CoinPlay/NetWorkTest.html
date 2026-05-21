@@ -127,7 +127,7 @@
 
         // === 1. 游戏状态机 ===
         const gameState = {
-            phase: "WAITING_PLAYER", // 联机前挂起
+            phase: "WAITING_PLAYER",
             p1Score: 0,
             p2Score: 0,
             currentPlayer: null,
@@ -138,7 +138,7 @@
         };
 
         let allCoins = [];
-        let p1Text, p2Text, infoText, adt;
+        let localPlayerText, remoteOpponentText, infoText, adt;
         let goldMat, table;
         let havokInstance = null;
 
@@ -166,6 +166,7 @@
             peer = new Peer(uniqueId);
             peer.on('open', (id) => {
                 screenLog("房间号 [ " + code + " ] 创房成功！等待 P2P 握手...", "green");
+                updateUI(); // 提前刷新显示本端初始身份
             });
             peer.on('connection', (incoming) => {
                 conn = incoming;
@@ -199,6 +200,7 @@
             peer.on('open', () => {
                 conn = peer.connect("jam-room-" + code + "-HOST");
                 setupNetworkPipe();
+                updateUI(); // 提前刷新显示本端初始身份
             });
             peer.on('error', (err) => {
                 screenLog("连接失败: " + err.type + "。请确认主机已创房。", "red");
@@ -226,8 +228,6 @@
                 if (myRole === "HOST") {
                     screenLog("正在抛硬币随机决定开局玩家...", "yellow");
                     setTimeout(tossCoin, 1500);
-                } else {
-                    updateUI(); // 客户端加入成功后强制刷新本地化标识名称
                 }
             });
 
@@ -315,24 +315,30 @@
 
                 // === 2. UI 系统 ===
                 adt = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-                p1Text = new BABYLON.GUI.TextBlock();
-                p2Text = new BABYLON.GUI.TextBlock();
+                localPlayerText = new BABYLON.GUI.TextBlock();
+                remoteOpponentText = new BABYLON.GUI.TextBlock();
                 infoText = new BABYLON.GUI.TextBlock();
 
                 const setupUI = () => {
-                    const styleText = (t, alignV) => {
-                        t.color = "white"; t.fontSize = 28;
-                        t.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-                        t.textVerticalAlignment = alignV;
-                        t.paddingRight = "20px"; t.paddingTop = "20px"; t.paddingBottom = "20px";
-                        adt.addControl(t);
-                    };
-                    styleText(p1Text, BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM);
-                    styleText(p2Text, BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP);
+                    // 右下角：永远挂载并刷新自己本机的信息
+                    localPlayerText.color = "white"; localPlayerText.fontSize = 28;
+                    localPlayerText.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                    localPlayerText.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+                    localPlayerText.paddingRight = "20px"; localPlayerText.paddingBottom = "20px";
+                    adt.addControl(localPlayerText);
+
+                    // 左上角：永远挂载并刷新对手的信息
+                    remoteOpponentText.color = "white"; remoteOpponentText.fontSize = 28;
+                    remoteOpponentText.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                    remoteOpponentText.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+                    remoteOpponentText.paddingLeft = "20px"; remoteOpponentText.paddingTop = "20px";
+                    adt.addControl(remoteOpponentText);
+
                     infoText.text = "等待建立 P2P 联机..."; infoText.color = "gold"; infoText.fontSize = 35;
                     adt.addControl(infoText);
                 };
                 setupUI();
+                updateUI(); // 初始化初显布局
 
                 // === 3. 材质与场景物体 ===
                 goldMat = new BABYLON.PBRMaterial("goldMat", scene);
@@ -506,17 +512,31 @@
             allCoins = allCoins.filter(c => c !== coinObj);
         }
 
-        // 核心修复点：重构名字显示标签与多端单独高亮逻辑
+        // 核心修复点：动态刷新左上角、右下角文本及当前回合绿光高亮染色
         const updateUI = () => {
-            const hostLabel = myRole === "HOST" ? "P1 (PETER) [YOU]" : "P1 (PETER)";
-            const clientLabel = myRole === "CLIENT" ? "P2 (BRIAN) [YOU]" : "P2 (BRIAN)";
+            if (!localPlayerText || !remoteOpponentText) return;
 
-            p1Text.text = `${hostLabel}: ${gameState.p1Score}`;
-            p2Text.text = `${clientLabel}: ${gameState.p2Score}`;
+            if (myRole === "HOST") {
+                // 本端是 HOST (P1) -> 右下角显示自己，左上角显示对手
+                localPlayerText.text = `YOU: P1 (PETER)  分数: ${gameState.p1Score}`;
+                remoteOpponentText.text = `OPPONENT: P2 (BRIAN)  分数: ${gameState.p2Score}`;
 
-            // 精准判定谁是当前活动玩家并将其变绿，非变绿端显示白字
-            p1Text.color = gameState.currentPlayer === "P1" ? "#00FF00" : "white";
-            p2Text.color = gameState.currentPlayer === "P2" ? "#00FF00" : "white";
+                // 染色高亮逻辑：当前属于谁的 Turn，谁的文字就变绿
+                localPlayerText.color = (gameState.currentPlayer === "P1") ? "#00FF00" : "white";
+                remoteOpponentText.color = (gameState.currentPlayer === "P2") ? "#00FF00" : "white";
+            } else if (myRole === "CLIENT") {
+                // 本端是 CLIENT (P2) -> 右下角显示自己，左上角显示对手
+                localPlayerText.text = `YOU: P2 (BRIAN)  分数: ${gameState.p2Score}`;
+                remoteOpponentText.text = `OPPONENT: P1 (PETER)  分数: ${gameState.p1Score}`;
+
+                // 染色高亮逻辑：当前属于谁的 Turn，谁的文字就变绿
+                localPlayerText.color = (gameState.currentPlayer === "P2") ? "#00FF00" : "white";
+                remoteOpponentText.color = (gameState.currentPlayer === "P1") ? "#00FF00" : "white";
+            } else {
+                // 未加入房间时的初始挂起状态显示
+                localPlayerText.text = "P1 (PETER): 0";
+                remoteOpponentText.text = "P2 (BRIAN): 0";
+            }
         };
 
         const drawArrow = (start, end, scene, existing) => {
