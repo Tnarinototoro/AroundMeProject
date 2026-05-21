@@ -226,6 +226,8 @@
                 if (myRole === "HOST") {
                     screenLog("正在抛硬币随机决定开局玩家...", "yellow");
                     setTimeout(tossCoin, 1500);
+                } else {
+                    updateUI(); // 客户端加入成功后强制刷新本地化标识名称
                 }
             });
 
@@ -504,9 +506,15 @@
             allCoins = allCoins.filter(c => c !== coinObj);
         }
 
+        // 核心修复点：重构名字显示标签与多端单独高亮逻辑
         const updateUI = () => {
-            p1Text.text = "P1 (PETER): " + gameState.p1Score;
-            p2Text.text = "P2 (BRIAN): " + gameState.p2Score;
+            const hostLabel = myRole === "HOST" ? "P1 (PETER) [YOU]" : "P1 (PETER)";
+            const clientLabel = myRole === "CLIENT" ? "P2 (BRIAN) [YOU]" : "P2 (BRIAN)";
+
+            p1Text.text = `${hostLabel}: ${gameState.p1Score}`;
+            p2Text.text = `${clientLabel}: ${gameState.p2Score}`;
+
+            // 精准判定谁是当前活动玩家并将其变绿，非变绿端显示白字
             p1Text.color = gameState.currentPlayer === "P1" ? "#00FF00" : "white";
             p2Text.color = gameState.currentPlayer === "P2" ? "#00FF00" : "white";
         };
