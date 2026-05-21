@@ -89,7 +89,7 @@
         }
     </style>
 
-    <script src="https://cdn.babylonjs.com/cannon.js"></script>
+    <script src="https://cdn.babylonjs.com/havok/HavokPhysics_umd.js"></script>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
@@ -140,6 +140,7 @@
         let allCoins = [];
         let p1Text, p2Text, infoText, adt;
         let goldMat, table;
+        let havokInstance = null;
 
         const screenLog = (msg, color = "white") => {
             console.log(`[GameLog] ${msg}`);
@@ -164,17 +165,17 @@
 
             peer = new Peer(uniqueId);
             peer.on('open', (id) => {
-                screenLog(`房间号 [ ${code} ] 创房成功！等待 P2P 握手...`, "green");
+                screenLog("房间号 [ " + code + " ] 创房成功！等待 P2P 握手...", "green");
             });
             peer.on('connection', (incoming) => {
                 conn = incoming;
                 setupNetworkPipe();
             });
             peer.on('error', (err) => {
-                screenLog(`网络异常 (${err.type})`, "orange");
+                screenLog("网络异常 (" + err.type + ")", "orange");
                 enableNetButtons();
                 if (err.type === 'unavailable-id') {
-                    screenLog(`提示: 房间号 ${code} 被占用，请更换其他4位数字创房！`, "yellow");
+                    screenLog("提示: 房间号 " + code + " 被占用，请更换其他4位数字创房！", "yellow");
                 }
             });
         }
@@ -192,15 +193,15 @@
             myRole = "CLIENT";
             currentRoomCode = code;
             disableNetButtons();
-            screenLog(`正在寻找主机房间 [Room: ${code}]...`, "cyan");
+            screenLog("正在寻找主机房间 [Room: " + code + "]...", "cyan");
 
-            peer = new Peer(`jam-room-${code}-CLIENT-${Math.floor(Math.random() * 1000)}`);
+            peer = new Peer("jam-room-" + code + "-CLIENT-" + Math.floor(Math.random() * 1000));
             peer.on('open', () => {
-                conn = peer.connect(`jam-room-${code}-HOST`);
+                conn = peer.connect("jam-room-" + code + "-HOST");
                 setupNetworkPipe();
             });
             peer.on('error', (err) => {
-                screenLog(`连接失败: ${err.type}。请确认主机已创房。`, "red");
+                screenLog("连接失败: " + err.type + "。请确认主机已创房。", "red");
                 enableNetButtons();
             });
         });
@@ -216,14 +217,12 @@
             document.getElementById("roomCodeInput").disabled = false;
         }
 
-        // 核心数据管道：融合同步与玩法指令
         function setupNetworkPipe() {
             if (!conn) return;
             conn.on('open', () => {
-                screenLog(`🟢 P2P 联机成功！当前身份: ${myRole}`, "green");
+                screenLog("🟢 P2P 联机成功！当前身份: " + myRole, "green");
                 document.getElementById("networkPanel").style.backgroundColor = "rgba(0,40,0,0.9)";
 
-                // 只有 Host 负责决定最初的硬币随机朝向并开局开火
                 if (myRole === "HOST") {
                     screenLog("正在抛硬币随机决定开局玩家...", "yellow");
                     setTimeout(tossCoin, 1500);
@@ -231,7 +230,6 @@
             });
 
             conn.on('data', (data) => {
-                // 1. 同步开局抛硬币结果
                 if (data.type === "toss_result") {
                     gameState.currentPlayer = data.starter;
                     infoText.text = data.msg;
@@ -243,30 +241,27 @@
                     }, 2000);
                 }
 
-                // 2. 同步对方的弹射开火指令
                 if (data.type === "flip_coin") {
                     const targetCoin = allCoins.find(c => c.name === data.coinName);
                     if (targetCoin) {
                         gameState.activeCoin = targetCoin;
                         gameState.phase = "ANIMATING";
-                        const forceImpulse = new BABYLON.Vector3(data.force.x, data.force.y, data.force.z);
-                        targetCoin.physicsImpostor.applyImpulse(forceImpulse, targetCoin.mesh.position);
-                        screenLog(`同步监听到对方弹射硬币: ${data.coinName}`);
+                        const impulseForce = new BABYLON.Vector3(data.force.x, data.force.y, data.force.z);
+                        targetCoin.aggregate.body.applyImpulse(impulseForce, targetCoin.mesh.position);
+                        screenLog("同步监听到对方弹射硬币: " + data.coinName);
                     }
                 }
 
-                // 3. 客户端接收主机的物理权威同步（防止乱序和发散误差）
                 if (data.type === "pos_sync" && myRole === "CLIENT") {
                     data.coins.forEach(syncData => {
                         const localCoin = allCoins.find(c => c.name === syncData.name);
-                        if (localCoin && localCoin.physicsImpostor) {
+                        if (localCoin && localCoin.aggregate) {
                             localCoin.mesh.position.set(syncData.pos.x, syncData.pos.y, syncData.pos.z);
-                            localCoin.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(syncData.vel.x, syncData.vel.y, syncData.vel.z));
+                            localCoin.aggregate.body.setLinearVelocity(new BABYLON.Vector3(syncData.vel.x, syncData.vel.y, syncData.vel.z));
                         }
                     });
                 }
 
-                // 4. 同步结算状态（保持UI和逻辑严格一致）
                 if (data.type === "turn_settle") {
                     gameState.p1Score = data.p1Score;
                     gameState.p2Score = data.p2Score;
@@ -275,7 +270,6 @@
                     updateUI();
                 }
 
-                // 5. 同步强制切换回合
                 if (data.type === "turn_next") {
                     infoText.alpha = 0;
                     gameState.currentPlayer = data.nextPlayer;
@@ -286,7 +280,6 @@
                     updateUI();
                 }
 
-                // 6. 同步补货生成的硬币
                 if (data.type === "spawn_coin") {
                     createCoin(data.name, data.x, data.z);
                 }
@@ -301,18 +294,15 @@
         // ==========================================
         // 🎮 3D 场景与核心逻辑实装
         // ==========================================
-        function initGame() {
+        async function initGame() {
             try {
                 engine = new BABYLON.Engine(canvas, true);
                 scene = new BABYLON.Scene(engine);
 
-                // 纯静态无阻碍注入 Cannon
-                const gravityVector = new BABYLON.Vector3(0, -9.81, 0);
-                const physicsPlugin = new BABYLON.CannonJSPlugin();
-                scene.enablePhysics(gravityVector, physicsPlugin);
-                screenLog("3D场景与物理渲染启动成功 ✅", "green");
+                const hk = new BABYLON.HavokPlugin(true, havokInstance);
+                scene.enablePhysics(new BABYLON.Vector3(0, -9.81, 0), hk);
+                screenLog("Havok 物理高精约束引擎启动成功 ✅", "green");
 
-                // 高光环境
                 const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/environmentSpecular.env", scene);
                 scene.environmentTexture = hdrTexture;
 
@@ -352,18 +342,17 @@
 
                 table = BABYLON.MeshBuilder.CreateCylinder("table", { diameter: 10, height: 0.5 }, scene);
                 table.material = tableMat;
-                table.physicsImpostor = new BABYLON.PhysicsImpostor(table, BABYLON.PhysicsImpostor.CylinderImpostor, { mass: 0, friction: 1 }, scene);
+                new BABYLON.PhysicsAggregate(table, BABYLON.PhysicsShapeType.CYLINDER, { mass: 0, friction: 1 }, scene);
 
                 const createPillar = (name, x, z) => {
                     const p = BABYLON.MeshBuilder.CreateCylinder(name, { diameter: 0.4, height: 1.5 }, scene);
                     p.position.set(x, 0.75, z);
-                    p.physicsImpostor = new BABYLON.PhysicsImpostor(p, BABYLON.PhysicsImpostor.CylinderImpostor, { mass: 0 }, scene);
+                    new BABYLON.PhysicsAggregate(p, BABYLON.PhysicsShapeType.CYLINDER, { mass: 0 }, scene);
                 };
                 createPillar("p1", 0, 1); createPillar("p2", -2.5, 2); createPillar("p3", 2.5, 2);
 
-                // 初始化 6 枚硬币 (固定随机种子或统一生成，这里由初始代码在两侧分别创建，由于后续有物理位置强刷，所以名字一致即可)
+                // 初始化 6 枚硬币
                 for (let i = 0; i < 6; i++) {
-                    // 为了让两台机器初始坐标大致一致，使用固定伪随机或者均匀散落
                     const angle = (i / 6) * Math.PI * 2;
                     const radius = 2 + Math.sin(i) * 1;
                     createCoin("coin_" + i, Math.cos(angle) * radius, Math.sin(angle) * radius);
@@ -376,9 +365,8 @@
                 let arrowLine = null;
 
                 scene.onPointerObservable.add((pointerInfo) => {
-                    if (!conn || !conn.open) return; // 未连线不准动
+                    if (!conn || !conn.open) return;
 
-                    // 回合和身份严格锁死判定：HOST 控 P1_TURN，CLIENT 控 P2_TURN
                     const isMyTurn = (myRole === "HOST" && gameState.phase === "P1_TURN") ||
                         (myRole === "CLIENT" && gameState.phase === "P2_TURN");
                     if (!isMyTurn) return;
@@ -411,11 +399,9 @@
                         if (pick.hit) {
                             const force = gameState.activeCoin.mesh.position.subtract(pick.pickedPoint).scale(45);
 
-                            // 1. 本地立即施加冲量
-                            gameState.activeCoin.physicsImpostor.applyImpulse(force, gameState.activeCoin.mesh.position);
+                            gameState.activeCoin.aggregate.body.applyImpulse(force, gameState.activeCoin.mesh.position);
                             gameState.phase = "ANIMATING";
 
-                            // 2. 瞬间把“哪枚硬币”和“冲量多少”打包广播给对方电脑同步运算
                             conn.send({
                                 type: "flip_coin",
                                 coinName: gameState.activeCoin.name,
@@ -433,23 +419,20 @@
                 // === 6. 核心结算与权威物理高频发射 ===
                 scene.onAfterRenderObservable.add(() => {
                     if (gameState.phase === "ANIMATING") {
-                        // 判定场上是否有硬币还在滚动
-                        const moving = allCoins.some(c => c.physicsImpostor.getLinearVelocity().length() > 0.05);
+                        const moving = allCoins.some(c => c.aggregate.body.getLinearVelocity().length() > 0.05);
 
-                        // 【物理权威同步】：如果是 HOST 且硬币在动，高频向 CLIENT 发射场上所有硬币的准确物理坐标
                         if (moving && myRole === "HOST" && conn && conn.open) {
                             const syncPack = allCoins.map(c => ({
                                 name: c.name,
                                 pos: { x: c.mesh.position.x, y: c.mesh.position.y, z: c.mesh.position.z },
-                                vel: { x: c.physicsImpostor.getLinearVelocity().x, y: c.physicsImpostor.getLinearVelocity().y, z: c.physicsImpostor.getLinearVelocity().z }
+                                vel: { x: c.aggregate.body.getLinearVelocity().x, y: c.aggregate.body.getLinearVelocity().y, z: c.aggregate.body.getLinearVelocity().z }
                             }));
                             conn.send({ type: "pos_sync", coins: syncPack });
                         }
 
-                        // 当场面静止下来时，由 HOST 统领进行核心结算判断
                         if (!moving && !gameState.isStable) {
                             if (myRole === "HOST") {
-                                processTurnResult(); // 触发主机结算判定
+                                processTurnResult();
                             }
                             gameState.isStable = true;
                         } else if (moving) {
@@ -468,7 +451,6 @@
                             }
                             removeCoin(c);
 
-                            // 主机独占：自动补货并通知客户端
                             if (myRole === "HOST" && allCoins.length < 3) {
                                 setTimeout(() => {
                                     const coinName = "coin_" + Date.now();
@@ -486,7 +468,7 @@
 
                 engine.runRenderLoop(() => { scene.render(); });
             } catch (e) {
-                screenLog(`3D系统崩溃: ${e.message}`, "red");
+                screenLog("3D系统崩溃: " + e.message, "red");
             }
         }
 
@@ -498,33 +480,33 @@
             coin.position.set(x, 1, z);
             coin.material = goldMat;
 
-            const impostor = new BABYLON.PhysicsImpostor(coin, BABYLON.PhysicsImpostor.CylinderImpostor, { mass: 2.0, friction: 1, restitution: 0.6 }, scene);
+            const agg = new BABYLON.PhysicsAggregate(coin, BABYLON.PhysicsShapeType.CYLINDER, { mass: 2.0, friction: 1, restitution: 0.6 }, scene);
 
-            // 碰撞事件检测（连连看判定依据）
-            impostor.registerOnPhysicsCollide(scene.getPhysicsEngine().getPhysicsPlugin().world.materials, (main, collided) => {
+            agg.body.setCollisionCallbackEnabled(true);
+            agg.body.getCollisionObservable().add((collisionEvent) => {
                 if (gameState.phase === "ANIMATING" && gameState.activeCoin) {
-                    const otherMesh = collided.object;
-                    if (otherMesh && otherMesh.name && otherMesh.name.includes("coin") && otherMesh !== gameState.activeCoin.mesh) {
-                        gameState.hitList.add(otherMesh.name);
+                    const otherBody = collisionEvent.collidedAgainst.transformNode;
+                    if (otherBody && otherBody.name && otherBody.name.includes("coin") && otherBody !== gameState.activeCoin.mesh) {
+                        gameState.hitList.add(otherBody.name);
                     }
                 }
             });
 
-            const obj = { name, mesh: coin, physicsImpostor: impostor };
+            const obj = { name, mesh: coin, aggregate: agg };
             allCoins.push(obj);
             return obj;
         }
 
         function removeCoin(coinObj) {
             if (!coinObj || !coinObj.mesh) return;
-            if (coinObj.physicsImpostor) coinObj.physicsImpostor.dispose();
+            if (coinObj.aggregate) coinObj.aggregate.dispose();
             coinObj.mesh.dispose();
             allCoins = allCoins.filter(c => c !== coinObj);
         }
 
         const updateUI = () => {
-            p1Text.text = `P1 (PETER): ${gameState.p1Score}`;
-            p2Text.text = `P2 (BRIAN): ${gameState.p2Score}`;
+            p1Text.text = "P1 (PETER): " + gameState.p1Score;
+            p2Text.text = "P2 (BRIAN): " + gameState.p2Score;
             p1Text.color = gameState.currentPlayer === "P1" ? "#00FF00" : "white";
             p2Text.color = gameState.currentPlayer === "P2" ? "#00FF00" : "white";
         };
@@ -544,7 +526,6 @@
             return l;
         };
 
-        // 随机决定谁先手开局
         const tossCoin = () => {
             const isPeter = Math.random() > 0.5;
             const starter = isPeter ? "P1" : "P2";
@@ -554,7 +535,6 @@
             infoText.text = msg;
             infoText.alpha = 1;
 
-            // 广播结果给客户端
             if (conn && conn.open) {
                 conn.send({ type: "toss_result", starter: starter, msg: msg });
             }
@@ -566,7 +546,6 @@
             }, 2000);
         };
 
-        // 【权威结算中心】
         const processTurnResult = () => {
             const hitCount = gameState.hitList.size;
             const fallenCount = gameState.coinsFallen.length;
@@ -576,7 +555,7 @@
             if (fallenCount > 0) {
                 if (gameState.currentPlayer === "P1") gameState.p2Score += fallenCount;
                 else gameState.p1Score += fallenCount;
-                curSettleText = `FALLEN! ${fallenCount} TO OPPONENT`;
+                curSettleText = "FALLEN! " + fallenCount + " TO OPPONENT";
                 changeTurn = true;
             }
             else if (hitCount === 1) {
@@ -584,7 +563,7 @@
                 else gameState.p2Score++;
                 curSettleText = "PERFECT! SCORE +1";
                 removeCoin(gameState.activeCoin);
-                changeTurn = false; // 连连看奖励：不换回合
+                changeTurn = false;
             }
             else if (hitCount > 1) {
                 if (gameState.currentPlayer === "P1") gameState.p2Score++;
@@ -598,7 +577,6 @@
                 changeTurn = true;
             }
 
-            // 1. 同步分数与结算文本给客户端
             if (conn && conn.open) {
                 conn.send({
                     type: "turn_settle",
@@ -611,13 +589,11 @@
             infoText.alpha = 1;
             updateUI();
 
-            // 2. 延迟执行回合交替
             setTimeout(() => {
                 infoText.alpha = 0;
                 if (changeTurn) gameState.currentPlayer = (gameState.currentPlayer === "P1") ? "P2" : "P1";
                 gameState.phase = (gameState.currentPlayer === "P1") ? "P1_TURN" : "P2_TURN";
 
-                // 广播下一回合交替指令
                 if (conn && conn.open) {
                     conn.send({
                         type: "turn_next",
@@ -633,8 +609,15 @@
             }, 1500);
         };
 
-        // 延迟启动
-        setTimeout(initGame, 100);
+        if (typeof HavokPhysics === "function") {
+            HavokPhysics().then((instance) => {
+                havokInstance = instance;
+                setTimeout(initGame, 100);
+            }).catch(e => console.error("Havok 加载异常:", e));
+        } else {
+            console.error("未能正确获取全局 Havok 构造对象");
+        }
+
         window.addEventListener("resize", () => { if (engine) engine.resize(); });
     </script>
 </body>
