@@ -1,188 +1,644 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
-    <title>Game Jam LAN P2P Match</title>
+    <title>Game Jam - Coinflip Sync Final</title>
     <style>
-        html, body { overflow: hidden; width: 100%; height: 100%; margin: 0; padding: 0; background: #1a1a1a; }
-        #renderCanvas { width: 100%; height: 100%; touch-action: none; }
-        #connectionUI {
-            position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.8);
-            padding: 15px; color: white; font-family: monospace; border-radius: 5px; z-index: 100;
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
         }
-        input, button { padding: 6px; margin: 4px 0; border: none; border-radius: 3px; font-size: 14px; }
-        button { background: #28a745; color: white; cursor: pointer; font-weight: bold; }
-        button:hover { background: #218838; }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+
+        #networkPanel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            color: white;
+            font-family: 'Consolas', monospace;
+            border-radius: 6px;
+            z-index: 1000;
+            border: 2px solid gold;
+            width: 290px;
+        }
+
+        .net-title {
+            font-weight: bold;
+            color: gold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 90%;
+            padding: 6px;
+            margin: 6px 0;
+            border: 1px solid #555;
+            border-radius: 4px;
+            background: #222;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            background: #555;
+            color: white;
+        }
+
+        .btn-host {
+            background: #28a745 !important;
+            color: white;
+        }
+
+        .btn-join {
+            background: #007bff !important;
+            color: white;
+        }
+
+        button:disabled {
+            background: #444 !important;
+            color: #888 !important;
+            cursor: not-allowed;
+        }
     </style>
+
+    <script src="https://cdn.babylonjs.com/cannon.js"></script>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 </head>
+
 <body>
 
-    <div id="connectionUI">
-        <div id="myIdDisplay">我的ID: 加载中...</div>
-        <hr>
-        <input type="text" id="peerIdInput" placeholder="输入对方的 ID">
-        <button id="connectBtn">建立局域网连接</button>
+    <div id="networkPanel">
+        <div class="net-title">⚡ 策略金币联机实装面板</div>
+        <input type="text" id="roomCodeInput" maxlength="4" value="8888" placeholder="输入 4 位数字房间号">
+        <div class="btn-group">
+            <button id="hostBtn" class="btn-host">创房 (P1)</button>
+            <button id="joinBtn" class="btn-join">加入 (P2)</button>
+        </div>
+        <div id="netStatus"
+            style="font-size: 12px; margin-top: 10px; color: #aaa; background: rgba(255,255,255,0.1); padding: 5px; max-height: 200px; overflow-y: auto;">
+            状态: 等待网络加入...</div>
     </div>
 
     <canvas id="renderCanvas"></canvas>
 
     <script>
-        const canvas = document.getElementById("renderCanvas");
-        const engine = new BABYLON.Engine(canvas, true);
-
-        // --- 1. 永久屏幕日志系统 ---
-        let logStack;
-        const createUI = (scene) => {
-            const adt = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-            logStack = new BABYLON.GUI.StackPanel();
-            logStack.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
-            logStack.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-            logStack.isHitTestVisible = false;
-            adt.addControl(logStack);
+        // 全局崩溃接管
+        window.onerror = function (message, source, lineno, colno, error) {
+            const errDiv = document.getElementById("netStatus");
+            if (errDiv) errDiv.innerHTML += `<div style="color:red;">🚨 脚本崩溃: ${message} (第${lineno}行)</div>`;
+            return false;
         };
+
+        const canvas = document.getElementById("renderCanvas");
+        let engine, scene;
+        let conn = null, peer = null;
+        let myRole = "SPECTATOR"; // HOST 或 CLIENT
+        let currentRoomCode = "8888";
+
+        // === 1. 游戏状态机 ===
+        const gameState = {
+            phase: "WAITING_PLAYER", // 联机前挂起
+            p1Score: 0,
+            p2Score: 0,
+            currentPlayer: null,
+            activeCoin: null,
+            hitList: new Set(),
+            coinsFallen: [],
+            isStable: true
+        };
+
+        let allCoins = [];
+        let p1Text, p2Text, infoText, adt;
+        let goldMat, table;
 
         const screenLog = (msg, color = "white") => {
-            if (!logStack) return;
-            const t = new BABYLON.GUI.TextBlock();
-            t.text = `> ${msg}`; t.color = color; t.height = "28px"; t.fontSize = 16;
-            t.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-            logStack.addControl(t);
-            if (logStack.children.length > 15) logStack.removeControl(logStack.children[0]);
+            console.log(`[GameLog] ${msg}`);
+            const debugDiv = document.getElementById("netStatus");
+            if (debugDiv) {
+                debugDiv.innerHTML += `<div style="color:${color}; margin-top:2px;">• ${msg}</div>`;
+                debugDiv.scrollTop = debugDiv.scrollHeight;
+            }
         };
 
-        // --- 2. 创建游戏基础场景 ---
-        const createScene = function () {
-            const scene = new BABYLON.Scene(engine);
-            const camera = new BABYLON.ArcRotateCamera("cam", -Math.PI / 2, Math.PI / 3, 15, BABYLON.Vector3.Zero(), scene);
-            camera.attachControl(canvas, true);
-            new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+        screenLog("Protocol Check: Local Server HTTP OK ✅", "green");
 
-            createUI(scene);
-            screenLog("System: 3D Environment Ready.", "yellow");
+        // ==========================================
+        // ⚡ P2P 网络事件绑定与状态强锁
+        // ==========================================
+        function startHost(code) {
+            myRole = "HOST";
+            currentRoomCode = code;
+            disableNetButtons();
+            const uniqueId = `jam-room-${code}-HOST`;
+            screenLog(`向服务器注册主机 [ID: ${code}]...`, "cyan");
 
-            // 创建地面
-            const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 10, height: 10}, scene);
-            const groundMat = new BABYLON.StandardMaterial("gMat", scene);
-            groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
-            ground.material = groundMat;
+            peer = new Peer(uniqueId);
+            peer.on('open', (id) => {
+                screenLog("房间号 [ " + code + " ] 创房成功！等待 P2P 握手...", "green");
+            });
+            peer.on('connection', (incoming) => {
+                conn = incoming;
+                setupNetworkPipe();
+            });
+            peer.on('error', (err) => {
+                screenLog("网络异常 (" + err.type + ")", "orange");
+                enableNetButtons();
+                if (err.type === 'unavailable-id') {
+                    screenLog("提示: 房间号 " + code + " 被占用，请更换其他4位数字创房！", "yellow");
+                }
+            });
+        }
 
-            // 本地玩家 (黄色方块)
-            const localPlayer = BABYLON.MeshBuilder.CreateBox("localPlayer", {size: 1}, scene);
-            localPlayer.position.y = 0.5;
-            const matL = new BABYLON.StandardMaterial("mL", scene);
-            matL.diffuseColor = new BABYLON.Color3(1, 0.8, 0);
-            localPlayer.material = matL;
+        document.getElementById("hostBtn").addEventListener("click", () => {
+            const code = document.getElementById("roomCodeInput").value.trim();
+            if (!/^\d{4}$/.test(code)) return alert("请输入4位数字！");
+            startHost(code);
+        });
 
-            // 远程玩家 (青色方块，初始隐藏，连接后激活)
-            const remotePlayer = BABYLON.MeshBuilder.CreateBox("remotePlayer", {size: 1}, scene);
-            remotePlayer.position.y = 0.5;
-            remotePlayer.position.x = 2;
-            const matR = new BABYLON.StandardMaterial("mR", scene);
-            matR.diffuseColor = new BABYLON.Color3(0, 0.8, 1);
-            remotePlayer.material = matR;
-            remotePlayer.setEnabled(false); // 默认隐藏
+        document.getElementById("joinBtn").addEventListener("click", () => {
+            const code = document.getElementById("roomCodeInput").value.trim();
+            if (!/^\d{4}$/.test(code)) return alert("请输入4位数字！");
 
-            // 本地键盘控制逻辑
-            const inputMap = {};
-            scene.actionManager = new BABYLON.ActionManager(scene);
-            scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
-                inputMap[evt.sourceEvent.key.toLowerCase()] = true;
-            }));
-            scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
-                inputMap[evt.sourceEvent.key.toLowerCase()] = false;
-            }));
+            myRole = "CLIENT";
+            currentRoomCode = code;
+            disableNetButtons();
+            screenLog("正在寻找主机房间 [Room: " + code + "]...", "cyan");
 
-            // 游戏主循环：移动并广播数据
-            scene.onBeforeRenderObservable.add(() => {
-                let moved = false;
-                const speed = 0.1;
-                if (inputMap["w"] || inputMap["arrowup"]) { localPlayer.position.z += speed; moved = true; }
-                if (inputMap["s"] || inputMap["arrowdown"]) { localPlayer.position.z -= speed; moved = true; }
-                if (inputMap["a"] || inputMap["arrowleft"]) { localPlayer.position.x -= speed; moved = true; }
-                if (inputMap["d"] || inputMap["arrowright"]) { localPlayer.position.x += speed; moved = true; }
+            peer = new Peer("jam-room-" + code + "-CLIENT-" + Math.floor(Math.random() * 1000));
+            peer.on('open', () => {
+                conn = peer.connect("jam-room-" + code + "-HOST");
+                setupNetworkPipe();
+            });
+            peer.on('error', (err) => {
+                screenLog("连接失败: " + err.type + "。请确认主机已创房。", "red");
+                enableNetButtons();
+            });
+        });
 
-                // 如果位置发生改变，并且连接已建立，把坐标喷给对方
-                if (moved && conn && conn.open) {
-                    conn.send({
-                        type: "move",
-                        pos: { x: localPlayer.position.x, z: localPlayer.position.z }
-                    });
+        function disableNetButtons() {
+            document.getElementById("hostBtn").disabled = true;
+            document.getElementById("joinBtn").disabled = true;
+            document.getElementById("roomCodeInput").disabled = true;
+        }
+        function enableNetButtons() {
+            document.getElementById("hostBtn").disabled = false;
+            document.getElementById("joinBtn").disabled = false;
+            document.getElementById("roomCodeInput").disabled = false;
+        }
+
+        // 核心数据管道：融合同步与玩法指令
+        function setupNetworkPipe() {
+            if (!conn) return;
+            conn.on('open', () => {
+                screenLog("🟢 P2P 联机成功！当前身份: " + myRole, "green");
+                document.getElementById("networkPanel").style.backgroundColor = "rgba(0,40,0,0.9)";
+
+                // 只有 Host 负责决定最初的硬币随机朝向并开局开火
+                if (myRole === "HOST") {
+                    screenLog("正在抛硬币随机决定开局玩家...", "yellow");
+                    setTimeout(tossCoin, 1500);
                 }
             });
 
-            return { scene, localPlayer, remotePlayer };
-        };
-
-        const game = createScene();
-        const scene = game.scene;
-
-        // --- 3. 核心网络同步逻辑 (PeerJS) ---
-        let peer = null;
-        let conn = null;
-
-        // 初始化 Peer（使用 PeerJS 官方默认公共公网信令服务器）
-        try {
-            peer = new Peer();
-            
-            peer.on('open', (id) => {
-                document.getElementById("myIdDisplay").innerText = `我的ID: ${id}`;
-                screenLog(`Network: Connected to Signaling Server. Your ID is [${id}]`, "green");
-                screenLog("Share this ID with your friend to play!", "cyan");
-            });
-
-            // 监听对方的连接 (作为 Host 被动接收连接)
-            peer.on('connection', (connection) => {
-                conn = connection;
-                setupConnectionHandlers();
-            });
-
-            peer.on('error', (err) => {
-                screenLog(`Network Error: ${err.type}`, "red");
-            });
-        } catch(e) {
-            console.error(e);
-        }
-
-        // 主动连接对方 (作为 Client)
-        document.getElementById("connectBtn").addEventListener("click", () => {
-            const remoteId = document.getElementById("peerIdInput").value.trim();
-            if (!remoteId) {
-                screenLog("Error: Please enter a valid Peer ID", "orange");
-                return;
-            }
-            screenLog(`Attempting to connect to: ${remoteId}...`, "white");
-            conn = peer.connect(remoteId);
-            setupConnectionHandlers();
-        });
-
-        // 配置数据通道的回调
-        function setupConnectionHandlers() {
-            conn.on('open', () => {
-                screenLog("P2P Connection ESTABLISHED! ⚔️", "green");
-                document.getElementById("connectionUI").style.opacity = "0.4"; // 降低 UI 干扰
-                game.remotePlayer.setEnabled(true); // 显示对手
-            });
-
-            // 核心：接收对方的数据包并同步到场景
             conn.on('data', (data) => {
-                if (data.type === "move") {
-                    game.remotePlayer.position.x = data.pos.x;
-                    game.remotePlayer.position.z = data.pos.z;
+                // 1. 同步开局抛硬币结果
+                if (data.type === "toss_result") {
+                    gameState.currentPlayer = data.starter;
+                    infoText.text = data.msg;
+                    infoText.alpha = 1;
+                    setTimeout(() => {
+                        infoText.alpha = 0;
+                        gameState.phase = (gameState.currentPlayer === "P1") ? "P1_TURN" : "P2_TURN";
+                        updateUI();
+                    }, 2000);
+                }
+
+                // 2. 同步对方的弹射开火指令
+                if (data.type === "flip_coin") {
+                    const targetCoin = allCoins.find(c => c.name === data.coinName);
+                    if (targetCoin) {
+                        gameState.activeCoin = targetCoin;
+                        gameState.phase = "ANIMATING";
+                        // 修正：同步接收线速度强刷，彻底抹平两侧翻转概率误差
+                        targetCoin.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(data.velocity.x, data.velocity.y, data.velocity.z));
+                        targetCoin.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+                        screenLog("同步监听到对方弹射硬币: " + data.coinName);
+                    }
+                }
+
+                // 3. 客户端接收主机的物理权威同步（防止乱序和发散误差）
+                if (data.type === "pos_sync" && myRole === "CLIENT") {
+                    data.coins.forEach(syncData => {
+                        const localCoin = allCoins.find(c => c.name === syncData.name);
+                        if (localCoin && localCoin.physicsImpostor) {
+                            localCoin.mesh.position.set(syncData.pos.x, syncData.pos.y, syncData.pos.z);
+                            localCoin.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(syncData.vel.x, syncData.vel.y, syncData.vel.z));
+                        }
+                    });
+                }
+
+                // 4. 同步结算状态（保持UI和逻辑严格一致）
+                if (data.type === "turn_settle") {
+                    gameState.p1Score = data.p1Score;
+                    gameState.p2Score = data.p2Score;
+                    infoText.text = data.infoText;
+                    infoText.alpha = 1;
+                    updateUI();
+                }
+
+                // 5. 同步强制切换回合
+                if (data.type === "turn_next") {
+                    infoText.alpha = 0;
+                    gameState.currentPlayer = data.nextPlayer;
+                    gameState.phase = data.nextPhase;
+                    gameState.hitList.clear();
+                    gameState.coinsFallen = [];
+                    gameState.activeCoin = null;
+                    updateUI();
+                }
+
+                // 6. 同步补货生成的硬币
+                if (data.type === "spawn_coin") {
+                    createCoin(data.name, data.x, data.z);
                 }
             });
 
             conn.on('close', () => {
-                screenLog("Connection closed by peer.", "red");
-                game.remotePlayer.setEnabled(false);
+                screenLog("❌ 对方已断开连接", "red");
+                enableNetButtons();
             });
         }
 
-        // 启动渲染流
-        engine.runRenderLoop(() => { scene.render(); });
-        window.addEventListener("resize", () => { engine.resize(); });
+        // ==========================================
+        // 🎮 3D 场景与核心逻辑实装
+        // ==========================================
+        function initGame() {
+            try {
+                engine = new BABYLON.Engine(canvas, true);
+                scene = new BABYLON.Scene(engine);
+
+                // 纯静态无阻碍注入 Cannon
+                const gravityVector = new BABYLON.Vector3(0, -9.81, 0);
+                const physicsPlugin = new BABYLON.CannonJSPlugin();
+                scene.enablePhysics(gravityVector, physicsPlugin);
+                screenLog("3D场景与物理渲染启动成功 ✅", "green");
+
+                // 高光环境
+                const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/environmentSpecular.env", scene);
+                scene.environmentTexture = hdrTexture;
+
+                const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 3, 15, BABYLON.Vector3.Zero(), scene);
+                camera.attachControl(canvas, true);
+                const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+                light.intensity = 0.8;
+
+                // === 2. UI 系统 ===
+                adt = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+                p1Text = new BABYLON.GUI.TextBlock();
+                p2Text = new BABYLON.GUI.TextBlock();
+                infoText = new BABYLON.GUI.TextBlock();
+
+                const setupUI = () => {
+                    const styleText = (t, alignV) => {
+                        t.color = "white"; t.fontSize = 28;
+                        t.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                        t.textVerticalAlignment = alignV;
+                        t.paddingRight = "20px"; t.paddingTop = "20px"; t.paddingBottom = "20px";
+                        adt.addControl(t);
+                    };
+                    styleText(p1Text, BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM);
+                    styleText(p2Text, BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP);
+                    infoText.text = "等待建立 P2P 联机..."; infoText.color = "gold"; infoText.fontSize = 35;
+                    adt.addControl(infoText);
+                };
+                setupUI();
+
+                // === 3. 材质与场景物体 ===
+                goldMat = new BABYLON.PBRMaterial("goldMat", scene);
+                goldMat.metallic = 1.0; goldMat.roughness = 0.1;
+                goldMat.albedoColor = new BABYLON.Color3(1, 0.8, 0.2);
+
+                const tableMat = new BABYLON.StandardMaterial("tableMat", scene);
+                tableMat.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+
+                table = BABYLON.MeshBuilder.CreateCylinder("table", { diameter: 10, height: 0.5 }, scene);
+                table.material = tableMat;
+                table.physicsImpostor = new BABYLON.PhysicsImpostor(table, BABYLON.PhysicsImpostor.CylinderImpostor, { mass: 0, friction: 1 }, scene);
+
+                const createPillar = (name, x, z) => {
+                    const p = BABYLON.MeshBuilder.CreateCylinder(name, { diameter: 0.4, height: 1.5 }, scene);
+                    p.position.set(x, 0.75, z);
+                    p.physicsImpostor = new BABYLON.PhysicsImpostor(p, BABYLON.PhysicsImpostor.CylinderImpostor, { mass: 0 }, scene);
+                };
+                createPillar("p1", 0, 1); createPillar("p2", -2.5, 2); createPillar("p3", 2.5, 2);
+
+                // 初始化 6 枚硬币
+                for (let i = 0; i < 6; i++) {
+                    const angle = (i / 6) * Math.PI * 2;
+                    const radius = 2 + Math.sin(i) * 1;
+                    createCoin("coin_" + i, Math.cos(angle) * radius, Math.sin(angle) * radius);
+                }
+
+                // === 5. 交互逻辑（反向拉线箭头） ===
+                const hl = new BABYLON.HighlightLayer("hl", scene);
+                let isDragging = false;
+                let dragLine = null;
+                let arrowLine = null;
+
+                scene.onPointerObservable.add((pointerInfo) => {
+                    if (!conn || !conn.open) return; // 未连线不准动
+
+                    // 回合和身份严格锁死判定：HOST 控 P1_TURN，CLIENT 控 P2_TURN
+                    const isMyTurn = (myRole === "HOST" && gameState.phase === "P1_TURN") ||
+                        (myRole === "CLIENT" && gameState.phase === "P2_TURN");
+                    if (!isMyTurn) return;
+
+                    if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERDOWN) {
+                        const hit = allCoins.find(c => c.mesh === pointerInfo.pickInfo.pickedMesh);
+                        if (hit) {
+                            gameState.activeCoin = hit;
+                            hl.addMesh(hit.mesh, BABYLON.Color3.White());
+                            isDragging = true;
+                            camera.detachControl();
+                        }
+                    }
+
+                    if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERMOVE && isDragging) {
+                        const pick = scene.pick(scene.pointerX, scene.pointerY, m => m === table);
+                        if (pick.hit) {
+                            const start = gameState.activeCoin.mesh.position;
+                            const pullDir = start.subtract(pick.pickedPoint);
+                            const arrowEnd = start.add(pullDir);
+
+                            if (dragLine) dragLine.dispose();
+                            dragLine = BABYLON.MeshBuilder.CreateLines("l", { points: [start, pick.pickedPoint] }, scene);
+                            arrowLine = drawArrow(start, arrowEnd, scene, arrowLine);
+                        }
+                    }
+
+                    if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERUP && isDragging) {
+                        const pick = scene.pick(scene.pointerX, scene.pointerY, m => m === table);
+                        if (pick.hit) {
+                            // 核心修复点：将拖拽差值换算为初速度向量（削减缩放倍数，45冲量换算成速度大概在4.5-5左右最顺手）
+                            const targetVelocity = gameState.activeCoin.mesh.position.subtract(pick.pickedPoint).scale(5.0);
+
+                            // 1. 直接赋予绝对平移动量，彻底抹除侧翻转力矩
+                            gameState.activeCoin.physicsImpostor.setLinearVelocity(targetVelocity);
+                            gameState.activeCoin.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+                            gameState.phase = "ANIMATING";
+
+                            // 2. 将计算后的速度向量实时同步给对方
+                            conn.send({
+                                type: "flip_coin",
+                                coinName: gameState.activeCoin.name,
+                                velocity: { x: targetVelocity.x, y: targetVelocity.y, z: targetVelocity.z }
+                            });
+                        }
+                        if (dragLine) dragLine.dispose(); dragLine = null;
+                        if (arrowLine) arrowLine.dispose(); arrowLine = null;
+                        isDragging = false;
+                        hl.removeAllMeshes();
+                        camera.attachControl(canvas, true);
+                    }
+                });
+
+                // === 6. 核心结算与权威物理高频发射 ===
+                scene.onAfterRenderObservable.add(() => {
+                    if (gameState.phase === "ANIMATING") {
+                        // 判定场上是否有硬币还在滚动
+                        const moving = allCoins.some(c => c.physicsImpostor.getLinearVelocity().length() > 0.05);
+
+                        // 【物理权威同步】：如果是 HOST 且硬币在动，高频向 CLIENT 发射场上所有硬币的准确物理坐标
+                        if (moving && myRole === "HOST" && conn && conn.open) {
+                            const syncPack = allCoins.map(c => ({
+                                name: c.name,
+                                pos: { x: c.mesh.position.x, y: c.mesh.position.y, z: c.mesh.position.z },
+                                vel: { x: c.physicsImpostor.getLinearVelocity().x, y: c.physicsImpostor.getLinearVelocity().y, z: c.physicsImpostor.getLinearVelocity().z }
+                            }));
+                            conn.send({ type: "pos_sync", coins: syncPack });
+                        }
+
+                        // 当场面静止下来时，由 HOST 统领进行核心结算判断
+                        if (!moving && !gameState.isStable) {
+                            if (myRole === "HOST") {
+                                processTurnResult(); // 触发主机结算判定
+                            }
+                            gameState.isStable = true;
+                        } else if (moving) {
+                            gameState.isStable = false;
+                        }
+                    }
+                });
+
+                // 掉落边缘出界检测
+                scene.onBeforeRenderObservable.add(() => {
+                    for (let i = allCoins.length - 1; i >= 0; i--) {
+                        const c = allCoins[i];
+                        if (c.mesh.position.y < -3) {
+                            if (!gameState.coinsFallen.includes(c.name)) {
+                                gameState.coinsFallen.push(c.name);
+                            }
+                            removeCoin(c);
+
+                            // 主机独占：自动补货并通知客户端
+                            if (myRole === "HOST" && allCoins.length < 3) {
+                                setTimeout(() => {
+                                    const coinName = "coin_" + Date.now();
+                                    const rx = Math.random() * 4 - 2;
+                                    const rz = Math.random() * 4 - 2;
+                                    createCoin(coinName, rx, rz);
+                                    if (conn && conn.open) {
+                                        conn.send({ type: "spawn_coin", name: coinName, x: rx, z: rz });
+                                    }
+                                }, 1000);
+                            }
+                        }
+                    }
+                });
+
+                engine.runRenderLoop(() => { scene.render(); });
+            } catch (e) {
+                screenLog("3D系统崩溃: " + e.message, "red");
+            }
+        }
+
+        // ==========================================
+        // 🛠️ 辅助功能函数库
+        // ==========================================
+        function createCoin(name, x, z) {
+            const coin = BABYLON.MeshBuilder.CreateCylinder(name, { diameter: 0.6, height: 0.15 }, scene);
+            coin.position.set(x, 1, z);
+            coin.material = goldMat;
+
+            const impostor = new BABYLON.PhysicsImpostor(coin, BABYLON.PhysicsImpostor.CylinderImpostor, { mass: 2.0, friction: 1, restitution: 0.6 }, scene);
+
+            // 碰撞事件检测（连连看判定依据）
+            impostor.registerOnPhysicsCollide(scene.getPhysicsEngine().getPhysicsPlugin().world.materials, (main, collided) => {
+                if (gameState.phase === "ANIMATING" && gameState.activeCoin) {
+                    const otherMesh = collided.object;
+                    if (otherMesh && otherMesh.name && otherMesh.name.includes("coin") && otherMesh !== gameState.activeCoin.mesh) {
+                        gameState.hitList.add(otherMesh.name);
+                    }
+                }
+            });
+
+            const obj = { name, mesh: coin, physicsImpostor: impostor };
+            allCoins.push(obj);
+            return obj;
+        }
+
+        function removeCoin(coinObj) {
+            if (!coinObj || !coinObj.mesh) return;
+            if (coinObj.physicsImpostor) coinObj.physicsImpostor.dispose();
+            coinObj.mesh.dispose();
+            allCoins = allCoins.filter(c => c !== coinObj);
+        }
+
+        const updateUI = () => {
+            p1Text.text = "P1 (PETER): " + gameState.p1Score;
+            p2Text.text = "P2 (BRIAN): " + gameState.p2Score;
+            p1Text.color = gameState.currentPlayer === "P1" ? "#00FF00" : "white";
+            p2Text.color = gameState.currentPlayer === "P2" ? "#00FF00" : "white";
+        };
+
+        const drawArrow = (start, end, scene, existing) => {
+            const dir = end.subtract(start);
+            if (dir.length() < 0.2) return existing;
+            const pts = [start, end];
+            const side = BABYLON.Vector3.Cross(dir.normalizeToNew(), BABYLON.Vector3.Up()).scale(0.2);
+            pts.push(end.subtract(dir.scale(0.2)).add(side));
+            pts.push(end);
+            pts.push(end.subtract(dir.scale(0.2)).subtract(side));
+
+            if (existing) return BABYLON.MeshBuilder.CreateLines(null, { points: pts, instance: existing });
+            const l = BABYLON.MeshBuilder.CreateLines("arrow", { points: pts, updatable: true }, scene);
+            l.color = new BABYLON.Color3(0, 0.5, 1);
+            return l;
+        };
+
+        // 随机决定谁先手开局
+        const tossCoin = () => {
+            const isPeter = Math.random() > 0.5;
+            const starter = isPeter ? "P1" : "P2";
+            const msg = isPeter ? "PETER (P1) HEADS - START!" : "BRIAN (P2) TAILS - START!";
+
+            gameState.currentPlayer = starter;
+            infoText.text = msg;
+            infoText.alpha = 1;
+
+            // 广播结果给客户端
+            if (conn && conn.open) {
+                conn.send({ type: "toss_result", starter: starter, msg: msg });
+            }
+
+            setTimeout(() => {
+                infoText.alpha = 0;
+                gameState.phase = isPeter ? "P1_TURN" : "P2_TURN";
+                updateUI();
+            }, 2000);
+        };
+
+        // 【权威结算中心】
+        const processTurnResult = () => {
+            const hitCount = gameState.hitList.size;
+            const fallenCount = gameState.coinsFallen.length;
+            let changeTurn = true;
+            let curSettleText = "";
+
+            if (fallenCount > 0) {
+                if (gameState.currentPlayer === "P1") gameState.p2Score += fallenCount;
+                else gameState.p1Score += fallenCount;
+                curSettleText = "FALLEN! " + fallenCount + " TO OPPONENT";
+                changeTurn = true;
+            }
+            else if (hitCount === 1) {
+                if (gameState.currentPlayer === "P1") gameState.p1Score++;
+                else gameState.p2Score++;
+                curSettleText = "PERFECT! SCORE +1";
+                removeCoin(gameState.activeCoin);
+                changeTurn = false; // 连连看奖励：不换回合
+            }
+            else if (hitCount > 1) {
+                if (gameState.currentPlayer === "P1") gameState.p2Score++;
+                else gameState.p1Score++;
+                curSettleText = "TOO MANY HITS! SCORE TO OPPONENT";
+                removeCoin(gameState.activeCoin);
+                changeTurn = true;
+            }
+            else {
+                curSettleText = "MISSED EVERYTHING";
+                changeTurn = true;
+            }
+
+            // 1. 同步分数与结算文本给客户端
+            if (conn && conn.open) {
+                conn.send({
+                    type: "turn_settle",
+                    p1Score: gameState.p1Score,
+                    p2Score: gameState.p2Score,
+                    infoText: curSettleText
+                });
+            }
+            infoText.text = curSettleText;
+            infoText.alpha = 1;
+            updateUI();
+
+            // 2. 延迟执行回合交替
+            setTimeout(() => {
+                infoText.alpha = 0;
+                if (changeTurn) gameState.currentPlayer = (gameState.currentPlayer === "P1") ? "P2" : "P1";
+                gameState.phase = (gameState.currentPlayer === "P1") ? "P1_TURN" : "P2_TURN";
+
+                // 广播下一回合交替指令
+                if (conn && conn.open) {
+                    conn.send({
+                        type: "turn_next",
+                        nextPlayer: gameState.currentPlayer,
+                        nextPhase: gameState.phase
+                    });
+                }
+
+                gameState.hitList.clear();
+                gameState.coinsFallen = [];
+                gameState.activeCoin = null;
+                updateUI();
+            }, 1500);
+        };
+
+        // 延迟启动
+        setTimeout(initGame, 100);
+        window.addEventListener("resize", () => { if (engine) engine.resize(); });
     </script>
 </body>
+
 </html>
