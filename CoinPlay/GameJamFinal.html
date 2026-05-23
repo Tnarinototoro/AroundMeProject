@@ -103,6 +103,7 @@
         <div class="btn-group">
             <button id="hostBtn" class="btn-host">创房 (P1)</button>
             <button id="joinBtn" class="btn-join">加入 (P2)</button>
+            <button id="resetBtn" style="background: #dc3545 !important; color: white;">重置</button>
         </div>
         <div id="netStatus"
             style="font-size: 12px; margin-top: 10px; color: #aaa; background: rgba(255,255,255,0.1); padding: 5px; max-height: 200px; overflow-y: auto;">
@@ -208,6 +209,54 @@
             });
         });
 
+        // 重置按钮的事件绑定
+        document.getElementById("resetBtn").addEventListener("click", () => {
+            if (myRole !== "HOST") {
+                screenLog("只有主创房玩家 (P1) 才能触发游戏重置！", "yellow");
+                return;
+            }
+            if (conn && conn.open) {
+                conn.send({ type: "game_reset" });
+            }
+            hostResetGame();
+        });
+
+        // HOST 执行的完整重置流程
+        function hostResetGame() {
+            localResetActions();
+            screenLog("游戏已重置，正在重新抛硬币决定先手...", "yellow");
+            setTimeout(tossCoin, 1500);
+        }
+
+        // 两端通用的本地数据清空与硬币重刷函数
+        function localResetActions() {
+            // 1. 清空所有场景老硬币
+            [...allCoins].forEach(c => removeCoin(c));
+            allCoins = [];
+
+            // 2. 状态机数据归零
+            gameState.phase = "WAITING_PLAYER";
+            gameState.p1Score = 0;
+            gameState.p2Score = 0;
+            gameState.currentPlayer = null;
+            gameState.activeCoin = null;
+            gameState.hitList.clear();
+            gameState.coinsFallen = [];
+            gameState.isStable = true;
+
+            // 3. 重新生成 6 枚初始硬币
+            for (let i = 0; i < 6; i++) {
+                const angle = (i / 6) * Math.PI * 2;
+                const radius = 2 + Math.sin(i) * 1;
+                createCoin("coin_" + i, Math.cos(angle) * radius, Math.sin(angle) * radius);
+            }
+
+            infoText.text = "游戏已重置，等待发牌...";
+            infoText.alpha = 1;
+            updateUI();
+        }
+
+
         function disableNetButtons() {
             document.getElementById("hostBtn").disabled = true;
             document.getElementById("joinBtn").disabled = true;
@@ -284,6 +333,11 @@
 
                 if (data.type === "spawn_coin") {
                     createCoin(data.name, data.x, data.z);
+                }
+
+                // 在一堆 if (data.type === "...") 的最后面追加这一个判定
+                if (data.type === "game_reset") {
+                    localResetActions();
                 }
             });
 
@@ -458,18 +512,6 @@
                                 gameState.coinsFallen.push(c.name);
                             }
                             removeCoin(c);
-
-                            if (myRole === "HOST" && allCoins.length < 3) {
-                                setTimeout(() => {
-                                    const coinName = "coin_" + Date.now();
-                                    const rx = Math.random() * 4 - 2;
-                                    const rz = Math.random() * 4 - 2;
-                                    createCoin(coinName, rx, rz);
-                                    if (conn && conn.open) {
-                                        conn.send({ type: "spawn_coin", name: coinName, x: rx, z: rz });
-                                    }
-                                }, 1000);
-                            }
                         }
                     }
                 });
@@ -604,6 +646,26 @@
                 curSettleText = "MISSED EVERYTHING";
                 changeTurn = true;
             }
+            if (allCoins.length === 1) {
+                if (gameState.currentPlayer === "P1") gameState.p1Score++;
+                else gameState.p2Score++;
+                curSettleText = `LAST COIN SECURED BY ${gameState.currentPlayer}!`;
+                removeCoin(allCoins[0]);
+            }
+
+            // ⭐ 插入：如果桌面清零，宣布获胜者并强行截断后续换轮
+            if (allCoins.length === 0) {
+                let winnerText = (gameState.p1Score > gameState.p2Score) ? "👑 PETER (P1) WINS THE GAME! 👑" :
+                    (gameState.p2Score > gameState.p1Score) ? "👑 BRIAN (P2) WINS THE GAME! 👑" : "🤝 IT'S A DRAW GAME! 🤝";
+                gameState.phase = "GAME_OVER";
+                if (conn && conn.open) {
+                    conn.send({ type: "turn_settle", p1Score: gameState.p1Score, p2Score: gameState.p2Score, infoText: winnerText });
+                }
+                infoText.text = winnerText;
+                infoText.alpha = 1;
+                updateUI();
+                return; // 核心：拦截并退出函数，不让它往下走换轮的定时器
+            }
 
             if (conn && conn.open) {
                 conn.send({
@@ -636,6 +698,8 @@
                 updateUI();
             }, 1500);
         };
+
+
 
         if (typeof HavokPhysics === "function") {
             HavokPhysics().then((instance) => {
