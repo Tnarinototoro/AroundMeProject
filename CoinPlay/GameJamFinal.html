@@ -132,6 +132,7 @@
             状态: 等待网络加入...</div>
     </div>
 
+    <script src="./soundManager.js"></script>
     <canvas id="renderCanvas"></canvas>
 
     <script>
@@ -444,6 +445,11 @@
                 const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("https://assets.babylonjs.com/environments/environmentSpecular.env", scene);
                 scene.environmentTexture = hdrTexture;
 
+                // ⭐ 核心注入：将当前 3D 场景丢给音效管理器，开始后台静默加载
+                if (window.SoundManager) {
+                    window.SoundManager.init(scene);
+                }
+
                 const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 3, 15, BABYLON.Vector3.Zero(), scene);
                 camera.attachControl(canvas, true);
                 const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
@@ -639,6 +645,11 @@
                     const otherBody = collisionEvent.collidedAgainst.transformNode;
                     if (otherBody && otherBody.name && otherBody.name.includes("coin") && otherBody !== gameState.activeCoin.mesh) {
                         gameState.hitList.add(otherBody.name);
+                        // ⭐ 核心调用：一旦在物理模拟期间检测到有效撞击，立刻触发管理器放音
+                        if (window.SoundManager) {
+                            window.SoundManager.playHitSound();
+                        }
+
                     }
                 }
             });
