@@ -135,7 +135,7 @@
             activeCoin: null,
             hitList: new Set(),
             coinsFallen: [],
-            isStable: true
+            hasMoved: false
         };
 
         let allCoins = [];
@@ -242,7 +242,7 @@
             gameState.activeCoin = null;
             gameState.hitList.clear();
             gameState.coinsFallen = [];
-            gameState.isStable = true;
+            gameState.hasMoved = false;
 
             // 3. 重新生成 6 枚初始硬币
             for (let i = 0; i < 6; i++) {
@@ -318,6 +318,15 @@
                     gameState.p2Score = data.p2Score;
                     infoText.text = data.infoText;
                     infoText.alpha = 1;
+
+                    // ⭐ 新增：如果收到 Host 发来的硬币销毁指令，Client 也在本地将其抹除
+                    if (data.destroyedCoinName) {
+                        const targetCoin = allCoins.find(c => c.name === data.destroyedCoinName);
+                        if (targetCoin) {
+                            removeCoin(targetCoin);
+                        }
+                    }
+
                     updateUI();
                 }
 
@@ -479,26 +488,33 @@
                 });
 
                 // === 6. 核心结算与权威物理高频发射 ===
+                // === 6. 核心结算与权威物理高频发射 ===
                 scene.onAfterRenderObservable.add(() => {
                     if (gameState.phase === "ANIMATING") {
-                        const moving = allCoins.some(c => c.aggregate.body.getLinearVelocity().length() > 0.05);
+                        const moving = allCoins.some(c => c.aggregate.body.getLinearVelocity().length() > 0.01); // 降低阈值到 0.01，更敏锐捕捉运动
 
-                        if (moving && myRole === "HOST" && conn && conn.open) {
-                            const syncPack = allCoins.map(c => ({
-                                name: c.name,
-                                pos: { x: c.mesh.position.x, y: c.mesh.position.y, z: c.mesh.position.z },
-                                vel: { x: c.aggregate.body.getLinearVelocity().x, y: c.aggregate.body.getLinearVelocity().y, z: c.aggregate.body.getLinearVelocity().z }
-                            }));
-                            conn.send({ type: "pos_sync", coins: syncPack });
-                        }
-
-                        if (!moving && !gameState.isStable) {
-                            if (myRole === "HOST") {
-                                processTurnResult();
+                        if (myRole === "HOST") {
+                            // 只要有任何硬币在动，同步位置并激活“已运动”标记
+                            if (moving) {
+                                gameState.hasMoved = true;
+                                if (conn && conn.open) {
+                                    const syncPack = allCoins.map(c => ({
+                                        name: c.name,
+                                        pos: { x: c.mesh.position.x, y: c.mesh.position.y, z: c.mesh.position.z },
+                                        vel: { x: c.aggregate.body.getLinearVelocity().x, y: c.aggregate.body.getLinearVelocity().y, z: c.aggregate.body.getLinearVelocity().z }
+                                    }));
+                                    conn.send({ type: "pos_sync", coins: syncPack });
+                                }
                             }
-                            gameState.isStable = true;
-                        } else if (moving) {
-                            gameState.isStable = false;
+
+                            // 兜底策略：如果进入 ANIMATING 超过一小段时间硬币都没动(比如轻敲或引擎漏判)，或者动过之后停稳了，直接结算
+                            // 这里我们为了绝对安全，只要满足“已经动过且现在停了”或者“处在ANIMATING阶段但硬币全静止”就允许结算
+                            // 兜底策略：硬币停稳后，立刻切走 phase 状态，确保 processTurnResult 在当前回合只被精准调用一次
+                            if (!moving) {
+                                gameState.phase = "SETTLING"; // ⭐ 核心截断：瞬间破坏外层的 if (gameState.phase === "ANIMATING") 条件，锁死连击
+                                processTurnResult();
+                                gameState.hasMoved = false;
+                            }
                         }
                     }
                 });
@@ -672,9 +688,12 @@
                     type: "turn_settle",
                     p1Score: gameState.p1Score,
                     p2Score: gameState.p2Score,
-                    infoText: curSettleText
+                    infoText: curSettleText,
+                    // 如果当前有激活的硬币且它被销毁了（通过 allCoins 是否还包含它来判断），就带上名字，否则传 null
+                    destroyedCoinName: (gameState.activeCoin && !allCoins.includes(gameState.activeCoin)) ? gameState.activeCoin.name : null
                 });
             }
+
             infoText.text = curSettleText;
             infoText.alpha = 1;
             updateUI();
