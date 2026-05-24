@@ -100,6 +100,28 @@
     <div id="networkPanel">
         <div class="net-title">⚡ 策略金币联机实装面板</div>
         <input type="text" id="roomCodeInput" maxlength="4" value="8888" placeholder="输入 4 位数字房间号">
+
+        <div style="font-size: 11px; color: gold; margin: 4px 0 2px 0;">局前自定义 (仅Host有效)：</div>
+
+        <div style="display: flex; gap: 4px; font-size: 10px; color: #ccc; text-align: center; margin-bottom: 2px;">
+            <span style="width: 25%;">金币数(n)</span>
+            <span style="width: 25%;">障碍数(m)</span>
+            <span style="width: 25%;">最小直径</span>
+            <span style="width: 25%;">最大直径</span>
+        </div>
+
+        <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+            <input type="number" id="coinNumInput" value="6" placeholder="金币n"
+                style="width:23%; font-size:12px; padding:4px; margin:0;">
+            <input type="number" id="pillarNumInput" value="3" placeholder="柱子m"
+                style="width:23%; font-size:12px; padding:4px; margin:0;">
+            <input type="number" id="pillarMinInput" step="0.1" value="0.3" placeholder="小直径"
+                style="width:23%; font-size:12px; padding:4px; margin:0;">
+            <input type="number" id="pillarMaxInput" step="0.1" value="0.6" placeholder="大直径"
+                style="width:23%; font-size:12px; padding:4px; margin:0;">
+        </div>
+
+
         <div class="btn-group">
             <button id="hostBtn" class="btn-host">创房 (P1)</button>
             <button id="joinBtn" class="btn-join">加入 (P2)</button>
@@ -139,6 +161,7 @@
         };
 
         let allCoins = [];
+        let allPillars = []; // ⭐ 新增：专门用来存放动态生成的圆柱障碍物
         let localPlayerText, remoteOpponentText, infoText, adt;
         let goldMat, table;
         let havokInstance = null;
@@ -215,24 +238,53 @@
                 screenLog("只有主创房玩家 (P1) 才能触发游戏重置！", "yellow");
                 return;
             }
-            if (conn && conn.open) {
-                conn.send({ type: "game_reset" });
-            }
+            // 直接调用核心重置，让 hostResetGame 权威全权负责生成并发送带 config 的完整包
             hostResetGame();
         });
 
         // HOST 执行的完整重置流程
         function hostResetGame() {
-            localResetActions();
-            screenLog("游戏已重置，正在重新抛硬币决定先手...", "yellow");
+            // 读取 UI 局前自定义参数
+            const n = parseInt(document.getElementById("coinNumInput").value) || 6;
+            const m = parseInt(document.getElementById("pillarNumInput").value) || 3;
+            const minDia = parseFloat(document.getElementById("pillarMinInput").value) || 0.3;
+            const maxDia = parseFloat(document.getElementById("pillarMaxInput").value) || 0.6;
+
+            // 调用算法，生成这一局绝对防重叠、靠中心的权威随机数据配置
+            const newConfig = {
+                pillars: generateRandomPillarsConfig(m, minDia, maxDia),
+                coins: generateRandomCoinsConfig(n)
+            };
+
+            // 1. 发送给 Client 让其同步
+            if (conn && conn.open) {
+                conn.send({ type: "game_reset", config: newConfig });
+            }
+
+            // 2. Host 自己本地根据这份数据配置重刷桌面
+            localResetActions(newConfig);
+
+            screenLog(`地图已重构! 硬币:${n}个, 柱子:${m}个。正在抛硬币决定先手...`, "yellow");
             setTimeout(tossCoin, 1500);
         }
 
-        // 两端通用的本地数据清空与硬币重刷函数
-        function localResetActions() {
-            // 1. 清空所有场景老硬币
+
+        // 升级版：两端通用的本地数据清空与硬币/柱子全动态重刷函数
+        function localResetActions(config = null) {
+            // 1. 清空所有老硬币和老圆柱障碍物
             [...allCoins].forEach(c => removeCoin(c));
             allCoins = [];
+
+            if (window.allPillars) {
+                window.allPillars.forEach(p => {
+                    if (p && p.mesh) {
+                        if (p.aggregate) p.aggregate.dispose();
+                        p.mesh.dispose();
+                    }
+                });
+                window.allPillars = [];
+                allPillars = window.allPillars; // 同步保持变量引用一致
+            }
 
             // 2. 状态机数据归零
             gameState.phase = "WAITING_PLAYER";
@@ -244,11 +296,29 @@
             gameState.coinsFallen = [];
             gameState.hasMoved = false;
 
-            // 3. 重新生成 6 枚初始硬币
-            for (let i = 0; i < 6; i++) {
-                const angle = (i / 6) * Math.PI * 2;
-                const radius = 2 + Math.sin(i) * 1;
-                createCoin("coin_" + i, Math.cos(angle) * radius, Math.sin(angle) * radius);
+            // 3. 根据传入的权威随机配置，动态生成对应的柱子和硬币
+            if (config) {
+                // 动态构建障碍物
+                config.pillars.forEach(pData => {
+                    if (window.createPillar) {
+                        createPillar(pData.name, pData.x, pData.z, pData.dia);
+                    }
+                });
+                // 动态构建硬币
+                config.coins.forEach(cData => {
+                    createCoin(cData.name, cData.x, cData.z);
+                });
+            } else {
+                // 兜底策略：如果是初次打开游戏且未联网状态，生成3个默认老柱子和6个默认硬币
+                if (window.createPillar) {
+                    createPillar("p1", 0, 1, 0.4);
+                    createPillar("p2", -2.5, 2, 0.4);
+                    createPillar("p3", 2.5, 2, 0.4);
+                }
+                for (let i = 0; i < 6; i++) {
+                    const angle = (i / 6) * Math.PI * 2;
+                    createCoin("coin_" + i, Math.cos(angle) * 1.8, Math.sin(angle) * 1.8);
+                }
             }
 
             infoText.text = "游戏已重置，等待发牌...";
@@ -275,8 +345,8 @@
                 document.getElementById("networkPanel").style.backgroundColor = "rgba(0,40,0,0.9)";
 
                 if (myRole === "HOST") {
-                    screenLog("正在抛硬币随机决定开局玩家...", "yellow");
-                    setTimeout(tossCoin, 1500);
+                    // 连通瞬间立刻调用刚刚写好的 hostResetGame，自动读取输入框刷新出全随机新对局！
+                    hostResetGame();
                 }
             });
 
@@ -346,7 +416,10 @@
 
                 // 在一堆 if (data.type === "...") 的最后面追加这一个判定
                 if (data.type === "game_reset") {
-                    localResetActions();
+                    // 如果是连通瞬间对端发来的空同步或者错包，不带 config 就直接忽略，防止叠出幽灵柱子
+                    if (data.config) {
+                        localResetActions(data.config);
+                    }
                 }
             });
 
@@ -415,12 +488,24 @@
                 table.material = tableMat;
                 new BABYLON.PhysicsAggregate(table, BABYLON.PhysicsShapeType.CYLINDER, { mass: 0, friction: 1 }, scene);
 
-                const createPillar = (name, x, z) => {
-                    const p = BABYLON.MeshBuilder.CreateCylinder(name, { diameter: 0.4, height: 1.5 }, scene);
+
+                // 升级版：支持传递直径，并支持动态存储
+                window.createPillar = (name, x, z, diameter = 0.4) => {
+                    const p = BABYLON.MeshBuilder.CreateCylinder(name, { diameter: diameter, height: 1.5 }, scene);
                     p.position.set(x, 0.75, z);
-                    new BABYLON.PhysicsAggregate(p, BABYLON.PhysicsShapeType.CYLINDER, { mass: 0 }, scene);
+                    const agg = new BABYLON.PhysicsAggregate(p, BABYLON.PhysicsShapeType.CYLINDER, { mass: 0 }, scene);
+
+                    const obj = { name, mesh: p, aggregate: agg };
+                    if (!window.allPillars) window.allPillars = [];
+                    window.allPillars.push(obj);
+                    return obj;
                 };
-                createPillar("p1", 0, 1); createPillar("p2", -2.5, 2); createPillar("p3", 2.5, 2);
+
+                // 首次进入游戏时默认生成 3 个基础柱子
+                createPillar("p1", 0, 1, 0.4);
+                createPillar("p2", -2.5, 2, 0.4);
+                createPillar("p3", 2.5, 2, 0.4);
+
 
                 // 初始化 6 枚硬币
                 for (let i = 0; i < 6; i++) {
@@ -568,6 +653,62 @@
             if (coinObj.aggregate) coinObj.aggregate.dispose();
             coinObj.mesh.dispose();
             allCoins = allCoins.filter(c => c !== coinObj);
+        }
+
+        function removePillar(pillarObj) {
+            if (!pillarObj || !pillarObj.mesh) return;
+            if (pillarObj.aggregate) pillarObj.aggregate.dispose();
+            pillarObj.mesh.dispose();
+            allPillars = allPillars.filter(p => p !== pillarObj);
+        }
+
+        // ⭐ 核心算法 1：在台面中心安全区，随机生成 n 个不相互重叠且靠中心的游戏金币
+        function generateRandomCoinsConfig(n) {
+            const coins = [];
+            let attempts = 0;
+            while (coins.length < n && attempts < 200) {
+                attempts++;
+                // 缩紧半径到 2.2 以内，保证绝对靠中心
+                const radius = Math.random() * 2.2;
+                const angle = Math.random() * Math.PI * 2;
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+
+                // 金币与金币之间也防一下重叠（间距大于直径0.6）
+                const overlap = coins.some(c => Math.hypot(c.x - x, c.z - z) < 0.7);
+                if (!overlap) {
+                    coins.push({ name: "coin_" + Date.now() + "_" + coins.length, x, z });
+                }
+            }
+            return coins;
+        }
+
+        // ⭐ 核心算法 2：在台面上随机生成 m 个互不重叠、且间距绝对能通过硬币（边缘间距>0.65）的柱子
+        function generateRandomPillarsConfig(m, minDia, maxDia) {
+            const pillars = [];
+            let attempts = 0;
+            while (pillars.length < m && attempts < 500) {
+                attempts++;
+                // 在桌子半径 4.0 以内的广阔范围随机摆放
+                const radius = Math.random() * 4.0;
+                const angle = Math.random() * Math.PI * 2;
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+                const dia = minDia + Math.random() * (maxDia - minDia);
+
+                // 核心检查：新柱子和已有柱子的边缘间距必须大于硬币直径（0.6）加安全余量
+                const tooClose = pillars.some(p => {
+                    const centerDist = Math.hypot(p.x - x, p.z - z);
+                    const minCenterDist = (p.dia / 2) + (dia / 2) + 0.65; // 边缘留出 0.65 空隙
+                    return centerDist < minCenterDist;
+                });
+
+                // 顺便避免直接刷在死中心把黄金身位完全卡死
+                if (!tooClose && Math.hypot(x, z) > 0.5) {
+                    pillars.push({ name: "pillar_" + Date.now() + "_" + pillars.length, x, z, dia });
+                }
+            }
+            return pillars;
         }
 
         // 核心修复点：动态刷新左上角、右下角文本及当前回合绿光高亮染色
