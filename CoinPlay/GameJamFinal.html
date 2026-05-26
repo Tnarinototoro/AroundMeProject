@@ -134,6 +134,27 @@
 
     <script src="./soundManager.js"></script>
     <canvas id="renderCanvas"></canvas>
+    <div id="ruleHeaderTop" style="
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(180deg, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0));
+        color: #ff4500; /* 烈焰红/醒目橙 */
+        font-family: 'Microsoft YaHei', 'Arial Black', sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 8px 30px 15px 30px;
+        z-index: 999;
+        pointer-events: none;
+        text-align: center;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    ">
+        📢 铁律：手抖力大必坠机，多碰一下算你贪！精准微操一次碰一个，稳扎稳打通吃全局！
+    </div>
 
     <script>
         // 全局崩溃接管
@@ -559,7 +580,7 @@
                     if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERUP && isDragging) {
                         const pick = scene.pick(scene.pointerX, scene.pointerY, m => m === table);
                         if (pick.hit) {
-                            const force = gameState.activeCoin.mesh.position.subtract(pick.pickedPoint).scale(45);
+                            const force = gameState.activeCoin.mesh.position.subtract(pick.pickedPoint).scale(31.5);
 
                             gameState.activeCoin.aggregate.body.applyImpulse(force, gameState.activeCoin.mesh.position);
                             gameState.phase = "ANIMATING";
