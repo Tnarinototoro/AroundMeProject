@@ -31,7 +31,9 @@ ADIY_EnvSmartObject::ADIY_EnvSmartObject()
 #endif
 }
 
-FTransform ADIY_EnvSmartObject::GetInteractionSlot() const
+// 核心：这里的参数 SlotTag 后面绝对不能带默认值了！
+FTransform ADIY_EnvSmartObject::GetInteractionSlot_Implementation(FName SlotTag) const
 {
+
     return InteractionSlot->GetComponentTransform();
 }

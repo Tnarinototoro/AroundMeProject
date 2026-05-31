@@ -20,9 +20,8 @@ public:
     UFUNCTION(BlueprintCallable, Category = "DIY|SmartObject")
     void SetOccupied(bool bInOccupied) { bIsOccupied = bInOccupied; }
 
-    /** 获取 AI 应该交互的具体位置（Slot） */
-    UFUNCTION(BlueprintCallable, Category = "DIY|SmartObject")
-    FTransform GetInteractionSlot() const;
+    UFUNCTION(BlueprintNativeEvent, BlueprintPure, Category = "DIY|SmartObject")
+    FTransform GetInteractionSlot(FName SlotTag = FName("DefaultSlot")) const;
 
 protected:
     /** 标识是否有人正在使用 */

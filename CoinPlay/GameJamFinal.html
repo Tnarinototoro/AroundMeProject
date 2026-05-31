@@ -136,24 +136,25 @@
     <canvas id="renderCanvas"></canvas>
     <div id="ruleHeaderTop" style="
         position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        background: linear-gradient(180deg, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0));
-        color: #ff4500; /* 烈焰红/醒目橙 */
+        top: 50%; /* 垂直居中 */
+        left: 0; /* 贴紧左侧边缘 */
+        transform: translateY(-50%); /* 精准垂直对齐 */
+        background: linear-gradient(90deg, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0)); /* 渐变改为从左到右消失 */
+        color: #ff4500; 
         font-family: 'Microsoft YaHei', 'Arial Black', sans-serif;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: bold;
-        padding: 8px 30px 15px 30px;
+        padding: 20px 40px 20px 15px; /* 调整内边距，给右侧渐变留出过渡空间 */
         z-index: 999;
         pointer-events: none;
-        text-align: center;
+        text-align: left; /* 文字改为左对齐 */
         letter-spacing: 2px;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        border-bottom-left-radius: 12px;
+        border-top-right-radius: 12px; /* 圆角改为右上和右下 */
         border-bottom-right-radius: 12px;
+        width: 220px; /* 限制宽度让长句子优雅折行，完美贴合左侧纵深空间 */
     ">
-        📢 铁律：手抖力大必坠机，多碰一下算你贪！精准微操一次碰一个，稳扎稳打通吃全局！
+        <br>呆在桌上<br>只撞一个<br>鼠标左键长按在硬币上拖拽<br>保持连续得分<br>GoodLuck!
     </div>
 
     <script>
