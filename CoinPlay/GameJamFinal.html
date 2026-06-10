@@ -604,6 +604,7 @@
                         if (arrowLine) arrowLine.dispose(); arrowLine = null;
                         isDragging = false;
                         hl.removeAllMeshes();
+                        gameState.lockedCoin = null;
                         camera.attachControl(canvas, true);
                     }
                 });
