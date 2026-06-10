@@ -180,7 +180,8 @@
             activeCoin: null,
             hitList: new Set(),
             coinsFallen: [],
-            hasMoved: false
+            hasMoved: false,
+            lockedCoin: null // ⭐ 新增：记录被锁定的硬币
         };
 
         let allCoins = [];
@@ -556,6 +557,14 @@
 
                     if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERDOWN) {
                         const hit = allCoins.find(c => c.mesh === pointerInfo.pickInfo.pickedMesh);
+
+
+                        // ⭐ 新增：如果处于锁定状态，且点击的不是锁定的那个硬币，直接拒绝
+                        if (gameState.lockedCoin && hit !== gameState.lockedCoin) {
+                            screenLog("必须操作刚才被击中的硬币！", "red");
+                            return;
+                        }
+
                         if (hit) {
                             gameState.activeCoin = hit;
                             hl.addMesh(hit.mesh, BABYLON.Color3.White());
@@ -820,8 +829,20 @@
             else if (hitCount === 1) {
                 if (gameState.currentPlayer === "P1") gameState.p1Score++;
                 else gameState.p2Score++;
-                curSettleText = "PERFECT! SCORE +1";
+                curSettleText = "PERFECT! SCORE +1 继续操作!";
                 removeCoin(gameState.activeCoin);
+
+                // 1. 获取被撞击的目标硬币 (C2)
+                const hitCoinName = [...gameState.hitList][0];
+                const targetC2 = allCoins.find(c => c.name === hitCoinName);
+
+                // 2. 移除主动弹出的硬币 (C1)
+                removeCoin(gameState.activeCoin);
+
+                // 3. 锁定目标硬币 (C2)
+                gameState.lockedCoin = targetC2;
+
+
                 changeTurn = false;
             }
             else if (hitCount > 1) {
