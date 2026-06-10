@@ -413,6 +413,17 @@
                     infoText.text = data.infoText;
                     infoText.alpha = 1;
 
+
+
+                    // ⭐ 新增：Client 根据名字找到对应的硬币并锁定
+                    if (data.lockedCoinName) {
+                        gameState.lockedCoin = allCoins.find(c => c.name === data.lockedCoinName);
+                    } else {
+                        gameState.lockedCoin = null;
+                    }
+
+
+
                     // ⭐ 新增：如果收到 Host 发来的硬币销毁指令，Client 也在本地将其抹除
                     if (data.destroyedCoinName) {
                         const targetCoin = allCoins.find(c => c.name === data.destroyedCoinName);
@@ -431,6 +442,7 @@
                     gameState.hitList.clear();
                     gameState.coinsFallen = [];
                     gameState.activeCoin = null;
+                    gameState.lockedCoin = null;
                     updateUI();
                 }
 
@@ -885,7 +897,8 @@
                     p2Score: gameState.p2Score,
                     infoText: curSettleText,
                     // 如果当前有激活的硬币且它被销毁了（通过 allCoins 是否还包含它来判断），就带上名字，否则传 null
-                    destroyedCoinName: (gameState.activeCoin && !allCoins.includes(gameState.activeCoin)) ? gameState.activeCoin.name : null
+                    destroyedCoinName: (gameState.activeCoin && !allCoins.includes(gameState.activeCoin)) ? gameState.activeCoin.name : null,
+                    lockedCoinName: gameState.lockedCoin ? gameState.lockedCoin.name : null
                 });
             }
 
