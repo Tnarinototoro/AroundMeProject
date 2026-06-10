@@ -895,7 +895,10 @@
 
             setTimeout(() => {
                 infoText.alpha = 0;
-                if (changeTurn) gameState.currentPlayer = (gameState.currentPlayer === "P1") ? "P2" : "P1";
+                if (changeTurn) {
+                    gameState.currentPlayer = (gameState.currentPlayer === "P1") ? "P2" : "P1";
+                    gameState.lockedCoin = null;
+                }
                 gameState.phase = (gameState.currentPlayer === "P1") ? "P1_TURN" : "P2_TURN";
 
                 if (conn && conn.open) {
