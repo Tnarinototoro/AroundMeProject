@@ -319,6 +319,7 @@
             gameState.hitList.clear();
             gameState.coinsFallen = [];
             gameState.hasMoved = false;
+            gameState.lockedCoin = null; // ⭐ 新增：重置时强行释放硬币锁定
 
             // 3. 根据传入的权威随机配置，动态生成对应的柱子和硬币
             if (config) {
@@ -439,10 +440,20 @@
                     infoText.alpha = 0;
                     gameState.currentPlayer = data.nextPlayer;
                     gameState.phase = data.nextPhase;
+
+
+                    // ⭐ 新增：只有收到下一步的 turn_next 时，Client 才根据当前状态判断是否需要释放锁定
+                    // 如果下一回合依然是自己（连击状态），不清除；如果是别人，强制清除
+                    const isClientTurn = (myRole === "CLIENT" && data.nextPhase === "P2_TURN") ||
+                        (myRole === "HOST" && data.nextPhase === "P1_TURN");
+                    if (!isClientTurn) {
+                        gameState.lockedCoin = null;
+                    }
+
+
                     gameState.hitList.clear();
                     gameState.coinsFallen = [];
                     gameState.activeCoin = null;
-                    gameState.lockedCoin = null;
                     updateUI();
                 }
 
