@@ -21,8 +21,8 @@ ADIY_MusicPlayer::ADIY_MusicPlayer()
     PrimaryActorTick.bCanEverTick = true;
     PrimaryActorTick.TickInterval = 1.0f;
     AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
-    AudioComponent->bAllowSpatialization = false; // 关闭空间化以实现2D音效
-    AudioComponent->bIsUISound = true;          // 设置为UI声音，通常用于2D背景音乐
+    AudioComponent->bAllowSpatialization = false;
+    AudioComponent->bIsUISound = true;
     AudioComponent->SetupAttachment(RootComponent);
 }
 
@@ -58,7 +58,7 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
     UDIY_MainPlayerUIController *cur_ui_controller = AcquireOwnerActorOwnedUDIY_MainPlayerUIController();
 
     UDIY_WeatherManager *cur_weather_manager = UDIY_WeatherManager::Get(this);
-    if (nullptr != cur_ui_controller && cur_weather_manager != nullptr)
+    if (nullptr != cur_ui_controller && cur_weather_manager != nullptr && IsValid(AudioComponent))
     {
         cur_ui_controller->RequestUpdateStateInfoText_MusicPlayer(FText::FromString(FString::Printf(
             TEXT("%d/%d/%d \n %d:%d:%d \n Track: %s \n PlayingTime: %f Duration: %f \n Location: %s \n Weather: %s \n "),
@@ -80,15 +80,18 @@ void ADIY_MusicPlayer::Tick(float DeltaTime)
 
 void ADIY_MusicPlayer::OnMusicLoaded(TSoftObjectPtr<USoundBase> SoundSoft, ESoundTrackID Index)
 {
-    // 执行到这里时，this 已经被引擎验证过是有效的了
-    USoundBase *LoadedSound = SoundSoft.Get();
+    if (Index != PendingSoundTrack)
+    {
+        return;
+    }
 
-    // 注意：这里使用 .Get() 访问强引用的 AudioComponent
-    if (LoadedSound && AudioComponent.IsValid())
+    USoundBase *LoadedSound = SoundSoft.Get();
+    if (LoadedSound && IsValid(AudioComponent))
     {
         AudioComponent->SetSound(LoadedSound);
         AudioComponent->FadeIn(3.0f, 0.6f);
         mCurrentPlayingSoundTrack = (int32)Index;
+        PendingSoundTrack = ESoundTrackID::ESoundTrackID_Count;
         CurrentMusicPlayedTime = 0.f;
 
         UE_LOG(LogTemp, Log, TEXT("Now playing via Delegate: %s"), *LoadedSound->GetName());
@@ -117,7 +120,7 @@ void ADIY_MusicPlayer::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 
     Super::EndPlay(EndPlayReason);
-    if (AudioComponent->OnAudioFinished.IsAlreadyBound(this, &ADIY_MusicPlayer::OnMusicFinished))
+    if (IsValid(AudioComponent) && AudioComponent->OnAudioFinished.IsAlreadyBound(this, &ADIY_MusicPlayer::OnMusicFinished))
     {
         AudioComponent->OnAudioFinished.RemoveDynamic(this, &ADIY_MusicPlayer::OnMusicFinished);
     }
@@ -178,8 +181,8 @@ void ADIY_MusicPlayer::PlayMusicByIndex(ESoundTrackID Index)
     }
 
     const TSoftObjectPtr<USoundBase> SoundSoft = Row->SoundAsset;
+    PendingSoundTrack = Index;
 
-    // 使用 CreateUObject 代替 Lambda
     FStreamableManager &Streamable = UAssetManager::GetStreamableManager();
     Streamable.RequestAsyncLoad(
         SoundSoft.ToSoftObjectPath(),
@@ -193,7 +196,9 @@ void ADIY_MusicPlayer::PlayMusicCorrespondingToTime()
 
 void ADIY_MusicPlayer::StopMusic()
 {
-    if (AudioComponent.IsValid() && AudioComponent->IsPlaying())
+    PendingSoundTrack = ESoundTrackID::ESoundTrackID_Count;
+
+    if (IsValid(AudioComponent) && AudioComponent->IsPlaying())
     {
         AudioComponent->Stop();
         CurrentMusicPlayedTime = 0.f;
@@ -232,3 +237,4 @@ UDIY_MainPlayerUIController *ADIY_MusicPlayer::AcquireOwnerActorOwnedUDIY_MainPl
 
     return nullptr;
 }
+

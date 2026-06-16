@@ -18,6 +18,7 @@ class AROUNDME_API ADIY_MusicPlayer : public AActor
 
     uint8 HourOfToday{0};
     float CurrentMusicPlayedTime{0.0f};
+    ESoundTrackID PendingSoundTrack{ESoundTrackID::ESoundTrackID_Count};
     void OnMusicLoaded(TSoftObjectPtr<USoundBase> SoundSoft, ESoundTrackID Index);
 
 protected:
@@ -34,8 +35,8 @@ protected:
     const class UDataTable *GetMusicDataTable();
 
 public:
-    UPROPERTY()
-    TWeakObjectPtr<UAudioComponent> AudioComponent;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DIY_MusicPlayer")
+    TObjectPtr<UAudioComponent> AudioComponent{nullptr};
 
     // 根据索引播放音乐
     UFUNCTION(BlueprintCallable, Category = "DIY_MusicPlayer")
