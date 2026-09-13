@@ -35,4 +35,3 @@ bool UDIY_WorldSubsystem::DoesSupportWorldType(const EWorldType::Type WorldType)
 {
     return WorldType == EWorldType::Game || WorldType == EWorldType::PIE;
 }
-

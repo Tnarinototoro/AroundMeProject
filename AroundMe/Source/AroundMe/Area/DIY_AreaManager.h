@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "../System/DIY_WorldSubsystem.h"
+#include "DIY_WorldSubsystem.h"
 #include "DIY_AreaDefines.h"
 #include "DIY_EnvObjectBase.h"
 

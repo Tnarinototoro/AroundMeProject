@@ -1,0 +1,18 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "DIYCore",
+	"Description": "Shared core framework: camera management + subsystem base classes.",
+	"Category": "Framework",
+	"CreatedBy": "Sigua",
+	"CanContainContent": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "DIYCore",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

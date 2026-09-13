@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DIY_GameInstanceSubsystem.h"
+#include "Subsystems/WorldSubsystem.h"
 #include "DIY_TickableWorldSubsystem.generated.h"
 
 UCLASS(Abstract)
-class AROUNDME_API UDIY_TickableWorldSubsystem : public UTickableWorldSubsystem
+class DIYCORE_API UDIY_TickableWorldSubsystem : public UTickableWorldSubsystem
 {
     GENERATED_BODY()
 

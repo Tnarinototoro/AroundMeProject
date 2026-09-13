@@ -64,7 +64,7 @@ int32 UDIY_CameraManager::RemoveCameraEntry(FName RemovedCamName)
     }
 
 
-    
+
     return RemovedCount;
 }
 
@@ -134,7 +134,7 @@ FString UDIY_CameraManager::GetInfoString(const FDIY_CameraEntry &InEntry)
             ? InEntry.CameraActor->GetName()
             : TEXT("InvalidCam");
 
-  
+
 
     return FString::Printf(
         TEXT("Camera[%s]  CamActor: %s Prev: %s  Next: %s "),
@@ -186,6 +186,6 @@ const FDIY_CameraEntry *UDIY_CameraManager::FindCameraEntry(FName CamName)
     {
         return nullptr;
     }
-    
+
     return CameraEntries.Find(CamName);
 }

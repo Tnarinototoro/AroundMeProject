@@ -1,0 +1,18 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "PropHunt",
+	"Description": "Prop Hunt graybox prototype: possess + shake + QTE resistance.",
+	"Category": "Game",
+	"CreatedBy": "Sigua",
+	"CanContainContent": true,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "PropHunt",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

@@ -1,5 +1,5 @@
 #include "DIY_MainWatcher_Dbg.h"
-#include "AroundMe/Player/Camera/DIY_CameraManager.h"
+#include "DIY_CameraManager.h"
 
 void ADIY_MainWatcher_Dbg::BeginPlay()
 {

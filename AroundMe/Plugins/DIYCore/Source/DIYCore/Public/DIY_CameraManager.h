@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "../../System/DIY_TickableWorldSubsystem.h"
+#include "DIY_TickableWorldSubsystem.h"
 #include "DIY_CameraDefines.h"
 // #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "DIY_CameraManager.generated.h"
 
 UCLASS()
-class AROUNDME_API UDIY_CameraManager : public UDIY_TickableWorldSubsystem
+class DIYCORE_API UDIY_CameraManager : public UDIY_TickableWorldSubsystem
 {
     GENERATED_BODY()
 
@@ -21,7 +21,7 @@ public:
     FOnCameraInUseChanged OnCameraInUseChanged;
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;
-    
+
     static UDIY_CameraManager* Get(const UObject* WorldContextObject);
 
 

@@ -18,6 +18,7 @@ public class AroundMe : ModuleRules
             "InputCore",
             "EnhancedInput",
             "DIYPlatformService",
+            "DIYCore",
             "AssetRegistry",
             "DeveloperSettings",
             "AIModule",

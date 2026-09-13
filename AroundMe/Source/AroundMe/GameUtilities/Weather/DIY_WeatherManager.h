@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../../System/DIY_WorldSubsystem.h"
+#include "DIY_WorldSubsystem.h"
 
 #include "DIY_WeatherManager.generated.h"
 

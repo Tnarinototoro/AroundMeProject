@@ -24,6 +24,14 @@
 	],
 	"Plugins": [
 		{
+			"Name": "DIYCore",
+			"Enabled": true
+		},
+		{
+			"Name": "PropHunt",
+			"Enabled": true
+		},
+		{
 			"Name": "GeometryProcessing",
 			"Enabled": true
 		},

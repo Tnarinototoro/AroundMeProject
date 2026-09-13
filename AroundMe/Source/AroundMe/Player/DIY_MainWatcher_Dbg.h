@@ -5,7 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "DIY_MainPlayer.h"
-#include "AroundMe/Player/Camera/DIY_CameraDefines.h"
+#include "DIY_CameraDefines.h"
 #include "DIY_MainWatcher_Dbg.generated.h"
 
 UCLASS(

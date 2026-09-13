@@ -10,7 +10,7 @@
  *
  */
 UCLASS(Abstract)
-class AROUNDME_API UDIY_WorldSubsystem : public UWorldSubsystem
+class DIYCORE_API UDIY_WorldSubsystem : public UWorldSubsystem
 {
     GENERATED_BODY()
 
@@ -23,4 +23,3 @@ public:
 protected:
     virtual void OnWorldActorsBeginPlay() {};
 };
-
