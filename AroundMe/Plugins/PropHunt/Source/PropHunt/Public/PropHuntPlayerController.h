@@ -38,6 +38,22 @@ public:
     UFUNCTION(Server, Reliable)
     void ServerRequestDrop(bool bThrow);
 
+    // QTE
+    UFUNCTION(Server, Reliable)
+    void ServerReportQTEKey(EPropHuntQTEKey Key);
+
+    UFUNCTION(Client, Reliable)
+    void ClientShowQTE();
+
+    UFUNCTION(Client, Reliable)
+    void ClientHideQTE();
+
+    UFUNCTION(Client, Unreliable)
+    void ClientUpdateQTE(float Progress, EPropHuntQTEKey ExpectedKey);
+
+    UFUNCTION(NetMulticast, Reliable)
+    void MulticastExpelFeedback(APropHuntPropActor* Prop, APawn* GhostPawn);
+
     UFUNCTION(Client, Reliable)
     void ClientBeginPossession(APropHuntPropActor* Prop);
 
@@ -51,6 +67,10 @@ public:
 
     APropHuntPropActor* GetPossessedProp() const { return PossessedProp; }
 
+    void ShowQTEWidget();
+    void HideQTEWidget();
+    void UpdateQTEWidget(float Progress, EPropHuntQTEKey ExpectedKey);
+
 protected:
     void HandleChooseHunterKey();
     void HandleChooseGhostKey();
@@ -59,5 +79,13 @@ protected:
     APropHuntPropActor* FindNearestProp() const;
     APropHuntPropActor* FindHeldProp(class APropHuntCharacter* Hunter) const;
 
+    void HandleQTEKeySpace();
+    void HandleQTEKeyF();
+    void HandleQTEKeyShift();
+    void ReportQTEKey(EPropHuntQTEKey Key);
+
     APropHuntPropActor* PossessedProp{nullptr};
+
+    UPROPERTY()
+    class UPropHuntQTEUserWidget* QTEWidget;
 };

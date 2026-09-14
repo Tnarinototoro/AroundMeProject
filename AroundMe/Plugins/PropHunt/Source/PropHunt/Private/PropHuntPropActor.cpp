@@ -2,13 +2,15 @@
 
 #include "PropHuntTypes.h"
 #include "PropHuntCharacter.h"
+#include "PropHuntPlayerController.h"
+#include "PropHuntGameMode.h"
+#include "GameFramework/PlayerState.h"
 #include "Components/StaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/StaticMesh.h"
-#include "Engine/Engine.h"
 #include "UObject/ConstructorHelpers.h"
 
 void APropHuntPropActor::OnConstruction(const FTransform& Transform)
@@ -20,11 +22,20 @@ void APropHuntPropActor::OnConstruction(const FTransform& Transform)
     {
         Mesh->SetMobility(EComponentMobility::Movable);
     }
+
+    // 场景旧实例的序列化 attach 关系可能过时，强制 Camera attach 到 SpringArm 末端。
+    if (Camera && SpringArm)
+    {
+        Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+    }
 }
 
 APropHuntPropActor::APropHuntPropActor()
 {
-    PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bCanEverTick = true; // QTE 需要 Tick（server 端推进膨胀）
+
+    // 作为 view target 时使用 Camera 组件（SpringArm 末端），而不是 Actor transform。
+    bFindCameraComponentWhenViewTarget = true;
 
     bReplicates = true;
     SetReplicateMovement(true);
@@ -46,8 +57,7 @@ APropHuntPropActor::APropHuntPropActor()
     SpringArm->bUsePawnControlRotation = false;
 
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-    Camera->SetupAttachment(SpringArm);
-    Camera->SetRelativeLocation(FVector(250.0f, 0.0f, 0.0f));
+    Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 }
 
 void APropHuntPropActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -94,11 +104,131 @@ void APropHuntPropActor::AddOrbitRotation(const FVector2D& Axis)
     }
 
     FRotator ArmRot = SpringArm->GetRelativeRotation();
-    UE_LOG(LogPropHunt, Warning, TEXT("[Orbit] before yaw=%.2f pitch=%.2f, axis=(%.2f,%.2f)"), ArmRot.Yaw, ArmRot.Pitch, Axis.X, Axis.Y);
-    if (GEngine) { GEngine->AddOnScreenDebugMessage(102, 1.0f, FColor::Orange, FString::Printf(TEXT("[Orbit] yaw=%.1f pitch=%.1f"), ArmRot.Yaw, ArmRot.Pitch)); }
     ArmRot.Yaw += Axis.X;
     ArmRot.Pitch = FMath::Clamp(ArmRot.Pitch + Axis.Y, -80.0f, 80.0f);
     SpringArm->SetRelativeRotation(ArmRot);
+}
+
+void APropHuntPropActor::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    if (!HasAuthority())
+    {
+        return;
+    }
+
+    // 只在被附身且被拿时 QTE。
+    if (!bIsPossessed || !HeldBy)
+    {
+        if (bInQTE)
+        {
+            EndQTE();
+        }
+        return;
+    }
+
+    if (!bInQTE)
+    {
+        BeginQTE();
+    }
+
+    // 冻结中（按对后暂停）。
+    const float Now = GetWorld()->GetTimeSeconds();
+    if (Now < FreezeUntil)
+    {
+        return;
+    }
+
+    // 旋转速度（度/秒），摇晃越猛涨得越快。
+    const float CurrentYaw = GetActorRotation().Yaw;
+    const float AngularSpeed = FMath::Abs(CurrentYaw - LastYaw) / DeltaTime;
+    LastYaw = CurrentYaw;
+
+    QTEProgress += (BaseRate + ShakeRate * AngularSpeed) * DeltaTime;
+
+    PushQTEUpdate();
+
+    if (QTEProgress >= 1.0f)
+    {
+        Expel();
+    }
+}
+
+void APropHuntPropActor::BeginQTE()
+{
+    bInQTE = true;
+    QTEProgress = 0.0f;
+    LastYaw = GetActorRotation().Yaw;
+    RandomizeExpectedKey();
+
+    if (PossessedBy)
+    {
+        if (APropHuntPlayerController* PC = Cast<APropHuntPlayerController>(PossessedBy->GetOwningController()))
+        {
+            PC->ClientShowQTE();
+        }
+    }
+}
+
+void APropHuntPropActor::EndQTE()
+{
+    bInQTE = false;
+    QTEProgress = 0.0f;
+
+    if (PossessedBy)
+    {
+        if (APropHuntPlayerController* PC = Cast<APropHuntPlayerController>(PossessedBy->GetOwningController()))
+        {
+            PC->ClientHideQTE();
+        }
+    }
+}
+
+void APropHuntPropActor::Expel()
+{
+    if (APropHuntGameMode* GM = GetWorld()->GetAuthGameMode<APropHuntGameMode>())
+    {
+        GM->HandleExpel(this);
+    }
+}
+
+void APropHuntPropActor::ReportQTEKey(EPropHuntQTEKey Key)
+{
+    if (!bInQTE)
+    {
+        return;
+    }
+
+    if (Key == ExpectedKey)
+    {
+        // 命中：暂停 1s + 重新随机。
+        FreezeUntil = GetWorld()->GetTimeSeconds() + 1.0f;
+        QTEProgress = FMath::Max(0.0f, QTEProgress - 0.05f);
+        RandomizeExpectedKey();
+    }
+    else
+    {
+        // 未命中：额外惩罚。
+        QTEProgress += 0.1f;
+    }
+}
+
+void APropHuntPropActor::RandomizeExpectedKey()
+{
+    const int32 KeyIndex = FMath::RandRange(0, 2);
+    ExpectedKey = static_cast<EPropHuntQTEKey>(KeyIndex);
+}
+
+void APropHuntPropActor::PushQTEUpdate()
+{
+    if (PossessedBy)
+    {
+        if (APropHuntPlayerController* PC = Cast<APropHuntPlayerController>(PossessedBy->GetOwningController()))
+        {
+            PC->ClientUpdateQTE(QTEProgress, ExpectedKey);
+        }
+    }
 }
 
 void APropHuntPropActor::OnRep_bIsPossessed()

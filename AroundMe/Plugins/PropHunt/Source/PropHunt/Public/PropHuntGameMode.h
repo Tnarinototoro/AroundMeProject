@@ -23,6 +23,7 @@ public:
     void HandleUnpossess(APropHuntPlayerController* PC);
     void HandlePickup(APropHuntPlayerController* PC, APropHuntPropActor* Prop);
     void HandleDrop(APropHuntPlayerController* PC, bool bThrow);
+    void HandleExpel(APropHuntPropActor* Prop);
 
     virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
 

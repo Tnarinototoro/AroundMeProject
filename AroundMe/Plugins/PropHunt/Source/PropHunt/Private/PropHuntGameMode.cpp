@@ -48,7 +48,6 @@ void APropHuntGameMode::PostLogin(APlayerController* NewPlayer)
     if (UPropHuntGameInstanceSubsystem* Subsys = GetGameInstance()->GetSubsystem<UPropHuntGameInstanceSubsystem>())
     {
         const EPropHuntRole SelectedRole = Subsys->GetTeamSelection(PS->GetPlayerName());
-        UE_LOG(LogPropHunt, Warning, TEXT("[PostLogin] Player=%s TeamSelection=%s"), *PS->GetPlayerName(), *StaticEnum<EPropHuntRole>()->GetNameStringByValue(static_cast<int64>(SelectedRole)));
         if (SelectedRole != EPropHuntRole::Spectator)
         {
             PS->TeamRole = SelectedRole;
@@ -69,11 +68,6 @@ UClass* APropHuntGameMode::GetDefaultPawnClassForController_Implementation(ACont
             CurRole = Subsys->GetTeamSelection(PS->GetPlayerName());
         }
     }
-
-    UE_LOG(LogPropHunt, Warning, TEXT("[GetDefaultPawn] Player=%s Selection=%s -> %s"),
-        PS ? *PS->GetPlayerName() : TEXT("null"),
-        *StaticEnum<EPropHuntRole>()->GetNameStringByValue(static_cast<int64>(CurRole)),
-        CurRole == EPropHuntRole::Ghost ? TEXT("GhostPawn") : TEXT("Character"));
 
     return CurRole == EPropHuntRole::Ghost ? GhostPawnClass : HunterPawnClass;
 }
@@ -211,5 +205,37 @@ void APropHuntGameMode::HandleDrop(APropHuntPlayerController* PC, bool bThrow)
     {
         const FVector ImpulseDir = (Hunter->GetActorForwardVector() + FVector(0.0f, 0.0f, 0.3f)).GetSafeNormal();
         HeldProp->Mesh->AddImpulse(ImpulseDir * HeldProp->Mesh->GetMass() * 800.0f);
+    }
+}
+
+void APropHuntGameMode::HandleExpel(APropHuntPropActor* Prop)
+{
+    if (!Prop)
+    {
+        return;
+    }
+
+    APlayerState* Possessor = Prop->PossessedBy;
+
+    // 解附身 + 清 QTE。
+    Prop->bIsPossessed = false;
+    Prop->PossessedBy = nullptr;
+    Prop->ApplyPossessedVisual();
+    Prop->EndQTE();
+
+    if (Possessor)
+    {
+        if (APropHuntPlayerState* PS = Cast<APropHuntPlayerState>(Possessor))
+        {
+            PS->bGhostHidden = false;
+            PS->ApplyGhostHiddenToPawn();
+        }
+
+        if (APropHuntPlayerController* PC = Cast<APropHuntPlayerController>(Possessor->GetOwningController()))
+        {
+            // Ghost 视角还原 + 显形；所有人看到驱逐提示。
+            PC->DeliverEndPossession(Prop->GetActorLocation());
+            PC->MulticastExpelFeedback(Prop, PC->GetPawn());
+        }
     }
 }

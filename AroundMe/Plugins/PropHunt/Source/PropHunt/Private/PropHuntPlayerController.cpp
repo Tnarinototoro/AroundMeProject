@@ -5,6 +5,7 @@
 #include "PropHuntPlayerState.h"
 #include "PropHuntPropActor.h"
 #include "PropHuntCharacter.h"
+#include "PropHuntQTEUserWidget.h"
 #include "DIY_CameraManager.h"
 #include "DIY_CameraDefines.h"
 #include "InputCoreTypes.h"
@@ -28,6 +29,9 @@ void APropHuntPlayerController::SetupInputComponent()
         InputComponent->BindKey(EKeys::Two, IE_Pressed, this, &APropHuntPlayerController::HandleChooseGhostKey);
         InputComponent->BindKey(EKeys::R, IE_Pressed, this, &APropHuntPlayerController::HandleToggleReadyKey);
         InputComponent->BindKey(EKeys::E, IE_Pressed, this, &APropHuntPlayerController::HandleInteractPressed);
+        InputComponent->BindKey(EKeys::SpaceBar, IE_Pressed, this, &APropHuntPlayerController::HandleQTEKeySpace);
+        InputComponent->BindKey(EKeys::F, IE_Pressed, this, &APropHuntPlayerController::HandleQTEKeyF);
+        InputComponent->BindKey(EKeys::LeftShift, IE_Pressed, this, &APropHuntPlayerController::HandleQTEKeyShift);
     }
 }
 
@@ -188,16 +192,6 @@ void APropHuntPlayerController::BeginPossessionLocal(APropHuntPropActor* Prop)
     // 视角完全切到 Prop（Prop 有自己的环绕相机，由 Look 输入驱动）。
     PossessedProp = Prop;
     SetViewTarget(Prop);
-    UE_LOG(LogPropHunt, Warning, TEXT("[BeginPossession] SetViewTarget to %s, PossessedProp=%s"), *Prop->GetName(), *GetNameSafe(PossessedProp));
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(100, 10.0f, FColor::Green, FString::Printf(TEXT("[BeginPossession] %s"), *Prop->GetName()));
-    }
-    if (APawn* MyPawn = GetPawn())
-    {
-        UE_LOG(LogPropHunt, Warning, TEXT("[BeginPossession] Pawn=%s InputEnabled=%d InputComponent=%s"), *MyPawn->GetName(), MyPawn->InputEnabled(), *GetNameSafe(MyPawn->InputComponent));
-        if (GEngine) { GEngine->AddOnScreenDebugMessage(202, 15.0f, FColor::Green, FString::Printf(TEXT("[BeginPossession] InputEnabled=%d"), MyPawn->InputEnabled())); }
-    }
 }
 
 void APropHuntPlayerController::DeliverEndPossession(FVector PopLocation)
@@ -258,4 +252,98 @@ APropHuntPropActor* APropHuntPlayerController::FindHeldProp(APropHuntCharacter* 
         }
     }
     return nullptr;
+}
+
+void APropHuntPlayerController::HandleQTEKeySpace()
+{
+    ReportQTEKey(EPropHuntQTEKey::Space);
+}
+
+void APropHuntPlayerController::HandleQTEKeyF()
+{
+    ReportQTEKey(EPropHuntQTEKey::F);
+}
+
+void APropHuntPlayerController::HandleQTEKeyShift()
+{
+    ReportQTEKey(EPropHuntQTEKey::Shift);
+}
+
+void APropHuntPlayerController::ReportQTEKey(EPropHuntQTEKey Key)
+{
+    if (!PossessedProp)
+    {
+        return;
+    }
+    ServerReportQTEKey(Key);
+}
+
+void APropHuntPlayerController::ServerReportQTEKey_Implementation(EPropHuntQTEKey Key)
+{
+    if (PossessedProp && PossessedProp->bIsPossessed)
+    {
+        PossessedProp->ReportQTEKey(Key);
+    }
+}
+
+void APropHuntPlayerController::ClientShowQTE_Implementation()
+{
+    ShowQTEWidget();
+}
+
+void APropHuntPlayerController::ClientHideQTE_Implementation()
+{
+    HideQTEWidget();
+}
+
+void APropHuntPlayerController::ClientUpdateQTE_Implementation(float Progress, EPropHuntQTEKey ExpectedKey)
+{
+    UpdateQTEWidget(Progress, ExpectedKey);
+}
+
+void APropHuntPlayerController::MulticastExpelFeedback_Implementation(APropHuntPropActor* Prop, APawn* GhostPawn)
+{
+    if (GEngine)
+    {
+        GEngine->AddOnScreenDebugMessage(500, 3.0f, FColor::Red, TEXT("GHOST EXPELLED!"));
+    }
+}
+
+void APropHuntPlayerController::ShowQTEWidget()
+{
+    if (!QTEWidget)
+    {
+        QTEWidget = CreateWidget<UPropHuntQTEUserWidget>(this, UPropHuntQTEUserWidget::StaticClass());
+    }
+    if (QTEWidget && !QTEWidget->IsInViewport())
+    {
+        QTEWidget->AddToViewport(10);
+    }
+}
+
+void APropHuntPlayerController::HideQTEWidget()
+{
+    if (QTEWidget && QTEWidget->IsInViewport())
+    {
+        QTEWidget->RemoveFromParent();
+    }
+}
+
+void APropHuntPlayerController::UpdateQTEWidget(float Progress, EPropHuntQTEKey ExpectedKey)
+{
+    if (!QTEWidget || !QTEWidget->IsInViewport())
+    {
+        return;
+    }
+
+    QTEWidget->SetProgress(Progress);
+
+    FString KeyStr;
+    switch (ExpectedKey)
+    {
+    case EPropHuntQTEKey::Space: KeyStr = TEXT("Space"); break;
+    case EPropHuntQTEKey::F: KeyStr = TEXT("F"); break;
+    case EPropHuntQTEKey::Shift: KeyStr = TEXT("Shift"); break;
+    }
+    QTEWidget->SetExpectedKey(KeyStr);
 }

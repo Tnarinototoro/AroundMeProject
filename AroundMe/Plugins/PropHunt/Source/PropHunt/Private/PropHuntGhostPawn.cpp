@@ -9,7 +9,6 @@
 #include "InputModifiers.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
-#include "Engine/Engine.h"
 #include "TimerManager.h"
 #include "PropHuntNameplateWidget.h"
 #include "PropHuntPlayerState.h"
@@ -53,8 +52,6 @@ void APropHuntGhostPawn::BeginPlay()
 void APropHuntGhostPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-    if (GEngine) { GEngine->AddOnScreenDebugMessage(200, 15.0f, FColor::Cyan, TEXT("[GhostPawn] SetupPlayerInputComponent called")); }
 
     SetupInputActions();
 
@@ -124,12 +121,6 @@ void APropHuntGhostPawn::SetupInputActions()
 
 void APropHuntGhostPawn::Move(const FInputActionValue& Value)
 {
-    static int32 MoveCounter = 0;
-    if (MoveCounter++ % 30 == 0)
-    {
-        if (GEngine) { GEngine->AddOnScreenDebugMessage(201, 1.0f, FColor::Cyan, TEXT("[GhostPawn] Move triggered")); }
-    }
-
     APropHuntPlayerState* PS = GetPlayerState<APropHuntPlayerState>();
     if (PS && PS->bGhostHidden)
     {
@@ -153,27 +144,15 @@ void APropHuntGhostPawn::Move(const FInputActionValue& Value)
 void APropHuntGhostPawn::Look(const FInputActionValue& Value)
 {
     const FVector2D Axis = Value.Get<FVector2D>();
-    static int32 Counter = 0;
 
     if (APropHuntPlayerController* PC = Cast<APropHuntPlayerController>(GetController()))
     {
         if (APropHuntPropActor* Prop = PC->GetPossessedProp())
         {
-            if (Counter++ % 30 == 0)
-            {
-                UE_LOG(LogPropHunt, Warning, TEXT("[GhostPawn Look] ORBIT prop, axis=(%.2f,%.2f)"), Axis.X, Axis.Y);
-                if (GEngine) { GEngine->AddOnScreenDebugMessage(101, 1.0f, FColor::Yellow, TEXT("[Look] ORBIT prop")); }
-            }
             // 附身：Look 输入驱动 Prop 的环绕相机。
             Prop->AddOrbitRotation(Axis);
             return;
         }
-    }
-
-    if (Counter++ % 30 == 0)
-    {
-        UE_LOG(LogPropHunt, Warning, TEXT("[GhostPawn Look] NO possessed prop, axis=(%.2f,%.2f)"), Axis.X, Axis.Y);
-        if (GEngine) { GEngine->AddOnScreenDebugMessage(101, 1.0f, FColor::Red, TEXT("[Look] NO possessed prop")); }
     }
 
     if (Controller)
