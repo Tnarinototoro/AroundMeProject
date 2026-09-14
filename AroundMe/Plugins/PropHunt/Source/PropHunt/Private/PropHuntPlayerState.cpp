@@ -31,10 +31,4 @@ void APropHuntPlayerState::ApplyGhostHiddenToPawn()
 
     Pawn->SetActorHiddenInGame(bGhostHidden);
     Pawn->SetActorEnableCollision(!bGhostHidden);
-
-    // 附身时禁用移动组件，避免 FloatingPawnMovement 干扰 attach 跟随。
-    if (UPawnMovementComponent* MoveComp = Pawn->GetMovementComponent())
-    {
-        MoveComp->SetActive(!bGhostHidden);
-    }
 }

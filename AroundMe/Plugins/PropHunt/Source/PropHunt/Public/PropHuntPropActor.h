@@ -6,6 +6,7 @@
 
 class UStaticMeshComponent;
 class UCameraComponent;
+class USpringArmComponent;
 class APropHuntCharacter;
 
 // 白盒道具（Cube）：Ghost 附身 / Hunter 拾取的目标。
@@ -21,6 +22,10 @@ public:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PropHunt")
     UStaticMeshComponent* Mesh;
+
+    // 环绕臂：附身后 Ghost 视角绕 Prop 旋转。
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PropHunt")
+    USpringArmComponent* SpringArm;
 
     // Ghost 附身后镜头绑定到这里。
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PropHunt")
@@ -40,6 +45,9 @@ public:
     void OnRep_HeldBy();
 
     void AttachToHolder(APropHuntCharacter* Holder);
+
+    // 附身时由 Look 输入驱动，环绕相机旋转。
+    void AddOrbitRotation(const FVector2D& Axis);
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

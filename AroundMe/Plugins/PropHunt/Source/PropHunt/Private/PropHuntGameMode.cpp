@@ -48,6 +48,7 @@ void APropHuntGameMode::PostLogin(APlayerController* NewPlayer)
     if (UPropHuntGameInstanceSubsystem* Subsys = GetGameInstance()->GetSubsystem<UPropHuntGameInstanceSubsystem>())
     {
         const EPropHuntRole SelectedRole = Subsys->GetTeamSelection(PS->GetPlayerName());
+        UE_LOG(LogPropHunt, Warning, TEXT("[PostLogin] Player=%s TeamSelection=%s"), *PS->GetPlayerName(), *StaticEnum<EPropHuntRole>()->GetNameStringByValue(static_cast<int64>(SelectedRole)));
         if (SelectedRole != EPropHuntRole::Spectator)
         {
             PS->TeamRole = SelectedRole;
@@ -58,11 +59,23 @@ void APropHuntGameMode::PostLogin(APlayerController* NewPlayer)
 UClass* APropHuntGameMode::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
     APropHuntPlayerState* PS = InController ? InController->GetPlayerState<APropHuntPlayerState>() : nullptr;
-    if (PS && PS->TeamRole == EPropHuntRole::Ghost)
+
+    // 注意：spawn 时机早于 PostLogin，TeamRole 还没恢复，这里直接读 GameInstance Subsystem 的选边结果。
+    EPropHuntRole CurRole = EPropHuntRole::Spectator;
+    if (PS)
     {
-        return GhostPawnClass;
+        if (UPropHuntGameInstanceSubsystem* Subsys = GetGameInstance()->GetSubsystem<UPropHuntGameInstanceSubsystem>())
+        {
+            CurRole = Subsys->GetTeamSelection(PS->GetPlayerName());
+        }
     }
-    return HunterPawnClass;
+
+    UE_LOG(LogPropHunt, Warning, TEXT("[GetDefaultPawn] Player=%s Selection=%s -> %s"),
+        PS ? *PS->GetPlayerName() : TEXT("null"),
+        *StaticEnum<EPropHuntRole>()->GetNameStringByValue(static_cast<int64>(CurRole)),
+        CurRole == EPropHuntRole::Ghost ? TEXT("GhostPawn") : TEXT("Character"));
+
+    return CurRole == EPropHuntRole::Ghost ? GhostPawnClass : HunterPawnClass;
 }
 
 void APropHuntGameMode::HandlePossess(APropHuntPlayerController* PC, APropHuntPropActor* Prop)

@@ -49,6 +49,8 @@ public:
     void DeliverEndPossession(FVector PopLocation);
     void EndPossessionLocal();
 
+    APropHuntPropActor* GetPossessedProp() const { return PossessedProp; }
+
 protected:
     void HandleChooseHunterKey();
     void HandleChooseGhostKey();
@@ -56,4 +58,6 @@ protected:
     void HandleInteractPressed();
     APropHuntPropActor* FindNearestProp() const;
     APropHuntPropActor* FindHeldProp(class APropHuntCharacter* Hunter) const;
+
+    APropHuntPropActor* PossessedProp{nullptr};
 };

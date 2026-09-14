@@ -10,6 +10,7 @@
 #include "InputCoreTypes.h"
 #include "Components/InputComponent.h"
 #include "Engine/World.h"
+#include "Engine/Engine.h"
 #include "EngineUtils.h"
 #include "GameFramework/Pawn.h"
 
@@ -184,10 +185,18 @@ void APropHuntPlayerController::BeginPossessionLocal(APropHuntPropActor* Prop)
         return;
     }
 
-    // 把 Ghost Pawn attach 到 Prop：位置/旋转随 Prop 甩动，视角仍从 Pawn 出发（可用鼠标环绕）。
+    // 视角完全切到 Prop（Prop 有自己的环绕相机，由 Look 输入驱动）。
+    PossessedProp = Prop;
+    SetViewTarget(Prop);
+    UE_LOG(LogPropHunt, Warning, TEXT("[BeginPossession] SetViewTarget to %s, PossessedProp=%s"), *Prop->GetName(), *GetNameSafe(PossessedProp));
+    if (GEngine)
+    {
+        GEngine->AddOnScreenDebugMessage(100, 10.0f, FColor::Green, FString::Printf(TEXT("[BeginPossession] %s"), *Prop->GetName()));
+    }
     if (APawn* MyPawn = GetPawn())
     {
-        MyPawn->AttachToActor(Prop, FAttachmentTransformRules::KeepWorldTransform);
+        UE_LOG(LogPropHunt, Warning, TEXT("[BeginPossession] Pawn=%s InputEnabled=%d InputComponent=%s"), *MyPawn->GetName(), MyPawn->InputEnabled(), *GetNameSafe(MyPawn->InputComponent));
+        if (GEngine) { GEngine->AddOnScreenDebugMessage(202, 15.0f, FColor::Green, FString::Printf(TEXT("[BeginPossession] InputEnabled=%d"), MyPawn->InputEnabled())); }
     }
 }
 
@@ -210,10 +219,11 @@ void APropHuntPlayerController::ClientEndPossession_Implementation(FVector PopLo
 
 void APropHuntPlayerController::EndPossessionLocal()
 {
-    // 从 Prop 上 detach，恢复独立位置。
+    // 视角还原到自己的 Pawn。
+    PossessedProp = nullptr;
     if (APawn* MyPawn = GetPawn())
     {
-        MyPawn->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        SetViewTarget(MyPawn);
     }
 }
 
