@@ -17,7 +17,17 @@ public:
 
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+    // 是否显示头顶玩家信息标示（编辑器可调，debug 用）。
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PropHunt|Debug")
+    bool bShowNameplate{true};
+
 protected:
+    virtual void BeginPlay() override;
+
+    // 白盒身体：小圆球代替。
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PropHunt")
+    class UStaticMeshComponent* BodyMesh;
+
     UPROPERTY()
     UInputMappingContext* DefaultMappingContext;
 
@@ -35,4 +45,9 @@ protected:
     void Look(const struct FInputActionValue& Value);
     void JumpPressed(const struct FInputActionValue& Value);
     void JumpReleased(const struct FInputActionValue& Value);
+
+    UPROPERTY(VisibleAnywhere, Category = "PropHunt|Debug")
+    class UWidgetComponent* NameplateComponent;
+
+    void UpdateNameplate();
 };

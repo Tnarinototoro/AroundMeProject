@@ -9,6 +9,7 @@ void APropHuntGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
     DOREPLIFETIME(APropHuntGameState, MatchPhase);
+    DOREPLIFETIME(APropHuntGameState, CountdownRemaining);
 }
 
 void APropHuntGameState::OnRep_MatchPhase()

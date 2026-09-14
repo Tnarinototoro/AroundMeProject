@@ -16,6 +16,9 @@ public:
     UPROPERTY(ReplicatedUsing = OnRep_MatchPhase, BlueprintReadOnly, Category = "PropHunt")
     EPropHuntMatchPhase MatchPhase{EPropHuntMatchPhase::WaitingForPlayers};
 
+    UPROPERTY(Replicated, BlueprintReadOnly, Category = "PropHunt")
+    int32 CountdownRemaining{0};
+
     UFUNCTION()
     void OnRep_MatchPhase();
 

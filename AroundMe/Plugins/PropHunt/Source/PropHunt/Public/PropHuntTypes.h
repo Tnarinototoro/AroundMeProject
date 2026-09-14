@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "PropHuntTypes.generated.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogPropHunt, Log, All);
+
 UENUM(BlueprintType)
 enum class EPropHuntRole : uint8
 {
