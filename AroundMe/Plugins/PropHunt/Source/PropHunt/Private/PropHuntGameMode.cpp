@@ -123,8 +123,10 @@ void APropHuntGameMode::HandleUnpossess(APropHuntPlayerController* PC)
         }
     }
 
+    FVector SpawnLocation = PC->GetPawn() ? PC->GetPawn()->GetActorLocation() : FVector::ZeroVector;
     if (PossessedProp)
     {
+        SpawnLocation = PossessedProp->GetActorLocation(); // 用附身物体的位置
         PossessedProp->bIsPossessed = false;
         PossessedProp->PossessedBy = nullptr;
         PossessedProp->ApplyPossessedVisual();
@@ -133,7 +135,13 @@ void APropHuntGameMode::HandleUnpossess(APropHuntPlayerController* PC)
     PS->bGhostHidden = false;
     PS->ApplyGhostHiddenToPawn();
 
-    PC->DeliverEndPossession(PC->GetPawn() ? PC->GetPawn()->GetActorLocation() : FVector::ZeroVector);
+    // 把 Ghost 传送到附身物体位置，避免弹飞。
+    if (APawn* GhostPawn = PC->GetPawn())
+    {
+        GhostPawn->SetActorLocation(SpawnLocation);
+    }
+
+    PC->DeliverEndPossession(SpawnLocation);
 }
 
 void APropHuntGameMode::HandlePickup(APropHuntPlayerController* PC, APropHuntPropActor* Prop)
@@ -233,7 +241,11 @@ void APropHuntGameMode::HandleExpel(APropHuntPropActor* Prop)
 
         if (APropHuntPlayerController* PC = Cast<APropHuntPlayerController>(Possessor->GetOwningController()))
         {
-            // Ghost 视角还原 + 显形；所有人看到驱逐提示。
+            // Ghost 显形到 Prop 位置（向上弹一点）。
+            if (APawn* GhostPawn = PC->GetPawn())
+            {
+                GhostPawn->SetActorLocation(Prop->GetActorLocation() + FVector(0.0f, 0.0f, 100.0f));
+            }
             PC->DeliverEndPossession(Prop->GetActorLocation());
             PC->MulticastExpelFeedback(Prop, PC->GetPawn());
         }

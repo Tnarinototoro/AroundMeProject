@@ -17,6 +17,11 @@ public class PropHunt : ModuleRules
                 "UMG",
                 "Slate",
                 "SlateCore",
+                "CommonUI",
+                "CommonInput",
+                "GameplayTags",
+                "OnlineSubsystem",
+                "OnlineSubsystemUtils",
                 "DIYCore"
             }
         );

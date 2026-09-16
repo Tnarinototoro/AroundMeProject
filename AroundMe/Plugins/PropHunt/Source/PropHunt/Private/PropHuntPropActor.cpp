@@ -105,7 +105,7 @@ void APropHuntPropActor::AddOrbitRotation(const FVector2D& Axis)
 
     FRotator ArmRot = SpringArm->GetRelativeRotation();
     ArmRot.Yaw += Axis.X;
-    ArmRot.Pitch = FMath::Clamp(ArmRot.Pitch + Axis.Y, -80.0f, 80.0f);
+    ArmRot.Pitch = FMath::Clamp(ArmRot.Pitch - Axis.Y, -80.0f, 80.0f);
     SpringArm->SetRelativeRotation(ArmRot);
 }
 

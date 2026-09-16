@@ -15,6 +15,7 @@ class PROPHUNT_API APropHuntPlayerController : public APlayerController
 public:
     APropHuntPlayerController();
 
+    virtual void BeginPlay() override;
     virtual void SetupInputComponent() override;
 
     // Lobby：客户端请求选边 / 切换准备。

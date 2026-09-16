@@ -6,6 +6,7 @@
 #include "PropHuntPropActor.h"
 #include "PropHuntCharacter.h"
 #include "PropHuntQTEUserWidget.h"
+#include "PropHuntMenuSubsystem.h"
 #include "DIY_CameraManager.h"
 #include "DIY_CameraDefines.h"
 #include "InputCoreTypes.h"
@@ -17,6 +18,29 @@
 
 APropHuntPlayerController::APropHuntPlayerController()
 {
+}
+
+void APropHuntPlayerController::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if (!IsLocalController())
+    {
+        return;
+    }
+
+    if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+    {
+        const FString MapName = GetWorld()->GetMapName();
+        if (MapName.Contains(TEXT("PH_Lobby")))
+        {
+            Menu->ShowRoom();
+        }
+        else
+        {
+            Menu->ShowMainMenu();
+        }
+    }
 }
 
 void APropHuntPlayerController::SetupInputComponent()
