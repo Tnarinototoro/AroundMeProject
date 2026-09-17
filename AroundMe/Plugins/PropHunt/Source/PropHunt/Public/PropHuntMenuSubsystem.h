@@ -19,8 +19,13 @@ public:
     void ShowRoomList();
     void ShowRoom();
 
+    bool IsInRoom() const { return bInRoom; }
+    void SetInRoom(bool b) { bInRoom = b; }
+
 private:
     void EnsureStack();
+
+    bool bInRoom{false};
 
     UPROPERTY()
     UCommonActivatableWidgetStack* Stack;

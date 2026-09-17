@@ -87,6 +87,10 @@ void UPropHuntRoomListWidget::OnDirectConnectClicked()
     // 本地直连：绕过 Session 搜索，直接连本机 listen server（127.0.0.1:7777）。
     if (APlayerController* PC = GetOwningPlayer())
     {
+        if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+        {
+            Menu->SetInRoom(true);
+        }
         PC->ClientTravel(TEXT("127.0.0.1:7777"), TRAVEL_Absolute);
     }
 }

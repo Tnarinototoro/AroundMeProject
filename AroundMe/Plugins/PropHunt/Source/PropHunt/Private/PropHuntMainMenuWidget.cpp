@@ -65,7 +65,11 @@ void UPropHuntMainMenuWidget::OnCreateRoomClicked()
         {
             if (bSuccess)
             {
-                GetWorld()->ServerTravel(TEXT("/PropHunt/Maps/PH_Lobby"));
+                if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+                {
+                    Menu->SetInRoom(true);
+                }
+                GetWorld()->ServerTravel(TEXT("/PropHunt/Maps/PH_Lobby?listen"));
             }
         }));
     }

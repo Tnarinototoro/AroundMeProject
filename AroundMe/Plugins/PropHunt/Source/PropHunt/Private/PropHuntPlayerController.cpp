@@ -32,8 +32,9 @@ void APropHuntPlayerController::BeginPlay()
     if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
     {
         const FString MapName = GetWorld()->GetMapName();
-        if (MapName.Contains(TEXT("PH_Lobby")))
+        if (Menu->IsInRoom() || MapName.Contains(TEXT("PH_Lobby")))
         {
+            // 进房间（或已在 Lobby 地图，如 PIE 双窗口直进）→ 房间 Widget。
             Menu->ShowRoom();
         }
         else
@@ -49,9 +50,6 @@ void APropHuntPlayerController::SetupInputComponent()
 
     if (InputComponent)
     {
-        InputComponent->BindKey(EKeys::One, IE_Pressed, this, &APropHuntPlayerController::HandleChooseHunterKey);
-        InputComponent->BindKey(EKeys::Two, IE_Pressed, this, &APropHuntPlayerController::HandleChooseGhostKey);
-        InputComponent->BindKey(EKeys::R, IE_Pressed, this, &APropHuntPlayerController::HandleToggleReadyKey);
         InputComponent->BindKey(EKeys::E, IE_Pressed, this, &APropHuntPlayerController::HandleInteractPressed);
         InputComponent->BindKey(EKeys::SpaceBar, IE_Pressed, this, &APropHuntPlayerController::HandleQTEKeySpace);
         InputComponent->BindKey(EKeys::F, IE_Pressed, this, &APropHuntPlayerController::HandleQTEKeyF);

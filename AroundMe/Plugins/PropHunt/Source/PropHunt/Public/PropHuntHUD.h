@@ -16,6 +16,5 @@ public:
     virtual void DrawHUD() override;
 
 protected:
-    void DrawLobby(class APropHuntPlayerState* PS, class APropHuntGameState* GS);
     void DrawGame(class APropHuntPlayerState* PS);
 };
