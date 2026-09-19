@@ -77,6 +77,21 @@ public:
     void DeliverShowSettlement(const FString& ResultText);
     void ShowSettlementLocal(const FString& ResultText);
 
+    // 游戏内暂停菜单：离开游戏（bQuit=true 退出游戏进程，false 回主菜单）。
+    UFUNCTION(Server, Reliable)
+    void ServerRequestLeaveGame(bool bQuit);
+
+    // 服务器通知某客户端：退出游戏进程。
+    UFUNCTION(Client, Reliable)
+    void ClientQuitGame();
+
+    // 请求暂停/恢复（server 权威，复制到所有客户端一起冻结）。
+    UFUNCTION(Server, Reliable)
+    void ServerRequestPause(bool bPause);
+
+    void ShowPauseMenu();
+    void HidePauseMenu();
+
     UFUNCTION(Client, Reliable)
     void ClientBeginPossession(APropHuntPropActor* Prop);
 
@@ -99,6 +114,7 @@ protected:
     void HandleChooseGhostKey();
     void HandleToggleReadyKey();
     void HandleInteractPressed();
+    void HandlePauseToggle();
     APropHuntPropActor* FindNearestProp() const;
     APropHuntPropActor* FindHeldProp(class APropHuntCharacter* Hunter) const;
 
@@ -111,6 +127,9 @@ protected:
 
     UPROPERTY()
     class UPropHuntQTEUserWidget* QTEWidget;
+
+    UPROPERTY()
+    class UPropHuntPauseMenuWidget* PauseMenuWidget;
 
     void UpdateCompass();
     void UpdatePulseAudio(float DeltaTime);

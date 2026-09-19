@@ -9,9 +9,11 @@
 #include "PropHuntHUD.h"
 #include "PropHuntGameInstanceSubsystem.h"
 #include "PropHuntMenuSubsystem.h"
+#include "PropHuntRoomSubsystem.h"
 #include "Engine/GameInstance.h"
 #include "EngineUtils.h"
 #include "TimerManager.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 APropHuntGameMode::APropHuntGameMode()
 {
@@ -23,6 +25,9 @@ APropHuntGameMode::APropHuntGameMode()
     GameStateClass = APropHuntGameState::StaticClass();
     PlayerStateClass = APropHuntPlayerState::StaticClass();
     HUDClass = APropHuntHUD::StaticClass();
+
+    // 允许暂停（server 权威暂停会复制到所有客户端，实现「所有人一起冻结」）。
+    bPauseable = true;
 }
 
 void APropHuntGameMode::BeginPlay()
@@ -275,10 +280,87 @@ void APropHuntGameMode::RequestRematch()
 
 void APropHuntGameMode::RequestBackToMenu()
 {
-    // 清除"在房间"标志，回主菜单。
+    // 结算界面「回主菜单」：等同暂停菜单的回主菜单（不退出游戏进程）。
+    HandleLeaveGame(nullptr, false);
+}
+
+void APropHuntGameMode::HandleLeaveGame(APropHuntPlayerController* Requester, bool bQuit)
+{
+    if (bReturningToMenu)
+    {
+        return; // 已在回主菜单流程中，避免重入。
+    }
+    bReturningToMenu = true;
+
+    // 先解除暂停，避免冻结状态干扰后续 travel / 退出。
+    ClearPause();
+
+    UE_LOG(LogPropHunt, Warning, TEXT("[PropHunt] HandleLeaveGame quit=%d"), bQuit ? 1 : 0);
+
+    // 1) 销毁房间（session）。
+    if (UPropHuntRoomSubsystem* Room = GetGameInstance()->GetSubsystem<UPropHuntRoomSubsystem>())
+    {
+        Room->LeaveRoom();
+    }
+
+    // 2) 所有客户端：回主菜单（退出者则退出进程）。房主（listen server 本地玩家）下面单独处理。
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        APropHuntPlayerController* P = Cast<APropHuntPlayerController>(It->Get());
+        if (!P || P->IsLocalController())
+        {
+            continue;
+        }
+
+        if (P == Requester && bQuit)
+        {
+            P->ClientQuitGame();
+        }
+        else
+        {
+            P->ClientReturnToMenu();
+        }
+    }
+
+    // 3) 房主（本 listen server）重置状态。
     if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
     {
         Menu->SetInRoom(false);
     }
+
+    // 4) 房主：退出进程 或 回主菜单（延迟给客户端 RPC 留出送达时间）。
+    if (Requester && Requester->IsLocalController() && bQuit)
+    {
+        GetWorldTimerManager().SetTimer(ReturnToMenuTimerHandle, this, &APropHuntGameMode::FinalizeHostQuit, 0.4f, false);
+    }
+    else
+    {
+        GetWorldTimerManager().SetTimer(ReturnToMenuTimerHandle, this, &APropHuntGameMode::FinalizeReturnToMenu, 0.4f, false);
+    }
+}
+
+void APropHuntGameMode::FinalizeReturnToMenu()
+{
+    // 房主回主菜单（此时客户端应已通过 ClientReturnToMenu 离开）。
     GetWorld()->ServerTravel(TEXT("/PropHunt/Maps/PH_Lobby?listen"));
+}
+
+void APropHuntGameMode::FinalizeHostQuit()
+{
+    if (APlayerController* PC = GetWorld()->GetFirstPlayerController())
+    {
+        UKismetSystemLibrary::QuitGame(GetWorld(), PC, EQuitPreference::Quit, false);
+    }
+}
+
+void APropHuntGameMode::Logout(AController* Exiting)
+{
+    Super::Logout(Exiting);
+
+    // 游戏进行中有玩家掉线/退出（非本次主动回主菜单流程）→ 其余玩家也回主菜单。
+    APropHuntGameState* GS = Cast<APropHuntGameState>(GameState);
+    if (GS && GS->MatchPhase == EPropHuntMatchPhase::InProgress && !bReturningToMenu)
+    {
+        HandleLeaveGame(nullptr, false);
+    }
 }

@@ -7,6 +7,7 @@
 #include "PropHuntCharacter.h"
 #include "PropHuntQTEUserWidget.h"
 #include "PropHuntMenuSubsystem.h"
+#include "PropHuntPauseMenuWidget.h"
 #include "CommonInputSubsystem.h"
 #include "PropHuntCompassWidget.h"
 #include "PropHuntGhostPawn.h"
@@ -19,6 +20,7 @@
 #include "Engine/Engine.h"
 #include "EngineUtils.h"
 #include "GameFramework/Pawn.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 APropHuntPlayerController::APropHuntPlayerController()
 {
@@ -166,6 +168,7 @@ void APropHuntPlayerController::SetupInputComponent()
         InputComponent->BindKey(EKeys::SpaceBar, IE_Pressed, this, &APropHuntPlayerController::HandleQTEKeySpace);
         InputComponent->BindKey(EKeys::F, IE_Pressed, this, &APropHuntPlayerController::HandleQTEKeyF);
         InputComponent->BindKey(EKeys::LeftShift, IE_Pressed, this, &APropHuntPlayerController::HandleQTEKeyShift);
+        InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &APropHuntPlayerController::HandlePauseToggle);
     }
 }
 
@@ -310,6 +313,74 @@ void APropHuntPlayerController::ClientReturnToMenu_Implementation()
     }
 
     ClientTravel(TEXT("/PropHunt/Maps/PH_Lobby"), TRAVEL_Absolute);
+}
+
+void APropHuntPlayerController::HandlePauseToggle()
+{
+    // 只在游戏地图里响应 ESC。
+    if (!GetWorld()->GetMapName().Contains(TEXT("PH_GameMap")))
+    {
+        return;
+    }
+
+    if (PauseMenuWidget && PauseMenuWidget->IsInViewport())
+    {
+        HidePauseMenu();
+    }
+    else
+    {
+        ShowPauseMenu();
+    }
+}
+
+void APropHuntPlayerController::ShowPauseMenu()
+{
+    // 请求 server 暂停（所有人一起冻结）。
+    ServerRequestPause(true);
+
+    if (!PauseMenuWidget)
+    {
+        PauseMenuWidget = CreateWidget<UPropHuntPauseMenuWidget>(this, UPropHuntPauseMenuWidget::StaticClass());
+    }
+    if (PauseMenuWidget && !PauseMenuWidget->IsInViewport())
+    {
+        PauseMenuWidget->AddToViewport(100);
+        PauseMenuWidget->ActivateWidget();
+        SetShowMouseCursor(true);
+        SetInputMode(FInputModeUIOnly());
+    }
+}
+
+void APropHuntPlayerController::HidePauseMenu()
+{
+    if (PauseMenuWidget && PauseMenuWidget->IsInViewport())
+    {
+        PauseMenuWidget->RemoveFromParent();
+        SetShowMouseCursor(false);
+        SetInputMode(FInputModeGameOnly());
+    }
+
+    // 恢复游戏。
+    ServerRequestPause(false);
+}
+
+void APropHuntPlayerController::ServerRequestPause_Implementation(bool bPause)
+{
+    // server 权威暂停：SetPause 会通过 GameMode 复制 Pauser 到所有客户端。
+    SetPause(bPause);
+}
+
+void APropHuntPlayerController::ServerRequestLeaveGame_Implementation(bool bQuit)
+{
+    if (APropHuntGameMode* GM = GetWorld()->GetAuthGameMode<APropHuntGameMode>())
+    {
+        GM->HandleLeaveGame(this, bQuit);
+    }
+}
+
+void APropHuntPlayerController::ClientQuitGame_Implementation()
+{
+    UKismetSystemLibrary::QuitGame(GetWorld(), this, EQuitPreference::Quit, false);
 }
 
 void APropHuntPlayerController::ServerRequestPossess_Implementation(APropHuntPropActor* Prop)
