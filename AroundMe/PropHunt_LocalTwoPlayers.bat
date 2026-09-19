@@ -1,16 +1,20 @@
 @echo off
-REM PropHunt 本地双开测试：一键启动 host（listen server）+ client。
-set UE="S:\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe"
-set PROJ="S:\AroundMeProject\AroundMe\AroundMe.uproject"
-set MAP=/PropHunt/Maps/PH_Lobby
+REM PropHunt local 2-player test: host + client.
+REM MUST be ASCII-only (no Chinese) or cmd.exe will mangle the file.
 
-echo Starting HOST (listen server)...
-start "PropHunt HOST" %UE% %PROJ% %MAP% -game -log -windowed -resx=1280 -resy=720 -WinX=40 -WinY=40
+set "UE=S:\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe"
+set "PROJ=S:\AroundMeProject\AroundMe\AroundMe.uproject"
+set "MAP=/PropHunt/Maps/PH_Lobby"
+
+echo Starting HOST...
+powershell -NoProfile -Command "Start-Process -FilePath '%UE%' -ArgumentList @('%PROJ%','-game','%MAP%','-log','-windowed','-ResX=1280','-ResY=720','-WinX=40','-WinY=40')"
 
 echo Waiting 8 seconds for host to be ready...
 timeout /t 8 /nobreak >nul
 
 echo Starting CLIENT...
-start "PropHunt CLIENT" %UE% %PROJ% %MAP% -game -log -windowed -resx=1280 -resy=720 -WinX=1340 -WinY=40
+powershell -NoProfile -Command "Start-Process -FilePath '%UE%' -ArgumentList @('%PROJ%','-game','%MAP%','-log','-windowed','-ResX=1280','-ResY=720','-WinX=1340','-WinY=40')"
 
-echo Done. Host window: create a room. Client window: Join Room -> Connect to 127.0.0.1
+echo Done.
+echo   HOST window: click Create Room
+echo   CLIENT window: click Join Room -^> Join Local Room

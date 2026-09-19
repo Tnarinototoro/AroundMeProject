@@ -27,6 +27,9 @@ protected:
     UFUNCTION()
     void OnReadyClicked();
 
+    UFUNCTION()
+    void OnLeaveClicked();
+
     void RefreshStatus();
 
     UPROPERTY()
@@ -37,6 +40,9 @@ protected:
 
     UPROPERTY()
     UButton* ReadyButton;
+
+    UPROPERTY()
+    UButton* LeaveButton;
 
     UPROPERTY()
     UTextBlock* StatusText;

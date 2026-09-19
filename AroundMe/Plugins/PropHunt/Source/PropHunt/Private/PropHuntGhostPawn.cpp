@@ -1,5 +1,6 @@
 #include "PropHuntGhostPawn.h"
 
+#include "Net/UnrealNetwork.h"
 #include "Components/WidgetComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -21,7 +22,10 @@
 
 APropHuntGhostPawn::APropHuntGhostPawn()
 {
-    PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bCanEverTick = true; // 手动上报位置需要 Tick
+
+    // ADefaultPawn 默认 bReplicateMovement=false，导致 Ghost 运动不复制到 server，这里显式开启。
+    SetReplicateMovement(true);
 
     NameplateComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("Nameplate"));
     NameplateComponent->SetupAttachment(RootComponent);
@@ -176,5 +180,47 @@ void APropHuntGhostPawn::UpdateNameplate()
     if (UPropHuntNameplateWidget* Widget = Cast<UPropHuntNameplateWidget>(NameplateComponent->GetWidget()))
     {
         Widget->SetInfoText(Text);
+    }
+}
+
+void APropHuntGhostPawn::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    // client 端（autonomous proxy）节流上报位置到 server。
+    if (IsLocallyControlled() && GetLocalRole() == ROLE_AutonomousProxy)
+    {
+        TimeSinceLastUpdate += DeltaTime;
+        if (TimeSinceLastUpdate >= 0.05f)
+        {
+            TimeSinceLastUpdate = 0.0f;
+            ServerUpdateTransform(GetActorLocation(), GetActorRotation());
+        }
+    }
+}
+
+void APropHuntGhostPawn::ServerUpdateTransform_Implementation(FVector Location, FRotator Rotation)
+{
+    // server 设置 replicated 属性，复制到所有客户端（含 Hunter）。
+    GhostLocation = Location;
+    GhostRotation = Rotation;
+
+    // server 本地也更新 simulated proxy 位置。
+    SetActorLocationAndRotation(Location, Rotation, false, nullptr, ETeleportType::ResetPhysics);
+}
+
+void APropHuntGhostPawn::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+    DOREPLIFETIME(APropHuntGhostPawn, GhostLocation);
+    DOREPLIFETIME(APropHuntGhostPawn, GhostRotation);
+}
+
+void APropHuntGhostPawn::OnRep_GhostLocation()
+{
+    // 客户端更新位置（autonomous proxy 自己已在该位置，只更新 simulated proxy）。
+    if (GetLocalRole() == ROLE_SimulatedProxy)
+    {
+        SetActorLocationAndRotation(GhostLocation, GhostRotation, false, nullptr, ETeleportType::ResetPhysics);
     }
 }

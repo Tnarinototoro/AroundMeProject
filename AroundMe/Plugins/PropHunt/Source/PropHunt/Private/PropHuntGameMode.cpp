@@ -8,8 +8,10 @@
 #include "PropHuntPropActor.h"
 #include "PropHuntHUD.h"
 #include "PropHuntGameInstanceSubsystem.h"
+#include "PropHuntMenuSubsystem.h"
 #include "Engine/GameInstance.h"
 #include "EngineUtils.h"
+#include "TimerManager.h"
 
 APropHuntGameMode::APropHuntGameMode()
 {
@@ -250,4 +252,33 @@ void APropHuntGameMode::HandleExpel(APropHuntPropActor* Prop)
             PC->MulticastExpelFeedback(Prop, PC->GetPawn());
         }
     }
+
+    // 驱逐后：结束回合，通知所有客户端显示结算界面。
+    if (APropHuntGameState* GS = Cast<APropHuntGameState>(GameState))
+    {
+        GS->MatchPhase = EPropHuntMatchPhase::Ended;
+    }
+
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        if (APropHuntPlayerController* PC = Cast<APropHuntPlayerController>(It->Get()))
+        {
+            PC->DeliverShowSettlement(TEXT("Hunter Wins!"));
+        }
+    }
+}
+
+void APropHuntGameMode::RequestRematch()
+{
+    GetWorld()->ServerTravel(TEXT("/PropHunt/Maps/PH_Lobby?listen"));
+}
+
+void APropHuntGameMode::RequestBackToMenu()
+{
+    // 清除"在房间"标志，回主菜单。
+    if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+    {
+        Menu->SetInRoom(false);
+    }
+    GetWorld()->ServerTravel(TEXT("/PropHunt/Maps/PH_Lobby?listen"));
 }

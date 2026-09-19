@@ -7,6 +7,10 @@
 #include "PropHuntCharacter.h"
 #include "PropHuntQTEUserWidget.h"
 #include "PropHuntMenuSubsystem.h"
+#include "CommonInputSubsystem.h"
+#include "PropHuntCompassWidget.h"
+#include "PropHuntGhostPawn.h"
+#include "PropHuntPulseSynthComponent.h"
 #include "DIY_CameraManager.h"
 #include "DIY_CameraDefines.h"
 #include "InputCoreTypes.h"
@@ -32,16 +36,124 @@ void APropHuntPlayerController::BeginPlay()
     if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
     {
         const FString MapName = GetWorld()->GetMapName();
-        if (Menu->IsInRoom() || MapName.Contains(TEXT("PH_Lobby")))
+
+        if (MapName.Contains(TEXT("PH_GameMap")))
         {
-            // 进房间（或已在 Lobby 地图，如 PIE 双窗口直进）→ 房间 Widget。
+            // 游戏地图：不显示菜单，直接进游戏。
+            Menu->HideMenu();
+        }
+        else if (Menu->IsInRoom())
+        {
+            // 已在房间（创建/加入房间后 travel 回来）→ 房间 Widget（选队/准备）。
             Menu->ShowRoom();
         }
         else
         {
+            // 未进房间 → 主菜单。
             Menu->ShowMainMenu();
         }
     }
+}
+
+void APropHuntPlayerController::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    // 只在本地的 Hunter 且在游戏地图时显示罗盘。
+    APropHuntPlayerState* PS = GetPlayerState<APropHuntPlayerState>();
+    if (!PS || PS->TeamRole != EPropHuntRole::Hunter || !GetWorld()->GetMapName().Contains(TEXT("PH_GameMap")))
+    {
+        return;
+    }
+
+    if (!CompassWidget)
+    {
+        CompassWidget = CreateWidget<UPropHuntCompassWidget>(this);
+        if (CompassWidget)
+        {
+            CompassWidget->AddToViewport();
+            CompassWidget->SetPositionInViewport(FVector2D(1100.0f, 20.0f));
+        }
+    }
+
+    if (!PulseSynth)
+    {
+        PulseSynth = NewObject<UPropHuntPulseSynthComponent>(this);
+        if (PulseSynth)
+        {
+            PulseSynth->RegisterComponent();
+            PulseSynth->Start();
+        }
+    }
+
+    UpdateCompass();
+    UpdatePulseAudio(DeltaTime);
+}
+
+void APropHuntPlayerController::UpdateCompass()
+{
+    if (!CompassWidget)
+    {
+        return;
+    }
+
+    APawn* HunterPawn = GetPawn();
+    if (!HunterPawn)
+    {
+        return;
+    }
+
+    APropHuntGhostPawn* NearestGhost = nullptr;
+    float NearestDistSq = FLT_MAX;
+    for (TActorIterator<APropHuntGhostPawn> It(GetWorld()); It; ++It)
+    {
+        const float DistSq = HunterPawn->GetSquaredDistanceTo(*It);
+        if (DistSq < NearestDistSq)
+        {
+            NearestGhost = *It;
+            NearestDistSq = DistSq;
+        }
+    }
+
+    if (NearestGhost)
+    {
+        const float Dist = FMath::Sqrt(NearestDistSq);
+        // 30 米内映射到 0~1 强度，越近越强。
+        CurrentSignalStrength = 1.0f - FMath::Clamp(Dist / 3000.0f, 0.0f, 1.0f);
+    }
+    else
+    {
+        CurrentSignalStrength = 0.0f;
+    }
+
+    if (CompassWidget)
+    {
+        CompassWidget->SetSignalStrength(CurrentSignalStrength);
+    }
+}
+
+void APropHuntPlayerController::UpdatePulseAudio(float DeltaTime)
+{
+    if (!PulseSynth)
+    {
+        return;
+    }
+
+    // 盖革计数器：越近滴答越频繁、越响、音调越高。
+    const float Interval = FMath::Lerp(1.2f, 0.12f, CurrentSignalStrength);
+    const float Volume = FMath::Lerp(0.15f, 1.0f, CurrentSignalStrength);
+    const float Pitch = FMath::Lerp(0.8f, 1.6f, CurrentSignalStrength);
+
+    PulseTimer += DeltaTime;
+    if (PulseTimer >= Interval)
+    {
+        PulseTimer = 0.0f;
+        PulseSynth->TriggerPulse(Volume, Pitch);
+    }
+
+    // 极其近（强度 > 0.7）时叠加收音机杂音，越近越响。
+    const float NoiseVolume = FMath::Clamp((CurrentSignalStrength - 0.7f) / 0.3f, 0.0f, 1.0f);
+    PulseSynth->SetNoiseVolume(NoiseVolume);
 }
 
 void APropHuntPlayerController::SetupInputComponent()
@@ -169,6 +281,35 @@ void APropHuntPlayerController::ServerSetReady_Implementation(bool bReady)
     {
         GM->HandleSetReady(this, bReady);
     }
+}
+
+void APropHuntPlayerController::ServerRequestLeaveRoom_Implementation()
+{
+    if (APropHuntLobbyGameMode* GM = GetWorld()->GetAuthGameMode<APropHuntLobbyGameMode>())
+    {
+        GM->HandleLeaveRoom(this);
+    }
+}
+
+void APropHuntPlayerController::ClientReturnToMenu_Implementation()
+{
+    // 重置「在房间」状态，然后独立旅行回菜单地图（NM_Standalone，脱离房间）。
+    if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+    {
+        Menu->SetInRoom(false);
+    }
+
+    // 若当前已是菜单地图则无需旅行，只切回主菜单 UI。
+    if (GetWorld()->GetMapName().Contains(TEXT("PH_Lobby")) && GetWorld()->GetNetMode() == NM_Standalone)
+    {
+        if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+        {
+            Menu->ShowMainMenu();
+        }
+        return;
+    }
+
+    ClientTravel(TEXT("/PropHunt/Maps/PH_Lobby"), TRAVEL_Absolute);
 }
 
 void APropHuntPlayerController::ServerRequestPossess_Implementation(APropHuntPropActor* Prop)
@@ -328,6 +469,47 @@ void APropHuntPlayerController::MulticastExpelFeedback_Implementation(APropHuntP
     if (GEngine)
     {
         GEngine->AddOnScreenDebugMessage(500, 3.0f, FColor::Red, TEXT("GHOST EXPELLED!"));
+    }
+}
+
+void APropHuntPlayerController::ServerRequestRematch_Implementation()
+{
+    if (APropHuntGameMode* GM = GetWorld()->GetAuthGameMode<APropHuntGameMode>())
+    {
+        GM->RequestRematch();
+    }
+}
+
+void APropHuntPlayerController::ServerRequestBackToMenu_Implementation()
+{
+    if (APropHuntGameMode* GM = GetWorld()->GetAuthGameMode<APropHuntGameMode>())
+    {
+        GM->RequestBackToMenu();
+    }
+}
+
+void APropHuntPlayerController::DeliverShowSettlement(const FString& ResultText)
+{
+    if (IsLocalController())
+    {
+        ShowSettlementLocal(ResultText);
+    }
+    else
+    {
+        ClientShowSettlement(ResultText);
+    }
+}
+
+void APropHuntPlayerController::ClientShowSettlement_Implementation(const FString& ResultText)
+{
+    ShowSettlementLocal(ResultText);
+}
+
+void APropHuntPlayerController::ShowSettlementLocal(const FString& ResultText)
+{
+    if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+    {
+        Menu->ShowSettlement(ResultText);
     }
 }
 

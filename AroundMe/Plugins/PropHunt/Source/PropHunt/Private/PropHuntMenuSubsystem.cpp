@@ -1,61 +1,81 @@
 #include "PropHuntMenuSubsystem.h"
 
-#include "Blueprint/UserWidget.h"
-#include "Widgets/CommonActivatableWidgetContainer.h"
-#include "PropHuntMenuRootWidget.h"
+#include "PropHuntTypes.h"
+#include "CommonActivatableWidget.h"
+#include "GameFramework/PlayerController.h"
 #include "PropHuntMainMenuWidget.h"
 #include "PropHuntRoomListWidget.h"
 #include "PropHuntRoomWidget.h"
+#include "PropHuntSettlementWidget.h"
 
 void UPropHuntMenuSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
     Super::Initialize(Collection);
 }
 
-void UPropHuntMenuSubsystem::EnsureStack()
-{
-    if (Stack)
-    {
-        return;
-    }
-
-    // Stack 是 UWidget（不是 UUserWidget），要包在一个 root UserWidget 里才能 AddToViewport。
-    UPropHuntMenuRootWidget* RootWidget = CreateWidget<UPropHuntMenuRootWidget>(GetGameInstance());
-    if (!RootWidget)
-    {
-        return;
-    }
-
-    Stack = RootWidget->WidgetTree->ConstructWidget<UCommonActivatableWidgetStack>(UCommonActivatableWidgetStack::StaticClass(), TEXT("Stack"));
-    RootWidget->WidgetTree->RootWidget = Stack;
-    RootWidget->AddToViewport();
-}
-
 void UPropHuntMenuSubsystem::ShowMainMenu()
 {
-    EnsureStack();
-    if (Stack)
-    {
-        Stack->ClearWidgets();
-        Stack->AddWidget<UPropHuntMainMenuWidget>(UPropHuntMainMenuWidget::StaticClass());
-    }
+    ShowWidget(UPropHuntMainMenuWidget::StaticClass());
 }
 
 void UPropHuntMenuSubsystem::ShowRoomList()
 {
-    EnsureStack();
-    if (Stack)
-    {
-        Stack->AddWidget<UPropHuntRoomListWidget>(UPropHuntRoomListWidget::StaticClass());
-    }
+    ShowWidget(UPropHuntRoomListWidget::StaticClass());
 }
 
 void UPropHuntMenuSubsystem::ShowRoom()
 {
-    EnsureStack();
-    if (Stack)
+    ShowWidget(UPropHuntRoomWidget::StaticClass());
+}
+
+void UPropHuntMenuSubsystem::ShowSettlement(const FString& ResultText)
+{
+    if (CurrentWidget)
     {
-        Stack->ClearWidgets();
-        Stack->AddWidget<UPropHuntRoomWidget>(UPropHuntRoomWidget::StaticClass());
+        CurrentWidget->RemoveFromParent();
+        CurrentWidget = nullptr;
+    }
+
+    UPropHuntSettlementWidget* Widget = CreateWidget<UPropHuntSettlementWidget>(GetGameInstance());
+    if (Widget)
+    {
+        Widget->AddToViewport();
+        Widget->ActivateWidget();
+        Widget->SetResultText(ResultText);
+        CurrentWidget = Widget;
+    }
+}
+
+void UPropHuntMenuSubsystem::HideMenu()
+{
+    if (CurrentWidget)
+    {
+        UE_LOG(LogPropHunt, Warning, TEXT("[HideMenu] removing widget=%s"), *GetNameSafe(CurrentWidget));
+        CurrentWidget->RemoveFromParent();
+        CurrentWidget = nullptr;
+    }
+
+    // 恢复游戏输入模式（鼠标捕获 + 光标隐藏）。Common UI 在 Activatable 树失活时会设成 NoCapture，这里显式改回。
+    if (APlayerController* PC = GetGameInstance()->GetFirstLocalPlayerController())
+    {
+        PC->SetShowMouseCursor(false);
+        PC->SetInputMode(FInputModeGameOnly());
+    }
+}
+
+void UPropHuntMenuSubsystem::ShowWidget(TSubclassOf<UCommonActivatableWidget> WidgetClass)
+{
+    if (CurrentWidget)
+    {
+        CurrentWidget->RemoveFromParent();
+        CurrentWidget = nullptr;
+    }
+
+    UCommonActivatableWidget* Widget = CreateWidget<UCommonActivatableWidget>(GetGameInstance(), WidgetClass);
+    if (Widget)
+    {
+        Widget->AddToViewport();
+        Widget->ActivateWidget();
+        CurrentWidget = Widget;
     }
 }

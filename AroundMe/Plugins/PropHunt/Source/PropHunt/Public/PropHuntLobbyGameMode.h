@@ -22,6 +22,7 @@ public:
 
     void HandleChooseTeam(APropHuntPlayerController* PC, EPropHuntRole NewRole);
     void HandleSetReady(APropHuntPlayerController* PC, bool bReady);
+    void HandleLeaveRoom(APropHuntPlayerController* PC);
 
 protected:
     bool CanStartMatch() const;
@@ -30,12 +31,16 @@ protected:
     void TickCountdown();
     void StartMatch();
 
+    // 房主退出：先把所有客户端送回主菜单，再延迟关闭房间（给可靠 RPC 留出送达时间）。
+    void FinalizeHostLeave();
+
     UPROPERTY(EditDefaultsOnly, Category = "PropHunt")
-    int32 CountdownSeconds{5};
+    int32 CountdownSeconds{1};
 
     // ServerTravel 目标地图（插件 Content 挂载在 /PropHunt/ 下）。
     UPROPERTY(EditDefaultsOnly, Category = "PropHunt")
     FString GameMapPath{TEXT("/PropHunt/Maps/PH_GameMap")};
 
     FTimerHandle CountdownTimerHandle;
+    FTimerHandle HostLeaveTimerHandle;
 };

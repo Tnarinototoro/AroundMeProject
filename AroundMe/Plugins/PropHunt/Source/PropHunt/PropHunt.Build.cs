@@ -22,6 +22,7 @@ public class PropHunt : ModuleRules
                 "GameplayTags",
                 "OnlineSubsystem",
                 "OnlineSubsystemUtils",
+                "AudioMixer",
                 "DIYCore"
             }
         );

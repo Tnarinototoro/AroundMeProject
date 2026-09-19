@@ -8,6 +8,7 @@
 #include "Components/TextBlock.h"
 #include "PropHuntRoomSubsystem.h"
 #include "PropHuntMenuSubsystem.h"
+#include "PropHuntTypes.h"
 
 void UPropHuntRoomListWidget::NativeOnInitialized()
 {
@@ -38,7 +39,7 @@ void UPropHuntRoomListWidget::NativeOnInitialized()
     FSlateFontInfo DirectFont = DirectLabel->GetFont();
     DirectFont.Size = 22;
     DirectLabel->SetFont(DirectFont);
-    DirectLabel->SetText(FText::FromString(TEXT("Connect to 127.0.0.1 (local)")));
+    DirectLabel->SetText(FText::FromString(TEXT("Join Local Room")));
 
     // 刷新按钮
     RefreshButton = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), TEXT("Refresh"));
@@ -84,15 +85,31 @@ void UPropHuntRoomListWidget::NativeOnInitialized()
 
 void UPropHuntRoomListWidget::OnDirectConnectClicked()
 {
-    // 本地直连：绕过 Session 搜索，直接连本机 listen server（127.0.0.1:7777）。
-    if (APlayerController* PC = GetOwningPlayer())
+    UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>();
+    APlayerController* PC = GetOwningPlayer();
+    if (!PC)
     {
-        if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+        return;
+    }
+
+    // 已连上 listen server（编辑器 PIE 双窗口 Num Players=2 时，client 本来就连着 host）→ 直接进房间。
+    if (PC->GetWorld()->GetNetMode() == NM_Client)
+    {
+        if (Menu)
         {
             Menu->SetInRoom(true);
+            Menu->ShowRoom();
         }
-        PC->ClientTravel(TEXT("127.0.0.1:7777"), TRAVEL_Absolute);
+        return;
     }
+
+    // 独立进程（.bat 双开）→ 连本机 listen server（host 已 Create Room，监听默认 7777 端口）。
+    if (Menu)
+    {
+        Menu->SetInRoom(true);
+    }
+    UE_LOG(LogPropHunt, Warning, TEXT("[RoomList] DirectConnect: ClientTravel 127.0.0.1"));
+    PC->ClientTravel(TEXT("127.0.0.1"), TRAVEL_Absolute);
 }
 
 void UPropHuntRoomListWidget::OnRefreshClicked()
@@ -105,34 +122,107 @@ void UPropHuntRoomListWidget::OnRefreshClicked()
 
 void UPropHuntRoomListWidget::OnBackClicked()
 {
-    DeactivateWidget();
+    // 不用 Stack 时 DeactivateWidget 不移除 widget，这里直接切回主菜单。
+    if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+    {
+        Menu->ShowMainMenu();
+    }
 }
 
 void UPropHuntRoomListWidget::PopulateRooms(const TArray<FOnlineSessionSearchResult>& Results)
 {
-    FString Text;
-    if (Results.Num() == 0)
+    // 清空旧房间按钮。
+    for (UButton* Btn : RoomButtons)
     {
-        Text = TEXT("No rooms found.");
-    }
-    else
-    {
-        for (const FOnlineSessionSearchResult& Result : Results)
+        if (Btn)
         {
-            FString OwningUserName = TEXT("Unknown");
-            if (Result.Session.OwningUserName.IsEmpty())
-            {
-                OwningUserName = TEXT("Room");
-            }
-            else
-            {
-                OwningUserName = Result.Session.OwningUserName;
-            }
-            Text += FString::Printf(TEXT("%s  (Ping %d)\n"), *OwningUserName, Result.PingInMs);
+            Btn->RemoveFromParent();
         }
     }
-    if (RoomListText)
+    RoomButtons.Reset();
+    CurrentResults = Results;
+
+    UCanvasPanel* Root = Cast<UCanvasPanel>(WidgetTree->RootWidget);
+
+    // 为每个房间创建一个可点击按钮。
+    for (int32 i = 0; i < Results.Num(); ++i)
     {
-        RoomListText->SetText(FText::FromString(Text));
+        const FOnlineSessionSearchResult& Result = Results[i];
+
+        UButton* Btn = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass());
+        if (!Btn)
+        {
+            continue;
+        }
+
+        if (Root)
+        {
+            UCanvasPanelSlot* RoomSlot = Root->AddChildToCanvas(Btn);
+            RoomSlot->SetAnchors(FAnchors(0.5f, 0.5f, 0.5f, 0.5f));
+            RoomSlot->SetAlignment(FVector2D(0.5f, 0.5f));
+            RoomSlot->SetPosition(FVector2D(0.0f, 150.0f + i * 70.0f));
+            RoomSlot->SetSize(FVector2D(360.0f, 56.0f));
+        }
+
+        const FString RoomName = Result.Session.OwningUserName.IsEmpty() ? TEXT("Room") : Result.Session.OwningUserName;
+        UTextBlock* Label = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
+        Btn->AddChild(Label);
+        FSlateFontInfo Font = Label->GetFont();
+        Font.Size = 20;
+        Label->SetFont(Font);
+        Label->SetText(FText::FromString(FString::Printf(TEXT("%s  (Ping %d)"), *RoomName, Result.PingInMs)));
+
+        Btn->OnPressed.AddDynamic(this, &UPropHuntRoomListWidget::OnRoomPressed);
+        RoomButtons.Add(Btn);
+    }
+
+    if (Results.Num() == 0 && RoomListText)
+    {
+        RoomListText->SetText(FText::FromString(TEXT("No rooms found.")));
+    }
+}
+
+void UPropHuntRoomListWidget::OnRoomPressed()
+{
+    // OnClicked/OnPressed 是无参数委托，无法直接知道是哪个按钮，这里用 IsPressed 找到当前按下的按钮。
+    for (int32 i = 0; i < RoomButtons.Num(); ++i)
+    {
+        if (RoomButtons[i] && RoomButtons[i]->IsPressed() && CurrentResults.IsValidIndex(i))
+        {
+            JoinRoomByResult(CurrentResults[i]);
+            break;
+        }
+    }
+}
+
+void UPropHuntRoomListWidget::JoinRoomByResult(const FOnlineSessionSearchResult& Result)
+{
+    if (UPropHuntRoomSubsystem* RoomSubsystem = GetGameInstance()->GetSubsystem<UPropHuntRoomSubsystem>())
+    {
+        RoomSubsystem->JoinRoom(Result, FOnRoomOpComplete::CreateLambda([this](bool bSuccess)
+        {
+            if (!bSuccess)
+            {
+                return;
+            }
+
+            if (UPropHuntRoomSubsystem* RS = GetGameInstance()->GetSubsystem<UPropHuntRoomSubsystem>())
+            {
+                const FString TravelURL = RS->GetTravelURL();
+                if (TravelURL.IsEmpty())
+                {
+                    return;
+                }
+
+                if (UPropHuntMenuSubsystem* Menu = GetGameInstance()->GetSubsystem<UPropHuntMenuSubsystem>())
+                {
+                    Menu->SetInRoom(true);
+                }
+                if (APlayerController* PC = GetOwningPlayer())
+                {
+                    PC->ClientTravel(TravelURL, TRAVEL_Absolute);
+                }
+            }
+        }));
     }
 }

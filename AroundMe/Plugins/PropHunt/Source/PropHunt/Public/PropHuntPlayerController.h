@@ -16,6 +16,7 @@ public:
     APropHuntPlayerController();
 
     virtual void BeginPlay() override;
+    virtual void Tick(float DeltaTime) override;
     virtual void SetupInputComponent() override;
 
     // Lobby：客户端请求选边 / 切换准备。
@@ -24,6 +25,14 @@ public:
 
     UFUNCTION(Server, Reliable)
     void ServerSetReady(bool bReady);
+
+    // 离开房间。
+    UFUNCTION(Server, Reliable)
+    void ServerRequestLeaveRoom();
+
+    // 服务器通知客户端：离开房间，回主菜单（重置状态 + 独立旅行回菜单地图）。
+    UFUNCTION(Client, Reliable)
+    void ClientReturnToMenu();
 
     // 游戏：附身相关。
     UFUNCTION(Server, Reliable)
@@ -54,6 +63,19 @@ public:
 
     UFUNCTION(NetMulticast, Reliable)
     void MulticastExpelFeedback(APropHuntPropActor* Prop, APawn* GhostPawn);
+
+    // 结算
+    UFUNCTION(Server, Reliable)
+    void ServerRequestRematch();
+
+    UFUNCTION(Server, Reliable)
+    void ServerRequestBackToMenu();
+
+    UFUNCTION(Client, Reliable)
+    void ClientShowSettlement(const FString& ResultText);
+
+    void DeliverShowSettlement(const FString& ResultText);
+    void ShowSettlementLocal(const FString& ResultText);
 
     UFUNCTION(Client, Reliable)
     void ClientBeginPossession(APropHuntPropActor* Prop);
@@ -89,4 +111,16 @@ protected:
 
     UPROPERTY()
     class UPropHuntQTEUserWidget* QTEWidget;
+
+    void UpdateCompass();
+    void UpdatePulseAudio(float DeltaTime);
+
+    UPROPERTY()
+    class UPropHuntCompassWidget* CompassWidget;
+
+    UPROPERTY()
+    class UPropHuntPulseSynthComponent* PulseSynth;
+
+    float CurrentSignalStrength{0.0f};
+    float PulseTimer{0.0f};
 };

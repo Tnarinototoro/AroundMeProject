@@ -19,6 +19,10 @@ public:
     UPROPERTY(Replicated, BlueprintReadOnly, Category = "PropHunt")
     bool bIsReady{false};
 
+    // 是否是房主（房间创建者）。房主退出时房间销毁 / 移交。
+    UPROPERTY(Replicated, BlueprintReadOnly, Category = "PropHunt")
+    bool bIsHost{false};
+
     // Ghost 附身后隐藏身体（玩家状态，跨 Pawn 类型通用）。
     UPROPERTY(ReplicatedUsing = OnRep_bGhostHidden, BlueprintReadOnly, Category = "PropHunt")
     bool bGhostHidden{false};

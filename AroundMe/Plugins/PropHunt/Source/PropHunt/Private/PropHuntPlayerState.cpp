@@ -13,6 +13,7 @@ void APropHuntPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
     DOREPLIFETIME(APropHuntPlayerState, TeamRole);
     DOREPLIFETIME(APropHuntPlayerState, bIsReady);
+    DOREPLIFETIME(APropHuntPlayerState, bIsHost);
     DOREPLIFETIME(APropHuntPlayerState, bGhostHidden);
 }
 

@@ -27,7 +27,11 @@ protected:
     UFUNCTION()
     void OnBackClicked();
 
+    UFUNCTION()
+    void OnRoomPressed();
+
     void PopulateRooms(const TArray<FOnlineSessionSearchResult>& Results);
+    void JoinRoomByResult(const FOnlineSessionSearchResult& Result);
 
     UPROPERTY()
     UButton* DirectConnectButton;
@@ -40,4 +44,9 @@ protected:
 
     UPROPERTY()
     UTextBlock* RoomListText;
+
+    UPROPERTY()
+    TArray<UButton*> RoomButtons;
+
+    TArray<FOnlineSessionSearchResult> CurrentResults;
 };

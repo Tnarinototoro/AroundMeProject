@@ -9,6 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Materials/Material.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/StaticMesh.h"
 #include "UObject/ConstructorHelpers.h"
@@ -21,6 +22,12 @@ void APropHuntPropActor::OnConstruction(const FTransform& Transform)
     if (Mesh)
     {
         Mesh->SetMobility(EComponentMobility::Movable);
+
+        // 确保有动态材质实例（场景旧实例的序列化材质可能覆盖构造函数）。
+        if (!Cast<UMaterialInstanceDynamic>(Mesh->GetMaterial(0)))
+        {
+            Mesh->CreateAndSetMaterialInstanceDynamic(0);
+        }
     }
 
     // 场景旧实例的序列化 attach 关系可能过时，强制 Camera attach 到 SpringArm 末端。
@@ -50,6 +57,14 @@ APropHuntPropActor::APropHuntPropActor()
     {
         Mesh->SetStaticMesh(CubeMesh.Object);
     }
+
+    // 确保材质是 BasicShapeMaterial（带 "Color" 参数），并预创建动态实例方便变色。
+    static ConstructorHelpers::FObjectFinder<UMaterial> ShapeMaterial(TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+    if (ShapeMaterial.Succeeded())
+    {
+        Mesh->SetMaterial(0, ShapeMaterial.Object);
+    }
+    Mesh->CreateAndSetMaterialInstanceDynamic(0);
 
     SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
     SpringArm->SetupAttachment(Mesh);

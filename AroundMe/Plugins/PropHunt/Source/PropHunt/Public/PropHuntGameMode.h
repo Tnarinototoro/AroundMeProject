@@ -25,6 +25,9 @@ public:
     void HandleDrop(APropHuntPlayerController* PC, bool bThrow);
     void HandleExpel(APropHuntPropActor* Prop);
 
+    void RequestRematch();
+    void RequestBackToMenu();
+
     virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
 
 protected:

@@ -22,9 +22,21 @@ protected:
     UFUNCTION()
     void OnJoinRoomClicked();
 
+    UFUNCTION()
+    void OnSettingsClicked();
+
+    UFUNCTION()
+    void OnQuitClicked();
+
     UPROPERTY()
     UButton* CreateRoomButton;
 
     UPROPERTY()
     UButton* JoinRoomButton;
+
+    UPROPERTY()
+    UButton* SettingsButton;
+
+    UPROPERTY()
+    UButton* QuitButton;
 };

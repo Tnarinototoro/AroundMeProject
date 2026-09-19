@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Interfaces/OnlineSessionInterface.h"
+#include "OnlineSessionSettings.h"
 #include "PropHuntRoomSubsystem.generated.h"
 
 DECLARE_DELEGATE_OneParam(FOnRoomOpComplete, bool /*bSuccess*/);
@@ -28,8 +29,11 @@ public:
     // 加入房间（client）；成功后可用 GetTravelURL 拿地址
     void JoinRoom(const FOnlineSessionSearchResult& Result, FOnRoomOpComplete OnComplete);
 
-    // 离开房间
+    // 离开房间（销毁 session）
     void LeaveRoom();
+
+    // 当前是否持有一个活动 session（房主/已加入）。用于「是否在房间里」判定。
+    bool HasActiveSession() const { return bHasActiveSession; }
 
     FString GetTravelURL() const { return TravelURL; }
 
@@ -54,4 +58,9 @@ private:
 
     TSharedPtr<FOnlineSessionSearch> LastSearch;
     FString TravelURL;
+
+    // 本地标记：是否已成功创建/加入 session。
+    // 注意 GetNamedSession 在 PIE/EndPlay 后可能拿不到残留 session（引擎单例跨 PIE 存活），
+    // 因此用这个标记兜底，确保离开/重进时正确销毁。
+    bool bHasActiveSession{false};
 };

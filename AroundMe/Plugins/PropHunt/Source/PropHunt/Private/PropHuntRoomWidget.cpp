@@ -1,5 +1,6 @@
 #include "PropHuntRoomWidget.h"
 
+#include "PropHuntTypes.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
@@ -16,6 +17,7 @@ void UPropHuntRoomWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
 
+    UE_LOG(LogPropHunt, Warning, TEXT("[RoomWidget] NativeOnInitialized"));
     UCanvasPanel* Root = WidgetTree->ConstructWidget<UCanvasPanel>(UCanvasPanel::StaticClass(), TEXT("Root"));
     WidgetTree->RootWidget = Root;
 
@@ -80,6 +82,20 @@ void UPropHuntRoomWidget::NativeOnInitialized()
     StatusFont.Size = 20;
     StatusText->SetFont(StatusFont);
     StatusText->SetText(FText::FromString(TEXT("")));
+
+    // 离开房间按钮
+    LeaveButton = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), TEXT("Leave"));
+    UCanvasPanelSlot* LeaveSlot = Root->AddChildToCanvas(LeaveButton);
+    LeaveSlot->SetAnchors(FAnchors(0.5f, 0.9f, 0.5f, 0.9f));
+    LeaveSlot->SetAlignment(FVector2D(0.5f, 0.5f));
+    LeaveSlot->SetSize(FVector2D(200.0f, 48.0f));
+    LeaveButton->OnClicked.AddDynamic(this, &UPropHuntRoomWidget::OnLeaveClicked);
+    UTextBlock* LeaveLabel = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass(), TEXT("LeaveLabel"));
+    LeaveButton->AddChild(LeaveLabel);
+    FSlateFontInfo LeaveFont = LeaveLabel->GetFont();
+    LeaveFont.Size = 20;
+    LeaveLabel->SetFont(LeaveFont);
+    LeaveLabel->SetText(FText::FromString(TEXT("Leave Room")));
 }
 
 void UPropHuntRoomWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -115,6 +131,14 @@ void UPropHuntRoomWidget::OnReadyClicked()
                 PC->ServerSetReady(!PS->bIsReady);
             }
         }
+    }
+}
+
+void UPropHuntRoomWidget::OnLeaveClicked()
+{
+    if (APropHuntPlayerController* PC = Cast<APropHuntPlayerController>(GetOwningPlayer()))
+    {
+        PC->ServerRequestLeaveRoom();
     }
 }
 
