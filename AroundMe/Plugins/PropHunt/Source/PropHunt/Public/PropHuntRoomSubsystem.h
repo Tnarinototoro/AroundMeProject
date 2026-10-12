@@ -42,6 +42,11 @@ private:
     void OnFindSessionsComplete(bool bSuccessful);
     void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 
+    // 当前平台服务是否是 EOS（用于自适应 session 设置）。
+    bool IsEOS() const;
+    // 本地玩家是否已完成登录（EOS 需要，Null 恒为已登录）。
+    bool IsLoggedIn() const;
+
     IOnlineSessionPtr SessionInterface;
 
     FOnCreateSessionCompleteDelegate CreateSessionDelegate;
