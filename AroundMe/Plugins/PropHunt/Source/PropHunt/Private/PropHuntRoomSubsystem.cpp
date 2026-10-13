@@ -4,6 +4,7 @@
 #include "OnlineSubsystem.h"
 #include "OnlineSubsystemUtils.h"
 #include "OnlineSessionSettings.h"
+#include "Online/OnlineSessionNames.h"
 #include "Interfaces/OnlineIdentityInterface.h"
 
 void UPropHuntRoomSubsystem::Initialize(FSubsystemCollectionBase& Collection)
@@ -117,6 +118,10 @@ void UPropHuntRoomSubsystem::CreateRoom(FOnRoomOpComplete OnComplete)
     if (bEOS)
     {
         Settings.bUseLobbiesIfAvailable = true; // EOS 用 Lobby 做房间发现
+        // EOS Lobby 搜索要求至少一个真实属性做匹配（否则 "Search query is empty"）。
+        // 这里挂一个固定游戏标识属性（AdvertisementType=ViaOnlineService → 会被标记为 Public 可搜索），
+        // 搜索时用同样的键值匹配。
+        Settings.Set(FName(TEXT("PROPHUNT_GAMEMODE")), FString(TEXT("PROPHUNT")), EOnlineDataAdvertisementType::ViaOnlineService);
     }
     Settings.NumPublicConnections = 2;
 
@@ -174,6 +179,17 @@ void UPropHuntRoomSubsystem::FindRooms(FOnFindRoomsComplete OnComplete)
     LastSearch = MakeShareable(new FOnlineSessionSearch());
     LastSearch->bIsLanQuery = !IsEOS();
     LastSearch->MaxSearchResults = 20;
+
+    if (IsEOS())
+    {
+        // EOS 必须显式标记 SEARCH_LOBBIES，才会走 Lobby 搜索；否则走 Session 搜索。
+        // CreateRoom 用 bUseLobbiesIfAvailable=true 创建的是 Lobby，两边不对上就搜不到房间。
+        LastSearch->QuerySettings.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
+
+        // Lobby 搜索必须有至少一个真实属性做匹配（否则 "Search query is empty"）。
+        // 与 CreateRoom 里挂的 PROPHUNT_GAMEMODE 属性匹配。
+        LastSearch->QuerySettings.Set(FName(TEXT("PROPHUNT_GAMEMODE")), FString(TEXT("PROPHUNT")), EOnlineComparisonOp::Equals);
+    }
 
     const FUniqueNetIdPtr NetId = LocalPlayer->GetPreferredUniqueNetId().GetUniqueNetId();
     if (!NetId.IsValid() || !SessionInterface->FindSessions(*NetId, LastSearch.ToSharedRef()))
