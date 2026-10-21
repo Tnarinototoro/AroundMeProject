@@ -15,7 +15,7 @@
 		{
 			"Name": "AroundMeEditor",
 			"Type": "Editor",
-			"LoadingPhase": "PostEngineInit",
+			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"UnrealEd",
 				"LevelEditor"

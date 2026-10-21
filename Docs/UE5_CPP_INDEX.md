@@ -1,6 +1,6 @@
-﻿# UE5 C++ File Index
+# UE5 C++ File Index
 
-Generated: 2026-06-16 16:56:37 +08:00
+Generated: 2026-10-19 15:31:00 +08:00
 
 Scope: UE C++ source and build files under `AroundMe/Source`, `AroundMe/Plugins`, and `PlayGround/Source`. Excludes `Binaries`, `Intermediate`, `Saved`, and `DerivedDataCache`.
 
@@ -8,39 +8,39 @@ Extensions: `.h`, `.hpp`, `.cpp`, `.cxx`, `.cc`, `.Build.cs`, `.Target.cs`.
 
 ## Summary
 
-Total files: 1357
+Total files: 1416
 
-- AroundMe plugins source: 1104
-- AroundMe project source: 248
+- AroundMe plugins source: 1161
+- AroundMe project source: 250
 - PlayGround project source: 5
 
 ## File Type Counts
 
-- `.Build.cs`: 27
-- `.cpp`: 552
-- `.h`: 774
+- `.Build.cs`: 29
+- `.cpp`: 581
+- `.h`: 802
 - `.Target.cs`: 4
 
 ## AroundMe Project Source
 
-Files: 248
-
+Files: 250
 
 ### `AroundMe\Source`
 
 - `AroundMe.Target.cs`
+- `AroundMeEditor.Target.cs`
 
-### `AroundMe\Source\AroundMe\AI\Assets`
+### `AroundMe\Source\AroundMe`
 
-- `DIY_PetRoutineAsset.cpp`
-- `DIY_PetRoutineAsset.h`
-- `DIY_PetSoulAsset.cpp`
-- `DIY_PetSoulAsset.h`
-
-### `AroundMe\Source\AroundMe\AI\Condition`
-
-- `DIY_GamePlayTagCompare.cpp`
-- `DIY_GamePlayTagCompare.h`
+- `AroundMe.Build.cs`
+- `AroundMe.cpp`
+- `AroundMe.h`
+- `AroundMeGameModeBase.cpp`
+- `AroundMeGameModeBase.h`
+- `DIY_EquipmentCommonInterface.cpp`
+- `DIY_EquipmentCommonInterface.h`
+- `DIY_ProjectConfig.cpp`
+- `DIY_ProjectConfig.h`
 
 ### `AroundMe\Source\AroundMe\AI`
 
@@ -58,6 +58,18 @@ Files: 248
 - `DIY_StateTreeRefTask.h`
 - `DIY_StateTreeRefTypes.cpp`
 - `DIY_StateTreeRefTypes.h`
+
+### `AroundMe\Source\AroundMe\AI\Assets`
+
+- `DIY_PetRoutineAsset.cpp`
+- `DIY_PetRoutineAsset.h`
+- `DIY_PetSoulAsset.cpp`
+- `DIY_PetSoulAsset.h`
+
+### `AroundMe\Source\AroundMe\AI\Condition`
+
+- `DIY_GamePlayTagCompare.cpp`
+- `DIY_GamePlayTagCompare.h`
 
 ### `AroundMe\Source\AroundMe\Area`
 
@@ -81,18 +93,23 @@ Files: 248
 - `DIY_EnvSmartObject.cpp`
 - `DIY_EnvSmartObject.h`
 
-### `AroundMe\Source\AroundMe`
-
-- `AroundMe.Build.cs`
-- `AroundMe.cpp`
-- `AroundMe.h`
-- `AroundMeGameModeBase.cpp`
-- `AroundMeGameModeBase.h`
-
 ### `AroundMe\Source\AroundMe\Components`
 
 - `DIY_ChangeStaticMeshComponent.cpp`
 - `DIY_ChangeStaticMeshComponent.h`
+
+### `AroundMe\Source\AroundMe\Debug`
+
+- `DIY_DebugImGuiSubsystem.cpp`
+- `DIY_DebugImGuiSubsystem.h`
+- `DIY_GlobalDebugSettings.cpp`
+- `DIY_GlobalDebugSettings.h`
+- `DIY_ImGui.h`
+- `DIY_ImGuiPlayerProxy.cpp`
+- `DIY_ImGuiPlayerProxy.h`
+- `DIY_ImGuiPositionOverride.h`
+- `DIY_ImGuiProxy.cpp`
+- `DIY_ImGuiProxy.h`
 
 ### `AroundMe\Source\AroundMe\Debug\Contents`
 
@@ -111,26 +128,6 @@ Files: 248
 - `DIY_ImGuiContentProxy_Weather.cpp`
 - `DIY_ImGuiContentProxy_Weather.h`
 
-### `AroundMe\Source\AroundMe\Debug`
-
-- `DIY_DebugImGuiSubsystem.cpp`
-- `DIY_DebugImGuiSubsystem.h`
-- `DIY_GlobalDebugSettings.cpp`
-- `DIY_GlobalDebugSettings.h`
-- `DIY_ImGui.h`
-- `DIY_ImGuiPlayerProxy.cpp`
-- `DIY_ImGuiPlayerProxy.h`
-- `DIY_ImGuiPositionOverride.h`
-- `DIY_ImGuiProxy.cpp`
-- `DIY_ImGuiProxy.h`
-
-### `AroundMe\Source\AroundMe`
-
-- `DIY_EquipmentCommonInterface.cpp`
-- `DIY_EquipmentCommonInterface.h`
-- `DIY_ProjectConfig.cpp`
-- `DIY_ProjectConfig.h`
-
 ### `AroundMe\Source\AroundMe\Essentials`
 
 - `DIY_SmartViewportClient.cpp`
@@ -139,6 +136,12 @@ Files: 248
 ### `AroundMe\Source\AroundMe\GameUtilities`
 
 - `DIY_HelperMacros.h`
+- `DIY_StylizedRenderDirector.cpp`
+- `DIY_StylizedRenderDirector.h`
+- `DIY_StylizedRenderSettings.cpp`
+- `DIY_StylizedRenderSettings.h`
+- `DIY_StylizedRenderSubsystem.cpp`
+- `DIY_StylizedRenderSubsystem.h`
 - `DIY_Utilities.cpp`
 - `DIY_Utilities.h`
 
@@ -180,6 +183,19 @@ Files: 248
 - `DIY_WeatherManager.cpp`
 - `DIY_WeatherManager.h`
 
+### `AroundMe\Source\AroundMe\Player`
+
+- `DIY_MainPlayer.cpp`
+- `DIY_MainPlayer.h`
+- `DIY_MainPlayerController.cpp`
+- `DIY_MainPlayerController.h`
+- `DIY_MainPlayerPet.cpp`
+- `DIY_MainPlayerPet.h`
+- `DIY_MainWatcher_Dbg.cpp`
+- `DIY_MainWatcher_Dbg.h`
+- `DIY_UserDefines.cpp`
+- `DIY_UserDefines.h`
+
 ### `AroundMe\Source\AroundMe\Player\Actions`
 
 - `DIY_AcitonDefines.h`
@@ -196,25 +212,8 @@ Files: 248
 
 - `DIY_CameraBase.cpp`
 - `DIY_CameraBase.h`
-- `DIY_CameraDefines.cpp`
-- `DIY_CameraDefines.h`
-- `DIY_CameraManager.cpp`
-- `DIY_CameraManager.h`
 - `DIY_MainPlayerCameraController.cpp`
 - `DIY_MainPlayerCameraController.h`
-
-### `AroundMe\Source\AroundMe\Player`
-
-- `DIY_MainPlayer.cpp`
-- `DIY_MainPlayer.h`
-- `DIY_MainPlayerController.cpp`
-- `DIY_MainPlayerController.h`
-- `DIY_MainPlayerPet.cpp`
-- `DIY_MainPlayerPet.h`
-- `DIY_MainWatcher_Dbg.cpp`
-- `DIY_MainWatcher_Dbg.h`
-- `DIY_UserDefines.cpp`
-- `DIY_UserDefines.h`
 
 ### `AroundMe\Source\AroundMe\Player\Equipments`
 
@@ -272,11 +271,6 @@ Files: 248
 - `DIY_TemperatureProcessor.cpp`
 - `DIY_TemperatureProcessor.h`
 
-### `AroundMe\Source\AroundMe\Player\Items\Components`
-
-- `DIY_CropGrowthComponent.cpp`
-- `DIY_CropGrowthComponent.h`
-
 ### `AroundMe\Source\AroundMe\Player\Items`
 
 - `DIY_Item.cpp`
@@ -292,6 +286,11 @@ Files: 248
 - `DIY_ItemManagerDefines.cpp`
 - `DIY_ItemManagerDefines.h`
 
+### `AroundMe\Source\AroundMe\Player\Items\Components`
+
+- `DIY_CropGrowthComponent.cpp`
+- `DIY_CropGrowthComponent.h`
+
 ### `AroundMe\Source\AroundMe\Player\MainBase`
 
 - `DIY_MainBaseManager.cpp`
@@ -306,6 +305,11 @@ Files: 248
 - `DIY_MainPlayerUIDefines.cpp`
 - `DIY_MainPlayerUIDefines.h`
 
+### `AroundMe\Source\AroundMe\System`
+
+- `DIY_GameInstanceSubsystem.cpp`
+- `DIY_GameInstanceSubsystem.h`
+
 ### `AroundMe\Source\AroundMe\System\Animation`
 
 - `DIY_AnimInstanceBase.cpp`
@@ -314,15 +318,6 @@ Files: 248
 - `DIY_AnimProxyBase.h`
 - `DIY_AnimProxyDataBase.cpp`
 - `DIY_AnimProxyDataBase.h`
-
-### `AroundMe\Source\AroundMe\System`
-
-- `DIY_GameInstanceSubsystem.cpp`
-- `DIY_GameInstanceSubsystem.h`
-- `DIY_TickableWorldSubsystem.cpp`
-- `DIY_TickableWorldSubsystem.h`
-- `DIY_WorldSubsystem.cpp`
-- `DIY_WorldSubsystem.h`
 
 ### `AroundMe\Source\AroundMe\System\Util`
 
@@ -352,10 +347,6 @@ Files: 248
 - `DIY_PlayerStateWidget.cpp`
 - `DIY_PlayerStateWidget.h`
 
-### `AroundMe\Source`
-
-- `AroundMeEditor.Target.cs`
-
 ### `AroundMe\Source\AroundMeEditor`
 
 - `AroundMeEditor.Build.cs`
@@ -379,10 +370,17 @@ Files: 248
 
 - `DIY_DebugSectionImpl_AI.cpp`
 
+### `AroundMe\Source\AroundMeEditor\Tools`
+
+- `DIY_StylizedMaterialLibrary.cpp`
+- `DIY_StylizedMaterialLibrary.h`
+- `DIY_StylizedMaterialLibraryCommandlet.cpp`
+- `DIY_StylizedMaterialLibraryCommandlet.h`
+
+
 ## AroundMe Plugins Source
 
-Files: 1104
-
+Files: 1161
 
 ### `AroundMe\Plugins\AnimatedTexturePlugin\Source\AnimatedTexture`
 
@@ -396,16 +394,13 @@ Files: 1104
 - `AnimatedTextureModule.cpp`
 - `AnimatedTextureResource.cpp`
 - `AnimatedTextureResource.h`
+- `MaterialExpressionTextureSampleParameterAnim.cpp`
 
 ### `AroundMe\Plugins\AnimatedTexturePlugin\Source\AnimatedTexture\Private\giflib`
 
 - `gif_hash.h`
 - `gif_lib.h`
 - `gif_lib_private.h`
-
-### `AroundMe\Plugins\AnimatedTexturePlugin\Source\AnimatedTexture\Private`
-
-- `MaterialExpressionTextureSampleParameterAnim.cpp`
 
 ### `AroundMe\Plugins\AnimatedTexturePlugin\Source\AnimatedTexture\Public`
 
@@ -464,6 +459,12 @@ Files: 1104
 
 - `DIYPlatformService.Build.cs`
 
+### `AroundMe\Plugins\DIYAndroidServiceLib\Source\DIYAndroidServiceLib\Private`
+
+- `DIY_CommuLog.h`
+- `DIY_PlatformServiceSubsystem.cpp`
+- `DIYPlatformService.cpp`
+
 ### `AroundMe\Plugins\DIYAndroidServiceLib\Source\DIYAndroidServiceLib\Private\Android`
 
 - `DIY_CommuDevice.cpp`
@@ -477,12 +478,6 @@ Files: 1104
 - `DIY_CommuJavaConvertor.h`
 - `DIY_CommuMethodCallUtils.cpp`
 - `DIY_CommuMethodCallUtils.h`
-
-### `AroundMe\Plugins\DIYAndroidServiceLib\Source\DIYAndroidServiceLib\Private`
-
-- `DIY_CommuLog.h`
-- `DIY_PlatformServiceSubsystem.cpp`
-- `DIYPlatformService.cpp`
 
 ### `AroundMe\Plugins\DIYAndroidServiceLib\Source\DIYAndroidServiceLib\Private\IOS`
 
@@ -504,6 +499,25 @@ Files: 1104
 
 - `DIY_CommuDeviceInterface.h`
 - `DIY_CommuManagerInterface.h`
+
+### `AroundMe\Plugins\DIYCore\Source\DIYCore`
+
+- `DIYCore.Build.cs`
+
+### `AroundMe\Plugins\DIYCore\Source\DIYCore\Private`
+
+- `DIY_CameraDefines.cpp`
+- `DIY_CameraManager.cpp`
+- `DIY_TickableWorldSubsystem.cpp`
+- `DIY_WorldSubsystem.cpp`
+- `DIYCoreModule.cpp`
+
+### `AroundMe\Plugins\DIYCore\Source\DIYCore\Public`
+
+- `DIY_CameraDefines.h`
+- `DIY_CameraManager.h`
+- `DIY_TickableWorldSubsystem.h`
+- `DIY_WorldSubsystem.h`
 
 ### `AroundMe\Plugins\DragonIKPlugin\Source\DragonIKPlugin`
 
@@ -618,14 +632,14 @@ Files: 1104
 - `GameplayMessageSubsystem.h`
 - `GameplayMessageTypes2.h`
 
+### `AroundMe\Plugins\GraphFormatter\Source\GraphFormatter`
+
+- `GraphFormatter.Build.cs`
+
 ### `AroundMe\Plugins\GraphFormatter\Source\GraphFormatter\graph_layout`
 
 - `graph_layout.cpp`
 - `graph_layout.h`
-
-### `AroundMe\Plugins\GraphFormatter\Source\GraphFormatter`
-
-- `GraphFormatter.Build.cs`
 
 ### `AroundMe\Plugins\GraphFormatter\Source\GraphFormatter\Private`
 
@@ -673,6 +687,66 @@ Files: 1104
 - `LocomotorCore.h`
 - `RigUnit_Locomotor.h`
 
+### `AroundMe\Plugins\PropHunt\Source\PropHunt`
+
+- `PropHunt.Build.cs`
+
+### `AroundMe\Plugins\PropHunt\Source\PropHunt\Private`
+
+- `PropHuntCharacter.cpp`
+- `PropHuntCompassWidget.cpp`
+- `PropHuntGameInstanceSubsystem.cpp`
+- `PropHuntGameMode.cpp`
+- `PropHuntGameState.cpp`
+- `PropHuntGhostPawn.cpp`
+- `PropHuntHUD.cpp`
+- `PropHuntLobbyGameMode.cpp`
+- `PropHuntMainMenuWidget.cpp`
+- `PropHuntMenuRootWidget.cpp`
+- `PropHuntMenuSubsystem.cpp`
+- `PropHuntModule.cpp`
+- `PropHuntNameplateWidget.cpp`
+- `PropHuntPauseMenuWidget.cpp`
+- `PropHuntPlayerController.cpp`
+- `PropHuntPlayerState.cpp`
+- `PropHuntPropActor.cpp`
+- `PropHuntPulseSynthComponent.cpp`
+- `PropHuntQTEUserWidget.cpp`
+- `PropHuntRoomListWidget.cpp`
+- `PropHuntRoomSubsystem.cpp`
+- `PropHuntRoomWidget.cpp`
+- `PropHuntSettlementWidget.cpp`
+
+### `AroundMe\Plugins\PropHunt\Source\PropHunt\Public`
+
+- `PropHuntCharacter.h`
+- `PropHuntCompassWidget.h`
+- `PropHuntGameInstanceSubsystem.h`
+- `PropHuntGameMode.h`
+- `PropHuntGameState.h`
+- `PropHuntGhostPawn.h`
+- `PropHuntHUD.h`
+- `PropHuntLobbyGameMode.h`
+- `PropHuntMainMenuWidget.h`
+- `PropHuntMenuRootWidget.h`
+- `PropHuntMenuSubsystem.h`
+- `PropHuntNameplateWidget.h`
+- `PropHuntPauseMenuWidget.h`
+- `PropHuntPlayerController.h`
+- `PropHuntPlayerState.h`
+- `PropHuntPropActor.h`
+- `PropHuntPulseSynthComponent.h`
+- `PropHuntQTEUserWidget.h`
+- `PropHuntRoomListWidget.h`
+- `PropHuntRoomSubsystem.h`
+- `PropHuntRoomWidget.h`
+- `PropHuntSettlementWidget.h`
+- `PropHuntTypes.h`
+
+### `AroundMe\Plugins\RuntimeVertexPainter\Source\RuntimeVertexPainter`
+
+- `RuntimeVertexPainter.Build.cs`
+
 ### `AroundMe\Plugins\RuntimeVertexPainter\Source\RuntimeVertexPainter\Private`
 
 - `RuntimeVertexPainter.cpp`
@@ -683,22 +757,9 @@ Files: 1104
 - `RuntimeVertexPainter.h`
 - `RuntimeVertexPainterBPLibrary.h`
 
-### `AroundMe\Plugins\RuntimeVertexPainter\Source\RuntimeVertexPainter`
-
-- `RuntimeVertexPainter.Build.cs`
-
 ### `AroundMe\Plugins\UnrealImGui\Source\ImGui`
 
 - `ImGui.Build.cs`
-
-### `AroundMe\Plugins\UnrealImGui\Source\ImGui\Private\Editor`
-
-- `ImGuiCanvasSizeInfoCustomization.cpp`
-- `ImGuiCanvasSizeInfoCustomization.h`
-- `ImGuiEditor.cpp`
-- `ImGuiEditor.h`
-- `ImGuiKeyInfoCustomization.cpp`
-- `ImGuiKeyInfoCustomization.h`
 
 ### `AroundMe\Plugins\UnrealImGui\Source\ImGui\Private`
 
@@ -733,6 +794,16 @@ Files: 1104
 - `ImGuiTextureHandle.cpp`
 - `TextureManager.cpp`
 - `TextureManager.h`
+- `VersionCompatibility.h`
+
+### `AroundMe\Plugins\UnrealImGui\Source\ImGui\Private\Editor`
+
+- `ImGuiCanvasSizeInfoCustomization.cpp`
+- `ImGuiCanvasSizeInfoCustomization.h`
+- `ImGuiEditor.cpp`
+- `ImGuiEditor.h`
+- `ImGuiKeyInfoCustomization.cpp`
+- `ImGuiKeyInfoCustomization.h`
 
 ### `AroundMe\Plugins\UnrealImGui\Source\ImGui\Private\Utilities`
 
@@ -744,10 +815,6 @@ Files: 1104
 - `WorldContext.cpp`
 - `WorldContext.h`
 - `WorldContextIndex.h`
-
-### `AroundMe\Plugins\UnrealImGui\Source\ImGui\Private`
-
-- `VersionCompatibility.h`
 
 ### `AroundMe\Plugins\UnrealImGui\Source\ImGui\Private\Widgets`
 
@@ -802,6 +869,10 @@ Files: 1104
 
 - `implot.h`
 
+### `AroundMe\Plugins\VaRest\Source\VaRest`
+
+- `VaRest.Build.cs`
+
 ### `AroundMe\Plugins\VaRest\Source\VaRest\Private`
 
 - `VaRest.cpp`
@@ -826,9 +897,9 @@ Files: 1104
 - `VaRestSubsystem.h`
 - `VaRestTypes.h`
 
-### `AroundMe\Plugins\VaRest\Source\VaRest`
+### `AroundMe\Plugins\VaRest\Source\VaRestEditor`
 
-- `VaRest.Build.cs`
+- `VaRestEditor.Build.cs`
 
 ### `AroundMe\Plugins\VaRest\Source\VaRestEditor\Private`
 
@@ -840,9 +911,9 @@ Files: 1104
 - `VaRest_BreakJson.h`
 - `VaRestEditor.h`
 
-### `AroundMe\Plugins\VaRest\Source\VaRestEditor`
+### `AroundMe\Plugins\Voxel\Source\ThirdParty\VoxelEmbree3`
 
-- `VaRestEditor.Build.cs`
+- `VoxelEmbree3.Build.cs`
 
 ### `AroundMe\Plugins\Voxel\Source\ThirdParty\VoxelEmbree3\Linux\include\embree3`
 
@@ -868,10 +939,6 @@ Files: 1104
 - `rtcore_scene.h`
 - `rtcore_version.h`
 
-### `AroundMe\Plugins\Voxel\Source\ThirdParty\VoxelEmbree3`
-
-- `VoxelEmbree3.Build.cs`
-
 ### `AroundMe\Plugins\Voxel\Source\ThirdParty\VoxelEmbree3\Win64\include\embree3`
 
 - `rtcore.h`
@@ -884,23 +951,41 @@ Files: 1104
 - `rtcore_scene.h`
 - `rtcore_version.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private\FastNoise`
+### `AroundMe\Plugins\Voxel\Source\Voxel`
 
-- `VoxelFastNoiseLUT.cpp`
+- `Voxel.Build.cs`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private`
 
 - `IVoxelPool.cpp`
+- `VoxelAsyncWork.cpp`
+- `VoxelDefaultPool.cpp`
+- `VoxelDefinitions.cpp`
+- `VoxelDomainAssetFix.cpp`
+- `VoxelMaterialBuilder.cpp`
+- `VoxelMaterialInterface.cpp`
+- `VoxelMaterialUtilities.cpp`
+- `VoxelMessages.cpp`
+- `VoxelModule.cpp`
+- `VoxelObjectArchive.cpp`
+- `VoxelSerializationUtilities.cpp`
+- `VoxelSettings.cpp`
+- `VoxelStaticWorld.cpp`
+- `VoxelTexture.cpp`
+- `VoxelTextureUtilities.cpp`
+- `VoxelThreadPool.cpp`
+- `VoxelWorld.cpp`
+- `VoxelWorldRootComponent.cpp`
+
+### `AroundMe\Plugins\Voxel\Source\Voxel\Private\FastNoise`
+
+- `VoxelFastNoiseLUT.cpp`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelAssets`
 
 - `VoxelDataAsset.cpp`
 - `VoxelDataAssetData.cpp`
 - `VoxelHeightmapAsset.cpp`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private`
-
-- `VoxelAsyncWork.cpp`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelComponents`
 
@@ -923,12 +1008,6 @@ Files: 1104
 - `VoxelDebugUtilities.cpp`
 - `VoxelLineBatchComponent.cpp`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private`
-
-- `VoxelDefaultPool.cpp`
-- `VoxelDefinitions.cpp`
-- `VoxelDomainAssetFix.cpp`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelEvents`
 
 - `VoxelEventManager.cpp`
@@ -941,23 +1020,15 @@ Files: 1104
 - `VoxelGeneratorPicker.cpp`
 - `VoxelGeneratorTools.cpp`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelImporters\SDFGen`
-
-- `makelevelset3.cpp`
-- `makelevelset3.h`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelImporters`
 
 - `VoxelLandscapeImporter.cpp`
 - `VoxelMeshImporter.cpp`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private`
+### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelImporters\SDFGen`
 
-- `VoxelMaterialBuilder.cpp`
-- `VoxelMaterialInterface.cpp`
-- `VoxelMaterialUtilities.cpp`
-- `VoxelMessages.cpp`
-- `VoxelModule.cpp`
+- `makelevelset3.cpp`
+- `makelevelset3.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelMultiplayer`
 
@@ -966,9 +1037,11 @@ Files: 1104
 - `VoxelMultiplayerTcp.cpp`
 - `VoxelMultiplayerUtilities.cpp`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private`
+### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelPlaceableItems`
 
-- `VoxelObjectArchive.cpp`
+- `VoxelPlaceableItem.cpp`
+- `VoxelPlaceableItemManager.cpp`
+- `VoxelPlaceableItemsUtilities.cpp`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelPlaceableItems\Actors`
 
@@ -977,16 +1050,19 @@ Files: 1104
 - `VoxelDisableEditsBox.cpp`
 - `VoxelPlaceableItemActorHelper.cpp`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelPlaceableItems`
-
-- `VoxelPlaceableItem.cpp`
-- `VoxelPlaceableItemManager.cpp`
-- `VoxelPlaceableItemsUtilities.cpp`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelRender`
 
 - `IVoxelLODManager.cpp`
 - `IVoxelRenderer.cpp`
+- `VoxelChunkMesh.cpp`
+- `VoxelMaterialExpressions.cpp`
+- `VoxelProceduralMeshComponent.cpp`
+- `VoxelProceduralMeshSceneProxy.cpp`
+- `VoxelProceduralMeshSceneProxy.h`
+- `VoxelProcMeshBuffers.cpp`
+- `VoxelRawStaticIndexBuffer.cpp`
+- `VoxelRenderUtilities.cpp`
+- `VoxelRenderUtilities.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelRender\LODManager`
 
@@ -1039,38 +1115,12 @@ Files: 1104
 - `VoxelRendererMixedMeshHandler.cpp`
 - `VoxelRendererMixedMeshHandler.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelRender`
-
-- `VoxelChunkMesh.cpp`
-- `VoxelMaterialExpressions.cpp`
-- `VoxelProceduralMeshComponent.cpp`
-- `VoxelProceduralMeshSceneProxy.cpp`
-- `VoxelProceduralMeshSceneProxy.h`
-- `VoxelProcMeshBuffers.cpp`
-- `VoxelRawStaticIndexBuffer.cpp`
-- `VoxelRenderUtilities.cpp`
-- `VoxelRenderUtilities.h`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private`
-
-- `VoxelSerializationUtilities.cpp`
-- `VoxelSettings.cpp`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelShaders`
 
 - `VoxelDistanceFieldShader.cpp`
 - `VoxelErosion.cpp`
 - `VoxelErosionShader.cpp`
 - `VoxelErosionShader.h`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelSpawners\HitGenerators`
-
-- `VoxelHeightHitGenerator.cpp`
-- `VoxelHeightHitGenerator.h`
-- `VoxelHitGenerator.cpp`
-- `VoxelHitGenerator.h`
-- `VoxelRayHitGenerator.cpp`
-- `VoxelRayHitGenerator.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelSpawners`
 
@@ -1096,12 +1146,32 @@ Files: 1104
 - `VoxelSpawnerUtilities.cpp`
 - `VoxelSpawnerUtilities.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private`
+### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelSpawners\HitGenerators`
 
-- `VoxelStaticWorld.cpp`
-- `VoxelTexture.cpp`
-- `VoxelTextureUtilities.cpp`
-- `VoxelThreadPool.cpp`
+- `VoxelHeightHitGenerator.cpp`
+- `VoxelHeightHitGenerator.h`
+- `VoxelHitGenerator.cpp`
+- `VoxelHitGenerator.h`
+- `VoxelRayHitGenerator.cpp`
+- `VoxelRayHitGenerator.h`
+
+### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelTools`
+
+- `VoxelAssetTools.cpp`
+- `VoxelBlueprintLibrary.cpp`
+- `VoxelDataTools.cpp`
+- `VoxelHardnessHandler.cpp`
+- `VoxelMathLibrary.cpp`
+- `VoxelPaintMaterial.cpp`
+- `VoxelPhysics.cpp`
+- `VoxelPhysicsPartSpawner.cpp`
+- `VoxelProjectionTools.cpp`
+- `VoxelSurfaceTools.cpp`
+- `VoxelTestLibrary.cpp`
+- `VoxelTextureTools.cpp`
+- `VoxelToolHelpers.cpp`
+- `VoxelToolManager.cpp`
+- `VoxelToolsBase.cpp`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelTools\Gen`
 
@@ -1130,37 +1200,68 @@ Files: 1104
 - `VoxelToolLibrary.cpp`
 - `VoxelTrimTool.cpp`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelTools`
-
-- `VoxelAssetTools.cpp`
-- `VoxelBlueprintLibrary.cpp`
-- `VoxelDataTools.cpp`
-- `VoxelHardnessHandler.cpp`
-- `VoxelMathLibrary.cpp`
-- `VoxelPaintMaterial.cpp`
-- `VoxelPhysics.cpp`
-- `VoxelPhysicsPartSpawner.cpp`
-- `VoxelProjectionTools.cpp`
-- `VoxelSurfaceTools.cpp`
-- `VoxelTestLibrary.cpp`
-- `VoxelTextureTools.cpp`
-- `VoxelToolHelpers.cpp`
-- `VoxelToolManager.cpp`
-- `VoxelToolsBase.cpp`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Private\VoxelUtilities`
 
 - `VoxelConfigUtilities.cpp`
 - `VoxelDistanceFieldUtilities.cpp`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Private`
-
-- `VoxelWorld.cpp`
-- `VoxelWorldRootComponent.cpp`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
 
 - `FastNoise.h`
+- `IVoxelPool.h`
+- `VoxelAsyncWork.h`
+- `VoxelBoolVector.h`
+- `VoxelCancelCounter.h`
+- `VoxelCharacter.h`
+- `VoxelDebug.h`
+- `VoxelDefaultPool.h`
+- `VoxelDefinitions.h`
+- `VoxelDelegateHelpers.h`
+- `VoxelDiff.h`
+- `VoxelDirection.h`
+- `VoxelEditorDelegates.h`
+- `VoxelEditorDelegatesInterface.h`
+- `VoxelEngineVersionHelpers.h`
+- `VoxelEnums.h`
+- `VoxelFeedbackContext.h`
+- `VoxelIntBox.h`
+- `VoxelIntBoxLibrary.h`
+- `VoxelInterpolator.h`
+- `VoxelInvokerSettings.h`
+- `VoxelItemStack.h`
+- `VoxelLog.h`
+- `VoxelMacros.h`
+- `VoxelMaterial.h`
+- `VoxelMaterialBuilder.h`
+- `VoxelMessages.h`
+- `VoxelMinimal.h`
+- `VoxelModule.h`
+- `VoxelObjectArchive.h`
+- `VoxelOctree.h`
+- `VoxelOctreeId.h`
+- `VoxelPriorityHandler.h`
+- `VoxelQueryZone.h`
+- `VoxelQueuedWork.h`
+- `VoxelQueueWithNum.h`
+- `VoxelRange.h`
+- `VoxelSaveStruct.h`
+- `VoxelSettings.h`
+- `VoxelSharedMutex.h`
+- `VoxelSharedPtr.h`
+- `VoxelSimpleOctree.h`
+- `VoxelStaticWorld.h`
+- `VoxelStats.h`
+- `VoxelTexture.h`
+- `VoxelThreadPool.h`
+- `VoxelTickable.h`
+- `VoxelUniqueError.h`
+- `VoxelUserDefinitions.h`
+- `VoxelValue.h`
+- `VoxelVector.h`
+- `VoxelWorld.h`
+- `VoxelWorldCreateInfo.h`
+- `VoxelWorldInterface.h`
+- `VoxelWorldRootComponent.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\FastNoise`
 
@@ -1178,10 +1279,6 @@ Files: 1104
 - `VoxelFastNoiseMath.h`
 - `VoxelFastNoiseTest.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
-
-- `IVoxelPool.h`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelAssets`
 
 - `VoxelDataAsset.h`
@@ -1191,13 +1288,6 @@ Files: 1104
 - `VoxelHeightmapAssetData.h`
 - `VoxelHeightmapAssetInstance.h`
 - `VoxelHeightmapAssetSamplerWrapper.h`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
-
-- `VoxelAsyncWork.h`
-- `VoxelBoolVector.h`
-- `VoxelCancelCounter.h`
-- `VoxelCharacter.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelComponents`
 
@@ -1229,35 +1319,15 @@ Files: 1104
 - `VoxelSave.h`
 - `VoxelSaveUtilities.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
-
-- `VoxelDebug.h`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelDebug`
 
 - `VoxelDebugManager.h`
 - `VoxelDebugUtilities.h`
 - `VoxelLineBatchComponent.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
-
-- `VoxelDefaultPool.h`
-- `VoxelDefinitions.h`
-- `VoxelDelegateHelpers.h`
-- `VoxelDiff.h`
-- `VoxelDirection.h`
-- `VoxelEditorDelegates.h`
-- `VoxelEditorDelegatesInterface.h`
-- `VoxelEngineVersionHelpers.h`
-- `VoxelEnums.h`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelEvents`
 
 - `VoxelEventManager.h`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
-
-- `VoxelFeedbackContext.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelGenerators`
 
@@ -1279,21 +1349,6 @@ Files: 1104
 - `VoxelLandscapeImporter.h`
 - `VoxelMeshImporter.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
-
-- `VoxelIntBox.h`
-- `VoxelIntBoxLibrary.h`
-- `VoxelInterpolator.h`
-- `VoxelInvokerSettings.h`
-- `VoxelItemStack.h`
-- `VoxelLog.h`
-- `VoxelMacros.h`
-- `VoxelMaterial.h`
-- `VoxelMaterialBuilder.h`
-- `VoxelMessages.h`
-- `VoxelMinimal.h`
-- `VoxelModule.h`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelMultiplayer`
 
 - `VoxelMultiplayerInterface.h`
@@ -1302,11 +1357,11 @@ Files: 1104
 - `VoxelMultiplayerTcp.h`
 - `VoxelMultiplayerUtilities.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
+### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelPlaceableItems`
 
-- `VoxelObjectArchive.h`
-- `VoxelOctree.h`
-- `VoxelOctreeId.h`
+- `VoxelPlaceableItem.h`
+- `VoxelPlaceableItemManager.h`
+- `VoxelPlaceableItemsUtilities.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelPlaceableItems\Actors`
 
@@ -1316,36 +1371,11 @@ Files: 1104
 - `VoxelPlaceableItemActor.h`
 - `VoxelPlaceableItemActorHelper.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelPlaceableItems`
-
-- `VoxelPlaceableItem.h`
-- `VoxelPlaceableItemManager.h`
-- `VoxelPlaceableItemsUtilities.h`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
-
-- `VoxelPriorityHandler.h`
-- `VoxelQueryZone.h`
-- `VoxelQueuedWork.h`
-- `VoxelQueueWithNum.h`
-- `VoxelRange.h`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelRender`
 
 - `IVoxelLODManager.h`
 - `IVoxelProceduralMeshComponent_PhysicsCallbackHandler.h`
 - `IVoxelRenderer.h`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelRender\MaterialCollections`
-
-- `VoxelBasicMaterialCollection.h`
-- `VoxelCachedMaterialCollection.h`
-- `VoxelInstancedMaterialCollection.h`
-- `VoxelLandscapeMaterialCollection.h`
-- `VoxelMaterialCollectionBase.h`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelRender`
-
 - `VoxelChunkMaterials.h`
 - `VoxelChunkMesh.h`
 - `VoxelChunkToUpdate.h`
@@ -1362,21 +1392,18 @@ Files: 1104
 - `VoxelRawStaticIndexBuffer.h`
 - `VoxelToolRendering.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
+### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelRender\MaterialCollections`
 
-- `VoxelSaveStruct.h`
-- `VoxelSettings.h`
+- `VoxelBasicMaterialCollection.h`
+- `VoxelCachedMaterialCollection.h`
+- `VoxelInstancedMaterialCollection.h`
+- `VoxelLandscapeMaterialCollection.h`
+- `VoxelMaterialCollectionBase.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelShaders`
 
 - `VoxelDistanceFieldShader.h`
 - `VoxelErosion.h`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
-
-- `VoxelSharedMutex.h`
-- `VoxelSharedPtr.h`
-- `VoxelSimpleOctree.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelSpawners`
 
@@ -1396,13 +1423,25 @@ Files: 1104
 - `VoxelSpawnerMatrix.h`
 - `VoxelSpawnerOutputsConfig.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
+### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelTools`
 
-- `VoxelStaticWorld.h`
-- `VoxelStats.h`
-- `VoxelTexture.h`
-- `VoxelThreadPool.h`
-- `VoxelTickable.h`
+- `VoxelAssetTools.h`
+- `VoxelBlueprintLibrary.h`
+- `VoxelDataTools.h`
+- `VoxelHardnessHandler.h`
+- `VoxelMathLibrary.h`
+- `VoxelPaintMaterial.h`
+- `VoxelPhysics.h`
+- `VoxelPhysicsPartSpawner.h`
+- `VoxelPhysicsPartSpawnerInterface.h`
+- `VoxelProjectionTools.h`
+- `VoxelSurfaceEdits.h`
+- `VoxelSurfaceTools.h`
+- `VoxelSurfaceToolsImpl.h`
+- `VoxelTestLibrary.h`
+- `VoxelTextureTools.h`
+- `VoxelToolHelpers.h`
+- `VoxelToolManager.h`
 
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelTools\Gen`
 
@@ -1436,31 +1475,6 @@ Files: 1104
 - `VoxelToolWithAlignment.h`
 - `VoxelTrimTool.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelTools`
-
-- `VoxelAssetTools.h`
-- `VoxelBlueprintLibrary.h`
-- `VoxelDataTools.h`
-- `VoxelHardnessHandler.h`
-- `VoxelMathLibrary.h`
-- `VoxelPaintMaterial.h`
-- `VoxelPhysics.h`
-- `VoxelPhysicsPartSpawner.h`
-- `VoxelPhysicsPartSpawnerInterface.h`
-- `VoxelProjectionTools.h`
-- `VoxelSurfaceEdits.h`
-- `VoxelSurfaceTools.h`
-- `VoxelSurfaceToolsImpl.h`
-- `VoxelTestLibrary.h`
-- `VoxelTextureTools.h`
-- `VoxelToolHelpers.h`
-- `VoxelToolManager.h`
-
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
-
-- `VoxelUniqueError.h`
-- `VoxelUserDefinitions.h`
-
 ### `AroundMe\Plugins\Voxel\Source\Voxel\Public\VoxelUtilities`
 
 - `VoxelBaseUtilities.h`
@@ -1485,18 +1499,32 @@ Files: 1104
 - `VoxelThreadingUtilities.h`
 - `VoxelVectorUtilities.h`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel\Public`
+### `AroundMe\Plugins\Voxel\Source\VoxelEditor`
 
-- `VoxelValue.h`
-- `VoxelVector.h`
-- `VoxelWorld.h`
-- `VoxelWorldCreateInfo.h`
-- `VoxelWorldInterface.h`
-- `VoxelWorldRootComponent.h`
+- `VoxelEditor.Build.cs`
 
-### `AroundMe\Plugins\Voxel\Source\Voxel`
+### `AroundMe\Plugins\Voxel\Source\VoxelEditor\Private`
 
-- `Voxel.Build.cs`
+- `VoxelConvertLandscapeMaterial.cpp`
+- `VoxelConvertLandscapeMaterial.h`
+- `VoxelDebugEditor.cpp`
+- `VoxelDebugEditor.h`
+- `VoxelEditorDetailsIncludes.cpp`
+- `VoxelEditorDetailsIncludes.h`
+- `VoxelEditorDetailsUtilities.cpp`
+- `VoxelEditorDetailsUtilities.h`
+- `VoxelEditorModule.cpp`
+- `VoxelEditorToolsPanel.cpp`
+- `VoxelEditorToolsPanel.h`
+- `VoxelMessagesEditor.cpp`
+- `VoxelMessagesEditor.h`
+- `VoxelOpenAssetsOnStartup.cpp`
+- `VoxelOpenAssetsOnStartup.h`
+- `VoxelScopedTransaction.cpp`
+- `VoxelToolsCommands.cpp`
+- `VoxelToolsCommands.h`
+- `VoxelWorldEditorControls.cpp`
+- `VoxelWorldEditorControls.h`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelEditor\Private\AssetTools`
 
@@ -1605,37 +1633,14 @@ Files: 1104
 - `VoxelSpawnersThumbnailRenderer.cpp`
 - `VoxelSpawnersThumbnailRenderer.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelEditor\Private`
-
-- `VoxelConvertLandscapeMaterial.cpp`
-- `VoxelConvertLandscapeMaterial.h`
-- `VoxelDebugEditor.cpp`
-- `VoxelDebugEditor.h`
-- `VoxelEditorDetailsIncludes.cpp`
-- `VoxelEditorDetailsIncludes.h`
-- `VoxelEditorDetailsUtilities.cpp`
-- `VoxelEditorDetailsUtilities.h`
-- `VoxelEditorModule.cpp`
-- `VoxelEditorToolsPanel.cpp`
-- `VoxelEditorToolsPanel.h`
-- `VoxelMessagesEditor.cpp`
-- `VoxelMessagesEditor.h`
-- `VoxelOpenAssetsOnStartup.cpp`
-- `VoxelOpenAssetsOnStartup.h`
-- `VoxelScopedTransaction.cpp`
-- `VoxelToolsCommands.cpp`
-- `VoxelToolsCommands.h`
-- `VoxelWorldEditorControls.cpp`
-- `VoxelWorldEditorControls.h`
-
 ### `AroundMe\Plugins\Voxel\Source\VoxelEditor\Public`
 
 - `VoxelEditorModule.h`
 - `VoxelScopedTransaction.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelEditor`
+### `AroundMe\Plugins\Voxel\Source\VoxelEditorDefault`
 
-- `VoxelEditor.Build.cs`
+- `VoxelEditorDefault.Build.cs`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelEditorDefault\Private`
 
@@ -1650,9 +1655,9 @@ Files: 1104
 - `ActorFactoryVoxelWorld.h`
 - `VoxelEditorDefaultModule.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelEditorDefault`
+### `AroundMe\Plugins\Voxel\Source\VoxelExamples`
 
-- `VoxelEditorDefault.Build.cs`
+- `VoxelExamples.Build.cs`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelExamples\Private`
 
@@ -1664,9 +1669,34 @@ Files: 1104
 - `VoxelExamplesModule.h`
 - `VoxelGeneratorExample.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelExamples`
+### `AroundMe\Plugins\Voxel\Source\VoxelGraph`
 
-- `VoxelExamples.Build.cs`
+- `VoxelGraph.Build.cs`
+
+### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Private`
+
+- `VoxelAxisDependencies.cpp`
+- `VoxelContext.cpp`
+- `VoxelGraphErrorReporter.cpp`
+- `VoxelGraphGenerator.cpp`
+- `VoxelGraphGeneratorInstance.cpp`
+- `VoxelGraphModule.cpp`
+- `VoxelGraphOutputs.cpp`
+- `VoxelGraphOutputsConfig.cpp`
+- `VoxelGraphPreviewSettings.cpp`
+- `VoxelNode.cpp`
+- `VoxelPinCategory.cpp`
+
+### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Private\Compilation`
+
+- `VoxelCompilationNode.cpp`
+- `VoxelCompilationNodeTree.cpp`
+- `VoxelCompilationNodeTree.h`
+- `VoxelDefaultCompilationNodes.cpp`
+- `VoxelGraphCompiler.cpp`
+- `VoxelGraphCompilerHelpers.cpp`
+- `VoxelGraphCompilerHelpers.h`
+- `VoxelGraphCompilerManager.cpp`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Private\Compilation\Passes`
 
@@ -1695,17 +1725,6 @@ Files: 1104
 - `VoxelReplaceSmartMinMaxPass.h`
 - `VoxelSetIdsPass.cpp`
 - `VoxelSetIdsPass.h`
-
-### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Private\Compilation`
-
-- `VoxelCompilationNode.cpp`
-- `VoxelCompilationNodeTree.cpp`
-- `VoxelCompilationNodeTree.h`
-- `VoxelDefaultCompilationNodes.cpp`
-- `VoxelGraphCompiler.cpp`
-- `VoxelGraphCompilerHelpers.cpp`
-- `VoxelGraphCompilerHelpers.h`
-- `VoxelGraphCompilerManager.cpp`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Private\CppTranslation`
 
@@ -1773,19 +1792,6 @@ Files: 1104
 - `VoxelGraphChecker.h`
 - `VoxelGraphFunction.cpp`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Private`
-
-- `VoxelAxisDependencies.cpp`
-- `VoxelContext.cpp`
-- `VoxelGraphErrorReporter.cpp`
-- `VoxelGraphGenerator.cpp`
-- `VoxelGraphGeneratorInstance.cpp`
-- `VoxelGraphModule.cpp`
-- `VoxelGraphOutputs.cpp`
-- `VoxelGraphOutputsConfig.cpp`
-- `VoxelGraphPreviewSettings.cpp`
-- `VoxelNode.cpp`
-
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Private\VoxelNodes`
 
 - `VoxelBinaryNodes.cpp`
@@ -1825,9 +1831,26 @@ Files: 1104
 - `VoxelVoronoiNoiseNodes.cpp`
 - `VoxelWhiteNoiseNodes.cpp`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Private`
+### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public`
 
-- `VoxelPinCategory.cpp`
+- `IVoxelGraphEditor.h`
+- `VoxelAxisDependencies.h`
+- `VoxelContext.h`
+- `VoxelGeneratedWorldGeneratorsDefinitions.h`
+- `VoxelGeneratedWorldGeneratorsIncludes.h`
+- `VoxelGeneratedWorldGeneratorsPCH.h`
+- `VoxelGraphConstants.h`
+- `VoxelGraphDataItemConfig.h`
+- `VoxelGraphErrorReporter.h`
+- `VoxelGraphGenerator.h`
+- `VoxelGraphGeneratorHelpers.h`
+- `VoxelGraphGlobals.h`
+- `VoxelGraphModule.h`
+- `VoxelGraphOutputs.h`
+- `VoxelGraphOutputsConfig.h`
+- `VoxelGraphPreviewSettings.h`
+- `VoxelNode.h`
+- `VoxelPinCategory.h`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public\Compilation`
 
@@ -1846,10 +1869,6 @@ Files: 1104
 - `VoxelCppUtils.h`
 - `VoxelVariables.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public`
-
-- `IVoxelGraphEditor.h`
-
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public\NodeFunctions`
 
 - `VoxelDeprecatedNodeFunctions.h`
@@ -1857,12 +1876,6 @@ Files: 1104
 - `VoxelNodeFunctions.h`
 - `VoxelPlaceableItemsNodeFunctions.h`
 - `VoxelSDFNodeFunctions.h`
-
-### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public\Runtime\Recorders`
-
-- `VoxelGraphEmptyRecorder.h`
-- `VoxelGraphRangeAnalysisRecorder.h`
-- `VoxelGraphStatsRecorder.h`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public\Runtime`
 
@@ -1876,24 +1889,11 @@ Files: 1104
 - `VoxelGraphVMUtils.h`
 - `VoxelNodeType.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public`
+### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public\Runtime\Recorders`
 
-- `VoxelAxisDependencies.h`
-- `VoxelContext.h`
-- `VoxelGeneratedWorldGeneratorsDefinitions.h`
-- `VoxelGeneratedWorldGeneratorsIncludes.h`
-- `VoxelGeneratedWorldGeneratorsPCH.h`
-- `VoxelGraphConstants.h`
-- `VoxelGraphDataItemConfig.h`
-- `VoxelGraphErrorReporter.h`
-- `VoxelGraphGenerator.h`
-- `VoxelGraphGeneratorHelpers.h`
-- `VoxelGraphGlobals.h`
-- `VoxelGraphModule.h`
-- `VoxelGraphOutputs.h`
-- `VoxelGraphOutputsConfig.h`
-- `VoxelGraphPreviewSettings.h`
-- `VoxelNode.h`
+- `VoxelGraphEmptyRecorder.h`
+- `VoxelGraphRangeAnalysisRecorder.h`
+- `VoxelGraphStatsRecorder.h`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public\VoxelNodes`
 
@@ -1941,29 +1941,13 @@ Files: 1104
 - `VoxelVoronoiNoiseNodes.h`
 - `VoxelWhiteNoiseNodes.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelGraph\Public`
+### `AroundMe\Plugins\Voxel\Source\VoxelGraphEditor`
 
-- `VoxelPinCategory.h`
-
-### `AroundMe\Plugins\Voxel\Source\VoxelGraph`
-
-- `VoxelGraph.Build.cs`
+- `VoxelGraphEditor.Build.cs`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraphEditor\Private`
 
 - `DummyObject.h`
-
-### `AroundMe\Plugins\Voxel\Source\VoxelGraphEditor\Private\Preview`
-
-- `SVoxelGraphPreview.cpp`
-- `SVoxelGraphPreview.h`
-- `SVoxelGraphPreviewViewport.cpp`
-- `SVoxelGraphPreviewViewport.h`
-- `VoxelGraphPreview.cpp`
-- `VoxelGraphPreview.h`
-
-### `AroundMe\Plugins\Voxel\Source\VoxelGraphEditor\Private`
-
 - `SVoxelPalette.cpp`
 - `SVoxelPalette.h`
 - `VoxelDebugGraphUtils.cpp`
@@ -1982,6 +1966,20 @@ Files: 1104
 - `VoxelGraphEditorToolkit.h`
 - `VoxelGraphEditorUtilities.cpp`
 - `VoxelGraphEditorUtilities.h`
+- `VoxelGraphPanelPinFactory.h`
+- `VoxelGraphSchema.cpp`
+- `VoxelGraphSchema.h`
+- `VoxelGraphShortcuts.cpp`
+- `VoxelGraphShortcuts.h`
+
+### `AroundMe\Plugins\Voxel\Source\VoxelGraphEditor\Private\Preview`
+
+- `SVoxelGraphPreview.cpp`
+- `SVoxelGraphPreview.h`
+- `SVoxelGraphPreviewViewport.cpp`
+- `SVoxelGraphPreviewViewport.h`
+- `VoxelGraphPreview.cpp`
+- `VoxelGraphPreview.h`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraphEditor\Private\VoxelGraphNodes`
 
@@ -1997,22 +1995,14 @@ Files: 1104
 - `VoxelGraphNode_Root.h`
 - `VoxelGraphNodeFactory.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelGraphEditor\Private`
-
-- `VoxelGraphPanelPinFactory.h`
-- `VoxelGraphSchema.cpp`
-- `VoxelGraphSchema.h`
-- `VoxelGraphShortcuts.cpp`
-- `VoxelGraphShortcuts.h`
-
 ### `AroundMe\Plugins\Voxel\Source\VoxelGraphEditor\Public`
 
 - `IVoxelGraphEditorToolkit.h`
 - `VoxelGraphEditorModule.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelGraphEditor`
+### `AroundMe\Plugins\Voxel\Source\VoxelHelpers`
 
-- `VoxelGraphEditor.Build.cs`
+- `VoxelHelpers.Build.cs`
 
 ### `AroundMe\Plugins\Voxel\Source\VoxelHelpers\Private`
 
@@ -2030,26 +2020,19 @@ Files: 1104
 - `VoxelHelpersLibrary.h`
 - `VoxelHelpersModule.h`
 
-### `AroundMe\Plugins\Voxel\Source\VoxelHelpers`
-
-- `VoxelHelpers.Build.cs`
 
 ## PlayGround Project Source
 
 Files: 5
 
-
 ### `PlayGround\Source`
 
 - `PlayGround.Target.cs`
+- `PlayGroundEditor.Target.cs`
 
 ### `PlayGround\Source\PlayGround`
 
 - `PlayGround.Build.cs`
 - `PlayGround.cpp`
 - `PlayGround.h`
-
-### `PlayGround\Source`
-
-- `PlayGroundEditor.Target.cs`
 

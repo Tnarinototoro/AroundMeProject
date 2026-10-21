@@ -22,6 +22,8 @@ public class AroundMeEditor : ModuleRules
             "AroundMe",
             "AIModule",
             "PropertyEditor"
+            ,"AssetRegistry"
+            ,"AssetTools"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[]

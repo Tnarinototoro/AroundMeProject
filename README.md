@@ -12,3 +12,5 @@
 
 - **项目指南（AI 助手 & 开发者）**：见 [`AGENTS.md`](AGENTS.md) 或 [`CLAUDE.md`](CLAUDE.md)
 - **C++ 文件索引**：见 [`Docs/UE5_CPP_INDEX.md`](Docs/UE5_CPP_INDEX.md)
+- **PropHunt 游戏设计**：见 [`PropHunt_GDD.md`](PropHunt_GDD.md)
+- **PropHunt 网络 / EOS 联机**：见 [`PropHunt_Network.md`](PropHunt_Network.md)

@@ -1,5 +1,7 @@
 # Prop 博弈（PropHunt）白盒原型 — 实施方案
 
+> ⚠️ **状态更新（2026-10）**：本文是初始计划。实际已超出白盒范围——**EOS 联机已接入**（Lobby 发现 + P2P 传输 + 本地 DevAuth 登录），网络架构详见 [`PropHunt_Network.md`](PropHunt_Network.md)。本文「EOS P2P 后置、白盒先 LAN」的表述已过时，以 PropHunt_Network.md 为准。
+
 ## Context（为什么做这件事）
 
 在现有 UE5 项目基础上新做一个游戏「Prop 博弈」——Prop Hunt（拟态捉迷藏）的变体。核心创新：**被 Hunter 拿起 ≠ 立刻输**，Ghost 在被拿起的 Cube 里凭微操「硬撑」过一段高压 QTE 忍耐博弈。
