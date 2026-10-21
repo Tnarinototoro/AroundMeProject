@@ -1,6 +1,8 @@
 #include "PropHuntRoomSubsystem.h"
 
 #include "PropHuntTypes.h"
+#include "PropHuntAuthSubsystem.h"
+#include "Engine/GameInstance.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSubsystemUtils.h"
 #include "OnlineSessionSettings.h"
@@ -14,18 +16,30 @@ void UPropHuntRoomSubsystem::Initialize(FSubsystemCollectionBase& Collection)
     if (IOnlineSubsystem* OSS = IOnlineSubsystem::Get())
     {
         SessionInterface = OSS->GetSessionInterface();
+    }
 
-        // EOS 需要登录才有 ProductUserId，才能建/进房 + P2P。
-        // AutoLogin 会读命令行 -AUTH_TYPE=/-AUTH_LOGIN=/-AUTH_PASSWORD=（Dev Auth），Null 是 no-op。
-        if (IOnlineIdentityPtr Identity = OSS->GetIdentityInterface())
-        {
-            Identity->AutoLogin(0);
-        }
+    // 登录由 UPropHuntAuthSubsystem 统一负责（PersistentAuth → Account Portal）。
+    // 这里主动取一次，确保它在游戏启动时就开始尝试恢复会话。
+    if (UGameInstance* GameInstance = GetGameInstance())
+    {
+        GameInstance->GetSubsystem<UPropHuntAuthSubsystem>();
     }
 
     CreateSessionDelegate.BindUObject(this, &UPropHuntRoomSubsystem::OnCreateSessionComplete);
     FindSessionsDelegate.BindUObject(this, &UPropHuntRoomSubsystem::OnFindSessionsComplete);
     JoinSessionDelegate.BindUObject(this, &UPropHuntRoomSubsystem::OnJoinSessionComplete);
+}
+
+bool UPropHuntRoomSubsystem::EnsureSignedIn(const TCHAR* Action)
+{
+    if (IsLoggedIn())
+    {
+        return true;
+    }
+
+    LastError = FString::Printf(TEXT("not signed in to Epic (needed to %s)"), Action);
+    UE_LOG(LogPropHunt, Warning, TEXT("[RoomSubsystem] %s blocked: %s"), Action, *LastError);
+    return false;
 }
 
 bool UPropHuntRoomSubsystem::IsEOS() const
@@ -74,17 +88,18 @@ void UPropHuntRoomSubsystem::Deinitialize()
 
 void UPropHuntRoomSubsystem::CreateRoom(FOnRoomOpComplete OnComplete)
 {
+    LastError.Empty();
     UE_LOG(LogPropHunt, Warning, TEXT("[RoomSubsystem] CreateRoom, SessionInterface valid=%d"), SessionInterface.IsValid() ? 1 : 0);
 
     if (!SessionInterface.IsValid())
     {
+        LastError = TEXT("online session interface is unavailable");
         OnComplete.ExecuteIfBound(false);
         return;
     }
 
-    if (!IsLoggedIn())
+    if (!EnsureSignedIn(TEXT("create a room")))
     {
-        UE_LOG(LogPropHunt, Warning, TEXT("[RoomSubsystem] CreateRoom: not logged in"));
         OnComplete.ExecuteIfBound(false);
         return;
     }
@@ -125,6 +140,21 @@ void UPropHuntRoomSubsystem::CreateRoom(FOnRoomOpComplete OnComplete)
     }
     Settings.NumPublicConnections = 2;
 
+    // 房间列表展示房主昵称（OwningUserName 在部分平台上为空）。
+    FString HostDisplayName;
+    {
+        IOnlineIdentityPtr Identity = IOnlineSubsystem::Get() ? IOnlineSubsystem::Get()->GetIdentityInterface() : nullptr;
+        if (Identity.IsValid())
+        {
+            HostDisplayName = Identity->GetPlayerNickname(0);
+        }
+    }
+    if (HostDisplayName.IsEmpty())
+    {
+        HostDisplayName = TEXT("Host");
+    }
+    Settings.Set(FName(TEXT("PROPHUNT_HOSTNAME")), HostDisplayName, EOnlineDataAdvertisementType::ViaOnlineService);
+
     const FUniqueNetIdPtr NetId = LocalPlayer->GetPreferredUniqueNetId().GetUniqueNetId();
     const bool bStarted = NetId.IsValid() && SessionInterface->CreateSession(*NetId, NAME_GameSession, Settings);
     if (!bStarted)
@@ -134,6 +164,7 @@ void UPropHuntRoomSubsystem::CreateRoom(FOnRoomOpComplete OnComplete)
         if (CreateSessionDelegateHandle.IsValid())
         {
             SessionInterface->ClearOnCreateSessionCompleteDelegate_Handle(CreateSessionDelegateHandle);
+            LastError = TEXT("could not start EOS session creation (check network / deployment)");
             OnComplete.ExecuteIfBound(false);
         }
         // 若 handle 已无效，说明 delegate 已经同步回调过了，这里什么都不做。
@@ -144,21 +175,27 @@ void UPropHuntRoomSubsystem::OnCreateSessionComplete(FName SessionName, bool bSu
 {
     SessionInterface->ClearOnCreateSessionCompleteDelegate_Handle(CreateSessionDelegateHandle);
     bHasActiveSession = bSuccessful;
+    if (!bSuccessful)
+    {
+        LastError = TEXT("EOS refused to create the room (check Deployment / Sandbox / Client policy)");
+    }
     CreateCompleteCallback.ExecuteIfBound(bSuccessful);
 }
 
 void UPropHuntRoomSubsystem::FindRooms(FOnFindRoomsComplete OnComplete)
 {
+    LastError.Empty();
+
     if (!SessionInterface.IsValid())
     {
+        LastError = TEXT("online session interface is unavailable");
         TArray<FOnlineSessionSearchResult> Empty;
         OnComplete.ExecuteIfBound(Empty);
         return;
     }
 
-    if (!IsLoggedIn())
+    if (!EnsureSignedIn(TEXT("search for rooms")))
     {
-        UE_LOG(LogPropHunt, Warning, TEXT("[RoomSubsystem] FindRooms: not logged in"));
         TArray<FOnlineSessionSearchResult> Empty;
         OnComplete.ExecuteIfBound(Empty);
         return;
@@ -195,6 +232,7 @@ void UPropHuntRoomSubsystem::FindRooms(FOnFindRoomsComplete OnComplete)
     if (!NetId.IsValid() || !SessionInterface->FindSessions(*NetId, LastSearch.ToSharedRef()))
     {
         SessionInterface->ClearOnFindSessionsCompleteDelegate_Handle(FindSessionsDelegateHandle);
+        LastError = TEXT("could not start the lobby search");
         TArray<FOnlineSessionSearchResult> Empty;
         OnComplete.ExecuteIfBound(Empty);
     }
@@ -209,20 +247,26 @@ void UPropHuntRoomSubsystem::OnFindSessionsComplete(bool bSuccessful)
     {
         Results = LastSearch->SearchResults;
     }
+    else if (!bSuccessful)
+    {
+        LastError = TEXT("lobby search failed (check network / EOS Deployment)");
+    }
     FindRoomsCallback.ExecuteIfBound(Results);
 }
 
 void UPropHuntRoomSubsystem::JoinRoom(const FOnlineSessionSearchResult& Result, FOnRoomOpComplete OnComplete)
 {
+    LastError.Empty();
+
     if (!SessionInterface.IsValid())
     {
+        LastError = TEXT("online session interface is unavailable");
         OnComplete.ExecuteIfBound(false);
         return;
     }
 
-    if (!IsLoggedIn())
+    if (!EnsureSignedIn(TEXT("join a room")))
     {
-        UE_LOG(LogPropHunt, Warning, TEXT("[RoomSubsystem] JoinRoom: not logged in"));
         OnComplete.ExecuteIfBound(false);
         return;
     }
@@ -242,6 +286,7 @@ void UPropHuntRoomSubsystem::JoinRoom(const FOnlineSessionSearchResult& Result, 
     if (!NetId.IsValid() || !SessionInterface->JoinSession(*NetId, NAME_GameSession, Result))
     {
         SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(JoinSessionDelegateHandle);
+        LastError = TEXT("could not start joining the room");
         OnComplete.ExecuteIfBound(false);
     }
 }
@@ -261,6 +306,20 @@ void UPropHuntRoomSubsystem::OnJoinSessionComplete(FName SessionName, EOnJoinSes
 
     const bool bSuccess = (Result == EOnJoinSessionCompleteResult::Success && !TravelURL.IsEmpty());
     bHasActiveSession = bSuccess;
+
+    if (!bSuccess)
+    {
+        if (Result == EOnJoinSessionCompleteResult::Success)
+        {
+            LastError = TEXT("joined the lobby but got no connect string (P2P not ready?)");
+        }
+        else
+        {
+            LastError = FString::Printf(TEXT("EOS denied the join (result %d) - the room may be full or closed"),
+                static_cast<int32>(Result));
+        }
+    }
+
     JoinCompleteCallback.ExecuteIfBound(bSuccess);
 }
 

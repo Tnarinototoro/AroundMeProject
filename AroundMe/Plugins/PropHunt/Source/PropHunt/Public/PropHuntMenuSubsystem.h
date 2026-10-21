@@ -27,6 +27,9 @@ public:
 private:
     void ShowWidget(TSubclassOf<UCommonActivatableWidget> WidgetClass);
 
+    // 菜单页统一切到「可点」的输入模式（鼠标可见 + 焦点给当前 widget）。
+    void ApplyMenuInputMode(class UUserWidget* Widget);
+
     UPROPERTY()
     UCommonActivatableWidget* CurrentWidget;
 

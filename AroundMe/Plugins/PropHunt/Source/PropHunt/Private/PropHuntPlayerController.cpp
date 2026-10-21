@@ -44,6 +44,12 @@ void APropHuntPlayerController::BeginPlay()
             // 游戏地图：不显示菜单，直接进游戏。
             Menu->HideMenu();
         }
+        else if (GetWorld()->GetNetMode() == NM_Client)
+        {
+            // 通过直连（非 EOS 会话）进入大厅的客户端：视为已经在房间里。
+            Menu->SetInRoom(true);
+            Menu->ShowRoom();
+        }
         else if (Menu->IsInRoom())
         {
             // 已在房间（创建/加入房间后 travel 回来）→ 房间 Widget（选队/准备）。

@@ -41,8 +41,11 @@ void UPropHuntMenuSubsystem::ShowSettlement(const FString& ResultText)
     {
         Widget->AddToViewport();
         Widget->ActivateWidget();
+        Widget->SetIsFocusable(true);
         Widget->SetResultText(ResultText);
         CurrentWidget = Widget;
+
+        ApplyMenuInputMode(Widget);
     }
 }
 
@@ -76,6 +79,32 @@ void UPropHuntMenuSubsystem::ShowWidget(TSubclassOf<UCommonActivatableWidget> Wi
     {
         Widget->AddToViewport();
         Widget->ActivateWidget();
+        Widget->SetIsFocusable(true);
         CurrentWidget = Widget;
+
+        ApplyMenuInputMode(Widget);
     }
+}
+
+void UPropHuntMenuSubsystem::ApplyMenuInputMode(UUserWidget* Widget)
+{
+    APlayerController* PC = GetGameInstance() ? GetGameInstance()->GetFirstLocalPlayerController() : nullptr;
+    if (!PC)
+    {
+        return;
+    }
+
+    // 菜单页必须能接收鼠标点击：显式切到 GameAndUI + 显示光标。
+    // 之前的实现只依赖 CommonUI 默认焦点，日志里会出现 "focusing the game viewport"，
+    // 导致按钮点不到。
+    FInputModeGameAndUI InputMode;
+    if (Widget)
+    {
+        InputMode.SetWidgetToFocus(Widget->TakeWidget());
+    }
+    InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+    InputMode.SetHideCursorDuringCapture(false);
+
+    PC->SetInputMode(InputMode);
+    PC->SetShowMouseCursor(true);
 }

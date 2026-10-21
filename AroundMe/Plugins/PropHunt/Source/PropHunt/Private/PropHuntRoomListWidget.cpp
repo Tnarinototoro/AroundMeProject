@@ -8,6 +8,7 @@
 #include "Components/TextBlock.h"
 #include "PropHuntRoomSubsystem.h"
 #include "PropHuntMenuSubsystem.h"
+#include "PropHuntAuthSubsystem.h"
 #include "PropHuntTypes.h"
 
 void UPropHuntRoomListWidget::NativeOnInitialized()
@@ -114,6 +115,21 @@ void UPropHuntRoomListWidget::OnDirectConnectClicked()
 
 void UPropHuntRoomListWidget::OnRefreshClicked()
 {
+    UPropHuntAuthSubsystem* Auth = GetGameInstance() ? GetGameInstance()->GetSubsystem<UPropHuntAuthSubsystem>() : nullptr;
+    if (!Auth || !Auth->IsSignedIn())
+    {
+        if (RoomListText)
+        {
+            RoomListText->SetText(FText::FromString(TEXT("Sign in with Epic on the main menu before searching.")));
+        }
+        return;
+    }
+
+    if (RoomListText)
+    {
+        RoomListText->SetText(FText::FromString(TEXT("Searching for rooms...")));
+    }
+
     if (UPropHuntRoomSubsystem* RoomSubsystem = GetGameInstance()->GetSubsystem<UPropHuntRoomSubsystem>())
     {
         RoomSubsystem->FindRooms(FOnFindRoomsComplete::CreateUObject(this, &UPropHuntRoomListWidget::PopulateRooms));
@@ -164,7 +180,16 @@ void UPropHuntRoomListWidget::PopulateRooms(const TArray<FOnlineSessionSearchRes
             RoomSlot->SetSize(FVector2D(360.0f, 56.0f));
         }
 
-        const FString RoomName = Result.Session.OwningUserName.IsEmpty() ? TEXT("Room") : Result.Session.OwningUserName;
+        const FString RoomName = [&Result]()
+        {
+            FString HostName;
+            if (Result.Session.SessionSettings.Get(FName(TEXT("PROPHUNT_HOSTNAME")), HostName) && !HostName.IsEmpty())
+            {
+                return HostName;
+            }
+            return Result.Session.OwningUserName.IsEmpty() ? FString(TEXT("Room")) : Result.Session.OwningUserName;
+        }();
+
         UTextBlock* Label = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
         Btn->AddChild(Label);
         FSlateFontInfo Font = Label->GetFont();
@@ -176,9 +201,24 @@ void UPropHuntRoomListWidget::PopulateRooms(const TArray<FOnlineSessionSearchRes
         RoomButtons.Add(Btn);
     }
 
-    if (Results.Num() == 0 && RoomListText)
+    if (RoomListText)
     {
-        RoomListText->SetText(FText::FromString(TEXT("No rooms found.")));
+        if (Results.Num() > 0)
+        {
+            RoomListText->SetText(FText::FromString(FString::Printf(TEXT("%d room(s) found - click one to join"), Results.Num())));
+        }
+        else
+        {
+            FString Error;
+            if (UPropHuntRoomSubsystem* Room = GetGameInstance()->GetSubsystem<UPropHuntRoomSubsystem>())
+            {
+                Error = Room->GetLastError();
+            }
+
+            RoomListText->SetText(FText::FromString(Error.IsEmpty()
+                ? TEXT("No rooms found. Ask your friend to press Create Room, then press Refresh.")
+                : FString::Printf(TEXT("Search failed: %s"), *Error)));
+        }
     }
 }
 
@@ -203,6 +243,17 @@ void UPropHuntRoomListWidget::JoinRoomByResult(const FOnlineSessionSearchResult&
         {
             if (!bSuccess)
             {
+                if (RoomListText)
+                {
+                    FString Error;
+                    if (UPropHuntRoomSubsystem* Room = GetGameInstance()->GetSubsystem<UPropHuntRoomSubsystem>())
+                    {
+                        Error = Room->GetLastError();
+                    }
+                    RoomListText->SetText(FText::FromString(Error.IsEmpty()
+                        ? TEXT("Failed to join the room.")
+                        : FString::Printf(TEXT("Join failed: %s"), *Error)));
+                }
                 return;
             }
 

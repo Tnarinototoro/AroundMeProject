@@ -37,7 +37,13 @@ public:
 
     FString GetTravelURL() const { return TravelURL; }
 
+    // 最近一次失败的原因（UI 直接展示，便于区分「没登录 / 搜索失败 / 进房失败」）。
+    FString GetLastError() const { return LastError; }
+
 private:
+    // 联网操作前的登录前置检查；失败时写入 LastError。
+    bool EnsureSignedIn(const TCHAR* Action);
+
     void OnCreateSessionComplete(FName SessionName, bool bSuccessful);
     void OnFindSessionsComplete(bool bSuccessful);
     void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
@@ -63,6 +69,7 @@ private:
 
     TSharedPtr<FOnlineSessionSearch> LastSearch;
     FString TravelURL;
+    FString LastError;
 
     // 本地标记：是否已成功创建/加入 session。
     // 注意 GetNamedSession 在 PIE/EndPlay 后可能拿不到残留 session（引擎单例跨 PIE 存活），
