@@ -217,10 +217,18 @@ B 侧应当出现 `Login succeeded`，随后进房、`ClientTravel` 到 `EOS:<PU
 用 `AroundMe/PropHunt_Package.bat`（内部调 RunUAT BuildCookRun）：
 
 ```
-Out: S:\AroundMeProject\Packaged\PropHunt
+Out: <仓库根>/Packaged/PropHunt
 Map: /PropHunt/Maps/PH_Lobby + /PropHunt/Maps/PH_GameMap
 Config: Win64 Development
 ```
+
+脚本里没有硬编码路径：
+
+- 引擎路径取自 `AroundMe/InstallHooksCache.ini` 的 `UE_ROOT`（由 `InstallHooks.bat` 写入，换机器后先跑一次它）；
+- 工程路径取脚本所在目录；
+- 输出固定在 `<仓库根>/Packaged/PropHunt`。
+
+`PropHunt_SignIn.bat` / `PropHunt_LocalTwoPlayers.bat` 用同样的方式取引擎路径，所以在别的电脑上只要缓存里的 `UE_ROOT` 正确就能直接双击运行。
 
 打完之后把整个 `PropHunt/` 目录压缩发出去；朋友解压后运行
 `PropHunt_Play.bat`（或直接 `AroundMe.exe /PropHunt/Maps/PH_Lobby`）。
