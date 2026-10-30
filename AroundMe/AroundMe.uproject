@@ -183,6 +183,14 @@
 		{
 			"Name": "StructUtils",
 			"Enabled": true
+		},
+		{
+			"Name": "DIYPaper2D",
+			"Enabled": true
+		},
+		{
+			"Name": "UnrealAgentLink",
+			"Enabled": true
 		}
 	]
 }

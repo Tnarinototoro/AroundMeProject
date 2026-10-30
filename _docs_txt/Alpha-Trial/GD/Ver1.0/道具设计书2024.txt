@@ -1,0 +1,476 @@
+# 来源: AroundMe/Docs/Alpha-Trial/GD/Ver1.0/道具设计书2024.pptx
+# 状态: 现行（README 登记）
+# 分类: 2.1 道具
+# 作用: 道具规格表：flag、物理参数、BP_Item_* ID
+# 字符数: 14081
+
+------------------------------------------------------------
+
+
+===== SLIDE 1 =====
+item用的flag
+Static 一般是 环境中固体的 景观什么的 但是 应该会很少 
+Obey_Physics_Rules  一般是 环境中 遵循基本物理规则的 物体
+Living_Thing 活体物体 一般是 宠物 牲畜啥的
+Can_Be_Destroyed 有耐久度的概念 能够被破坏
+React_To_Temperature 能够对温度变化产生 本身的变化
+Has_Any_Conductivity 是否有导电的概念
+Has_CraftingPlatform_Function 是不是 打造平台
+一些先行解释
+
+===== SLIDE 2 =====
+2DAsset Texture
+
+===== SLIDE 3 =====
+
+===== SLIDE 4 =====
+2D资产
+
+===== SLIDE 5 =====
+
+===== SLIDE 6 =====
+自然界存在
+不可打造
+
+===== SLIDE 7 =====
+道具重量(Kg) | 0.1 | 自燃释放温度 | 150 | 初始耐久度 | 50 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | 5 | 斩击伤害系数 | 0.9 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 100 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.5 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | ✓ |  |  | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+BP_Item_TreeBranch
+简述
+用于道具合成的基础素材。纯天然，无添加！
+【千万别墅，始于枝下】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 8 =====
+道具重量(Kg) | 50 | 自燃释放温度 | 1000 | 初始耐久度 | 500 | 导电金属含量 | 0.1 | Static | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 0.2 | 导电金属导电度 | 0.1 | Obey_Physics_Rules | 
+扭矩阻尼 | 0 | 自燃临界温度 | 500 | 钝击伤害系数 | 2.0 |  |  |  | 
+物理材质 | PYM_Metalic | 解冻温度 | 10 | 圆润程度(0-1) | 0.6 |  |  |  | 
+ |  | 冰冻温度 | -100 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+✓ | ✓ |  | ✓ |  |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+BP_Item_Stone
+简述
+用于道具合成的基础素材。经系统严格质量检测，我们承诺里面决不会蹦出猴子
+【坚如磐石！】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 9 =====
+道具重量(Kg) |  | 自燃释放温度 |  | 初始耐久度 |  | 导电金属含量 |  |  | 
+线性阻尼 |  | 自然释放时间 |  | 斩击伤害系数 |  | 导电金属导电度 |  |  | 
+扭矩阻尼 |  | 自燃临界温度 |  | 钝击伤害系数 |  |  |  |  | 
+物理材质 |  | 解冻温度 |  | 圆润程度(0-1) |  |  |  |  | 
+ |  | 冰冻温度 |  |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+BP_Item_DIY_Grass
+简述
+用于道具合成的基础素材。拿来做沙拉不好吃。
+【把草丛拔掉，就不会遇到野怪了呢】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 10 =====
+道具重量(Kg) | 0.1 | 自燃释放温度 | 150 | 初始耐久度 | 50 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 1.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 100 | 钝击伤害系数 | 1.0 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 10 | 圆润程度(0-1) | 0.9 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | ✓ |  |  | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+BP_Item_Apple
+简述
+基础农作物，可食用，无法响应“嘿，Siri！”
+【当科学家们问苹果：“为什么你们总是落在石头旁？时，
+苹果回答道：“因为苹果只允许通过Apple Stone下载APP。”】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 11 =====
+道具重量(Kg) | 0.1 | 自燃释放温度 | 150 | 初始耐久度 | 50 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 1.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 100 | 钝击伤害系数 | 1.0 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 10 | 圆润程度(0-1) | 0.9 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | ✓ |  |  | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+BP_Item_MushRoom
+简述
+基础农作物，可食用，食用后无法变大，更无法顶碎砖块，请勿尝试。
+【据说是某位管道工最爱的食物】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 12 =====
+道具重量(Kg) | 2.0 | 自燃释放温度 | 150 | 初始耐久度 | 50 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 1.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 100 | 钝击伤害系数 | 1.0 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 10 | 圆润程度(0-1) | 0.9 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | ✓ |  |  | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+BP_Item_WaterMelon
+简述
+基础农作物，可食用，可用作劈砍玩具。
+【这东西到底是怎么被用来买地铁车票的？】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 13 =====
+道具重量(Kg) | 200 | 自燃释放温度 | 1000 | 初始耐久度 | 300 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 150 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.6 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+✓ | ✓ |  | ✓ | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+BP_Item_Tree
+简述
+它真的就是一棵树，不是伪装成树的宝可梦
+图标
+图标UI
+GameAsset
+
+===== SLIDE 14 =====
+道具重量(Kg) | 100 | 自燃释放温度 | / | 初始耐久度 | 1000 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | / | 斩击伤害系数 | 1.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | / | 钝击伤害系数 | 1.0 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | / | 圆润程度(0-1) | 0.6 |  |  |  | 
+ |  | 冰冻温度 | / |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ |  | ✓ |  |  |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+Charizard-Fire
+简述
+它绝对不是喷火龙，绝对！
+图标
+图标UI
+GameAsset
+
+===== SLIDE 15 =====
+道具重量(Kg) | 100 | 自燃释放温度 | / | 初始耐久度 | 1000 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | / | 斩击伤害系数 | 1.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | / | 钝击伤害系数 | 1.0 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | / | 圆润程度(0-1) | 0.6 |  |  |  | 
+ |  | 冰冻温度 | / |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ |  | ✓ |  |  |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+Gyarados-Water
+简述
+它绝对不是暴鲤龙，绝对！
+图标
+图标UI
+GameAsset
+
+===== SLIDE 16 =====
+道具重量(Kg) | 100 | 自燃释放温度 | / | 初始耐久度 | 1000 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | / | 斩击伤害系数 | 1.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | / | 钝击伤害系数 | 1.0 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | / | 圆润程度(0-1) | 0.6 |  |  |  | 
+ |  | 冰冻温度 | / |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ |  | ✓ |  |  |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+Gyarados-Water
+简述
+它绝对不是暴鲤龙，绝对！
+图标
+图标UI
+GameAsset
+
+===== SLIDE 17 =====
+道具重量(Kg) | 100 | 自燃释放温度 | / | 初始耐久度 | 1000 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | / | 斩击伤害系数 | 1.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | / | 钝击伤害系数 | 1.0 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | / | 圆润程度(0-1) | 0.6 |  |  |  | 
+ |  | 冰冻温度 | / |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ |  | ✓ |  |  |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+Pikachu_Electricity
+简述
+发电系的生物
+图标
+图标UI
+GameAsset
+
+===== SLIDE 18 =====
+打造物
+
+===== SLIDE 19 =====
+道具重量(Kg) | 5 | 自燃释放温度 | 1000 | 初始耐久度 | 300 | 导电金属含量(0-1) | 0.1 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度(0-1) | 0.9 | Obey_Physics_Rules | 
+扭矩阻尼 | 0 | 自燃临界温度 | 200 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.3 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | √ |  | √ | √ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+300 | BP_Item_DIY_Grass | 3
+ | BP_Item_TreeBranch | 2
+道具ID
+EItemID_ButterFlyNet
+简述
+用于捕虫的基础工具。价格不贵，买二送一。
+【“我还是不明白，我的同事可以用律师徽章当证据，我为什么不能用捕虫网打火龙呢？”】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 20 =====
+道具重量(Kg) | 5 | 自燃释放温度 | 1000 | 初始耐久度 | 300 | 导电金属含量 | 0.1 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0.9 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 200 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.3 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | √ |  | √ | √ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+300 | BP_Item_Stone | 2
+ | BP_Item_TreeBranch | 2
+道具ID
+BP_Item_PickAxe
+简述
+用于采矿的基础工具。便宜耐用，结实可靠。
+【落入深坑不用怕，用这件道具挖出阶梯型的洞，一路向上就好。你的镐子，可是突破天际的啊！】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 21 =====
+道具重量(Kg) | 5 | 自燃释放温度 | 1000 | 初始耐久度 | 300 | 导电金属含量 | 0.1 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0.9 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 200 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.3 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | ✓ |  | ✓ | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+300 | BP_Item_DIY_Grass | 2
+ | BP_Item_TreeBranch | 3
+道具ID
+EItemID_FishingPod
+简述
+用于钓鱼的基础工具，型号为加长竿3000
+【“我能在河边钓上一整天的鱼！”】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 22 =====
+道具重量(Kg) | 5 | 自燃释放温度 | 1000 | 初始耐久度 | 300 | 导电金属含量 | 0.1 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0.9 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 200 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.3 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | √ |  | √ | √ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+300 | BP_Item_Stone | 3
+ | BP_Item_TreeBranch | 3
+道具ID
+Item_WoodCuttingAxe
+简述
+用于砍伐的基础工具。Here’s Johnny！
+【“诶？我斧头呢？】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 23 =====
+道具重量(Kg) | 1 | 自燃释放温度 | 1000 | 初始耐久度 | 1000 | 导电金属含量 | 0.5 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0.9 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 500 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Metalic | 解冻温度 | 10 | 圆润程度(0-1) | 0.9 |  |  |  | 
+ |  | 冰冻温度 | -100 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | √ |  |  |  |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+500 | BP_Item_Stone | 5
+道具ID
+BP_PokeBall
+简述
+用于捕捉宝可梦的基础工具。在售这件道具的店主有乔伊、乔伊、乔伊、乔伊和……乔伊。
+【即使房价再贵，也请不要尝试住进宝可梦球里，你值得更好的。】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 24 =====
+道具重量(Kg) | 5 | 自燃释放温度 | 1000 | 初始耐久度 | 300 | 导电金属含量 | 0.1 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0.9 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 200 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.3 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ | √ |  | √ | √ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+300 | BP_Item_Stone | 2
+ | BP_Item_TreeBranch | 3
+道具ID
+Item_Shovel
+简述
+用于挖掘的基础工具。据说也有人拿来当武器用。
+【“只有两个办法能让你获得这件工具：合成，或者去找一个穿蓝色盔甲的家伙。”】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 25 =====
+道具重量(Kg) | 30 | 自燃释放温度 | 1000 | 初始耐久度 | 500 | 导电金属含量 | 0.1 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0.1 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 500 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 10 | 圆润程度(0-1) | 0.5 |  |  |  | 
+ |  | 冰冻温度 | -100 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ |  |  | ✓ |  |  | ✓
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+BP_Item_DIY_Crafting_ItemPlatform
+简述
+用于合成的工作平台，你带到这个星球的少数行李之一。
+【有人说一个方脑袋曾用它打造了击败黑色恶龙的武器，也有人说它最大的用处是把两个椰子合成半个西瓜】
+图标
+图标UI
+GameAsset
+
+===== SLIDE 26 =====
+道具重量(Kg) | 200 | 自燃释放温度 | 1000 | 初始耐久度 | 300 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 150 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.6 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+✓ | ✓ |  | ✓ | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+BP_item_Trick_Vomitter
+简述
+用来测试的 自动吐出一些 item的道具
+图标
+图标UI
+GameAsset
+
+===== SLIDE 27 =====
+道具重量(Kg) | 200 | 自燃释放温度 | 1000 | 初始耐久度 | 300 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 150 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.6 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+✓ | ✓ |  | ✓ | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+Item_Dispatcher
+素材规格
+简述
+通过电能将物体粒子化 并发往外界
+图标
+图标UI
+GameAsset
+
+===== SLIDE 28 =====
+道具重量(Kg) | 200 | 自燃释放温度 | 1000 | 初始耐久度 | 300 | 导电金属含量 | 0 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 2.0 | 导电金属导电度 | 0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 150 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 | PYM_Wood | 解冻温度 | 26 | 圆润程度(0-1) | 0.6 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+✓ | ✓ |  | ✓ | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+/ | / | /
+ | / | /
+道具ID
+Item_Receiver
+简述
+通过收集物体粒子 在游戏世界中 生成 漂流在外的各种道具
+图标
+图标UI
+GameAsset
+
+===== SLIDE 29 =====
+道具重量(Kg) | 1 | 自燃释放温度 | 1000 | 初始耐久度 | 500 | 导电金属含量 | 0.1 |  | 
+线性阻尼 | 0 | 自然释放时间 | 10 | 斩击伤害系数 | 1.0 | 导电金属导电度 | 0.0 |  | 
+扭矩阻尼 | 0 | 自燃临界温度 | 300 | 钝击伤害系数 | 0.1 |  |  |  | 
+物理材质 |  | 解冻温度 | 10 | 圆润程度(0-1) | 0.5 |  |  |  | 
+ |  | 冰冻温度 | -1 |  |  |  |  |  | 
+Static | Obey_Physics_Rules | Living_Thing | Can_Be_Destroyed | React_To_Temperature | Has_Any_Conductivity | Has_CraftingPlatform_Function
+ |  |  | ✓ | ✓ |  | 
+ReqEtherEnergyCoinNum | InPutElementID | CurrentItemNumReq
+1000 | BP_Item_DIY_Grass | 15
+道具ID
+BP_Item_Coat
+简述
+一件拉风的外套！
+图标
+图标UI
+GameAsset
+
+===== SLIDE 30 =====
+这一次会议的记录
+纯粹限定在一个小空间
+
+===== SLIDE 31 =====
+下一次会议的框架 
+主角的背景
+为什么要做这些事情
+为什么要出去探索

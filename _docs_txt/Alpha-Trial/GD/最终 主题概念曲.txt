@@ -1,0 +1,35 @@
+# 来源: AroundMe/Docs/Alpha-Trial/GD/最终 主题概念曲.docx
+# 状态: 现行（README 登记）
+# 分类: 3. 美术 / 音频
+# 作用: 主题曲机制：Loop music 随剧情进度叠加配器（参考 Outer Wilds）
+# 字符数: 740
+
+------------------------------------------------------------
+
+电波宇宙计划 最终Theme song
+头脑风暴:
+主题偏向
+星球 勃勃生机
+对人类文明的怀念 
+人类顽强生命力 欲望本身的 赞歌 
+文明重新诞生的希望 —->鼓点
+曲调&&风格:
+感觉上最符合的参考曲目
+重力异想世界Discovery of Gravitation
+https://www.bilibili.com/video/BV1EecJeLEUq?spm_id_from=333.788.videopod.episodes&vd_source=c561e076def4e1ca29e65259cda37fd1
+规格:
+机制上是Loop music
+初次抵达星球   ->raw_melody 寂静 充满生机
+这个曲子 主要是 作为最基本的melody刚来异星的 曲子 
+获得某种乐器 X1-> raw_melody+X1_loop 
+……
+发现人类全部死亡 ->empty_melody (raw_melody降调处理啥的 寂静无声 人类已经灭绝)
+…..
+发现人类小孩存活 -> raw_melody+ drums  人类还会重新诞生
+…..
+通关-> raw_melody+All X instruments 纯人类文明的视角的音乐
+Metasound上使用参数 实现 控制 
+机制参考：
+outer wilds 主题曲
+https://www.bilibili.com/video/BV1g5411f7uZ/?spm_id_from=333.1365.top_right_bar_window_history.content.click&vd_source=c561e076def4e1ca29e65259cda37fd1
+最根本的旋律: SD老师想一下 拜托了！！

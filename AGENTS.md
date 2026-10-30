@@ -15,9 +15,16 @@
 | `AroundMeLib/` | **Android Gradle 工程**（`com.aroundmelib`），移动端配套库，通过 `DIYPlatformService` 与游戏通信 |
 | `Configs/` | UE5 配置 + VS 配置（`ConfigsUE5/`、`DIY.vsconfig`） |
 | `Docs/` | `UE5_CPP_INDEX.md` — 自动生成的 C++ 文件索引（1357 文件） |
+| `AroundMe/Docs/` | **策划文档**（世界观 / 剧本 / 系统 / 美术 / 音频）。入口是 `AroundMe/Docs/README.md` |
 
 - 主工程入口：`AroundMe/AroundMe.uproject`（`EngineAssociation: 5.5`）
 - 测试工程入口：`PlayGround/PlayGround.uproject`（`EngineAssociation: 5.4`）
+
+### 策划文档约定（`AroundMe/Docs/`）
+
+- **单一入口**：`AroundMe/Docs/README.md` 维护「现行 / 已废弃 / 待决」三档清单，改文档先读它。
+- **`AroundMe/Docs/_Deprecated/` 是历史留档，不得引用、不得编辑**；废弃文件移入时须在该目录 README 写明「废弃原因 + 被谁取代 + 哪部分仍有效」。
+- 与仓库根目录的 `Docs/`（C++ 索引）不是同一个目录，勿混淆。
 
 ## 主项目源码结构（`AroundMe/Source/AroundMe`，约 248 文件）
 

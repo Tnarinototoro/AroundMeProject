@@ -1,0 +1,28 @@
+# 来源: AroundMe/Docs/Alpha-Trial/ART/CelShading一些参数调教方法.pptx
+# 状态: 现行（README 登记）
+# 分类: 3. 美术 / 音频
+# 作用: 三渲二着色参数调教
+# 字符数: 352
+
+------------------------------------------------------------
+
+
+===== SLIDE 1 =====
+CelShading一些参数调教方法
+
+===== SLIDE 2 =====
+DIY_Toon_Skin
+Metalic: 主要是边缘光控制 0—--->0.7
+
+===== SLIDE 3 =====
+DIY_Toon_Skin
+Specular就是用来调节高光亮度的
+粗糙度跟PBR同理
+
+===== SLIDE 4 =====
+DIY_Toon_Skin
+SubSurface Color用来调节暗部颜色
+
+===== SLIDE 5 =====
+DIY_Toon_Skin
+RampIndex实际就是明暗过渡的曲线控制现在这个index其实就是采样的V坐标根据V坐标来确认使用的linear color curve atlas里面的哪一个曲线

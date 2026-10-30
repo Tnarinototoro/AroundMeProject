@@ -1,0 +1,12 @@
+# 来源: AroundMe/Docs/Alpha-Trial/GD/DIY_Project 正式道具列表.xlsx
+# 状态: 现行（README 登记）
+# 分类: 2.1 道具
+# 作用: 道具登记表（**目前只有 1 行，待补**）
+# 字符数: 83
+
+------------------------------------------------------------
+
+
+===== SHEET 工作表1 =====
+ItemID | RefPicture | Model Submitted Name
+QingTongLongShou
