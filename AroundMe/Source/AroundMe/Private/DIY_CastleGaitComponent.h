@@ -4,10 +4,30 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Engine/EngineTypes.h"
 #include "DIY_CastleGaitComponent.generated.h"
 
+class USceneComponent;
+
 /**
- * 单只脚的运行时状态。算法思路移植自 Locomotor 插件（FLocomotorFoot），
+ * 单只脚的运行状态。
+ *
+ *  Fixed          钉死在地面落点，绝对不动（城堡在移动，脚被"拖着"）
+ *  Lifting        抬脚前半段：抬离地面、水平朝目标推进
+ *  Landing        下落段：高度回落，继续朝目标收拢
+ *  LandingToFixed 落地后的小残差吸附（处理地面高度变化 / 目标点微动），进容差后回到 Fixed
+ */
+UENUM(BlueprintType)
+enum class EDIY_GaitFootState : uint8
+{
+	Fixed,
+	Lifting,
+	Landing,
+	LandingToFixed
+};
+
+/**
+ * 单只脚的运行时状态。算法移植自 Locomotor 插件（FLocomotorFoot），
  * 保留了它防抖的几个关键机制：
  *  - 相位驱动，不直接赋值（当前相位追赶目标相位）
  *  - 水平位移用 EaseInOut，垂直用 sin(pi*t) 拱形
@@ -19,9 +39,13 @@ struct FDIY_GaitFoot
 {
 	GENERATED_BODY()
 
-	/** 髋部（腿根）在本组件空间的静止位置，来自绑定时的骨骼位置 */
+	/** 该腿引导点的本 Actor 空间位置（来自 ToeMarker 组件） */
 	UPROPERTY(BlueprintReadOnly, Category = "Gait")
 	FVector RestLocation = FVector::ZeroVector;
+
+	/** 当前这一帧算出来的"最终固定落点"（世界空间，Z 来自地面 trace） */
+	UPROPERTY(BlueprintReadOnly, Category = "Gait")
+	FVector FixedPoint = FVector::ZeroVector;
 
 	/** 上一段摆动的落点（世界空间）。支撑期脚一直停在这里 */
 	UPROPERTY(BlueprintReadOnly, Category = "Gait")
@@ -63,6 +87,10 @@ struct FDIY_GaitFoot
 	UPROPERTY(BlueprintReadOnly, Category = "Gait")
 	float StaticPhaseOffset = 0.f;
 
+	/** 当前状态 */
+	UPROPERTY(BlueprintReadOnly, Category = "Gait")
+	EDIY_GaitFootState State = EDIY_GaitFootState::Fixed;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Gait")
 	bool bInSwing = false;
 
@@ -76,6 +104,10 @@ struct FDIY_GaitFoot
 	UPROPERTY(BlueprintReadOnly, Category = "Gait")
 	bool bAtRest = true;
 
+	/** LandingToFixed 已经持续了多久 */
+	UPROPERTY(BlueprintReadOnly, Category = "Gait")
+	float SettleElapsed = 0.f;
+
 	/** 当前脚的世界位置（已含抬脚高度） */
 	UPROPERTY(BlueprintReadOnly, Category = "Gait")
 	FVector CurrentLocation = FVector::ZeroVector;
@@ -84,15 +116,17 @@ struct FDIY_GaitFoot
 /**
  * 移动城堡四足步态组件。
  *
- * 设计前提（和原实现的区别）：
+ * 设计前提：
  *  - 城堡本体是权威运动源，这个组件不移动任何 Actor，只负责算脚在哪
- *  - 根目标由外部每帧喂入（通常是城堡 Pawn 的当前变换），不再靠 Beacon 瞬移
+ *  - 组件自己 Tick，不需要 Pawn 显式调用
+ *  - 四条腿的平面位置由 4 个 ToeMarker（SceneComponent，挂在 Actor 下、随手拖）给出，
+ *    最终落点的 Z 由这些点向下 trace 地面决定
  *  - 内部固定 120Hz 子步进，外部帧率变化不会改变脚部轨迹形状
  *
  * 用法：
- *  1. 在城堡 Pawn 的 BeginPlay 里调 InitializeFeet，传入四个腿根骨骼位置
- *  2. 每帧（或 PostAnim）调 UpdateGait，传入城堡的世界变换和 DeltaTime
- *  3. 用 GetFootLocation(i) 取脚的世界位置，喂给 ControlRig 的 Control 或 ABP 变量
+ *  1. 在组件 Details 面板点 "Create Toe Markers"，生成 ToeMarker_0~3
+ *  2. 在视口里把这 4 个点拖到四条腿应该落脚的位置（它们跟着 Actor 走，拖一次就行）
+ *  3. 用 GetFootLocation(i) 取脚的世界位置，喂给 ABP 里的 ControlRig
  */
 UCLASS(ClassGroup = (DIY), meta = (BlueprintSpawnableComponent))
 class AROUNDME_API UDIY_CastleGaitComponent : public UActorComponent
@@ -103,18 +137,62 @@ public:
 	UDIY_CastleGaitComponent();
 
 	// ------------------------------------------------------------------
+	// 配置：四条腿的引导点（SceneComponent，手动摆放）
+	// ------------------------------------------------------------------
+
+	/** 四条腿的引导点。按 Create Toe Markers 自动生成并填好 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Setup")
+	TArray<TObjectPtr<USceneComponent>> ToeMarkers;
+
+	/** 在编辑器里点这个按钮：生成 4 个 ToeMarker 组件（挂在 Actor 根下，跟着 Actor 走） */
+	UFUNCTION(CallInEditor, BlueprintCallable, Category = "Gait|Setup")
+	void CreateToeMarkers();
+
+	/** 中心点相对 Actor 的偏移（CenterSocketName 为空时，以 Actor 位置为基准） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Setup")
+	FVector CenterPointOffset = FVector::ZeroVector;
+
+	/** 非空则以该 socket 的位置为基准，再加 CenterPointOffset */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Setup")
+	FName CenterSocketName = NAME_None;
+
+	/** 地面 trace 向上起点距离（cm） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Ground")
+	float TraceUp = 3000.f;
+
+	/** 地面 trace 向下距离（cm） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Ground")
+	float TraceDown = 30000.f;
+
+	/** 地面 trace 的通道 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Ground")
+	TEnumAsByte<ECollisionChannel> GroundTraceChannel = ECC_Visibility;
+
+	/** 没打到地面时的兜底高度（相对原点，cm） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Ground")
+	float FallbackGroundZ = -5000.f;
+
+	/** LandingToFixed 的目标时间（秒）；到时间仍在容差外就强制回 Fixed */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Settle")
+	float SettleTime = 0.12f;
+
+	/** 落地吸附的容差（cm），小于它就认为到位 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Settle")
+	float SettleTolerance = 3.f;
+
+	// ------------------------------------------------------------------
 	// 可调参数（对应 Locomotor 的同名设置）
 	// ------------------------------------------------------------------
 
 	/** 一步的最短距离（cm）。低于这个距离不会触发迈步 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Movement")
-	float MinimumStepLength = 150.f;
+	float MinimumStepLength = 1000.f;
 
 	/** 最小移动速度（cm/s） */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Movement")
 	float SpeedMin = 200.f;
 
-	/** 最大移动速度（cm/s）。步长 = 速度 / 相位速度，会影响摆动时长 */
+	/** 最大移动速度（cm/s） */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Movement")
 	float SpeedMax = 1200.f;
 
@@ -136,7 +214,7 @@ public:
 
 	/** 抬脚高度（cm） */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Step")
-	float StepHeight = 300.f;
+	float StepHeight = 1500.f;
 
 	/** 起步缓入（0 = 立刻移动，1 = 强缓入） */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Step", meta = (ClampMin = "0.0", ClampMax = "1.0"))
@@ -154,7 +232,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Smoothing")
 	float TargetSpringDamping = 2.f;
 
-	/** 内部固定仿真步长（秒）。默认 1/120，和 Locomotor 一致 */
+	/** 内部固定仿真步长（秒） */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Simulation")
 	float FixedTimeStep = 1.f / 120.f;
 
@@ -162,7 +240,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Simulation")
 	int32 MaxSubSteps = 8;
 
-	/** 是否输出调试线（脚到落点的轨迹） */
+	/** 是否输出调试线 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait|Debug")
 	bool bDrawDebug = false;
 
@@ -171,23 +249,33 @@ public:
 	// ------------------------------------------------------------------
 
 	/**
-	 * 初始化四只脚。腿根相对城堡（本组件所属 Actor）的静止位置。
-	 * @param FootRestLocal 四个腿根在本 Actor 本地空间的坐标
+	 * 初始化四只脚的平面静止位置（在本 Actor 本地空间）。
+	 * 一般不需要手动调用：ToeMarkers 存在时会自动从它们取。
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Gait")
-	void InitializeFeet(const TArray<FVector>& FootRestLocal);
+	void InitializeFeet(const TArray<FVector> &FootRestLocal);
+
+	/** 按 ToeMarkers 重建四只脚（取它们相对 Actor 的平面位置） */
+	UFUNCTION(BlueprintCallable, Category = "Gait")
+	void RebuildFromMarkers();
 
 	/**
-	 * 推进步态仿真。每帧调用。
-	 * @param RootWorld     城堡当前的世界变换（权威运动源）
-	 * @param DeltaSeconds  帧间隔
+	 * 手动推进步态（组件自己 Tick 时不需要调用；保留给需要精确控制的场合）。
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Gait")
-	void UpdateGait(const FTransform& RootWorld, float DeltaSeconds);
+	void UpdateGait(const FTransform &RootWorld, float DeltaSeconds);
 
 	/** 取第 Index 只脚的世界坐标（已含抬脚高度） */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Gait")
 	FVector GetFootLocation(int32 Index) const;
+
+	/** 取第 Index 只脚当前的状态 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Gait")
+	EDIY_GaitFootState GetFootState(int32 Index) const;
+
+	/** 取第 Index 只脚这一帧的最终固定落点（世界空间） */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Gait")
+	FVector GetFixedPoint(int32 Index) const;
 
 	/** 取第 Index 只脚是否在摆动期 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Gait")
@@ -207,49 +295,49 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+							   FActorComponentTickFunction *ThisTickFunction) override;
 
 private:
+	/** 按名字 ToeMarker_0..3 在 Owner 身上自动找引导点 */
+	void CollectMarkersByName();
+
+	/** 中心点：socket 位置 + CenterPointOffset（无 socket 则为 Actor 位置 + 偏移） */
+	FVector ResolveCenter() const;
+
+	/** 重新算四只脚的 FixedPoint（引导点平面位置 + 地面 trace） */
+	void UpdateFixedPoints(const FTransform &RootWorld);
+
 	/** 一次固定步长的仿真 */
-	void SimulateStep(const FTransform& RootWorld, float Dt);
+	void SimulateStep(const FTransform &RootWorld, float Dt);
 
-	/** 更新目标点：算出这一帧脚"应该"落在哪，并在摆动期用弹簧软跟随 */
-	void UpdateFootTargets(const FTransform& RootWorld, float Dt);
+	/** 更新目标点与状态机 */
+	void UpdateFootTargets(const FTransform &RootWorld, float Dt);
 
-	/** 根据相位把脚移动到当前应该的位置 */
+	/** 根据相位与状态把脚移动到当前应该的位置 */
 	void AnimateFeet(float Dt);
 
 	/** 相位环绕到 0~1 */
 	static float WrapPhase(float Phase);
 
-	/** 相位插值（沿最短方向追赶） */
-	static float BlendTowardsPhase(float Current, float Target, float Rate);
-
 	/** 缓入缓出重映射 */
 	static float EaseInOutNorm(float Input, float EaseIn, float EaseOut);
 
-	/** 简易临界阻尼弹簧积分（标量） */
+	/** 简易临界阻尼弹簧积分（矢量） */
 	static void SpringDamperVector(
-		FVector& InOutValue, FVector& InOutVelocity,
-		const FVector& Target, float Stiffness, float Damping, float Dt);
+		FVector &InOutValue, FVector &InOutVelocity,
+		const FVector &Target, float Stiffness, float Damping, float Dt);
 
 	UPROPERTY()
 	TArray<FDIY_GaitFoot> Feet;
 
-	/** 累计待仿真的时间 */
 	float AccumulatedTime = 0.f;
-
-	/** 全局相位 */
 	float GlobalPhase = 0.f;
-
-	/** 当前速度 / 相位速度 */
 	float CurrentSpeed = 0.f;
 	float CurrentPhaseSpeed = 0.f;
 	float CurrentPercentOfMaxSpeed = 0.f;
 
-	/** 上一次的城堡变换，用来算速度 */
 	FVector PrevRootLocation = FVector::ZeroVector;
 	bool bHasPrevRoot = false;
-
-	/** 是否已经初始化过脚 */
 	bool bInitialized = false;
 };

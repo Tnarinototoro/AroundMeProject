@@ -3,16 +3,171 @@
 #include "DIY_CastleGaitComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
+#include "GameFramework/Actor.h"
+#include "Components/SceneComponent.h"
 
 UDIY_CastleGaitComponent::UDIY_CastleGaitComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false; // 由所属 Pawn 显式调用 UpdateGait
-	PrimaryComponentTick.bStartWithTickEnabled = false;
+	// 组件自己 tick：Pawn 不需要再显式调用 UpdateGait
+	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bStartWithTickEnabled = true;
 }
 
 void UDIY_CastleGaitComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 先在 Owner 身上按名字找 ToeMarker_0..3（蓝图里手工加的组件）
+	CollectMarkersByName();
+
+	// 没找到就运行时自己建一组（保证永远有东西可用）
+	if (ToeMarkers.Num() == 0)
+	{
+		CreateToeMarkers();
+	}
+
+	RebuildFromMarkers();
+}
+
+void UDIY_CastleGaitComponent::CollectMarkersByName()
+{
+	AActor* Owner = GetOwner();
+	if (!Owner)
+	{
+		return;
+	}
+
+	TArray<USceneComponent*> SceneComps;
+	Owner->GetComponents<USceneComponent>(SceneComps);
+
+	ToeMarkers.Reset();
+	ToeMarkers.SetNum(4);
+
+	for (USceneComponent* Comp : SceneComps)
+	{
+		if (!Comp)
+		{
+			continue;
+		}
+
+		const FString Name = Comp->GetName();
+		if (!Name.StartsWith(TEXT("ToeMarker_")))
+		{
+			continue;
+		}
+
+		const FString IndexPart = Name.RightChop(FCString::Strlen(TEXT("ToeMarker_")));
+		const int32 Index = FCString::Atoi(*IndexPart);
+		if (Index >= 0 && Index < 4)
+		{
+			ToeMarkers[Index] = Comp;
+		}
+	}
+
+	// 有任何一个槽是空的，就当没配好（交给 CreateToeMarkers 兼底）
+	for (const TObjectPtr<USceneComponent>& Marker : ToeMarkers)
+	{
+		if (!Marker)
+		{
+			ToeMarkers.Reset();
+			break;
+		}
+	}
+}
+
+void UDIY_CastleGaitComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (!bInitialized || Feet.Num() == 0)
+	{
+		return;
+	}
+
+	if (AActor* Owner = GetOwner())
+	{
+		UpdateGait(Owner->GetActorTransform(), DeltaTime);
+	}
+}
+
+void UDIY_CastleGaitComponent::CreateToeMarkers()
+{
+	AActor* Owner = GetOwner();
+	if (!Owner)
+	{
+		return;
+	}
+
+	USceneComponent* Root = Owner->GetRootComponent();
+	if (!Root)
+	{
+		return;
+	}
+
+	// 默认摆成一个包围盒，用户再在视口里拖
+	const FVector Defaults[4] = {
+		FVector(11725.f, 0.f, 0.f),      // 前
+		FVector(0.f, 11772.f, 0.f),      // 右
+		FVector(-11742.f, 0.f, 0.f),     // 后
+		FVector(0.f, -11488.f, 0.f)      // 左
+	};
+
+	ToeMarkers.Reset();
+
+	for (int32 Index = 0; Index < 4; ++Index)
+	{
+		const FName MarkerName(*FString::Printf(TEXT("ToeMarker_%d"), Index));
+
+		USceneComponent* Marker = NewObject<USceneComponent>(Owner, MarkerName);
+		if (!Marker)
+		{
+			continue;
+		}
+
+		Marker->SetFlags(RF_Transactional);
+		Owner->AddInstanceComponent(Marker);
+		Marker->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
+		Marker->SetRelativeLocation(Defaults[Index]);
+		Marker->RegisterComponent();
+
+		ToeMarkers.Add(Marker);
+	}
+
+	RebuildFromMarkers();
+}
+
+void UDIY_CastleGaitComponent::RebuildFromMarkers()
+{
+	if (ToeMarkers.Num() == 0)
+	{
+		return;
+	}
+
+	AActor* Owner = GetOwner();
+	if (!Owner)
+	{
+		return;
+	}
+
+	TArray<FVector> Local;
+	Local.Reserve(ToeMarkers.Num());
+
+	const FTransform OwnerXform = Owner->GetActorTransform();
+	for (const TObjectPtr<USceneComponent>& Marker : ToeMarkers)
+	{
+		if (!Marker)
+		{
+			continue;
+		}
+		const FVector World = Marker->GetComponentLocation();
+		Local.Add(OwnerXform.InverseTransformPosition(World));
+	}
+
+	if (Local.Num() > 0)
+	{
+		InitializeFeet(Local);
+	}
 }
 
 void UDIY_CastleGaitComponent::InitializeFeet(const TArray<FVector>& FootRestLocal)
@@ -26,16 +181,18 @@ void UDIY_CastleGaitComponent::InitializeFeet(const TArray<FVector>& FootRestLoc
 		FDIY_GaitFoot& Foot = Feet[Index];
 		Foot.RestLocation = FootRestLocal[Index];
 
-		// 对角步态：0 和 3 一组、1 和 2 一组，两组错开半个周期
-		const bool bGroupA = (Index == 0 || Index == 3);
+		// 对角线分组：0/2 一组、1/3 一组，两组错开半个周期
+		const bool bGroupA = (Index % 2 == 0);
 		Foot.StaticPhaseOffset = bGroupA ? 0.f : 0.5f;
 
-		Foot.CurrentPhase = 1.f;
-		Foot.TargetPhase = 1.f;
+		Foot.CurrentPhase = 0.f;
+		Foot.TargetPhase = 0.f;
 		Foot.PhaseWhenSwingEnds = 0.5f;
+		Foot.State = EDIY_GaitFootState::Fixed;
 		Foot.bAtRest = true;
 		Foot.bInSwing = false;
 		Foot.bWasInSwing = false;
+		Foot.SettleElapsed = 0.f;
 	}
 
 	bInitialized = NumFeet > 0;
@@ -47,6 +204,77 @@ void UDIY_CastleGaitComponent::InitializeFeet(const TArray<FVector>& FootRestLoc
 	bHasPrevRoot = false;
 }
 
+FVector UDIY_CastleGaitComponent::ResolveCenter() const
+{
+	const AActor* Owner = GetOwner();
+	if (!Owner)
+	{
+		return CenterPointOffset;
+	}
+
+	const FTransform OwnerXform = Owner->GetActorTransform();
+
+	// socket 非空：以 socket 位置为基准，再加偏移
+	if (!CenterSocketName.IsNone())
+	{
+		if (const USceneComponent* Root = Owner->GetRootComponent())
+		{
+			if (Root->DoesSocketExist(CenterSocketName))
+			{
+				return Root->GetSocketLocation(CenterSocketName) + CenterPointOffset;
+			}
+		}
+	}
+
+	// 否则：Actor 位置 + 偏移
+	return OwnerXform.TransformPosition(CenterPointOffset);
+}
+
+void UDIY_CastleGaitComponent::UpdateFixedPoints(const FTransform& RootWorld)
+{
+	UWorld* World = GetWorld();
+	const FVector Center = ResolveCenter();
+
+	for (int32 Index = 0; Index < Feet.Num(); ++Index)
+	{
+		FDIY_GaitFoot& Foot = Feet[Index];
+
+		// 引导点（SceneComponent）的世界平面位置；没有就拿 Actor 变换 + 本地偏移
+		FVector Flat = Foot.RestLocation;
+		if (ToeMarkers.IsValidIndex(Index) && ToeMarkers[Index])
+		{
+			Flat = ToeMarkers[Index]->GetComponentLocation();
+		}
+		else
+		{
+			Flat = RootWorld.TransformPosition(FVector(Foot.RestLocation.X, Foot.RestLocation.Y, 0.f));
+		}
+
+		// 地面高度：从引导点上方往下打一条 trace
+		bool bHit = false;
+		FHitResult Hit;
+		if (World)
+		{
+			const FVector Start = Flat + FVector(0.f, 0.f, TraceUp);
+			const FVector End = Flat - FVector(0.f, 0.f, TraceDown);
+			FCollisionQueryParams Params(SCENE_QUERY_STAT(CastleGaitGround), false, GetOwner());
+			bHit = World->LineTraceSingleByChannel(
+				Hit, Start, End, GroundTraceChannel, Params);
+		}
+
+		if (bHit)
+		{
+			Flat.Z = Hit.ImpactPoint.Z;
+		}
+		else
+		{
+			Flat.Z = Center.Z + FallbackGroundZ;
+		}
+
+		Foot.FixedPoint = Flat;
+	}
+}
+
 void UDIY_CastleGaitComponent::UpdateGait(const FTransform& RootWorld, float DeltaSeconds)
 {
 	if (!bInitialized || Feet.Num() == 0 || DeltaSeconds <= KINDA_SMALL_NUMBER)
@@ -54,7 +282,10 @@ void UDIY_CastleGaitComponent::UpdateGait(const FTransform& RootWorld, float Del
 		return;
 	}
 
-	// 第一次调用：把脚摆到静止位置，避免从原点弹过来
+	// 每一帧都刷新最终落点（引导点随手拖 + 地面 trace）
+	UpdateFixedPoints(RootWorld);
+
+	// 第一次调用：把脚摆到固定点上，避免从原点弹过来
 	if (!bHasPrevRoot)
 	{
 		bHasPrevRoot = true;
@@ -62,16 +293,16 @@ void UDIY_CastleGaitComponent::UpdateGait(const FTransform& RootWorld, float Del
 
 		for (FDIY_GaitFoot& Foot : Feet)
 		{
-			const FVector WorldRest = RootWorld.TransformPosition(Foot.RestLocation);
-			Foot.PlantedLocation = WorldRest;
-			Foot.TargetLocation = WorldRest;
-			Foot.SpringLocation = WorldRest;
+			Foot.PlantedLocation = Foot.FixedPoint;
+			Foot.TargetLocation = Foot.FixedPoint;
+			Foot.SpringLocation = Foot.FixedPoint;
 			Foot.SpringVelocity = FVector::ZeroVector;
-			Foot.StrideOrigin = WorldRest;
-			Foot.CurrentLocation = WorldRest;
+			Foot.StrideOrigin = Foot.FixedPoint;
+			Foot.CurrentLocation = Foot.FixedPoint;
 			Foot.StrideHeight = StepHeight * 0.2f;
-			Foot.CurrentPhase = 1.f;
-			Foot.TargetPhase = 1.f;
+			Foot.CurrentPhase = 0.f;
+			Foot.TargetPhase = 0.f;
+			Foot.State = EDIY_GaitFootState::Fixed;
 			Foot.bAtRest = true;
 			Foot.bInSwing = false;
 			Foot.bWasInSwing = false;
@@ -79,7 +310,7 @@ void UDIY_CastleGaitComponent::UpdateGait(const FTransform& RootWorld, float Del
 		return;
 	}
 
-	// 速度取自城堡的实际位移（和 Locomotor 里"根目标移动"的语义一致）
+	// 速度取自城堡的实际位移
 	const FVector RootDelta = RootWorld.GetLocation() - PrevRootLocation;
 	const float ActualSpeed = RootDelta.Size() / DeltaSeconds;
 	PrevRootLocation = RootWorld.GetLocation();
@@ -90,7 +321,7 @@ void UDIY_CastleGaitComponent::UpdateGait(const FTransform& RootWorld, float Del
 		: 0.f;
 	CurrentPhaseSpeed = FMath::Lerp(PhaseSpeedMin, PhaseSpeedMax, CurrentPercentOfMaxSpeed);
 
-	// 固定步长子步进：外部掉帧不改变轨迹形状
+	// 固定步长子步进
 	AccumulatedTime += DeltaSeconds;
 	int32 Steps = 0;
 	while (AccumulatedTime >= FixedTimeStep && Steps < MaxSubSteps)
@@ -101,119 +332,154 @@ void UDIY_CastleGaitComponent::UpdateGait(const FTransform& RootWorld, float Del
 	}
 	if (AccumulatedTime > FixedTimeStep * MaxSubSteps)
 	{
-		AccumulatedTime = 0.f; // 卡顿太厉害时丢弃积压，避免追帧雪崩
+		AccumulatedTime = 0.f;
 	}
 
 	if (bDrawDebug && GetWorld())
 	{
 		for (const FDIY_GaitFoot& Foot : Feet)
 		{
-			DrawDebugLine(GetWorld(), Foot.CurrentLocation, Foot.TargetLocation,
-				Foot.bInSwing ? FColor::Red : FColor::Green, false, -1.f, 0, 2.f);
-			DrawDebugSphere(GetWorld(), Foot.CurrentLocation, 40.f, 8,
-				Foot.bInSwing ? FColor::Orange : FColor::Blue, false, -1.f);
+			FColor StateColor = FColor::Green;
+			switch (Foot.State)
+			{
+			case EDIY_GaitFootState::Fixed:          StateColor = FColor::Green;  break;
+			case EDIY_GaitFootState::Lifting:        StateColor = FColor::Red;    break;
+			case EDIY_GaitFootState::Landing:        StateColor = FColor::Orange; break;
+			case EDIY_GaitFootState::LandingToFixed: StateColor = FColor::Cyan;   break;
+			default: break;
+			}
+
+			DrawDebugSphere(GetWorld(), Foot.CurrentLocation, 60.f, 12, StateColor, false, -1.f, 0, 4.f);
+			DrawDebugSphere(GetWorld(), Foot.FixedPoint, 30.f, 8, FColor::White, false, -1.f, 0, 2.f);
+			DrawDebugLine(GetWorld(), Foot.CurrentLocation, Foot.FixedPoint, FColor::Yellow, false, -1.f, 0, 2.f);
 		}
 	}
 }
 
 void UDIY_CastleGaitComponent::SimulateStep(const FTransform& RootWorld, float Dt)
 {
-	// 1. 推进全局相位
 	GlobalPhase = WrapPhase(GlobalPhase + CurrentPhaseSpeed * Dt);
-
-	// 2. 更新每只脚的相位与目标
 	UpdateFootTargets(RootWorld, Dt);
-
-	// 3. 按相位把脚摆到当前位置
 	AnimateFeet(Dt);
 }
 
 void UDIY_CastleGaitComponent::UpdateFootTargets(const FTransform& RootWorld, float Dt)
 {
-	// 步长上限：一步最多跨多远（由速度与相位速度决定，防止高速时腿被拉断）
-	const float MaxStrideLength = (CurrentPhaseSpeed > KINDA_SMALL_NUMBER)
-		? (CurrentSpeed / CurrentPhaseSpeed) * 1.5f
-		: 3000.f;
-
-	for (FDIY_GaitFoot& Foot : Feet)
+	for (int32 Index = 0; Index < Feet.Num(); ++Index)
 	{
-		// 城堡移动后，这只脚"理想"应该站的位置
-		const FVector IdealWorld = RootWorld.TransformPosition(Foot.RestLocation);
-		const float DistanceFromPlanted = FVector::Dist(Foot.PlantedLocation, IdealWorld);
+		FDIY_GaitFoot& Foot = Feet[Index];
 
-		// 目标相位：全局相位 + 本腿静态偏移
-		Foot.TargetPhase = WrapPhase(GlobalPhase + Foot.StaticPhaseOffset);
+		const float DistToFixed = FVector::Dist2D(Foot.PlantedLocation, Foot.FixedPoint);
+		const float PhaseOfThisFoot = WrapPhase(GlobalPhase + Foot.StaticPhaseOffset);
 
-		// 当前相位追赶目标相位（不直接赋值，防脚突跳）
-		const float PhaseBlendRate = FMath::Clamp(CurrentPhaseSpeed * 2.f * Dt, 0.f, 1.f);
-		Foot.bWasInSwing = Foot.bInSwing;
-
-		// 距离足够远才允许迈步
-		const bool bWantsToStep = DistanceFromPlanted > MinimumStepLength;
-		if (Foot.bAtRest && bWantsToStep)
+		switch (Foot.State)
 		{
-			Foot.bAtRest = false;
-		}
-
-		if (Foot.bAtRest)
+		case EDIY_GaitFootState::Fixed:
 		{
-			Foot.CurrentPhase = 1.f;
-			Foot.TargetPhase = 1.f;
-			Foot.bInSwing = false;
-		}
-		else
-		{
-			Foot.CurrentPhase = BlendTowardsPhase(Foot.CurrentPhase, Foot.TargetPhase, PhaseBlendRate);
-			Foot.bInSwing = Foot.CurrentPhase < Foot.PhaseWhenSwingEnds;
-		}
-
-		// 抬脚这一帧：锁死本段摆动的起点、抬脚高度、摆动占比
-		Foot.bUnplantedThisTick = (!Foot.bWasInSwing && Foot.bInSwing);
-		if (Foot.bUnplantedThisTick)
-		{
-			Foot.StrideOrigin = Foot.PlantedLocation;
-
-			Foot.StrideHeight = FMath::Lerp(StepHeight * 0.2f, StepHeight, CurrentPercentOfMaxSpeed);
-
-			const float PercentAtMin = FMath::Clamp(PercentOfStrideInAir, 0.1f, 0.95f);
-			const float PercentAtMax = FMath::Clamp(
-				PercentAtMin + AirExtensionAtMaxSpeed, PercentAtMin, 0.95f);
-			Foot.PhaseWhenSwingEnds = FMath::Lerp(PercentAtMin, PercentAtMax, CurrentPercentOfMaxSpeed);
-
-			// 弹簧重置到当前落点，避免继承上一段的速度
+			// 钉死在落点，绝对不动
+			Foot.CurrentLocation = Foot.PlantedLocation;
+			Foot.TargetLocation = Foot.PlantedLocation;
 			Foot.SpringLocation = Foot.PlantedLocation;
 			Foot.SpringVelocity = FVector::ZeroVector;
-			Foot.TargetLocation = Foot.PlantedLocation;
+			Foot.bInSwing = false;
+			Foot.bAtRest = true;
+
+			// 距固定点足够远、且轮到这只脚所在的那半周期 → 开始抬脚
+			const bool bItsTurn = PhaseOfThisFoot < 0.5f;
+			if (DistToFixed > MinimumStepLength && bItsTurn)
+			{
+				Foot.State = EDIY_GaitFootState::Lifting;
+				Foot.bAtRest = false;
+				Foot.bInSwing = true;
+				Foot.bWasInSwing = false;
+				Foot.bUnplantedThisTick = true;
+				Foot.CurrentPhase = 0.f;
+				Foot.StrideOrigin = Foot.PlantedLocation;
+				Foot.SpringLocation = Foot.PlantedLocation;
+				Foot.SpringVelocity = FVector::ZeroVector;
+				Foot.TargetLocation = Foot.PlantedLocation;
+
+				Foot.StrideHeight = FMath::Lerp(StepHeight * 0.2f, StepHeight, CurrentPercentOfMaxSpeed);
+
+				const float PercentAtMin = FMath::Clamp(PercentOfStrideInAir, 0.1f, 0.95f);
+				const float PercentAtMax = FMath::Clamp(
+					PercentAtMin + AirExtensionAtMaxSpeed, PercentAtMin, 0.95f);
+				Foot.PhaseWhenSwingEnds = FMath::Lerp(PercentAtMin, PercentAtMax, CurrentPercentOfMaxSpeed);
+			}
+			break;
 		}
 
-		// 摆动期：目标点朝理想落点推进，步长受速度钳制，并用弹簧软跟随
-		if (Foot.bInSwing)
+		case EDIY_GaitFootState::Lifting:
+		case EDIY_GaitFootState::Landing:
 		{
-			const FVector OriginToIdeal = IdealWorld - Foot.StrideOrigin;
+			Foot.bUnplantedThisTick = false;
+
+			// 摆动期：目标点朝固定点推进，步长受速度钳制，用弹簧软跟随
+			const float MaxStrideLength = (CurrentPhaseSpeed > KINDA_SMALL_NUMBER)
+				? (CurrentSpeed / CurrentPhaseSpeed) * 1.5f
+				: 3000.f;
+
+			const FVector OriginToIdeal = Foot.FixedPoint - Foot.StrideOrigin;
 			const float IdealDistance = OriginToIdeal.Size();
 			const float StepLength = FMath::Min(IdealDistance, MaxStrideLength);
-
 			const FVector Direction = (IdealDistance > KINDA_SMALL_NUMBER)
 				? OriginToIdeal / IdealDistance
 				: FVector::ZeroVector;
 			const FVector NewTarget = Foot.StrideOrigin + Direction * StepLength;
 
-			// 只接受"比上一帧更靠近终点"的目标；摆动中途急转时保持原目标
-			const float OldDistSq = FVector::DistSquared(IdealWorld, Foot.TargetLocation);
-			const float NewDistSq = FVector::DistSquared(IdealWorld, NewTarget);
-
-			if (Foot.bUnplantedThisTick || NewDistSq <= OldDistSq)
+			const float OldDistSq = FVector::DistSquared(Foot.FixedPoint, Foot.TargetLocation);
+			const float NewDistSq = FVector::DistSquared(Foot.FixedPoint, NewTarget);
+			if (NewDistSq <= OldDistSq)
 			{
 				SpringDamperVector(Foot.SpringLocation, Foot.SpringVelocity, NewTarget,
 					TargetSpringStiffness, TargetSpringDamping, Dt);
 				Foot.TargetLocation = Foot.SpringLocation;
 			}
+
+			// 相位推进
+			Foot.CurrentPhase = FMath::Clamp(Foot.CurrentPhase + CurrentPhaseSpeed * Dt, 0.f, 1.f);
+
+			if (Foot.State == EDIY_GaitFootState::Lifting &&
+				Foot.CurrentPhase >= Foot.PhaseWhenSwingEnds)
+			{
+				Foot.State = EDIY_GaitFootState::Landing;
+			}
+
+			if (Foot.CurrentPhase >= 1.f)
+			{
+				Foot.PlantedLocation = Foot.FixedPoint;
+				Foot.CurrentLocation = Foot.FixedPoint;
+				Foot.State = EDIY_GaitFootState::LandingToFixed;
+				Foot.SettleElapsed = 0.f;
+				Foot.bInSwing = false;
+				Foot.SpringLocation = Foot.FixedPoint;
+				Foot.SpringVelocity = FVector::ZeroVector;
+			}
+			break;
 		}
-		else
+
+		case EDIY_GaitFootState::LandingToFixed:
 		{
-			// 支撑期：脚钉死在落点，目标不需要再动
-			Foot.TargetLocation = Foot.PlantedLocation;
-			Foot.SpringLocation = Foot.PlantedLocation;
+			Foot.bUnplantedThisTick = false;
+			Foot.SettleElapsed += Dt;
+
+			SpringDamperVector(Foot.CurrentLocation, Foot.SpringVelocity, Foot.FixedPoint,
+				TargetSpringStiffness * 3.f, TargetSpringDamping * 1.5f, Dt);
+
+			const float Residual = FVector::Dist(Foot.CurrentLocation, Foot.FixedPoint);
+			if (Residual <= SettleTolerance || Foot.SettleElapsed >= SettleTime)
+			{
+				Foot.PlantedLocation = Foot.FixedPoint;
+				Foot.CurrentLocation = Foot.FixedPoint;
+				Foot.State = EDIY_GaitFootState::Fixed;
+				Foot.bAtRest = true;
+				Foot.SettleElapsed = 0.f;
+			}
+			break;
+		}
+
+		default:
+			break;
 		}
 	}
 }
@@ -224,37 +490,20 @@ void UDIY_CastleGaitComponent::AnimateFeet(float Dt)
 
 	for (FDIY_GaitFoot& Foot : Feet)
 	{
-		// 支撑期：脚保持不动
-		if (!Foot.bInSwing)
+		if (Foot.State != EDIY_GaitFootState::Lifting && Foot.State != EDIY_GaitFootState::Landing)
 		{
-			Foot.CurrentLocation = Foot.PlantedLocation;
 			continue;
 		}
 
-		// 摆动期：把 0~PhaseWhenSwingEnds 重映射到 0~1
 		const float PercentStep = (Foot.PhaseWhenSwingEnds > KINDA_SMALL_NUMBER)
 			? FMath::Clamp(Foot.CurrentPhase / Foot.PhaseWhenSwingEnds, 0.f, 1.f)
 			: 1.f;
 
 		const float PercentEased = EaseInOutNorm(PercentStep, StepEaseIn, StepEaseOut);
-
-		// 水平：缓入缓出插值
 		const FVector Flat = FMath::Lerp(Foot.StrideOrigin, Foot.TargetLocation, PercentEased);
-
-		// 垂直：sin 拱（峰值在摆动中点）
 		const float HeightOffset = Foot.StrideHeight * FMath::Sin(PercentStep * PI);
 
 		Foot.CurrentLocation = Flat + FVector(0.f, 0.f, HeightOffset);
-		Foot.PlantedLocation = Flat;
-
-		// 摆动结束时把脚钉在新落点上
-		if (PercentStep >= 1.f)
-		{
-			Foot.CurrentLocation = Foot.TargetLocation;
-			Foot.PlantedLocation = Foot.TargetLocation;
-			Foot.bInSwing = false;
-			Foot.bAtRest = true;
-		}
 	}
 }
 
@@ -268,30 +517,14 @@ float UDIY_CastleGaitComponent::WrapPhase(float Phase)
 	return Wrapped;
 }
 
-float UDIY_CastleGaitComponent::BlendTowardsPhase(float Current, float Target, float Rate)
-{
-	// 沿最短方向插值，避免 0.99 -> 0.01 时绕整圈
-	float Delta = Target - Current;
-	if (Delta > 0.5f)
-	{
-		Delta -= 1.f;
-	}
-	else if (Delta < -0.5f)
-	{
-		Delta += 1.f;
-	}
-	return WrapPhase(Current + Delta * FMath::Clamp(Rate, 0.f, 1.f));
-}
-
 float UDIY_CastleGaitComponent::EaseInOutNorm(float Input, float EaseIn, float EaseOut)
 {
 	const float T = FMath::Clamp(Input, 0.f, 1.f);
 	const float InAmount = FMath::Clamp(EaseIn, 0.f, 1.f);
 	const float OutAmount = FMath::Clamp(EaseOut, 0.f, 1.f);
 
-	// 两端对称的幂曲线：起点慢、中点最快、落点慢
 	const float Exponent = 1.f + (InAmount + OutAmount) * 1.5f;
-	const float SinCurve = 0.5f - 0.5f * FMath::Cos(T * PI); // 天然的两端缓
+	const float SinCurve = 0.5f - 0.5f * FMath::Cos(T * PI);
 	return FMath::Lerp(T, SinCurve, FMath::Clamp(Exponent - 1.f, 0.f, 1.f));
 }
 
@@ -299,7 +532,6 @@ void UDIY_CastleGaitComponent::SpringDamperVector(
 	FVector& InOutValue, FVector& InOutVelocity,
 	const FVector& Target, float Stiffness, float Damping, float Dt)
 {
-	// 二阶弹簧：a = -k*(x - target) - c*v
 	const FVector Displacement = InOutValue - Target;
 	InOutVelocity += (-Stiffness * Displacement - Damping * InOutVelocity) * Dt;
 	InOutValue += InOutVelocity * Dt;
@@ -310,6 +542,24 @@ FVector UDIY_CastleGaitComponent::GetFootLocation(int32 Index) const
 	if (Feet.IsValidIndex(Index))
 	{
 		return Feet[Index].CurrentLocation;
+	}
+	return FVector::ZeroVector;
+}
+
+EDIY_GaitFootState UDIY_CastleGaitComponent::GetFootState(int32 Index) const
+{
+	if (Feet.IsValidIndex(Index))
+	{
+		return Feet[Index].State;
+	}
+	return EDIY_GaitFootState::Fixed;
+}
+
+FVector UDIY_CastleGaitComponent::GetFixedPoint(int32 Index) const
+{
+	if (Feet.IsValidIndex(Index))
+	{
+		return Feet[Index].FixedPoint;
 	}
 	return FVector::ZeroVector;
 }
