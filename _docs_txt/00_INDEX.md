@@ -30,11 +30,11 @@
 | 2.1 道具 | `Alpha-Trial/GD/DIY_Project 正式道具列表.xlsx` | 道具登记表（**目前只有 1 行，待补**） | 83 | `Alpha-Trial/GD/DIY_Project 正式道具列表.txt` |
 | 3. 美术 / 音频 | `Alpha-Trial/ART/CelShading一些参数调教方法.pptx` | 三渲二着色参数调教 | 352 | `Alpha-Trial/ART/CelShading一些参数调教方法.txt` |
 | 3. 美术 / 音频 | `Alpha-Trial/ART/美术方向摘录（2024会议·现行）.docx` | **2026-10-29 新增**：从已废弃的世界观 pptx 中摘出的美术/镜头/调性结论，替代该 pptx 的第 10–19 页 | 955 | `Alpha-Trial/ART/美术方向摘录（2024会议·现行）.txt` |
+| 3. 美术 / 音频 | `Alpha-Trial/ART/HD2D/HD2D美术管线试验方案.md` | **2026-11-07 新增 / 11-08 定稿**：HD-2D 可行性试验方案（45° 俯视箱庭 / 4 方向 / 保留卡通 3D / PC 优先），含 5 个判定问题与失败判据。**是并行试验，不推翻上一条美术方向**。配套精灵在 ART/HD2D/Sprites/ | 5,197 | `Alpha-Trial/ART/HD2D/HD2D美术管线试验方案.txt` |
 | 3. 美术 / 音频 | `Alpha-Trial/GD/主角表情.docx` | 主角表情表 | 420 | `Alpha-Trial/GD/主角表情.txt` |
 | 3. 美术 / 音频 | `Alpha-Trial/GD/最终 主题概念曲.docx` | 主题曲机制：Loop music 随剧情进度叠加配器（参考 Outer Wilds） | 740 | `Alpha-Trial/GD/最终 主题概念曲.txt` |
 | 3. 美术 / 音频 | `Alpha-Trial/SD/主题背景BGM需求说明.docx` | BGM 需求：70% 生机 / 30% 悲凉；参考塞尔达 OST、重力异想世界 | 1,099 | `Alpha-Trial/SD/主题背景BGM需求说明.txt` |
 | 4. 过程记录（只读参考，不作依据） | `Alpha-Trial/MTG/会议_头脑风暴记录.docx` | 2023/12–2024/2 的会议流水，能看到方向是怎么变的 | 752 | `Alpha-Trial/MTG/会议_头脑风暴记录.txt` |
-| 4. 过程记录（只读参考，不作依据） | `Alpha-Trial/PG/How Does Unreal Engine 4 Compile.pptx` | UE4 编译原理资料，与技术选型有关，与策划无关 | 99,599 | `Alpha-Trial/PG/How Does Unreal Engine 4 Compile.txt` |
 
 ## 已废弃（不抽取，见 `_Deprecated/README.md`）
 

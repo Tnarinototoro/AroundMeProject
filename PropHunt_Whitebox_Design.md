@@ -286,7 +286,7 @@ flowchart TD
 | 大厅：选边/准备/倒计时 | DONE | 手动选边 |
 | 猎人：移动/跳跃/拾取/投掷 | DONE | 无冲刺 |
 | 鬼：漂浮/附身/镜头切换 | DONE | 弹簧臂第三人称 |
-| QTE（服务端） | DONE | Space/F/Shift |
+| QTE（服务端） | DONE | Space/F/Shift；远程按键丢弃已修（§13.1），待双端实测 |
 | 驱逐与结算 | DONE | 仅"Hunter Wins" |
 | 暂停（服务器权威） | DONE | |
 | 罗盘 + 脉冲音 | DONE | 待改为开关 |
@@ -307,6 +307,30 @@ flowchart TD
 ---
 
 ## 8. TODO（按"最快能验证核心"排序）
+
+### 执行队列（2026-11-02 起）
+
+先修会让验证失真的三处，再按「核心可感 → 一局成立 → NvM → 测得准 → 发得出去」推进。下表是唯一的执行顺序；下面的 M0–M4 表保留作为验收细节参考。
+
+| 序 | ID | 事项 | 类型 | 验收 | 状态 |
+|---|---|---|---|---|---|
+| 1 | W0-1 | 远程客户端 QTE 按键在服务端被丢弃（§13.1） | C++ | 客户端当鬼时按对能冻结进度 | DONE（编译通过，待双端实测） |
+| 2 | W0-2 | 附身变红只对附身者可见（§13.2） | C++ | 猎人看不出哪把有鬼 | TODO |
+| 3 | W0-3 | 名牌不显示角色（§13.3） | C++ | 鬼头顶不写 Ghost | TODO |
+| 4 | W0-4 | 罗盘加开关、默认关 | C++ | 关掉后完全没有提示 | TODO |
+| 5 | WB-02 | 地图放 8 把同款椅子 | 地图 | 鬼可在任意一把之间换位 | TODO |
+| 6 | WB-06 | 损坏值（抱起 / 摇晃 / 摔落） | C++ | 连续摇 10 秒能摇坏一把 | TODO |
+| 7 | WB-07 | 双条 UI（驱逐 + 损坏） | UI | 两条同时可见 | TODO |
+| 8 | WB-11/12 | 体力与脱力 | C++ | 归零后不能附身、25% 移速、可被命中 | TODO |
+| 9 | WB-13 | 猎人武器与捕获 | C++ | 一击带走脱力的鬼 | TODO |
+| 10 | WB-09 | 反杀挥击（耗 25 体力） | C++ | 背后命中能打断审讯 | TODO |
+| 11 | WB-04/05 | 120 秒计时 + 三种结局 | C++ | 三种结局都能走到结算 | TODO |
+| 12 | WB-08 | 主动脱离与暴露窗口 | C++ | 脱离后 1.5 秒内能被命中 | TODO |
+| 13 | WB-10 | 木头人提示 | C++/表现 | 静止无提示、移动有提示 | TODO |
+| 14 | WB-16 | 出生点分离 | 地图 | 开局不重叠 | TODO |
+| 15 | M2–M4 | NvM、服务端校验、罗盘对照、遥测、参数外置、调试命令、打包 | 混合 | 见下方各表 | TODO |
+
+> 「类型」决定了能不能现在做：**C++** 只改插件源码，编译后可验证；**地图** 必须在编辑器里摆；**UI** 用现有纯 C++ Widget 扩展。地图项和需要双人验证的项，都要等工程打开。
 
 ### M0 — 核心可感（做完就能自己玩）
 
@@ -419,9 +443,132 @@ flowchart TD
 | 2026-10-29 | v0.4 | 扩展 Roblox/itch/手游/Mod |
 | 2026-10-29 | v0.5 | 接入 Roblox 官方接口，补全拦截记录 |
 | 2026-10-29 | **v1.0** | **最终评审版**：以"审判对抗"为唯一核心重写全文；新增设计法则、证伪标准、支撑系统贡献表；TODO 按核心优先重排 |
+| 2026-11-02 | v1.1 | 并入 GDD / 实施计划 / 网络文档中的有效内容（§12）；新增代码核对 §13；原三份文档停用 |
 
 ### 相关文档
 
-- 联网：[`PropHunt_Network.md`](PropHunt_Network.md)
-- 早期计划（已过时）：[`PropHunt_Plan.md`](PropHunt_Plan.md)
+- 本文是 PropHunt 白盒阶段的**唯一文档**。原 `PropHunt_GDD.md`、`PropHunt_Plan.md`、`PropHunt_Network.md` 的内容已并入 §12、§13，不再单独维护、不再引用。
 - C++ 索引：[`Docs/UE5_CPP_INDEX.md`](Docs/UE5_CPP_INDEX.md)
+
+---
+
+## 12. 联机与工程实现（并入自原 `PropHunt_Network.md`）
+
+> 本节记录已经落地的联网与工程配置。设计规则以上文 §2–§6 为准，本节只讲「怎么跑起来」。
+
+### 12.1 架构
+
+```
+游戏逻辑：Server 权威（RPC + Replicated + OnRep）
+房间抽象：UPropHuntRoomSubsystem → IOnlineSession
+发现 / 传输：EOS Lobby（发现）+ EOS P2P（NAT 穿透 / 中继）
+房主机器 = 权威 + Player，其它机器 = 纯 Client（listen server）
+```
+
+不是全网格 P2P：UE 的复制天生是 client-server，必须有一台权威机。
+
+### 12.2 两条登录路径
+
+| 场景 | 方式 | 启动 | 账号 |
+|---|---|---|---|
+| 给朋友玩 | Account Portal（Epic 账号） | 正常启动，主菜单点 `Sign in with Epic` | 各自账号 |
+| 本机双开调试 | DevAuth（developer） | `PropHunt_LocalTwoPlayers.bat` + DevAuthTool | 本机两个凭证 |
+
+流程：启动 → 读 OSS 登录状态 → 已登录直接用；否则 `persistentauth` 静默恢复 → 失败就停在未登录、**不弹窗** → 玩家点按钮 → `accountportal` → 系统浏览器 device code → 轮询拿到 token。
+
+- 不用引擎的 `bPreferPersistentAuth`：当前构建里 `FUserManagerEOS::LoginViaPersistentAuth()` 是空实现，AutoLogin 会静默失败，所以自己调 `IOnlineIdentity::Login()`。
+- 登录一次后凭 EOS SDK 保存在本机的 refresh token（约 180 天）免登录；**强制杀进程**可能导致 token 来不及落盘，下次要重登一次。
+
+### 12.3 房间与开局
+
+- `CreateRoom`：`NumPublicConnections=2`；EOS 下 `bUseLobbiesIfAvailable=true`，并挂 `PROPHUNT_GAMEMODE` / `PROPHUNT_HOSTNAME` 两个属性（Lobby 搜索必须至少有一个真实属性，否则报 "Search query is empty"）。
+- `FindRooms`：EOS 下 `SEARCH_LOBBIES=true` + 同样的 `PROPHUNT_GAMEMODE` 匹配。
+- `JoinRoom`：`GetResolvedConnectString` → `ClientTravel(EOS:<PUID>:...)`。
+- 大厅：≥1 猎人 + ≥1 鬼且全员 Ready → 1 秒倒计时 → `ServerTravel(/PropHunt/Maps/PH_GameMap)`。
+
+### 12.4 配置清单
+
+- `AroundMe.uproject` 启用 `OnlineSubsystem`、`OnlineSubsystemUtils`、`OnlineSubsystemNull`、`OnlineSubsystemEOS`。
+- `DefaultEngine.ini`：`DefaultPlatformService=EOS`；`Artifacts` 里的 ClientId / ProductId / SandboxId / DeploymentId；`GameNetDriver=/Script/OnlineSubsystemEOS.NetDriverEOS`；`bIsUsingP2PSockets=true`（普通 IP 自动回退 IpNetDriver）；`AuthScopeFlags` 用 `|` 分隔。
+- `DefaultGame.ini`：`+DirectoriesToAlwaysCook=(Path="/PropHunt")` 加两个 `MapsToCook`。插件地图不会被 `bCookAll=False` 的工程自动带进包，漏一项进游戏就是空图。
+- `PropHunt.Build.cs` 不需要链接 EOSSDK（动态加载），只依赖 `OnlineSubsystem` + `OnlineSubsystemUtils`。
+- 本地切回 Null：`DefaultPlatformService=Null`，业务代码零改动。
+
+### 12.5 Dev Portal 必须确认的五项
+
+1. Deployment 处于激活状态（Dev 沙箱默认休眠）。
+2. Client Policy 允许 Account Portal / P2P / Lobby / Auth。
+3. Epic Account Services 的 Application 已建并关联这个 Client。
+4. 已接受 Epic Account Services 协议。
+5. Brand / 隐私政策 / 服务条款（Dev 沙箱一般可先测）。
+
+失败时看日志 `LogEOSSDK: Warning: LogEOS: Error response received from backend ... ErrorCode=[...]`，那一行能直接定位是第几项。
+
+### 12.6 两台机器实测
+
+1. A 启动 → `Sign in with Epic` → 状态变成 `Signed in as <昵称>`。
+2. A `Create Room` → 进 `PH_Lobby` 并成为房主。
+3. A 选 Hunter → Ready。
+4. B 登录 → `Join Room` → `Refresh Search` → 点中 A 的房间加入。
+5. B 选 Ghost → Ready。
+6. 全员 Ready 后 1 秒 → 自动进 `PH_GameMap`。
+
+搜不到房间时按顺序查：两边是否都已登录 → 是否同 Artifact / Sandbox / Deployment → 列表是否给了 `Search failed: ...` → `LogOnline` 里的 EOS 错误码。
+
+### 12.7 离开 / 暂停 / 掉线（已有）
+
+- 非房主离开：自己回主菜单，房间继续；房主离开：销毁 session，所有人回主菜单。
+- 游戏内 ESC：server 权威暂停（`bPauseable=true` + `SetPause`），所有人一起冻结。
+- 游戏中有玩家掉线：`HandleLeaveGame` 收尾（销毁 session + 广播回菜单 + 房主延迟关闭）。
+
+### 12.8 打包
+
+`PropHunt_Package.bat` 调 RunUAT BuildCookRun，输出 `<仓库根>/Packaged/PropHunt`，Win64 Development，cook `PH_Lobby` + `PH_GameMap`。引擎路径读 `InstallHooksCache.ini` 的 `UE_ROOT`（换机器先跑 `InstallHooks.bat`）。打完整目录压缩发出去，朋友跑 `Play_PropHunt.bat`。
+
+### 12.9 已知限制
+
+1. 同机不能开两个真实账号（共用同一 PUID），调试继续用 DevAuth。
+2. 跨网是否通取决于 EOS 中继；公司网络封 UDP 会失败。
+3. 房间上限 2 人（`NumPublicConnections=2`）。
+4. 没有邀请好友，只有公共 Lobby 搜索。
+
+---
+
+## 13. 代码核对（2026-11-02）
+
+对照 v1.0 §7 逐项核对源码（`Plugins/PropHunt/Source/PropHunt`，23 个 UCLASS）。**§7 的 DONE/TODO 与代码一致**：§8 里的 TODO 在代码中连字段都没有，不是半成品。以下是与文档不符、或文档未记录但会影响验证的问题，按严重度排。
+
+### 13.1 远程玩家的 QTE 按键会在服务端被丢弃（P0）
+
+`APropHuntPlayerController::PossessedProp` 只在 `BeginPossessionLocal` 里赋值；服务端给远程客户端走的是 `ClientBeginPossession`，服务端那份 PC 的 `PossessedProp` 始终为 null，而 `ServerReportQTEKey_Implementation` 第一行 `if (PossessedProp && PossessedProp->bIsPossessed)` 直接返回。
+
+后果：只有房主自己当鬼时 QTE 有效；客户端当鬼时按什么都没反应，约 6.7 秒必被驱逐。§9.1 的两人验证如果让 client 演鬼，会得出「鬼撑不住」的错误结论。
+
+修法：`_Implementation` 里按 `PossessedBy == GetPlayerState()` 反查 Prop，或在 `DeliverBeginPossession` 里让服务端也记录一份。
+
+**2026-11-02 已修**：采用第一种。`APropHuntPlayerController::ServerReportQTEKey_Implementation` 在 `PossessedProp` 为空时遍历关卡里的 Prop，找 `PossessedBy == 自己的 PlayerState` 那把；找不到就不处理。已热重载编译通过。双端按键仍需两人实测确认（单人无法验证）。
+
+### 13.2 「附身变红」不是调试开关，而是全端可见
+
+`bIsPossessed` 复制给所有客户端，`ApplyPossessedVisual()` 在 server 和 `OnRep_bIsPossessed` 都会执行。猎人看到的就是一把红椅子。WB-03 的工作量不是「加个开关」，而是把它拆成只对附身者显示。
+
+### 13.3 名牌和罗盘在泄露信息（违反法则 4）
+
+- `UpdateNameplate()` 拼的是 `"%s (%s)"`，第二个参数就是 `Ghost` / `Hunter`，且 `bShowNameplate` 默认 true。
+- `APropHuntPlayerController::Tick` 对猎人无条件创建罗盘并播放脉冲，没有「默认关闭」开关，WB-14 目前无从做对照实验。
+
+### 13.4 「摇晃」的判定源与直觉不同
+
+QTE 速率取的是 Prop **世界 Yaw** 的变化；鬼的 Look 输入只转 SpringArm（`AddOrbitRotation` 不动 Actor）。所以「甩镜头」不进速率，真正加速的是猎人抱着东西移动 / 转向。调 §6 的 `ShakeRate` 前先确认这是不是想要的手感。
+
+### 13.5 服务端校验缺口（WB-15）
+
+- 附身没有服务端距离校验（250cm 只在客户端 `FindNearestProp` 里）。
+- 鬼的移动是客户端每 0.05s 用 `ServerUpdateTransform`（Unreliable）上报，服务端直接照单全收并复制。
+
+### 13.6 其他小问题
+
+- `EndPossessionLocal` 收到 `PopLocation` 却没用。
+- 选边跨地图用 `PlayerState->GetPlayerName()` 当 key，重名会串。
+- 罗盘 Widget 为猎人创建后不再销毁，角色切换会残留。
+- `DefaultEngine.ini` 里明文写着 EOS ClientSecret，会随包发出（EOS 客户端形态如此，但仓库不要公开）。

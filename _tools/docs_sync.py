@@ -27,8 +27,8 @@ README = os.path.join(DOCS, "README.md")
 DEP_README = os.path.join(DOCS, "_Deprecated", "README.md")
 
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
-EXTS = (".pptx", ".docx", ".xlsx")
-PATH_RE = re.compile(r"`([^`]+?\.(?:pptx|docx|xlsx))`")
+EXTS = (".pptx", ".docx", ".xlsx", ".md")
+PATH_RE = re.compile(r"`([^`]+?\.(?:pptx|docx|xlsx|md))`")
 
 
 # ---------------------------------------------------------------- extractors
@@ -112,6 +112,15 @@ def xlsx_text(path):
 EXTRACT = {".docx": docx_text, ".pptx": pptx_text, ".xlsx": xlsx_text}
 
 
+def md_text(path):
+    """Markdown 直接读原文；镜像即原文（保留结构，便于 AI 与检索）。"""
+    with open(path, encoding="utf-8") as f:
+        return f.read()
+
+
+EXTRACT[".md"] = md_text
+
+
 # ---------------------------------------------------------------- readme parse
 def parse_readme():
     """-> (ordered list of (relpath, category, note), resolved set)"""
@@ -170,6 +179,9 @@ def scan_files():
             continue
         for fn in files:
             if os.path.splitext(fn)[1].lower() in EXTS:
+                # README 自身是索引，不作为被抽取的资料
+                if fn.lower() == "readme.md":
+                    continue
                 rel = os.path.normpath(os.path.join(rel_dir, fn)).replace("\\", "/")
                 found.append(rel)
     return sorted(found)
@@ -263,6 +275,8 @@ def main():
     if os.path.isdir(os.path.join(DOCS, "_Deprecated")):
         for fn in sorted(os.listdir(os.path.join(DOCS, "_Deprecated"))):
             if os.path.splitext(fn)[1].lower() in EXTS:
+                if fn.lower() == "readme.md":
+                    continue
                 dep_files.append(fn)
 
     L = []

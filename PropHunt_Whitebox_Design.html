@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prop Hunt 白盒设计文档 · 状态着色</title>
+<style>
+:root{
+  --bg:#fbfaf7; --fg:#23211d; --muted:#6b665c; --line:#e3ded2;
+  --done:#1a7f37; --done-bg:#e8f5ec;
+  --todo:#c62828; --todo-bg:#fdeaea;
+  --doing:#1565c0; --doing-bg:#e7f0fb;
+  --blocked:#6a1b9a; --blocked-bg:#f2e8f8;
+  --cut:#6b7280; --cut-bg:#f0f0f0;
+  --wait:#b26a00; --wait-bg:#fdf3e2;
+  --accent:#8a6d3b;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:"Source Han Sans SC","Noto Sans CJK SC","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+  font-size:15px; line-height:1.75;
+}
+.wrap{display:grid; grid-template-columns:260px minmax(0,1fr); gap:36px; max-width:1280px; margin:0 auto; padding:32px 28px 80px}
+nav{
+  position:sticky; top:24px; align-self:start; max-height:calc(100vh - 48px); overflow:auto;
+  font-size:13px; border-right:1px solid var(--line); padding-right:18px;
+}
+nav h4{margin:0 0 10px; font-size:12px; letter-spacing:.08em; color:var(--muted); text-transform:uppercase}
+nav a{display:block; color:var(--muted); text-decoration:none; padding:3px 0; border-left:2px solid transparent; padding-left:8px}
+nav a:hover{color:var(--fg)}
+nav a.l3{padding-left:22px; font-size:12.5px}
+main{min-width:0}
+h1{font-size:26px; line-height:1.4; margin:0 0 18px; letter-spacing:-.01em}
+h2{font-size:20px; margin:44px 0 14px; padding-bottom:8px; border-bottom:2px solid var(--line)}
+h3{font-size:16.5px; margin:30px 0 10px; color:#3b372e}
+h4{font-size:15px; margin:22px 0 8px}
+p{margin:10px 0}
+a{color:#0b5cad}
+strong{font-weight:650}
+hr{border:none; border-top:1px solid var(--line); margin:34px 0}
+blockquote{
+  margin:14px 0; padding:12px 16px; background:#fff; border-left:3px solid var(--accent);
+  color:#3d3a33; border-radius:0 6px 6px 0;
+}
+blockquote p{margin:4px 0}
+ul,ol{margin:10px 0; padding-left:24px}
+li{margin:5px 0}
+code{background:#efece4; padding:1px 5px; border-radius:4px; font-size:.9em;
+     font-family:"Cascadia Code",Consolas,"Courier New",monospace}
+pre.code{background:#2b2823; color:#e9e4d8; padding:14px 16px; border-radius:8px; overflow:auto; font-size:13px; line-height:1.6}
+pre.code code{background:none; color:inherit; padding:0}
+.mermaid-box{background:#fff; border:1px dashed var(--line); border-radius:8px; padding:10px 14px; margin:14px 0}
+.mermaid-label{font-size:12px; color:var(--muted); margin-bottom:6px}
+pre.mermaid{margin:0; font-size:12px; line-height:1.6; color:#4a463c; overflow:auto}
+
+/* 状态 */
+.chip{display:inline-block; padding:0 7px; border-radius:999px; font-size:12px; font-weight:700;
+      letter-spacing:.03em; line-height:20px; vertical-align:1px; font-family:Consolas,monospace}
+.chip-done{background:var(--done-bg); color:var(--done); box-shadow:inset 0 0 0 1px #bfe0c8}
+.chip-todo{background:var(--todo-bg); color:var(--todo); box-shadow:inset 0 0 0 1px #f0bcbc}
+.chip-doing{background:var(--doing-bg); color:var(--doing); box-shadow:inset 0 0 0 1px #b9d2ee}
+.chip-blocked{background:var(--blocked-bg); color:var(--blocked); box-shadow:inset 0 0 0 1px #d8bce9}
+.chip-cut{background:var(--cut-bg); color:var(--cut); box-shadow:inset 0 0 0 1px #d5d5d5}
+.wait{color:var(--wait); font-weight:600; background:linear-gradient(transparent 62%, #fbe6c2 62%)}
+
+.table-wrap{overflow:auto; margin:14px 0}
+table{border-collapse:collapse; width:100%; font-size:14px; background:#fff}
+th,td{border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top}
+th{background:#f2efe7; font-weight:650; white-space:nowrap}
+tbody tr:hover{filter:brightness(.985)}
+tr.row-done td{background:var(--done-bg)}
+tr.row-done td:first-child{box-shadow:inset 3px 0 0 var(--done)}
+tr.row-todo td{background:var(--todo-bg)}
+tr.row-todo td:first-child{box-shadow:inset 3px 0 0 var(--todo)}
+tr.row-doing td{background:var(--doing-bg)}
+tr.row-doing td:first-child{box-shadow:inset 3px 0 0 var(--doing)}
+tr.row-blocked td{background:var(--blocked-bg)}
+tr.row-blocked td:first-child{box-shadow:inset 3px 0 0 var(--blocked)}
+tr.row-cut td{background:var(--cut-bg); color:#777}
+tr.row-wait td{background:var(--wait-bg)}
+tr.row-wait td:first-child{box-shadow:inset 3px 0 0 var(--wait)}
+
+/* 顶部面板 */
+.hero{border:1px solid var(--line); background:#fff; border-radius:10px; padding:16px 18px; margin-bottom:26px}
+.hero .meta{font-size:13px; color:var(--muted)}
+.legend{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0 0; font-size:13px}
+.legend .item{display:flex; align-items:center; gap:6px}
+.stat-row{display:flex; flex-wrap:wrap; gap:22px; margin-top:14px; padding-top:12px; border-top:1px dashed var(--line)}
+.stat{font-size:13px; color:var(--muted)}
+.stat b{display:block; font-size:22px; line-height:1.2; color:var(--fg)}
+.toolbar{display:flex; gap:8px; align-items:center; margin-top:14px; font-size:13px; color:var(--muted)}
+.toolbar button{
+  border:1px solid var(--line); background:#fff; color:#3d3a33; border-radius:999px;
+  padding:4px 14px; cursor:pointer; font-size:13px; font-family:inherit;
+}
+.toolbar button.on{background:#2b2823; color:#fff; border-color:#2b2823}
+body.only-todo tr.row-done{display:none}
+body.only-todo tr.row-cut{display:none}
+body.only-done tr.row-todo,body.only-done tr.row-doing,body.only-done tr.row-wait{display:none}
+
+@media print{
+  nav,.toolbar{display:none}
+  .wrap{display:block; max-width:none; padding:0}
+  tr,pre,blockquote{break-inside:avoid}
+  body{background:#fff}
+}
+@media (max-width:900px){
+  .wrap{display:block; padding:20px}
+  nav{position:static; border-right:none; border-bottom:1px solid var(--line); padding:0 0 14px; margin-bottom:20px; max-height:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><h4>目录</h4>
+<a class="l2" href="#0-文档约定">0. 文档约定</a>
+<a class="l2" href="#1-最终评审">1. 最终评审</a>
+<a class="l3" href="#1-1-我们卖的是什么">1.1 我们卖的是什么</a>
+<a class="l3" href="#1-2-竞品结论-零件全是红海-交叉是空白">1.2 竞品结论：零件全是红海，交叉是空白</a>
+<a class="l3" href="#1-3-五个风险-这是评审的重点">1.3 五个风险（这是评审的重点）</a>
+<a class="l3" href="#1-4-证伪标准-什么情况下这个方向该放弃">1.4 证伪标准（什么情况下这个方向该放弃）</a>
+<a class="l3" href="#1-5-这个白盒值得做吗">1.5 这个白盒值得做吗</a>
+<a class="l2" href="#2-设计法则">2. 设计法则</a>
+<a class="l2" href="#3-核心机制-审判对抗">3. 核心机制：审判对抗</a>
+<a class="l3" href="#3-1-定义">3.1 定义</a>
+<a class="l3" href="#3-2-一局的时序">3.2 一局的时序</a>
+<a class="l3" href="#3-3-三条命门-鬼">3.3 三条命门（鬼）</a>
+<a class="l3" href="#3-4-两条条赛跑-猎人的两难">3.4 两条条赛跑（猎人的两难）</a>
+<a class="l3" href="#3-5-每条规则解决什么问题">3.5 每条规则解决什么问题</a>
+<a class="l2" href="#4-支撑系统-它们只为一件事服务">4. 支撑系统：它们只为一件事服务</a>
+<a class="l3" href="#4-5-罗盘为什么做成开关">4.5 罗盘为什么做成开关</a>
+<a class="l2" href="#5-白盒范围">5. 白盒范围</a>
+<a class="l3" href="#5-1-必须做-缺一个就无法验证">5.1 必须做（缺一个就无法验证）</a>
+<a class="l3" href="#5-2-可以后置">5.2 可以后置</a>
+<a class="l3" href="#5-3-明确不做">5.3 明确不做</a>
+<a class="l2" href="#6-规则参数表-v1-0-初值">6. 规则参数表（v1.0 初值）</a>
+<a class="l3" href="#6-1-待确认-影响手感-不阻塞开工">6.1 待确认（影响手感，不阻塞开工）</a>
+<a class="l2" href="#7-工程现状">7. 工程现状</a>
+<a class="l2" href="#8-todo-按-最快能验证核心-排序">8. TODO（按&quot;最快能验证核心&quot;排序）</a>
+<a class="l3" href="#执行队列-2026-11-02-起">执行队列（2026-11-02 起）</a>
+<a class="l3" href="#m0-核心可感-做完就能自己玩">M0 — 核心可感（做完就能自己玩）</a>
+<a class="l3" href="#m1-一局成立">M1 — 一局成立</a>
+<a class="l3" href="#m2-nvm-与对照实验">M2 — NvM 与对照实验</a>
+<a class="l3" href="#m3-测得准">M3 — 测得准</a>
+<a class="l3" href="#m4-发得出去">M4 — 发得出去</a>
+<a class="l2" href="#9-测试与证伪">9. 测试与证伪</a>
+<a class="l3" href="#9-1-第一轮-只需-2-人">9.1 第一轮（只需 2 人）</a>
+<a class="l3" href="#9-2-第二轮-3-4-人">9.2 第二轮（3–4 人）</a>
+<a class="l3" href="#9-3-通过标准">9.3 通过标准</a>
+<a class="l2" href="#10-风险登记">10. 风险登记</a>
+<a class="l2" href="#11-附录">11. 附录</a>
+<a class="l3" href="#修订记录">修订记录</a>
+<a class="l3" href="#相关文档">相关文档</a>
+<a class="l2" href="#12-联机与工程实现-并入自原-prophunt_network-md">12. 联机与工程实现（并入自原 PropHunt_Network.md）</a>
+<a class="l3" href="#12-1-架构">12.1 架构</a>
+<a class="l3" href="#12-2-两条登录路径">12.2 两条登录路径</a>
+<a class="l3" href="#12-3-房间与开局">12.3 房间与开局</a>
+<a class="l3" href="#12-4-配置清单">12.4 配置清单</a>
+<a class="l3" href="#12-5-dev-portal-必须确认的五项">12.5 Dev Portal 必须确认的五项</a>
+<a class="l3" href="#12-6-两台机器实测">12.6 两台机器实测</a>
+<a class="l3" href="#12-7-离开-暂停-掉线-已有">12.7 离开 / 暂停 / 掉线（已有）</a>
+<a class="l3" href="#12-8-打包">12.8 打包</a>
+<a class="l3" href="#12-9-已知限制">12.9 已知限制</a>
+<a class="l2" href="#13-代码核对-2026-11-02">13. 代码核对（2026-11-02）</a>
+<a class="l3" href="#13-1-远程玩家的-qte-按键会在服务端被丢弃-p0">13.1 远程玩家的 QTE 按键会在服务端被丢弃（P0）</a>
+<a class="l3" href="#13-2-附身变红-不是调试开关-而是全端可见">13.2 「附身变红」不是调试开关，而是全端可见</a>
+<a class="l3" href="#13-3-名牌和罗盘在泄露信息-违反法则-4">13.3 名牌和罗盘在泄露信息（违反法则 4）</a>
+<a class="l3" href="#13-4-摇晃-的判定源与直觉不同">13.4 「摇晃」的判定源与直觉不同</a>
+<a class="l3" href="#13-5-服务端校验缺口-wb-15">13.5 服务端校验缺口（WB-15）</a>
+<a class="l3" href="#13-6-其他小问题">13.6 其他小问题</a>
+</nav>
+<main>
+<div class="hero">
+<div class="meta">白盒设计文档 · 状态着色视图（由 <code>PropHunt_Whitebox_Design.md</code> 自动渲染，原文未改动）</div>
+<div class="legend">
+<span class="item"><span class="chip chip-done">DONE</span>已实现</span>
+<span class="item"><span class="chip chip-todo">TODO</span>未开始</span>
+<span class="item"><span class="chip chip-doing">DOING</span>进行中</span>
+<span class="item"><span class="chip chip-blocked">BLOCKED</span>被卡住</span>
+<span class="item"><span class="chip chip-cut">CUT</span>本期不做</span>
+<span class="item"><span class="wait">待验证</span>已写但未自测</span>
+</div>
+<div class="stat-row">
+<div class="stat"><b>66</b>状态条目</div>
+<div class="stat"><b style="color:var(--done)">13</b>已完成</div>
+<div class="stat"><b style="color:var(--todo)">52</b>未开始</div>
+<div class="stat"><b style="color:var(--wait)">1</b>待验证</div>
+<div class="stat"><b style="color:var(--doing)">0</b>进行中</div>
+</div>
+<div class="toolbar">视图：<button class="on" data-mode="all" onclick="setFilter('all')">全部</button><button data-mode="todo" onclick="setFilter('todo')">只看没做的</button><button data-mode="done" onclick="setFilter('done')">只看做完的</button></div>
+</div>
+<h1 id="prop-hunt-会杀人的家具-白盒-demo-设计文档-v1-0">《Prop Hunt / 会杀人的家具》白盒 Demo — 设计文档 v1.0</h1>
+<blockquote><p>版本：v1.0（2026-10-29，最终评审版）</p><p>取代：v0.5 及之前的所有版本</p><p>状态：设计定稿（待实机验证），工程现状 + <span class="chip chip-todo">TODO</span> 同步</p><p>本文是白盒阶段的<strong>唯一权威文档</strong>。协作者先读 §2、§3、§4；追踪进度看 §8。</p></blockquote>
+<hr>
+<h2 id="0-文档约定">0. 文档约定</h2>
+<div class="table-wrap"><table class=""><thead><tr><th>状态</th><th>含义</th></tr></thead><tbody><tr class="row-todo"><td><span class="chip chip-todo">TODO</span></td><td>未开始</td></tr><tr><td><span class="chip chip-doing">DOING</span></td><td>进行中</td></tr><tr class="row-done"><td><span class="chip chip-done">DONE</span></td><td>已实现且自测通过</td></tr><tr><td><span class="chip chip-blocked">BLOCKED</span></td><td>被外部条件卡住（写明卡点）</td></tr><tr><td><span class="chip chip-cut">CUT</span></td><td>本期明确不做</td></tr></tbody></table></div>
+<p><strong>三条纪律</strong></p>
+<ol>
+<li>白盒只验证<strong>一个体验</strong>，不验证美术、商业化、留存。</li>
+<li>任何新系统，如果不能用一句话说清"它让审判更紧张在哪"，就不做。</li>
+<li>改规则必须同步改 §6 参数表，否则下次没人知道数值从哪来。</li>
+</ol>
+<hr>
+<h2 id="1-最终评审">1. 最终评审</h2>
+<h3 id="1-1-我们卖的是什么">1.1 我们卖的是什么</h3>
+<blockquote><p><strong>把"确认这件家具里有没有鬼"这个瞬间，做成一场双方都要操作的对抗。</strong></p></blockquote>
+<p>不是"变成家具"，不是"家具会杀人"，也不是"QTE"。 这三件事都是<strong>已经被验证过的零件</strong>，它们存在的唯一理由，是把这个瞬间撑起来。</p>
+<h3 id="1-2-竞品结论-零件全是红海-交叉是空白">1.2 竞品结论：零件全是红海，交叉是空白</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>零件</th><th>谁做过</th><th>结论</th></tr></thead><tbody><tr><td>变身/附身家具</td><td>Roblox（单款上亿访问）、GMod、MGH、Meccha、itch 一堆</td><td>红海，玩家零学习成本</td></tr><tr><td>道具反击</td><td>Possessions、Ghost HQ、Mimic Busters、Roblox 的 <em>Hide or OOF!</em></td><td>常见设计</td></tr><tr><td>拿起道具确认</td><td>GMod（二元判定：拿得起来就是空的）</td><td>有，但瞬时</td></tr><tr><td>被抓后按键挣扎</td><td>黎明杀机、德州电锯、第五人格</td><td>成熟机制，但只用在"人被抓"</td></tr><tr><td><strong>四者交叉：抱起 + 摇晃 + 鬼在里面硬撑</strong></td><td><strong>无</strong></td><td><strong>空白</strong></td></tr></tbody></table></div>
+<p><strong>红海恰恰是好事</strong>：四个零件都有人做过，意味着玩家不需要被教育；而交叉没人做，意味着新鲜感来自"组合"而不是"解释"。</p>
+<h3 id="1-3-五个风险-这是评审的重点">1.3 五个风险（这是评审的重点）</h3>
+<p><strong>R1｜它可能退化成一个按键小游戏。</strong> 如果 QTE 占了 80% 的注意力，玩家的体验就是"看着屏幕按空格"，而不是"我在演一把椅子"。这是最可能失败的方式。 → 对策：QTE 要短、要粗；决策（忍/脱/打）要比手速重要。</p>
+<p><strong>R2｜NvM 会稀释紧张感。</strong> 一个人被抱着摇 15 秒，另外三个人在干什么？如果答案是"等着"，那这个机制在多人里就是负资产。 → 对策：审讯必须可被打断/可被围观/可被队友利用；单次时长控制在 5–15 秒。</p>
+<p><strong>R3｜反杀可能变成最优解。</strong> 如果"抽一下猎人"比"藏好"收益高，所有人都会变成会走的椅子，躲藏玩法直接消失。 → 对策：挥击消耗体力（25）+ 暴露 1.5 秒 + 8 秒冷却，让它成为<strong>高风险选项</strong>。</p>
+<p><strong>R4｜猎人可能不敢碰家具。</strong> 损坏条满了猎人判负，如果惩罚太重，理性玩家会"只搜不碰"，核心机制永远触发不了。 → 对策：首版损坏阈值给宽，用遥测看"每局抱起次数"。</p>
+<p><strong>R5｜晕动症。</strong> 镜头被甩是卖点也是门槛。 → 对策：白盒就留"降低摆动/关闭翻滚"的开关，别等测试出问题再补。</p>
+<h3 id="1-4-证伪标准-什么情况下这个方向该放弃">1.4 证伪标准（什么情况下这个方向该放弃）</h3>
+<p>白盒跑 6 局（≥4 人），如果出现下面任意两条，就要重新考虑核心：</p>
+<div class="table-wrap"><table class=""><thead><tr><th>编号</th><th>证伪信号</th><th>判定</th></tr></thead><tbody><tr><td>F1</td><td>审讯过程中，玩家<strong>没有</strong>出现说话、笑、倒吸气等反应</td><td>社交体验不成立</td></tr><tr><td>F2</td><td>两局之后，猎人<strong>不再主动抱起</strong>家具</td><td>成本设计失败</td></tr><tr><td>F3</td><td>鬼的胜利方式<strong>主要靠"不被找到"</strong>，而不是靠"撑住/反杀"</td><td>审判环节无关紧要</td></tr><tr><td>F4</td><td>鬼的行动里 <strong>&gt;70% 是挥击</strong></td><td>躲藏玩法已死</td></tr><tr><td>F5</td><td>单次审讯平均 <strong>&lt;3 秒</strong></td><td>没有张力，只是点击</td></tr><tr><td>F6</td><td>玩家描述体验时只说"按得准/按不准"</td><td>退化成了音游</td></tr></tbody></table></div>
+<p><strong>F2 和 F6 是最危险的两条。</strong></p>
+<h3 id="1-5-这个白盒值得做吗">1.5 这个白盒值得做吗</h3>
+<p>值得，理由只有一条：</p>
+<blockquote><p>它是这个品类里<strong>唯一还没被做过、且成本极低就能验证</strong>的交叉点。</p></blockquote>
+<p>成本低体现在：附身、拾取、镜头、QTE、联机、大厅都已经能跑（§7），缺的是<strong>规则和手感</strong>，不是从零搭框架。</p>
+<hr>
+<h2 id="2-设计法则">2. 设计法则</h2>
+<p>这五条用来裁决所有争议，优先级高于任何具体数值。</p>
+<ol>
+<li><strong>审判必须是两个人的事。</strong> 任何一方挂机（猎人不碰、鬼不动）都不该是最优解。</li>
+<li><strong>猎人必须先付出，才拿到信息。</strong> 抱起=承担风险；没有免费的确认。</li>
+<li><strong>鬼的每一次"反"都要花掉整局资源。</strong> 体力是唯一货币，不能白嫖。</li>
+<li><strong>信息只能通过"行为"泄露，不能通过 UI 泄露。</strong> 敌人身上不能有"我是鬼"的标记。</li>
+<li><strong>一局必须有硬截止。</strong> 没有计时，博弈不收敛。</li>
+</ol>
+<hr>
+<h2 id="3-核心机制-审判对抗">3. 核心机制：审判对抗</h2>
+<h3 id="3-1-定义">3.1 定义</h3>
+<blockquote><p>猎人怀疑某件家具 → 抱起来 → 家具开始"表演" → 双方在 5–15 秒内互相试探 → 有人先撑不住。</p></blockquote>
+<p>三个参与者：</p>
+<ul>
+<li><strong>猎人</strong>：付出损坏风险，换取信息；</li>
+<li><strong>鬼</strong>：付出体力，换取"被当成普通家具"；</li>
+<li><strong>家具</strong>：承载一切的中介——它的损坏值同时是猎人的成本、鬼的掩体。</li>
+</ul>
+<h3 id="3-2-一局的时序">3.2 一局的时序</h3>
+<div class="mermaid-box"><div class="mermaid-label">mermaid 流程图（保留源码，文本版见 §3.3–§3.4）</div><pre class="mermaid">flowchart TD
+  A[开局: 鬼附身家具, 猎人出生] --&gt; B[搜寻: 一排同款家具]
+  B --&gt; C{怀疑某件}
+  C -- 否 --&gt; B
+  C -- 是 --&gt; D[抱起: 损坏+5]
+  D --&gt; E[审讯开始]
+  E --&gt; F{鬼的选择}
+  F -- 忍 --&gt; G[按QTE 对抗驱逐条]
+  F -- 脱 --&gt; H[主动脱离: -20体力, 现形1.5s]
+  F -- 打 --&gt; I[挥击: -25体力, 猎人眩晕2s, 自己暴露]
+  G --&gt; J{驱逐条 vs 损坏条}
+  J -- 驱逐满 --&gt; OUT[鬼出局]
+  J -- 损坏满 --&gt; LOSE[猎人判负]
+  G --&gt; K{体力}
+  K -- 归零 --&gt; EX[脱力: 慢速漂浮, 可被射]
+  H --&gt; EX2[暴露: 可被射]
+  I --&gt; EX2
+  EX --&gt; EX2
+  EX2 -- 命中 --&gt; OUT2[鬼出局]
+  EX2 -- 恢复 --&gt; A
+  B -- 时间耗尽 --&gt; WIN[鬼胜]</pre></div>
+<h3 id="3-3-三条命门-鬼">3.3 三条命门（鬼）</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>命门</th><th>怎么触发</th><th>后果</th></tr></thead><tbody><tr><td><strong>驱逐条</strong></td><td>被抱着摇，且 QTE 顶不住</td><td>直接出局</td></tr><tr><td><strong>体力</strong></td><td>挥击 / 主动脱离</td><td>归零后脱力：不能附身、25% 移速、可被武器命中</td></tr><tr><td><strong>暴露</strong></td><td>主动脱离 / 被驱逐 / 脱力</td><td>1.5 秒窗口内被武器命中即出局</td></tr></tbody></table></div>
+<p>三条命门的设计意图：<strong>鬼不是"被抓就死"，而是"每次挣扎都在消耗未来"。</strong></p>
+<h3 id="3-4-两条条赛跑-猎人的两难">3.4 两条条赛跑（猎人的两难）</h3>
+<pre class="code"><code>摇晃 → 驱逐条 ↑ ──满──&gt; 鬼出局（猎人赢）
+摇晃 → 损坏条 ↑ ──满──&gt; 猎人判负</code></pre>
+<ul>
+<li>鬼按对 QTE → 驱逐条变慢，但猎人不会停手，损坏条继续涨；</li>
+<li>猎人越急，越可能先摇坏椅子；</li>
+<li>鬼越能忍，越能把猎人逼到"再摇就赔"。</li>
+</ul>
+<p><strong>这是整个玩法的心脏</strong>：它让"放下"成为一个理性的、被逼出来的选择，而不是玩家的善意。</p>
+<h3 id="3-5-每条规则解决什么问题">3.5 每条规则解决什么问题</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>规则</th><th>解决的问题</th></tr></thead><tbody><tr><td>抱起有损坏成本</td><td>猎人不能无脑逐个验货（法则 2）</td></tr><tr><td>鬼按 QTE 能拖</td><td>被抱住不等于结束，保留操作空间</td></tr><tr><td>驱逐满=出局</td><td>输出明确的失败态，避免无限僵持</td></tr><tr><td>体力</td><td>让"反"有代价，防止全员变刺客（R3）</td></tr><tr><td>脱力可被射</td><td>给猎人一个"稳赢"的收尾手段</td></tr><tr><td>主动脱离有暴露</td><td>给鬼一条逃生路，但不清空风险</td></tr><tr><td>回合计时</td><td>防止躲到天荒地老（法则 5）</td></tr></tbody></table></div>
+<hr>
+<h2 id="4-支撑系统-它们只为一件事服务">4. 支撑系统：它们只为一件事服务</h2>
+<p>每一个系统都必须回答："它让审判更紧张在哪？"</p>
+<div class="table-wrap"><table class=""><thead><tr><th>系统</th><th>对审判的贡献</th><th>删掉会怎样</th></tr></thead><tbody><tr><td><strong>附身</strong></td><td>定义"伪装"这一端</td><td>没有前提</td></tr><tr><td><strong>同款家具 ×8</strong></td><td>制造"不确定"</td><td>一眼看穿，审判不成立</td></tr><tr><td><strong>反杀</strong></td><td>给"忍"一个替代选项，制造双向风险</td><td>鬼只能忍，没有博弈</td></tr><tr><td><strong>木头人（注视时移动有提示）</strong></td><td>让"装"变成持续操作</td><td>藏好就完事，过程无张力</td></tr><tr><td><strong>体力/脱力</strong></td><td>把单次审判连成一局</td><td>每次都是独立小游戏</td></tr><tr><td><strong>损坏值</strong></td><td>给猎人成本，逼出"放下"</td><td>猎人永远摇到底</td></tr><tr><td><strong>回合计时</strong></td><td>逼猎人冒险，逼鬼现身</td><td>双方都可以拖</td></tr><tr><td><strong>罗盘（可选开关）</strong></td><td>控制"搜寻"难度，用于对照实验</td><td>见 §4.5</td></tr><tr><td><strong>武器</strong></td><td>收割暴露的鬼</td><td>暴露不构成威胁</td></tr></tbody></table></div>
+<h3 id="4-5-罗盘为什么做成开关">4.5 罗盘为什么做成开关</h3>
+<p>它是<strong>唯一一个会破坏"信息不对称"的系统</strong>。保留它，搜寻变简单；关掉它，审判频率变低。 白盒阶段两种各测三局，用 F1/F3 两个指标判断哪种更接近目标体验。<strong>默认关闭。</strong></p>
+<hr>
+<h2 id="5-白盒范围">5. 白盒范围</h2>
+<h3 id="5-1-必须做-缺一个就无法验证">5.1 必须做（缺一个就无法验证）</h3>
+<ul>
+<li>8 把外观完全相同的可附身家具；</li>
+<li>无任何"这是鬼"的视觉标记；</li>
+<li>抱起 / 摇晃 / 放下；</li>
+<li>驱逐条 + 损坏条同时可见；</li>
+<li>体力与脱力状态；</li>
+<li>挥击（消耗体力）；</li>
+<li>猎人武器（仅命中未附身）；</li>
+<li>120 秒回合计时与两种胜负；</li>
+<li>服务端权威判定。</li>
+</ul>
+<h3 id="5-2-可以后置">5.2 可以后置</h3>
+<ul>
+<li>NvM 人数上限（先 1v1 验机制，再放到 2v2/3v2）；</li>
+<li>木头人提示（先用最简单的晃动/声音占位）；</li>
+<li>罗盘、语音、皮肤、动画、音效资产；</li>
+<li>观战、匹配、成就。</li>
+</ul>
+<h3 id="5-3-明确不做">5.3 明确不做</h3>
+<ul>
+<li>美术风格化、正式动画、正式音效；</li>
+<li>商店页、宣传片；</li>
+<li>移动端适配；</li>
+<li>任何"以后可能用到"的架构重构。</li>
+</ul>
+<hr>
+<h2 id="6-规则参数表-v1-0-初值">6. 规则参数表（v1.0 初值）</h2>
+<div class="table-wrap"><table class=""><thead><tr><th>参数</th><th>初值</th><th>备注</th></tr></thead><tbody><tr><td>回合时长</td><td>120s</td><td>超时鬼胜</td></tr><tr><td>同款家具数量</td><td>8</td><td>太少无不确定，太多搜不完</td></tr><tr><td>附身距离</td><td>250cm</td><td>现有实现</td></tr><tr><td>抱起距离</td><td>300cm</td><td>现有实现</td></tr><tr><td>驱逐条基础速率</td><td>0.15/s</td><td>≈6.7s 满</td></tr><tr class="row-wait"><td>摇晃加成</td><td>0.002 × 角速度(°/s)</td><td><span class="wait">待调</span></td></tr><tr><td>QTE 命中</td><td>冻结 1s，进度 −0.05</td><td>现有实现</td></tr><tr><td>QTE 失误</td><td>进度 +0.1</td><td>现有实现</td></tr><tr><td>损坏上限</td><td>100</td><td>满则猎人判负</td></tr><tr><td>抱起损坏</td><td>+5</td><td></td></tr><tr><td>摇晃损坏</td><td>+2/s</td><td></td></tr><tr><td>摔落损坏</td><td>+15</td><td></td></tr><tr><td>挥击损坏</td><td>+20</td><td></td></tr><tr><td>体力上限</td><td>100</td><td></td></tr><tr><td>附身恢复</td><td>+2/s</td><td></td></tr><tr><td>漂浮恢复</td><td>+6/s</td><td></td></tr><tr><td>挥击消耗</td><td>25</td><td></td></tr><tr><td>主动脱离消耗</td><td>20</td><td></td></tr><tr><td>再附身阈值</td><td>30</td><td></td></tr><tr><td>脱力移速</td><td>25%</td><td></td></tr><tr><td>挥击眩晕</td><td>2s</td><td></td></tr><tr><td>挥击冷却</td><td>8s</td><td></td></tr><tr><td>暴露窗口</td><td>1.5s</td><td></td></tr><tr><td>武器射程</td><td>250cm</td><td>近战占位</td></tr><tr><td>武器冷却</td><td>1.5s</td><td></td></tr></tbody></table></div>
+<h3 id="6-1-待确认-影响手感-不阻塞开工">6.1 待确认（影响手感，不阻塞开工）</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>ID</th><th>问题</th><th>建议</th></tr></thead><tbody><tr><td>Q1</td><td>被抱起时能否主动脱离？</td><td>允许，但需要 1.5s 挣脱读条，期间驱逐条照涨</td></tr><tr><td>Q2</td><td>附身时家具能否微移？</td><td>先关，靠"木头人提示"表达"动了一下"</td></tr><tr><td>Q3</td><td>武器一击捕获还是多段？</td><td>一击；脱力已经足够脆弱</td></tr><tr><td>Q4</td><td>挥击命中后其他猎人能否补枪？</td><td>能，制造"被围"的紧张</td></tr><tr><td>Q5</td><td>鬼被驱逐后是否观战？</td><td>是，先保证一局有明确结果</td></tr></tbody></table></div>
+<hr>
+<h2 id="7-工程现状">7. 工程现状</h2>
+<blockquote><p>"<span class="chip chip-done">DONE</span>"= 能跑通，不代表体验达标。</p></blockquote>
+<div class="table-wrap"><table class=""><thead><tr><th>模块</th><th>状态</th><th>说明</th></tr></thead><tbody><tr class="row-done"><td>UE5.5 独立插件</td><td><span class="chip chip-done">DONE</span></td><td>编译通过，24 个类</td></tr><tr class="row-done"><td>大厅：建房/搜房/加入（EOS）</td><td><span class="chip chip-done">DONE</span></td><td>本地双开验证</td></tr><tr class="row-done"><td>大厅：选边/准备/倒计时</td><td><span class="chip chip-done">DONE</span></td><td>手动选边</td></tr><tr class="row-done"><td>猎人：移动/跳跃/拾取/投掷</td><td><span class="chip chip-done">DONE</span></td><td>无冲刺</td></tr><tr class="row-done"><td>鬼：漂浮/附身/镜头切换</td><td><span class="chip chip-done">DONE</span></td><td>弹簧臂第三人称</td></tr><tr class="row-done"><td>QTE（服务端）</td><td><span class="chip chip-done">DONE</span></td><td>Space/F/Shift；远程按键丢弃已修（§13.1），<span class="wait">待双端实测</span></td></tr><tr class="row-done"><td>驱逐与结算</td><td><span class="chip chip-done">DONE</span></td><td>仅"Hunter Wins"</td></tr><tr class="row-done"><td>暂停（服务器权威）</td><td><span class="chip chip-done">DONE</span></td><td></td></tr><tr class="row-done"><td>罗盘 + 脉冲音</td><td><span class="chip chip-done">DONE</span></td><td><span class="wait">待改</span>为开关</td></tr><tr class="row-done"><td>真实账号登录</td><td><span class="chip chip-done">DONE</span></td><td>Account Portal + 持久化</td></tr><tr class="row-done"><td>打包脚本 + 地图 cook</td><td><span class="chip chip-done">DONE</span></td><td>成品包<span class="wait">未验证</span></td></tr><tr class="row-todo"><td>回合计时/鬼胜/猎人判负</td><td><span class="chip chip-todo">TODO</span></td><td></td></tr><tr class="row-todo"><td>多件同款家具</td><td><span class="chip chip-todo">TODO</span></td><td>地图只有 1 件</td></tr><tr class="row-todo"><td>损坏值 / 双条 UI</td><td><span class="chip chip-todo">TODO</span></td><td></td></tr><tr class="row-todo"><td>体力 / 脱力</td><td><span class="chip chip-todo">TODO</span></td><td></td></tr><tr class="row-todo"><td>挥击 / 武器</td><td><span class="chip chip-todo">TODO</span></td><td></td></tr><tr class="row-todo"><td>木头人提示</td><td><span class="chip chip-todo">TODO</span></td><td></td></tr><tr class="row-todo"><td>关闭"附身变红"</td><td><span class="chip chip-todo">TODO</span></td><td>现在会暴露</td></tr><tr class="row-todo"><td>NvM（&gt;2 人）</td><td><span class="chip chip-todo">TODO</span></td><td>连接数写死 2</td></tr><tr class="row-todo"><td>暴露/抓捕</td><td><span class="chip chip-todo">TODO</span></td><td>现在脱离即安全</td></tr><tr class="row-todo"><td>遥测</td><td><span class="chip chip-todo">TODO</span></td><td>无法量化</td></tr><tr class="row-todo"><td>语音</td><td><span class="chip chip-todo">TODO</span></td><td></td></tr></tbody></table></div>
+<hr>
+<h2 id="8-todo-按-最快能验证核心-排序">8. <span class="chip chip-todo">TODO</span>（按"最快能验证核心"排序）</h2>
+<h3 id="执行队列-2026-11-02-起">执行队列（2026-11-02 起）</h3>
+<p>先修会让验证失真的三处，再按「核心可感 → 一局成立 → NvM → 测得准 → 发得出去」推进。下表是唯一的执行顺序；下面的 M0–M4 表保留作为验收细节参考。</p>
+<div class="table-wrap"><table class=""><thead><tr><th>序</th><th>ID</th><th>事项</th><th>类型</th><th>验收</th><th>状态</th></tr></thead><tbody><tr class="row-done"><td>1</td><td>W0-1</td><td>远程客户端 QTE 按键在服务端被丢弃（§13.1）</td><td>C++</td><td>客户端当鬼时按对能冻结进度</td><td><span class="chip chip-done">DONE</span>（编译通过，<span class="wait">待双端实测</span>）</td></tr><tr class="row-todo"><td>2</td><td>W0-2</td><td>附身变红只对附身者可见（§13.2）</td><td>C++</td><td>猎人看不出哪把有鬼</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>3</td><td>W0-3</td><td>名牌不显示角色（§13.3）</td><td>C++</td><td>鬼头顶不写 Ghost</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>4</td><td>W0-4</td><td>罗盘加开关、默认关</td><td>C++</td><td>关掉后完全没有提示</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>5</td><td>WB-02</td><td>地图放 8 把同款椅子</td><td>地图</td><td>鬼可在任意一把之间换位</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>6</td><td>WB-06</td><td>损坏值（抱起 / 摇晃 / 摔落）</td><td>C++</td><td>连续摇 10 秒能摇坏一把</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>7</td><td>WB-07</td><td>双条 UI（驱逐 + 损坏）</td><td>UI</td><td>两条同时可见</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>8</td><td>WB-11/12</td><td>体力与脱力</td><td>C++</td><td>归零后不能附身、25% 移速、可被命中</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>9</td><td>WB-13</td><td>猎人武器与捕获</td><td>C++</td><td>一击带走脱力的鬼</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>10</td><td>WB-09</td><td>反杀挥击（耗 25 体力）</td><td>C++</td><td>背后命中能打断审讯</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>11</td><td>WB-04/05</td><td>120 秒计时 + 三种结局</td><td>C++</td><td>三种结局都能走到结算</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>12</td><td>WB-08</td><td>主动脱离与暴露窗口</td><td>C++</td><td>脱离后 1.5 秒内能被命中</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>13</td><td>WB-10</td><td>木头人提示</td><td>C++/表现</td><td>静止无提示、移动有提示</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>14</td><td>WB-16</td><td>出生点分离</td><td>地图</td><td>开局不重叠</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>15</td><td>M2–M4</td><td>NvM、服务端校验、罗盘对照、遥测、参数外置、调试命令、打包</td><td>混合</td><td>见下方各表</td><td><span class="chip chip-todo">TODO</span></td></tr></tbody></table></div>
+<blockquote><p>「类型」决定了能不能现在做：<strong>C++</strong> 只改插件源码，编译后可验证；<strong>地图</strong> 必须在编辑器里摆；<strong>UI</strong> 用现有纯 C++ Widget 扩展。地图项和需要双人验证的项，都要等工程打开。</p></blockquote>
+<h3 id="m0-核心可感-做完就能自己玩">M0 — 核心可感（做完就能自己玩）</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>ID</th><th>任务</th><th>验收标准</th><th>状态</th></tr></thead><tbody><tr class="row-todo"><td>WB-02</td><td>地图放 8 把同款椅子，全部可附身</td><td>鬼可在任意一把之间换位</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-03</td><td>关闭附身变红（留调试开关）</td><td>正常游玩看不出哪把有鬼</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-06</td><td>损坏值（抱起/摇晃/摔落）</td><td>连续摇 10 秒能摇坏一把</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-07</td><td>双条 UI（驱逐 + 损坏）</td><td>两条同时可见</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-11</td><td>体力系统</td><td>附身慢恢复、漂浮快恢复</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-12</td><td>脱力状态</td><td>体力归零后不能附身、慢速、可被命中</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-13</td><td>猎人武器与捕获</td><td>一枪带走脱力的鬼</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-09</td><td>反杀挥击（耗 25 体力）</td><td>背后命中能打断审讯</td><td><span class="chip chip-todo">TODO</span></td></tr></tbody></table></div>
+<h3 id="m1-一局成立">M1 — 一局成立</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>ID</th><th>任务</th><th>验收标准</th><th>状态</th></tr></thead><tbody><tr class="row-todo"><td>WB-04</td><td>120 秒回合计时</td><td>全端倒计时一致</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-05</td><td>三种结局（猎人胜/鬼胜/猎人判负）</td><td>都能走到结算</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-08</td><td>主动脱离与暴露窗口</td><td>脱离后能被命中</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-10</td><td>木头人：被注视移动有提示</td><td>静止无提示、移动有提示</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-16</td><td>出生点分离</td><td>开局不重叠</td><td><span class="chip chip-todo">TODO</span></td></tr></tbody></table></div>
+<h3 id="m2-nvm-与对照实验">M2 — NvM 与对照实验</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>ID</th><th>任务</th><th>验收标准</th><th>状态</th></tr></thead><tbody><tr class="row-todo"><td>WB-01</td><td>人数上限可配（默认 6），NvM 开局校验</td><td>3/4 人能开局</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-15</td><td>服务端校验距离/朝向</td><td>改客户端不能隔墙附身</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-14</td><td>罗盘开关（默认关）</td><td>开/关各测三局</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-22</td><td>附身微移开关</td><td>两种模式各测一局</td><td><span class="chip chip-todo">TODO</span></td></tr></tbody></table></div>
+<h3 id="m3-测得准">M3 — 测得准</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>ID</th><th>任务</th><th>验收标准</th><th>状态</th></tr></thead><tbody><tr class="row-todo"><td>WB-17</td><td>遥测：抱起次数/忍耐秒数/命中率/损坏/体力/结局</td><td>一局一行 JSON</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-18</td><td>参数外置（ini/DataAsset）</td><td>改数值不用重编译</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-19</td><td>调试命令（切角色/加时/刷家具）</td><td>单人可构造场景</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-20</td><td>单人调试（PIE 自动分配）</td><td>一个人能跑完整循环</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-21</td><td>HUD 三态提示</td><td>附身/暴露/脱力可辨认</td><td><span class="chip chip-todo">TODO</span></td></tr></tbody></table></div>
+<h3 id="m4-发得出去">M4 — 发得出去</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>ID</th><th>任务</th><th>验收标准</th><th>状态</th></tr></thead><tbody><tr class="row-todo"><td>WB-23</td><td>打包 Win64 并验证</td><td>朋友机器解压即玩</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-24</td><td>跨网络联机 + 语音方案</td><td>异地能开一局</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-25</td><td>多人性能（8 件道具 × 6 人）</td><td>帧率可接受</td><td><span class="chip chip-todo">TODO</span></td></tr><tr class="row-todo"><td>WB-26</td><td>30 秒新手引导</td><td>不看说明能懂</td><td><span class="chip chip-todo">TODO</span></td></tr></tbody></table></div>
+<hr>
+<h2 id="9-测试与证伪">9. 测试与证伪</h2>
+<h3 id="9-1-第一轮-只需-2-人">9.1 第一轮（只需 2 人）</h3>
+<ul>
+<li>1 猎人 + 1 鬼，8 把椅子，120 秒，打 6 局；</li>
+<li>罗盘关闭；</li>
+<li>全程录屏；</li>
+<li>结束后只问三句：</li>
+</ul>
+<ol>
+<li>抱起椅子的时候，你怕不怕？</li>
+<li>你在"再忍一下"和"现在动手"之间，犹豫过吗？</li>
+<li>有没有哪个瞬间你想讲给别人听？</li>
+</ol>
+<h3 id="9-2-第二轮-3-4-人">9.2 第二轮（3–4 人）</h3>
+<ul>
+<li>2v1、2v2 各三局；</li>
+<li>重点看 R2：审讯时其他人是否在"等"；</li>
+<li>记录"审讯期间其他玩家的行为"（围观/偷袭/继续搜）。</li>
+</ul>
+<h3 id="9-3-通过标准">9.3 通过标准</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>指标</th><th>目标</th></tr></thead><tbody><tr><td>主动说出"怕/紧张/想笑"</td><td>≥70%</td></tr><tr><td>每局至少一个"值得讲"的瞬间</td><td>≥80%</td></tr><tr><td>鬼胜率</td><td>40%–60%</td></tr><tr><td>猎人主动放下比例</td><td>≥30%</td></tr><tr><td>单次审讯时长</td><td>5–15s</td></tr><tr><td>挥击占鬼行动比例</td><td>≤30%</td></tr></tbody></table></div>
+<p>对照 §1.4 的 F1–F6，任意两条命中即重新评估方向。</p>
+<hr>
+<h2 id="10-风险登记">10. 风险登记</h2>
+<div class="table-wrap"><table class=""><thead><tr><th>风险</th><th>触发信号</th><th>对策</th></tr></thead><tbody><tr><td>退化成音游（R1）</td><td>F6</td><td>QTE 简化、决策权重加大</td></tr><tr><td>NvM 稀释（R2）</td><td>审讯时其他人在等</td><td>缩短时长、允许打断</td></tr><tr><td>反杀过强（R3）</td><td>F4</td><td>提高体力成本/冷却</td></tr><tr><td>猎人不敢碰（R4）</td><td>F2</td><td>放宽损坏阈值</td></tr><tr><td>晕动症（R5）</td><td>玩家摘下耳机/闭眼</td><td>镜头降级选项</td></tr><tr><td>数值失衡</td><td>鬼胜率偏离 40–60%</td><td>WB-17 遥测调参</td></tr></tbody></table></div>
+<hr>
+<h2 id="11-附录">11. 附录</h2>
+<h3 id="修订记录">修订记录</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>日期</th><th>版本</th><th>变更</th></tr></thead><tbody><tr><td>2026-10-29</td><td>v0.1</td><td>初稿</td></tr><tr><td>2026-10-29</td><td>v0.2</td><td>体力/脱力/武器；确认 D1–D5</td></tr><tr><td>2026-10-29</td><td>v0.3</td><td>竞品核查，定位改为"验货即对决"</td></tr><tr><td>2026-10-29</td><td>v0.4</td><td>扩展 Roblox/itch/手游/Mod</td></tr><tr><td>2026-10-29</td><td>v0.5</td><td>接入 Roblox 官方接口，补全拦截记录</td></tr><tr><td>2026-10-29</td><td><strong>v1.0</strong></td><td><strong>最终评审版</strong>：以"审判对抗"为唯一核心重写全文；新增设计法则、证伪标准、支撑系统贡献表；<span class="chip chip-todo">TODO</span> 按核心优先重排</td></tr><tr><td>2026-11-02</td><td>v1.1</td><td>并入 GDD / 实施计划 / 网络文档中的有效内容（§12）；新增代码核对 §13；原三份文档停用</td></tr></tbody></table></div>
+<h3 id="相关文档">相关文档</h3>
+<ul>
+<li>本文是 PropHunt 白盒阶段的<strong>唯一文档</strong>。原 <code>PropHunt_GDD.md</code>、<code>PropHunt_Plan.md</code>、<code>PropHunt_Network.md</code> 的内容已并入 §12、§13，不再单独维护、不再引用。</li>
+<li>C++ 索引：<a href="Docs/UE5_CPP_INDEX.md"><code>Docs/UE5_CPP_INDEX.md</code></a></li>
+</ul>
+<hr>
+<h2 id="12-联机与工程实现-并入自原-prophunt_network-md">12. 联机与工程实现（并入自原 <code>PropHunt_Network.md</code>）</h2>
+<blockquote><p>本节记录已经落地的联网与工程配置。设计规则以上文 §2–§6 为准，本节只讲「怎么跑起来」。</p></blockquote>
+<h3 id="12-1-架构">12.1 架构</h3>
+<pre class="code"><code>游戏逻辑：Server 权威（RPC + Replicated + OnRep）
+房间抽象：UPropHuntRoomSubsystem → IOnlineSession
+发现 / 传输：EOS Lobby（发现）+ EOS P2P（NAT 穿透 / 中继）
+房主机器 = 权威 + Player，其它机器 = 纯 Client（listen server）</code></pre>
+<p>不是全网格 P2P：UE 的复制天生是 client-server，必须有一台权威机。</p>
+<h3 id="12-2-两条登录路径">12.2 两条登录路径</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>场景</th><th>方式</th><th>启动</th><th>账号</th></tr></thead><tbody><tr><td>给朋友玩</td><td>Account Portal（Epic 账号）</td><td>正常启动，主菜单点 <code>Sign in with Epic</code></td><td>各自账号</td></tr><tr><td>本机双开调试</td><td>DevAuth（developer）</td><td><code>PropHunt_LocalTwoPlayers.bat</code> + DevAuthTool</td><td>本机两个凭证</td></tr></tbody></table></div>
+<p>流程：启动 → 读 OSS 登录状态 → 已登录直接用；否则 <code>persistentauth</code> 静默恢复 → 失败就停在未登录、<strong>不弹窗</strong> → 玩家点按钮 → <code>accountportal</code> → 系统浏览器 device code → 轮询拿到 token。</p>
+<ul>
+<li>不用引擎的 <code>bPreferPersistentAuth</code>：当前构建里 <code>FUserManagerEOS::LoginViaPersistentAuth()</code> 是空实现，AutoLogin 会静默失败，所以自己调 <code>IOnlineIdentity::Login()</code>。</li>
+<li>登录一次后凭 EOS SDK 保存在本机的 refresh token（约 180 天）免登录；<strong>强制杀进程</strong>可能导致 token 来不及落盘，下次要重登一次。</li>
+</ul>
+<h3 id="12-3-房间与开局">12.3 房间与开局</h3>
+<ul>
+<li><code>CreateRoom</code>：<code>NumPublicConnections=2</code>；EOS 下 <code>bUseLobbiesIfAvailable=true</code>，并挂 <code>PROPHUNT_GAMEMODE</code> / <code>PROPHUNT_HOSTNAME</code> 两个属性（Lobby 搜索必须至少有一个真实属性，否则报 "Search query is empty"）。</li>
+<li><code>FindRooms</code>：EOS 下 <code>SEARCH_LOBBIES=true</code> + 同样的 <code>PROPHUNT_GAMEMODE</code> 匹配。</li>
+<li><code>JoinRoom</code>：<code>GetResolvedConnectString</code> → <code>ClientTravel(EOS:&lt;PUID&gt;:...)</code>。</li>
+<li>大厅：≥1 猎人 + ≥1 鬼且全员 Ready → 1 秒倒计时 → <code>ServerTravel(/PropHunt/Maps/PH_GameMap)</code>。</li>
+</ul>
+<h3 id="12-4-配置清单">12.4 配置清单</h3>
+<ul>
+<li><code>AroundMe.uproject</code> 启用 <code>OnlineSubsystem</code>、<code>OnlineSubsystemUtils</code>、<code>OnlineSubsystemNull</code>、<code>OnlineSubsystemEOS</code>。</li>
+<li><code>DefaultEngine.ini</code>：<code>DefaultPlatformService=EOS</code>；<code>Artifacts</code> 里的 ClientId / ProductId / SandboxId / DeploymentId；<code>GameNetDriver=/Script/OnlineSubsystemEOS.NetDriverEOS</code>；<code>bIsUsingP2PSockets=true</code>（普通 IP 自动回退 IpNetDriver）；<code>AuthScopeFlags</code> 用 <code>|</code> 分隔。</li>
+<li><code>DefaultGame.ini</code>：<code>+DirectoriesToAlwaysCook=(Path="/PropHunt")</code> 加两个 <code>MapsToCook</code>。插件地图不会被 <code>bCookAll=False</code> 的工程自动带进包，漏一项进游戏就是空图。</li>
+<li><code>PropHunt.Build.cs</code> 不需要链接 EOSSDK（动态加载），只依赖 <code>OnlineSubsystem</code> + <code>OnlineSubsystemUtils</code>。</li>
+<li>本地切回 Null：<code>DefaultPlatformService=Null</code>，业务代码零改动。</li>
+</ul>
+<h3 id="12-5-dev-portal-必须确认的五项">12.5 Dev Portal 必须确认的五项</h3>
+<ol>
+<li>Deployment 处于激活状态（Dev 沙箱默认休眠）。</li>
+<li>Client Policy 允许 Account Portal / P2P / Lobby / Auth。</li>
+<li>Epic Account Services 的 Application 已建并关联这个 Client。</li>
+<li>已接受 Epic Account Services 协议。</li>
+<li>Brand / 隐私政策 / 服务条款（Dev 沙箱一般可先测）。</li>
+</ol>
+<p>失败时看日志 <code>LogEOSSDK: Warning: LogEOS: Error response received from backend ... ErrorCode=[...]</code>，那一行能直接定位是第几项。</p>
+<h3 id="12-6-两台机器实测">12.6 两台机器实测</h3>
+<ol>
+<li>A 启动 → <code>Sign in with Epic</code> → 状态变成 <code>Signed in as &lt;昵称&gt;</code>。</li>
+<li>A <code>Create Room</code> → 进 <code>PH_Lobby</code> 并成为房主。</li>
+<li>A 选 Hunter → Ready。</li>
+<li>B 登录 → <code>Join Room</code> → <code>Refresh Search</code> → 点中 A 的房间加入。</li>
+<li>B 选 Ghost → Ready。</li>
+<li>全员 Ready 后 1 秒 → 自动进 <code>PH_GameMap</code>。</li>
+</ol>
+<p>搜不到房间时按顺序查：两边是否都已登录 → 是否同 Artifact / Sandbox / Deployment → 列表是否给了 <code>Search failed: ...</code> → <code>LogOnline</code> 里的 EOS 错误码。</p>
+<h3 id="12-7-离开-暂停-掉线-已有">12.7 离开 / 暂停 / 掉线（已有）</h3>
+<ul>
+<li>非房主离开：自己回主菜单，房间继续；房主离开：销毁 session，所有人回主菜单。</li>
+<li>游戏内 ESC：server 权威暂停（<code>bPauseable=true</code> + <code>SetPause</code>），所有人一起冻结。</li>
+<li>游戏中有玩家掉线：<code>HandleLeaveGame</code> 收尾（销毁 session + 广播回菜单 + 房主延迟关闭）。</li>
+</ul>
+<h3 id="12-8-打包">12.8 打包</h3>
+<p><code>PropHunt_Package.bat</code> 调 RunUAT BuildCookRun，输出 <code>&lt;仓库根&gt;/Packaged/PropHunt</code>，Win64 Development，cook <code>PH_Lobby</code> + <code>PH_GameMap</code>。引擎路径读 <code>InstallHooksCache.ini</code> 的 <code>UE_ROOT</code>（换机器先跑 <code>InstallHooks.bat</code>）。打完整目录压缩发出去，朋友跑 <code>Play_PropHunt.bat</code>。</p>
+<h3 id="12-9-已知限制">12.9 已知限制</h3>
+<ol>
+<li>同机不能开两个真实账号（共用同一 PUID），调试继续用 DevAuth。</li>
+<li>跨网是否通取决于 EOS 中继；公司网络封 UDP 会失败。</li>
+<li>房间上限 2 人（<code>NumPublicConnections=2</code>）。</li>
+<li>没有邀请好友，只有公共 Lobby 搜索。</li>
+</ol>
+<hr>
+<h2 id="13-代码核对-2026-11-02">13. 代码核对（2026-11-02）</h2>
+<p>对照 v1.0 §7 逐项核对源码（<code>Plugins/PropHunt/Source/PropHunt</code>，23 个 UCLASS）。<strong>§7 的 <span class="chip chip-done">DONE</span>/<span class="chip chip-todo">TODO</span> 与代码一致</strong>：§8 里的 <span class="chip chip-todo">TODO</span> 在代码中连字段都没有，不是半成品。以下是与文档不符、或文档未记录但会影响验证的问题，按严重度排。</p>
+<h3 id="13-1-远程玩家的-qte-按键会在服务端被丢弃-p0">13.1 远程玩家的 QTE 按键会在服务端被丢弃（P0）</h3>
+<p><code>APropHuntPlayerController::PossessedProp</code> 只在 <code>BeginPossessionLocal</code> 里赋值；服务端给远程客户端走的是 <code>ClientBeginPossession</code>，服务端那份 PC 的 <code>PossessedProp</code> 始终为 null，而 <code>ServerReportQTEKey_Implementation</code> 第一行 <code>if (PossessedProp &amp;&amp; PossessedProp-&gt;bIsPossessed)</code> 直接返回。</p>
+<p>后果：只有房主自己当鬼时 QTE 有效；客户端当鬼时按什么都没反应，约 6.7 秒必被驱逐。§9.1 的两人验证如果让 client 演鬼，会得出「鬼撑不住」的错误结论。</p>
+<p>修法：<code>_Implementation</code> 里按 <code>PossessedBy == GetPlayerState()</code> 反查 Prop，或在 <code>DeliverBeginPossession</code> 里让服务端也记录一份。</p>
+<p><strong>2026-11-02 已修</strong>：采用第一种。<code>APropHuntPlayerController::ServerReportQTEKey_Implementation</code> 在 <code>PossessedProp</code> 为空时遍历关卡里的 Prop，找 <code>PossessedBy == 自己的 PlayerState</code> 那把；找不到就不处理。已热重载编译通过。双端按键仍需两人实测确认（单人无法验证）。</p>
+<h3 id="13-2-附身变红-不是调试开关-而是全端可见">13.2 「附身变红」不是调试开关，而是全端可见</h3>
+<p><code>bIsPossessed</code> 复制给所有客户端，<code>ApplyPossessedVisual()</code> 在 server 和 <code>OnRep_bIsPossessed</code> 都会执行。猎人看到的就是一把红椅子。WB-03 的工作量不是「加个开关」，而是把它拆成只对附身者显示。</p>
+<h3 id="13-3-名牌和罗盘在泄露信息-违反法则-4">13.3 名牌和罗盘在泄露信息（违反法则 4）</h3>
+<ul>
+<li><code>UpdateNameplate()</code> 拼的是 <code>"%s (%s)"</code>，第二个参数就是 <code>Ghost</code> / <code>Hunter</code>，且 <code>bShowNameplate</code> 默认 true。</li>
+<li><code>APropHuntPlayerController::Tick</code> 对猎人无条件创建罗盘并播放脉冲，没有「默认关闭」开关，WB-14 目前无从做对照实验。</li>
+</ul>
+<h3 id="13-4-摇晃-的判定源与直觉不同">13.4 「摇晃」的判定源与直觉不同</h3>
+<p>QTE 速率取的是 Prop <strong>世界 Yaw</strong> 的变化；鬼的 Look 输入只转 SpringArm（<code>AddOrbitRotation</code> 不动 Actor）。所以「甩镜头」不进速率，真正加速的是猎人抱着东西移动 / 转向。调 §6 的 <code>ShakeRate</code> 前先确认这是不是想要的手感。</p>
+<h3 id="13-5-服务端校验缺口-wb-15">13.5 服务端校验缺口（WB-15）</h3>
+<ul>
+<li>附身没有服务端距离校验（250cm 只在客户端 <code>FindNearestProp</code> 里）。</li>
+<li>鬼的移动是客户端每 0.05s 用 <code>ServerUpdateTransform</code>（Unreliable）上报，服务端直接照单全收并复制。</li>
+</ul>
+<h3 id="13-6-其他小问题">13.6 其他小问题</h3>
+<ul>
+<li><code>EndPossessionLocal</code> 收到 <code>PopLocation</code> 却没用。</li>
+<li>选边跨地图用 <code>PlayerState-&gt;GetPlayerName()</code> 当 key，重名会串。</li>
+<li>罗盘 Widget 为猎人创建后不再销毁，角色切换会残留。</li>
+<li><code>DefaultEngine.ini</code> 里明文写着 EOS ClientSecret，会随包发出（EOS 客户端形态如此，但仓库不要公开）。</li>
+</ul>
+</main>
+</div>
+
+<script>
+function setFilter(mode){
+  document.body.classList.remove('only-todo','only-done');
+  if(mode==='todo') document.body.classList.add('only-todo');
+  if(mode==='done') document.body.classList.add('only-done');
+  document.querySelectorAll('.toolbar button').forEach(function(b){
+    b.classList.toggle('on', b.dataset.mode===mode);
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,6 +1,8 @@
 # AroundMeProject
 
-**A Life Vibe App** — UE5 驱动的 AR / 移动端生活方式游戏。
+**电波宇宙**（工程代号 **DIY Project**）— 擦肩通信驱动的后启示录 · 类动森生活建造手游（iOS / Android，UE5）。
+
+> 命名约定：对外用「电波宇宙」，工程/代码用「DIY Project」；`AroundMe` 只是 UE 工程目录名，不对外使用。详见 [`AGENTS.md`](AGENTS.md)。
 
 ## 组件
 
@@ -12,5 +14,4 @@
 
 - **项目指南（AI 助手 & 开发者）**：见 [`AGENTS.md`](AGENTS.md) 或 [`CLAUDE.md`](CLAUDE.md)
 - **C++ 文件索引**：见 [`Docs/UE5_CPP_INDEX.md`](Docs/UE5_CPP_INDEX.md)
-- **PropHunt 游戏设计**：见 [`PropHunt_GDD.md`](PropHunt_GDD.md)
-- **PropHunt 网络 / EOS 联机**：见 [`PropHunt_Network.md`](PropHunt_Network.md)
+- **PropHunt（白盒设计 + 工程现状 + 联机实现）**：见 [`PropHunt_Whitebox_Design.md`](PropHunt_Whitebox_Design.md)

@@ -520,9 +520,28 @@ void APropHuntPlayerController::ReportQTEKey(EPropHuntQTEKey Key)
 
 void APropHuntPlayerController::ServerReportQTEKey_Implementation(EPropHuntQTEKey Key)
 {
-    if (PossessedProp && PossessedProp->bIsPossessed)
+    // 服务端不能只信 PossessedProp：远程客户端走的是 ClientBeginPossession，
+    // 服务端这份 PC 的 PossessedProp 始终是 null（只有 listen 房主自己当鬼时才会被赋值）。
+    // 这里按 PlayerState 反查一次，保证远程玩家的按键也能落到对应的 Prop 上。
+    APropHuntPropActor* Target = PossessedProp;
+    if (!Target)
     {
-        PossessedProp->ReportQTEKey(Key);
+        if (APropHuntPlayerState* PS = GetPlayerState<APropHuntPlayerState>())
+        {
+            for (TActorIterator<APropHuntPropActor> It(GetWorld()); It; ++It)
+            {
+                if ((*It)->PossessedBy == PS)
+                {
+                    Target = *It;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (Target && Target->bIsPossessed)
+    {
+        Target->ReportQTEKey(Key);
     }
 }
 
