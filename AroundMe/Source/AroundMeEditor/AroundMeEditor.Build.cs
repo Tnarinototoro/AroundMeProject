@@ -24,6 +24,8 @@ public class AroundMeEditor : ModuleRules
             "PropertyEditor"
             ,"AssetRegistry"
             ,"AssetTools"
+            ,"PaperZD"
+            ,"Paper2D"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[]

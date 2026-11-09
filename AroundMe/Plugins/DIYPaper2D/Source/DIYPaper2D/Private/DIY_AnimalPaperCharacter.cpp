@@ -13,6 +13,13 @@
 #include "UObject/Class.h"
 #include "UObject/ConstructorHelpers.h"
 
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputAction.h"
+#include "InputActionValue.h"
+#include "InputMappingContext.h"
+#include "Engine/LocalPlayer.h"
+
 #include "DIY_EquipmentVisualData.h"
 #include "DIY_FlipbookSyncComponent.h"
 #include "DIYPaper2DLog.h"
@@ -92,6 +99,8 @@ void ADIY_AnimalPaperCharacter::BeginPlay()
 		PlayerController->SetViewTarget(this);
 		bViewTargetSet = true;
 	}
+
+	ApplyCameraDistance();
 }
 
 void ADIY_AnimalPaperCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -106,7 +115,36 @@ void ADIY_AnimalPaperCharacter::SetupPlayerInputComponent(UInputComponent* Playe
 	PlayerInputComponent->BindAxisKey(EKeys::S, this, &ADIY_AnimalPaperCharacter::InputS);
 	PlayerInputComponent->BindAxisKey(EKeys::A, this, &ADIY_AnimalPaperCharacter::InputA);
 	PlayerInputComponent->BindAxisKey(EKeys::D, this, &ADIY_AnimalPaperCharacter::InputD);
-	PlayerInputComponent->BindAxisKey(EKeys::MouseWheelAxis, this, &ADIY_AnimalPaperCharacter::InputZoom);
+	// 项目默认使用 EnhancedPlayerInput：滚轮由 EnhancedInputWorldProcessor 送进 Enhanced Input 子系统，
+	// legacy 的 BindAxisKey / BindKey 都收不到 MouseWheel。
+	if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		if (ZoomAction == nullptr)
+		{
+			ZoomAction = NewObject<UInputAction>(this, TEXT("IA_HD2D_Zoom"));
+			ZoomAction->ValueType = EInputActionValueType::Axis1D;
+		}
+		if (ZoomMappingContext == nullptr)
+		{
+			ZoomMappingContext = NewObject<UInputMappingContext>(this, TEXT("IMC_HD2D_Zoom"));
+			ZoomMappingContext->MapKey(ZoomAction, EKeys::MouseWheelAxis);
+		}
+
+		EnhancedInput->BindAction(
+			ZoomAction, ETriggerEvent::Triggered, this, &ADIY_AnimalPaperCharacter::OnZoomTriggered);
+
+		if (APlayerController* PC = Cast<APlayerController>(GetController()))
+		{
+			if (ULocalPlayer* LocalPlayer = PC->GetLocalPlayer())
+			{
+				if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
+					ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer))
+				{
+					Subsystem->AddMappingContext(ZoomMappingContext, 0);
+				}
+			}
+		}
+	}
 
 	PlayerInputComponent->BindKey(EKeys::LeftShift, IE_Pressed, this, &ADIY_AnimalPaperCharacter::InputSprintPressed);
 	PlayerInputComponent->BindKey(EKeys::LeftShift, IE_Released, this, &ADIY_AnimalPaperCharacter::InputSprintReleased);
@@ -138,7 +176,7 @@ void ADIY_AnimalPaperCharacter::UpdateMovementAndAnimation(float DeltaSeconds)
 	const float Forward = InputForward - InputBackward;
 	const float Right = InputRight - InputLeft;
 
-	FVector Direction(Right, Forward, 0.0f);
+	FVector Direction(-Right, Forward, 0.0f);
 	if (!Direction.IsNearlyZero())
 	{
 		Direction.Normalize();
@@ -249,9 +287,44 @@ void ADIY_AnimalPaperCharacter::InputSprintReleased() { bSprintHeld = false; }
 
 void ADIY_AnimalPaperCharacter::InputZoom(float Value)
 {
-	if (FMath::IsNearlyZero(Value) || PoCCamera == nullptr)
+	if (FMath::IsNearlyZero(Value))
 	{
 		return;
 	}
-	PoCCamera->SetOrthoWidth(FMath::Clamp(PoCCamera->OrthoWidth * (1.0f - Value * 0.12f), 240.0f, 1600.0f));
+
+	CameraDistance = FMath::Clamp(
+		CameraDistance - Value * CameraZoomStep, MinCameraDistance, MaxCameraDistance);
+	ApplyCameraDistance();
+}
+
+void ADIY_AnimalPaperCharacter::OnZoomTriggered(const FInputActionValue& Value)
+{
+	InputZoom(Value.Get<float>());
+}
+
+void ADIY_AnimalPaperCharacter::InputZoomIn()
+{
+	InputZoom(1.0f);
+}
+
+void ADIY_AnimalPaperCharacter::InputZoomOut()
+{
+	InputZoom(-1.0f);
+}
+
+void ADIY_AnimalPaperCharacter::ApplyCameraDistance()
+{
+	if (PoCCamera == nullptr)
+	{
+		return;
+	}
+
+	CameraDistance = FMath::Clamp(CameraDistance, MinCameraDistance, MaxCameraDistance);
+
+	// 相机固定沿自身前方看向角色，距离就是沿该轴的退让量。
+	const FVector Forward = PoCCamera->GetRelativeRotation().Vector();
+	PoCCamera->SetRelativeLocation(-Forward * CameraDistance);
+
+	// 正交相机只改距离看不出远近，正交宽度跟随距离一起缩放。
+	PoCCamera->SetOrthoWidth(FMath::Max(1.0f, CameraDistance * OrthoWidthPerUnit));
 }

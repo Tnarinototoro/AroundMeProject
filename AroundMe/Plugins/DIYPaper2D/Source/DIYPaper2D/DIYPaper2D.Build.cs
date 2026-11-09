@@ -14,6 +14,7 @@ public class DIYPaper2D : ModuleRules
 			"CoreUObject",
 			"Engine",
 			"InputCore",
+			"EnhancedInput",
 			"Paper2D"
 		});
 
