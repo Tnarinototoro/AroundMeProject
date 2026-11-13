@@ -23,6 +23,8 @@
 #include "DIY_EquipmentVisualData.h"
 #include "DIY_FlipbookSyncComponent.h"
 #include "DIYPaper2DLog.h"
+#include "PaperZDAnimationComponent.h"
+#include "PaperZDAnimInstance.h"
 
 ADIY_AnimalPaperCharacter::ADIY_AnimalPaperCharacter()
 {
@@ -69,7 +71,16 @@ void ADIY_AnimalPaperCharacter::BeginPlay()
 
 	BodyLayer->SetMaterial(0, UnlitMaterial);
 
-	if (SyncComponent != nullptr)
+	if (PaperZDAnimClass != nullptr)
+	{
+		// 用 PaperZD 驱动同一个 BodyLayer：先绑 render component，再设动画类，最后注册
+		// （注册时组件的 BeginPlay 会用已设好的类创建 AnimInstance，避免空类警告）。
+		PaperZDAnimation = NewObject<UPaperZDAnimationComponent>(this, TEXT("PaperZDAnimation"));
+		PaperZDAnimation->InitRenderComponent(BodyLayer);
+		PaperZDAnimation->InitAnimInstanceClass(PaperZDAnimClass);
+		PaperZDAnimation->RegisterComponent();
+	}
+	else if (SyncComponent != nullptr)
 	{
 		SyncComponent->RegisterLayer(EDIY_EquipSlot::Torso, BodyLayer);
 
@@ -199,6 +210,12 @@ void ADIY_AnimalPaperCharacter::UpdateMovementAndAnimation(float DeltaSeconds)
 	}
 
 	if (SyncComponent == nullptr)
+	{
+		return;
+	}
+
+	// PaperZD 模式下动画由 AnimBP 驱动，不能再让 DIY 的同步组件刷帧/换图。
+	if (PaperZDAnimClass != nullptr)
 	{
 		return;
 	}

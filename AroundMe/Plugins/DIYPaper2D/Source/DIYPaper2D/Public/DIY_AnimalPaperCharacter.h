@@ -14,6 +14,8 @@ class UCameraComponent;
 class UMaterialInterface;
 class UInputAction;
 class UInputMappingContext;
+class UPaperZDAnimationComponent;
+class UPaperZDAnimInstance;
 struct FInputActionValue;
 
 /**
@@ -38,6 +40,14 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animal")
 	TObjectPtr<UCameraComponent> PoCCamera;
+
+	/** 可选的 PaperZD 动画组件；设置了 PaperZDAnimClass 就由它驱动 BodyLayer。 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PaperZD")
+	TObjectPtr<UPaperZDAnimationComponent> PaperZDAnimation;
+
+	/** 外部可配置：用哪张 PaperZD AnimBP 驱动这个 Pawn。留空则用原有的 Paper2D Flipbook 流程。 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PaperZD")
+	TSubclassOf<UPaperZDAnimInstance> PaperZDAnimClass;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float WalkSpeed = 300.0f;

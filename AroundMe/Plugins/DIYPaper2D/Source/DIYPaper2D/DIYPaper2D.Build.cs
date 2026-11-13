@@ -15,7 +15,8 @@ public class DIYPaper2D : ModuleRules
 			"Engine",
 			"InputCore",
 			"EnhancedInput",
-			"Paper2D"
+			"Paper2D",
+			"PaperZD"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
