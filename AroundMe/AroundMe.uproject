@@ -186,7 +186,7 @@
 		},
 		{
 			"Name": "DIYPaper2D",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "UnrealAgentLink",

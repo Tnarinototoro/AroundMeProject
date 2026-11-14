@@ -31,7 +31,8 @@ public class AroundMe : ModuleRules
             "JsonUtilities",
             "StateTreeModule",
             "GameplayStateTreeModule",
-            "StructUtils"
+            "StructUtils",
+            "PaperZD"
         });
 
 
