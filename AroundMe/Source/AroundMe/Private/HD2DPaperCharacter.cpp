@@ -60,6 +60,30 @@ void AHD2DPaperCharacter::BeginPlay()
 	}
 
 	ApplyCameraDistance();
+
+	// 自动构建的复合层没有排序优先级；三层在同一位置时，头/衣服可能被身体盖住。
+	// 这里按组件名稳定排序：主 Sprite 为 0，其余依次 1、2…
+	TArray<UPaperFlipbookComponent*> FlipbookComponents;
+	GetComponents<UPaperFlipbookComponent>(FlipbookComponents);
+	FlipbookComponents.Sort([](const UPaperFlipbookComponent& A, const UPaperFlipbookComponent& B)
+	{
+		return A.GetName() < B.GetName();
+	});
+
+	int32 LayerPriority = 1;
+	for (UPaperFlipbookComponent* Component : FlipbookComponents)
+	{
+		if (Component == nullptr || Component == GetSprite())
+		{
+			continue;
+		}
+		Component->SetTranslucentSortPriority(LayerPriority++);
+	}
+
+	if (GetSprite() != nullptr)
+	{
+		GetSprite()->SetTranslucentSortPriority(0);
+	}
 }
 
 void AHD2DPaperCharacter::Tick(float DeltaSeconds)
@@ -69,7 +93,7 @@ void AHD2DPaperCharacter::Tick(float DeltaSeconds)
 	const float Forward = InputForward - InputBackward;
 	const float Right = InputRight - InputLeft;
 
-	FVector Direction(-Right, Forward, 0.0f);
+	FVector Direction(Right, -Forward, 0.0f);
 	if (!Direction.IsNearlyZero())
 	{
 		Direction.Normalize();
@@ -105,8 +129,18 @@ void AHD2DPaperCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 			ZoomMappingContext->MapKey(ZoomAction, EKeys::MouseWheelAxis);
 		}
 
+		if (PitchAction == nullptr)
+		{
+			PitchAction = NewObject<UInputAction>(this, TEXT("IA_HD2D_Pitch"));
+			PitchAction->ValueType = EInputActionValueType::Axis1D;
+			ZoomMappingContext->MapKey(PitchAction, EKeys::MouseY);
+		}
+
 		EnhancedInput->BindAction(
 			ZoomAction, ETriggerEvent::Triggered, this, &AHD2DPaperCharacter::OnZoomTriggered);
+
+		EnhancedInput->BindAction(
+			PitchAction, ETriggerEvent::Triggered, this, &AHD2DPaperCharacter::OnPitchTriggered);
 
 		if (APlayerController* PC = Cast<APlayerController>(GetController()))
 		{
@@ -134,6 +168,14 @@ void AHD2DPaperCharacter::OnZoomTriggered(const FInputActionValue& Value)
 	ApplyCameraDistance();
 }
 
+void AHD2DPaperCharacter::OnPitchTriggered(const FInputActionValue& Value)
+{
+	// 鼠标上移 = 机位抬高（俯看），下移 = 机位压低（仰看）。
+	CameraPitch = FMath::Clamp(
+		CameraPitch - Value.Get<float>() * PitchSensitivity, MinCameraPitch, MaxCameraPitch);
+	ApplyCameraDistance();
+}
+
 void AHD2DPaperCharacter::ApplyCameraDistance()
 {
 	if (PoCCamera == nullptr)
@@ -142,6 +184,10 @@ void AHD2DPaperCharacter::ApplyCameraDistance()
 	}
 
 	CameraDistance = FMath::Clamp(CameraDistance, MinCameraDistance, MaxCameraDistance);
+	CameraPitch = FMath::Clamp(CameraPitch, MinCameraPitch, MaxCameraPitch);
+
+	// 先按配置应用机位朝向，再沿朝向后退，保证和动画预览器同一观察方向。
+	PoCCamera->SetRelativeRotation(FRotator(CameraPitch, CameraYaw, 0.0f));
 
 	const FVector Forward = PoCCamera->GetRelativeRotation().Vector();
 	PoCCamera->SetRelativeLocation(-Forward * CameraDistance);

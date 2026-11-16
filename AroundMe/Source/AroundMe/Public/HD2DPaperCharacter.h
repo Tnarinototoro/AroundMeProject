@@ -52,6 +52,17 @@ public:
 	UPROPERTY(EditAnywhere, Category = "HD2D|Camera")
 	float CameraPitch = -45.0f;
 
+	/** 鼠标上下移动改变仰角的下限/上限（度）。-90 = 从头顶俯看，+90 = 从脚底仰看。 */
+	UPROPERTY(EditAnywhere, Category = "HD2D|Camera", meta = (ClampMin = "-90.0", ClampMax = "90.0"))
+	float MinCameraPitch = -90.0f;
+
+	UPROPERTY(EditAnywhere, Category = "HD2D|Camera", meta = (ClampMin = "-90.0", ClampMax = "90.0"))
+	float MaxCameraPitch = 90.0f;
+
+	/** 鼠标上下移动时每单位输入改变多少度。负值可反转方向。 */
+	UPROPERTY(EditAnywhere, Category = "HD2D|Camera")
+	float PitchSensitivity = 1.0f;
+
 	UPROPERTY(EditAnywhere, Category = "HD2D|Camera")
 	float CameraYaw = 90.0f;
 
@@ -71,10 +82,14 @@ private:
 	void InputA(float Value);
 	void InputD(float Value);
 	void OnZoomTriggered(const FInputActionValue& Value);
+	void OnPitchTriggered(const FInputActionValue& Value);
 	void ApplyCameraDistance();
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> ZoomAction;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> PitchAction;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputMappingContext> ZoomMappingContext;
