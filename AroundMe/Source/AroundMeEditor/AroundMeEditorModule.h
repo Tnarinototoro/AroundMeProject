@@ -18,7 +18,6 @@ public:
     void OpenGameplayTagProjectSettings();
     void OpenGameplayTagManagerWindow();
     void OpenTagDebugPanel();
-    void CreateStylizedMaterialLibrary();
 
 private:
 

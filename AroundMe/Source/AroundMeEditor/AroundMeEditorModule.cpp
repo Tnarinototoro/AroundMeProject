@@ -13,7 +13,6 @@
 #include "ISettingsModule.h"
 #include "GameplayTagsManager.h"
 #include "Panels/DIY_TagDebugPanel.h"
-#include "Tools/DIY_StylizedMaterialLibrary.h"
 #include "SGameplayTagPicker.h"
 #include "GameplayTagsEditorModule.h"
 #include "AssetRegistry/AssetRegistryModule.h"
@@ -135,24 +134,8 @@ void FAroundMeEditorModule::FillDebugMenu_DIY(FMenuBuilder &MenuBuilder)
             FUIAction(FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::OpenIconsBrowser)));
     }
     MenuBuilder.EndSection();
-
-    MenuBuilder.BeginSection("StylizedRender", FText::FromString("Stylized Render"));
-    {
-        MenuBuilder.AddMenuEntry(
-            FText::FromString("Generate AroundMe Stylized Material Library"),
-            FText::FromString("Create the shared two-band material, parameter collection and default instance"),
-            FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Materials"),
-            FUIAction(FExecuteAction::CreateRaw(this, &FAroundMeEditorModule::CreateStylizedMaterialLibrary)));
-    }
-    MenuBuilder.EndSection();
 }
 
-void FAroundMeEditorModule::CreateStylizedMaterialLibrary()
-{
-    FString Message;
-    const bool bSuccess = DIYStylizedMaterialLibrary::Generate(Message);
-    ShowNotify(FText::FromString(Message), bSuccess ? 5.0f : 8.0f);
-}
 void FAroundMeEditorModule::OpenGameplayTagManagerWindow()
 {
     // 1. 尝试从配置中读取位置 [cite: 2025-12-23]
